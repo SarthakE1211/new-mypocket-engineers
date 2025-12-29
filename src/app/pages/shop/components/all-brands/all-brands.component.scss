@@ -1,0 +1,338 @@
+/* Custom Offcanvas Styling */
+.custom-offcanvas-width {
+  width: 560px !important; /* Set the offcanvas width */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  background: #ffffff;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.offcanvas-body {
+  overflow-x: hidden; /* Ensure no horizontal scrolling inside the offcanvas */
+  padding-right: 10px; /* Adjust padding to prevent content overflow */
+  max-width: 100%; /* Ensure content does not exceed the offcanvas width */
+}
+
+/* Header Styling */
+.offcanvas-header {
+  background: linear-gradient(135deg, #3170DE, #5A9BFF);
+  color: white;
+  border-bottom: 1px solid #ddd;
+}
+
+.offcanvas-header h5 {
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+/* Product Card Styling */
+.product-card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+  background: #fff;
+  padding: 15px;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.product-title {
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #333;
+  transition: color 0.3s;
+}
+
+.product-title:hover {
+  color: #3170DE;
+}
+
+/* Image Styling */
+.product-image img {
+  border-radius: 8px;
+  object-fit: cover;
+  transition: opacity 0.3s;
+}
+
+.product-image img:hover {
+  opacity: 0.9;
+}
+
+/* Button Styling */
+.btn-buy {
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.btn-buy:hover {
+  background: #1a5bb8;
+}
+
+/* Price Styling */
+.product-price {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #3170DE;
+}
+
+.product-old-price {
+  text-decoration: line-through;
+  color: #6c757d;
+}
+
+/* Load More Button */
+.btn-primary {
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 1rem;
+}
+
+/* No Data Section */
+.text-center img {
+  max-width: 300px;
+  margin-bottom: 15px;
+}
+
+.text-center p {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+/* Spinner Styling */
+.spinner-border {
+  width: 2rem;
+  height: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 576px) {
+  .custom-offcanvas-width {
+      max-width: 100%;
+  }
+
+  .product-card {
+      padding: 10px;
+  }
+
+  .offcanvas-header h5 {
+      font-size: 1.2rem;
+  }
+
+  .btn-primary, .btn-buy {
+      font-size: 0.9rem;
+  }
+}
+
+/* Existing Styles */
+.product-image {
+  background: #ddd;
+  height: 150px;
+  border-radius: 8px;
+}
+
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.service-card-container {
+  padding-right: 10px;
+}
+
+.service-card-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.service-card-container::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.service-card-container::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+.modal-body {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 15px !important;
+}
+
+.disabled-link {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+
+.product-title {
+  display: inline-block;
+  max-width: 180px; /* Adjust width as needed */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+
+.hover-shadow:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.responsive-text {
+  font-size: 15px !important;
+  /* Default size for small screens */
+}
+
+@media (min-width: 576px) {
+
+  /* Small devices (sm) */
+  .responsive-text {
+    font-size: 18px !important;
+  }
+}
+
+@media (min-width: 768px) {
+
+  /* Medium devices (md) */
+  .responsive-text {
+    font-size: 22px !important;
+  }
+}
+
+@media (min-width: 992px) {
+
+  /* Large devices (lg) */
+  .responsive-text {
+    font-size: 24px !important;
+  }
+}
+
+
+
+
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+  width: 200px;
+}
+
+.dropdown-toggle {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #666;
+  box-shadow: none;
+}
+
+.filter-icon {
+  color: #1d4ed8; /* Blue color */
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+  padding: 5px 0;
+  z-index: 1000;
+  display: block;
+}
+
+.dropdown-item {
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  display: block;
+}
+
+.dropdown-item:hover {
+  background: #f0f0f0;
+}
+
+.dropdown-item.active {
+  font-weight: bold;
+  color: #3170DE;
+}
+
+
+
+::ng-deep .dropdown-toggle::after {
+  display: none; /* Hide default dropdown arrow */
+}
+
+::ng-deep .dropdown-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+::ng-deep .dropdown-toggle .bi-funnel {
+  font-size: 16px; /* Adjust size */
+  color: #1d4ed8;  /* Match blue color */
+}
+
+
+/* Responsive modal content */
+@media (max-width: 576px) {
+  .suggestion-modal-body h5 {
+    font-size: 16px !important;
+  }
+
+  .suggestion-modal-body p {
+    font-size: 14px !important;
+  }
+
+  .suggestion-modal-content {
+    padding: 20px 10px !important;
+  }
+}
+
+
+
+@media (max-width: 576px) {
+  .offcanvas-header .dropdown {
+    width: 180px !important;
+  }
+
+  .offcanvas-header h5 {
+    font-size: 14px !important;
+    flex: 1;
+    margin-right: 8px;
+  }
+
+  .offcanvas-header {
+    flex-wrap: wrap;
+  }
+
+  .offcanvas-header .dropdown-toggle {
+    white-space: normal !important; /* allow text to wrap */
+    text-align: left !important;    /* optional for better readability */
+    word-break: break-word;         /* break long words if needed */
+    line-height: 1.2;               /* improve spacing when wrapped */
+  }
+}

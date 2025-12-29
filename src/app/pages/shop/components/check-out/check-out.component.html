@@ -1,0 +1,692 @@
+<div *ngIf="loadService" class="container my-4"
+    style=" display: flex; justify-content: center; align-items: center; width: 50vw; height: 50vw;">
+
+    <div *ngIf="loadService" class="spinner-border text-secondary" role="status">
+        <span class="sr-only"></span>
+    </div>
+
+</div>
+
+
+<!-- <div *ngIf="!loadService" style="border: 1px solid #aeb6bf; border-radius: 4px;" class="container mt-4 mb-4"> -->
+<div *ngIf="!loadService"  class="container mt-4 mb-4  bg-white rounded-4 shadow" style="padding: 8px;border-radius: 8px !important;box-shadow: none !important;">
+    <div class="container mt-4" style="margin-top: 10px !important;">
+        <h4 style="margin-bottom: 0px !important;"><b style="font-size: 20px !important;">{{'shop.Checkout'| translate}}</b></h4>
+    </div>
+    <div class="container mt-4" style="margin-top: 16px !important;">
+        <div class="row">
+            <div class="col-md-4" [ngStyle]="{
+                'overflow-x': CartDetails.length > 1 ? 'auto' : 'initial',
+                'height':  CartDetails.length > 1 ? '100vh' : ' '
+              }" >
+                <!-- <div class="card p-3" *ngFor="let product of CartDetails"> -->
+                <div class="card p-3" style="border-radius: 16px;box-shadow: -1px 2px 12px 0px #0000001F !important;
+    border: 0.5px solid #cbcbcb87 !important;">
+
+                    <!-- <div class="custom-scroll" style="overflow-y: auto; height: 250px;"> -->
+                    <div >
+
+                        <div *ngFor="let data of CartDetails" class="align-items-center mb-3" style="margin-bottom: 7px !important;">
+                            <img [src]="data.INVENTORY_IMAGE ? IMAGEuRL + 'InventoryImages/' + data.INVENTORY_IMAGE : 'assets/img/services/no-image.png'"
+                                style="height: 200px; border-radius: 8px; width: 100%;" class="img-fluid"
+                                alt="{{ data.BRAND_NAME }}" (error)="handleImageError($event)" />
+
+                            <div class="flex-grow-1">
+                                <h6 style="padding-top: 15px;font-weight: 600;margin-bottom: 0px;;" class="po" [attr.title]="data.VARIANT_NAME || 'N/A'">{{
+                                    data.VARIANT_NAME }}</h6>
+                                       <span class="product-title" style="
+                  font-size: 12px;
+    padding-top: 0px;
+    padding-bottom: 5px;
+    color: #4d4d4d;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    display: block;
+                " [attr.title]="data.CATEGORY_NAME || 'N/A'" data-bs-toggle="tooltip"
+                                    data-bs-placement="top">
+                                    {{ data.CATEGORY_NAME || "N/A"}}
+                                </span>
+                                <div style="display: flex;justify-content: space-between;">
+                                    <p class="mb-0" style="font-weight: 400;font-size: 13px !important;">{{'shop.Quantity'| translate}} : </p>
+                                    <span class="fw-bold" style="font-weight: 500;font-size: 13px !important;">{{ data.QUANTITY }}</span>
+                                    <!-- <div class="container mt-3 mb-3">
+                                        <div class="quantity-container">
+                                            <button class="quantity-btn" (click)="decreaseQuantity()">−</button>
+                                            <input type="text" class="quantity-input" [(ngModel)]="quantity" readonly>
+                                            <button class="quantity-btn" (click)="increaseQuantity(data)">+</button>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                    <div *ngFor="let product of CartInfo" class="border-top pt-3">
+                        <p class="d-flex justify-content-between" style="    margin-bottom: 2px !important;"><span style="font-weight: 400;font-size: 13px !important;">{{'shop.Items'| translate}}
+                                ({{product.TOTAL_QUANTITY}}):</span>
+                            <span style="font-weight: 500;">₹ {{product.TOTAL_TAXABLE_AMOUNT| number}}</span>
+                        </p>
+                        <p class="d-flex justify-content-between" style="    margin-bottom: 2px !important;"><span style="font-weight: 400;font-size: 13px !important;">{{'shop.Delivery'| translate}}:</span> <span
+                                style="font-weight: 500;">₹
+                                {{product.EXPECTED_DELIVERY_CHARGES| number}}</span></p>
+                        <p class="d-flex justify-content-between" style="    margin-bottom: 2px !important;"><span style="font-weight: 400;font-size: 13px !important;">{{'shop.Discount'| translate}}:</span> <span
+                                style="font-weight: 500;">-&nbsp; ₹
+                                {{product.COUPON_AMOUNT| number}}</span></p>
+                                <hr>
+                        <p class="d-flex justify-content-between" style="margin-bottom: 0px !important;margin-bottom: 2px !important;"><span style="font-weight: 500;font-size: 13px !important;">{{'shop.Total'| translate}}:</span> <span
+                                style="font-weight: 500;font-size: 13px;">₹
+                                {{product.TOTAL_AMOUNT| number}}</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!--.................................................. Blank Space (6 Grid).......................................................... -->
+
+            <div class="col-md-8">
+                <!-- <h6><b>Coupon</b></h6> -->
+                <div class="accordion">
+                    <div class="accordion-item mb-2 shadow-sm rounded" style="    padding: 0px;
+    border: none !important;
+    box-shadow: none !important;">
+                        <h6 style="padding-top: 0px;font-weight: 600;font-size: 15px;">Coupon</h6>
+
+                        <ng-container *ngFor="let product of CartInfo; let i = index">
+                            <ng-container *ngIf="i === 0">
+                                <ng-container *ngFor="let data of CartDetails; let j = index">
+                                    <ng-container *ngIf="j === 0 && data.CART_ID === product.ID">
+                                        <div class="accordion-item mb-2 shadow-sm rounded" style="border-radius: 16px !important; border: none !important;box-shadow: 0px 2px 12px 0px #0000001F !important;">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button fw-bold d-flex align-items-center gap-2 no-default-arrow"
+                                                style="background-color: white;border: 0.5px solid #cbcbcb87 !important;border-radius: 16px !important;padding: 10px 12px !important;color: black;
+                                            font-weight: 500 !important;font-size: 16px;"
+                                                (click)="toggleAccordion(product.ID)">
+                                                <div style="display: flex; justify-content: space-between;width: 100% !important;align-self: baseline !important;
+    align-items: center !important;">
+                                                    <div style="font-size: 14px !important;">
+                                                       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="24" viewBox="0 0 16 24" fill="none">
+<ellipse cx="8" cy="12" rx="8" ry="12" fill="url(#pattern0_3782_42915)"/>
+<defs>
+<pattern id="pattern0_3782_42915" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0_3782_42915" transform="matrix(0.03125 0 0 0.0208333 -0.25 0)"/>
+</pattern>
+<image id="image0_3782_42915" width="48" height="48" preserveAspectRatio="none" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAVCSURBVHgB7VhNbttGFH5DSS7QFoh6glK7xC5QeVfEDmqdoNIJLJ8g5gmkXKB0ThD5BPYNoqJW0F0JpHa8M3OCqosGiGRx8r3hjDShfkiKDpAFP8AWORwO3+/33gxRiRIlSpQoAEFfCD8d+kcR0ZEUFLz707ukLwSHHgCPj3zXvt87+P04kvSaJPVERBd7B75vP28e+XV6IBTyQPMX351UICiRi78Qiw3xO5ZEp0uTJbEXAiHgFXgmnu/0r0fPz6kACikAy77WwqxCKCR18LyHr7TXzBnv1KgRDL0xbYmtQ4itvxBeDHDNlgzVnRDDqEat6zdecPPG60CBl2ocAvMzcw/UP06pSwWQ2wN7T/0my483j40CELZxO/RCvuZ8MNc2XB33oba25b0AQpwjtIJqlYK83sisQCLe7SUGN6PTE8oJGKILhnpFSwI53Tx5kTmEphXEsiW8CYeoJl/QFkB4DbAIvxva45KiM8qBao65rvovRBBVZScZJhxaUYXcbyoqDMK0xXh+rUoDzO1zeH17D+aSyki5KDazB1CU3iv5YXlb+CYE2T3w7xAOfzPnT6Z0l+T9JHaf+j2ej7kckvO82AaZFUCSPUqOqbwQdEGJvOA6sE4JFh5W6Ks1E+GjMW4mCuMmpCrAQjJjQCrF5VIuPjqpKgp01bhDHfD+vi5mSolkxbWFB4L/a9QxzypgIX1ZZ89wK0JFFTDMY+gymbRQxjXj3O8w7zvOnONpOll4Jin8B9QJO3Tecr+0qA8utyJPnvltKqKAbWFmjOur05Yd/wircayIbBq3z2b0s3k+24mfpwlvcHPlncKLJ5xnav1ZepHbqAAWG1sThyteNl0mu/2Ok3kuqBCXrGxW4Q1qEQ0lUeak3qhArUYD0okGly4VnX+uvKHmcgNX/4agWi+v8Ay73kQ7K5rCPApwWYcXjIDuqsSC2/vRjBqsCKjxJYcABN13JnScV3gGrN+Nr8TgNkM9yVPIOOZXFpnbv9SH+uZ+leW/v6fm3jP/NyT+fxyOynsJMGtNp6odrwtWJQNSaRRW7enL8G2GndUq4b+bks+sIqO42vL1qjrBHsf3VB/EnshCpRsV4IaLdDxaoZRP+Am1TVio/kknKNeJ3UO/n1xjp0p9MyeKCuYAWSGDD/5IOYVXMe/Qcz0WonA1rkfeD6bYYdHj5Dr3CLX55x3xiIooAE7nkAnj1ajPNLmqzG9iG8R8Xb9/Ph8T9Iee+9laHFYq1ExDF8nUtnqjApycYJiWWNQAdzIVvazCx3JrA8Da3IGquNaWx7NgLjzvDxZ76dARakc3oBSkspBmmNbu4dkFzNkGE7nm2ZMDnz/YXye8EpLpVapWxOUOVNrkIhdtB3opVxPPmGk4a4eaY0+8TGuWMmt5nukSb3pkdZ4iPrnw1li4nqe9zt5Om1iGCU2Xyb1LBV1oWpF6N/LOVHFDWPB8TmYeM895PYcyEn8CmQsZb2h4A82dKfqef5FwLPBlpUIvslhMzxnaYzp/uljPtadSDmT2gJypWA/n93A18zsq5yvaAqrGxMnvmjFVJzLUGxuZFeBkvhl5Dd60cBjokzblEXvjsu7YcGncqg+qhca6qk5kYB4bW5/MsUAcSnoRPtji37bm8BAnbi2zuWd+NxTJlKzqQLyB59w6ySv0gyigBUs9WsQX/E1zoOh+kaPFXN1oEqjUJ44+7OL4jVBtlUWkCg/F+/PJUlxKR753SPzKOzjV7yDeiwj/YEger3OBQ9sh53+H/meHVe7Xcry+CY9xIOBgT72u9y9RokSJEl8FPgHbaJiGmNWu9QAAAABJRU5ErkJggg=="/>
+</defs>
+</svg>&nbsp;
+                                                  {{ 'shop.CouponsandOffers' | translate }}
+                                                    </div>
+                                                    <div *ngIf="accordionState[product.ID] else elseblockchevron;">
+                                                        <i class="bi bi-chevron-down"></i>
+                                                    </div>
+                                                    <ng-template #elseblockchevron>
+                                                        <div>
+                                                            <i class="bi bi-chevron-right"></i>
+                                                        </div>
+                                                    </ng-template>
+                                                </div>
+                                        </button>
+                                        
+                                            </h2>
+
+                                            <div class="accordion-collapse"
+                                                [ngClass]="{'show': accordionState[product.ID]}"
+                                                [style.display]="accordionState[product.ID] ? 'block' : 'none'">
+                                                <div class="accordion-body text-muted" style="    padding: 4px 12px 8px !important;">
+                                                    <div *ngIf="product.COUPON_CODE"
+                                                        class="coupon-box align-items-center p-2 border rounded" style="margin-top: 10px;">
+                                                        <div class="row" >
+                                                            <!-- <div style="display: flex;justify-content: space-between;"> -->
+                                                                <div class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 m-0 ">
+                                                                    <strong style="font-weight: 600;font-size: 14px;color: black !important;">{{ (product?.COUPON_NAME) ?(product?.COUPON_NAME) :"Coupon Applied"}}</strong>
+                                                                 </div>
+                                                                 <div class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 m-0 text-muted textaligns" style="margin-top: 0px !important;    font-size: 12px;">
+                                                                     {{'shop.CouponApplied'| translate}}: <strong>{{ product.COUPON_CODE}}</strong>
+                                                                 </div>
+                                                            <!-- </div> -->
+                                                        </div>
+                                                        <div class="row" style="margin-top: 7px;">
+                                                            <!-- <div style="display: flex;justify-content: space-between;"> -->
+                                                                <div class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 m-0 text-muted" style="margin-top: 0px !important;    font-size: 12px;"> {{'shop.Discount'| translate}}: ₹{{
+                                                                    product.COUPON_AMOUNT| number }}</div>
+                                                                    <div class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 textaligns">
+                                                                        <button (click)="deleteCoupon(data, product)" *ngIf="!LoadRemove"
+                                                                        class="btn btn-sm text-danger" style="border: 1px Solid;color: #0863e8 !important;font-weight: 500;  font-size: 11px;  margin-top: 0px;">
+                                                                         {{'shop.Remove'| translate}}
+                                                                    </button>
+                                                                    <button  *ngIf="LoadRemove"
+                                                                    class="btn btn-sm text-danger" style="border: 1px Solid;color: #0863e8 !important;font-weight: 500;  font-size: 11px;  margin-top: 0px;">
+                                                                     {{'shop.Remove'| translate}}&nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                                </button>
+                                                                    
+                                                                    </div>
+                                                            <!-- </div> -->
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-center mt-1" style="margin-top: 8px !important;">
+                                                        <button
+                                                        style="    font-size: 15px !important;
+                                                        color: #2a3b8f !important;
+                                                        text-decoration: none !important;
+                                                        font-weight: 600;padding: 0px !important;"
+                                                            class="btn btn-link text-primary d-flex align-items-center gap-2"
+                                                            (click)="openCouponModal(data, product)"
+                                                            [disabled]="isLoadingCoupon">
+                                                            <span style="font-size: 12px;">{{'shop.Clickheretoviewallcoupons'| translate}}</span>
+                                                            <span
+                                                                *ngIf="isLoadingCoupon"
+                                                                class="spinner-border spinner-border-sm"
+                                                                style="width: 14px; height: 14px;"
+                                                            ></span>
+                                                        </button>
+                                                    </div>
+                                                    
+                                                    <!-- Have a coupon code? Link -->
+                                                    
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </ng-container>
+                                </ng-container>
+                            </ng-container>
+                        </ng-container>
+
+
+
+                        <h6 style="padding-top: 0px;font-weight: 600;font-size: 15px;margin-top: 21px;">{{'shop.DeliveryTo' | translate}}</h6>
+
+                      
+
+                        <div *ngIf="defaultAddress" (click)="openAddressModal()" class="border rounded p-3 mb-2" style="
+                       
+                        font-size: 13px;padding: 10px 12px !important; cursor: pointer;border-radius: 16px !important; border: 0.5px solid #cbcbcb87 !important;box-shadow: 0px 2px 12px 0px #0000001F !important;
+                      ">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <!-- <span style="font-size: 13px;font-weight: 600 !important;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="18" viewBox="0 0 17 18" fill="none">
+                                        <path d="M1.30078 6.6L8.50078 1L15.7008 6.6V15.4C15.7008 15.8243 15.5322 16.2313 15.2322 16.5314C14.9321 16.8314 14.5251 17 14.1008 17H2.90078C2.47643 17 2.06947 16.8314 1.76941 16.5314C1.46935 16.2313 1.30078 15.8243 1.30078 15.4V6.6Z" stroke="#2A3B8F" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M6.10156 17V9H10.9016V17" stroke="#2A3B8F" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>&nbsp;&nbsp; {{ defaultAddress.ADDRESS_LINE_1 }},{{ defaultAddress?.LANDMARK }}
+                                    {{ defaultAddress?.COUNTRY_NAME }},  {{ defaultAddress?.STATE_NAME }}, {{ defaultAddress.DISTRICT_NAME }}
+                                </span> -->
+                                <span
+  style="font-size: 13px; font-weight: 600 !important; cursor: pointer;"
+  [attr.data-bs-toggle]="fullAddress && fullAddress.length > maxCharLength ? 'tooltip' : null"
+  data-bs-placement="top"
+  [attr.title]="fullAddress && fullAddress.length > maxCharLength ? fullAddress : null"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="17" height="18" viewBox="0 0 17 18" fill="none">
+    <path d="M1.30078 6.6L8.50078 1L15.7008 6.6V15.4C15.7008 15.8243 15.5322 16.2313 15.2322 16.5314C14.9321 16.8314 14.5251 17 14.1008 17H2.90078C2.47643 17 2.06947 16.8314 1.76941 16.5314C1.46935 16.2313 1.30078 15.8243 1.30078 15.4V6.6Z" stroke="#2A3B8F" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6.10156 17V9H10.9016V17" stroke="#2A3B8F" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>&nbsp;&nbsp;
+
+  {{
+    fullAddress && fullAddress.length > maxCharLength
+      ? (fullAddress | slice: 0 : maxCharLength) + '...'
+      : fullAddress
+  }}
+</span>
+
+                                <span>
+                                <i class="bi bi-chevron-right" style="font-size: 16px;"></i>
+                                </span>
+                            </div>
+                            <p class="text-muted mb-0" style="padding-left: 29px; font-size: 12px !important">
+                                {{ defaultAddress.ADDRESS_LINE_2 }}, {{ defaultAddress.PINCODE }}
+                            </p>
+                        </div>
+
+
+                        <h6 style="padding-top: 0px;font-weight: 600;font-size: 15px;margin-top: 21px;">{{'shop.PaymentMode'| translate}}</h6>
+
+                        <div class="container mt-3" style="    padding: 11px 13px 1px 13px !important;border-radius: 16px !important; border: 0.5px solid #cbcbcb87 !important;box-shadow: 0px 2px 12px 0px #0000001F !important;" class="border rounded p-3">
+                            <div class="payment-card">
+  <div class="form-check">
+                                    <input style="cursor: pointer;" class="form-check-input" type="radio" id="online"
+                                        name="paymentMode" [(ngModel)]="selectedPaymentMethod" value="ONLINE">
+                                    <label style="font-size: 13px;" class="form-check-label" for="online">{{'shop.OnlinePayment'| translate}}</label>
+                                </div>
+                                <div class="form-check" style="margin-bottom: 12px !important;">
+                                    <input style="cursor: pointer;" class="form-check-input" type="radio" id="cod"
+                                        name="paymentMode" [(ngModel)]="selectedPaymentMethod" value="COD">
+                                    <label style="font-size: 13px;" class="form-check-label" for="cod"> {{'shop.CashOnDelivery'| translate}}</label>
+                                </div>
+
+                              
+
+
+                            </div>
+                        </div>
+
+
+                        <button class="w-100 mt-3"
+                            style="background-color:#3170DE;border-radius: 5px;font-size: 14px; border-color: #3170DE; height: 35px; color: white;    margin-top: 20px !important;"
+                            (click)="proceedToPay()" [disabled]="isLoading">
+                            <ng-container *ngIf="isLoading; else buttonText">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Processing...
+                            </ng-container>
+                            <ng-template #buttonText>
+                              <span *ngIf="selectedPaymentMethod==='COD' else elsecodblock;"> Place Order </span> 
+                               <ng-template #elsecodblock>{{'shop.ProceedToPay'| translate}} ₹{{ getFinalAmount() | number:'1.0-2' }}</ng-template>
+                            </ng-template>
+                        </button>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div
+  class="modal fade"
+  id="couponModal"
+  tabindex="-1"
+  aria-labelledby="couponModalLabel"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-2">
+      <!-- Modal Header -->
+      <!-- Modal Header -->
+      <div
+        class="modal-header border-0 py-2 px-3 flex-column align-items-stretch"
+        *ngIf="!newcoupons"
+        style="background-color: #f8f9fa; border-radius: 6px"
+      >
+        <!-- Top Row: Back + Close -->
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <!-- Back Button -->
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            (click)="closeCouponModal()"
+          ></button>
+
+          <!-- Close Button -->
+        </div>
+
+        <!-- Bottom Row: Search Input -->
+        <div class="d-flex align-items-center">
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            *ngIf="couponcount > 0"
+            [placeholder]="
+              'order_review.coupon_modal.search_placeholder' | translate
+            "
+            [(ngModel)]="searchQuery"
+            style="font-size: 13px; flex: 1"
+          />
+        </div>
+      </div>
+
+      <div
+        class="border-0 p-3"
+        *ngIf="newcoupons"
+        style="background-color: #f8f9fa; border-radius: 6px"
+      >
+        <!-- Header Row -->
+        <div
+          class="d-flex align-items-center justify-content-between mb-2"
+          style="border-bottom: 1px solid #eaeaea; padding-bottom: 4px"
+        >
+          <!-- Back Button -->
+          <button
+            type="button"
+            class="btn btn-sm d-flex align-items-center"
+            (click)="goBackFromCoupon()"
+            style="font-size: 13px"
+          >
+            ←
+          </button>
+          <span style="margin-left: 10px">Coupon Code</span>
+          <!-- Close Button -->
+          <button
+            type="button"
+            class="btn-close"
+            (click)="goBackFromCoupon()"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <!-- Input Row -->
+        <div class="d-flex align-items-center justify-content-between">
+          <input
+            type="text"
+            class="form-control form-control-sm me-2"
+            placeholder="Enter your coupon code"
+            [(ngModel)]="searchQuery"
+            name="couponCode"
+            pattern="^[A-Za-z0-9]+$"
+            #couponCode="ngModel"
+            required
+            style="font-size: 13px; width: 70%"
+          />
+
+          <button
+            *ngIf="couponcount > 0 && !newcoupons"
+            class="btn btn-sm btn-primary"
+            (click)="applySelectedCoupon()"
+            style="font-size: 13px; min-width: 60px"
+            [disabled]="!couponCode.valid"
+          >
+            Apply
+          </button>
+          <button
+            *ngIf="newcoupons"
+            class="btn btn-sm btn-primary"
+            (click)="newcouponadd(couponCode.value)"
+            style="font-size: 13px; min-width: 60px"
+            [disabled]="!couponCode.valid"
+          >
+            Apply
+          </button>
+        </div>
+
+        <!-- Optional small validation message -->
+        <small
+          class="text-danger mt-1 d-block"
+          *ngIf="couponCode.invalid && couponCode.dirty"
+        >
+          Only letters and numbers are allowed.
+        </small>
+      </div>
+
+      <span *ngIf="!newcoupons">
+        <a
+          style="
+            margin-left: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #034a95;
+          "
+          (click)="addCoupon()"
+        >
+          Have a coupon code?
+        </a></span
+      >
+
+      <!-- Modal Body -->
+      <div
+        style="cursor: pointer; padding: 8px 8px 0px !important"
+        class="modal-body text-center p-3"
+      >
+        <ng-container
+          *ngIf="filteredCoupons.length > 0 && !newcoupons; else noCoupons"
+        >
+          <div
+            *ngFor="let coupon of filteredCoupons"
+            class="coupon-item d-flex justify-content-between align-items-center p-2 border-bottom small"
+            (click)="selectCoupon(coupon)"
+            [class.selected]="selectedCoupon?.COUPON_ID === coupon.COUPON_ID"
+            style="
+              border-radius: 10px;
+              margin-bottom: 12px;
+              background-color: #f8f9fa;
+              border: 0.5px solid #cbcbcb;
+              transition: transform 0.3s ease-in-out;
+            "
+            onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.15)';"
+            onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';"
+          >
+            <div class="p-3" style="padding: 3px !important">
+              <!-- Coupon Details -->
+              <div class="text-start" style="line-height: 25px">
+                <h6
+                  class="m-0 fw-bold text-dark"
+                  style="
+                    font-weight: 600;
+                    font-size: 14px;
+                    color: black !important;
+                  "
+                >
+                  {{
+                    coupon?.COUPON_NAME ? coupon?.COUPON_NAME : "Coupon Applied"
+                  }}
+                </h6>
+                <span
+                  class="m-0 text-muted"
+                  style="margin-top: 0px !important; font-size: 12px"
+                  >Code : {{ coupon.COUPON_CODE }}</span
+                >
+                &nbsp; &nbsp;
+                <span
+                  *ngIf="coupon.COUPON_VALUE_TYPE == 'P'"
+                  style="
+                    background-color: #ebd1d1;
+                    border-radius: 5px;
+                    padding: 4px;
+                    font-size: 10px !important;
+                    border: 1px solid #d3a5a5;
+                  "
+                >
+                  {{ coupon.COUPON_VALUE }}%
+                  {{ "order_review.coupons.discount" | translate }}
+                </span>
+                <span
+                  *ngIf="coupon.COUPON_VALUE_TYPE == 'A'"
+                  style="
+                    background-color: #ebd1d1;
+                    border-radius: 5px;
+                    padding: 4px;
+                    border: 1px solid #d3a5a5;
+                    font-size: 10px !important;
+                  "
+                >
+                  &#8377;{{ coupon.COUPON_VALUE | number }}
+                  {{ "order_review.coupons.discount" | translate }}
+                </span>
+              </div>
+            </div>
+
+            <div
+              style="cursor: pointer"
+              class="d-flex align-items-center gap-2"
+            >
+              <!-- Selection Indicator -->
+              <i
+                class="bi"
+                [ngClass]="
+                  selectedCoupon?.COUPON_ID === coupon.COUPON_ID
+                    ? 'bi-check-circle-fill text-success'
+                    : 'bi-circle'
+                "
+              ></i>
+
+              <!-- Delete Icon -->
+              <!-- <button class="btn btn-sm text-danger" (click)="removeCoupon($event, coupon)">
+                <i class="bi bi-trash"></i>
+              </button> -->
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- No Coupons Available -->
+        <ng-template #noCoupons>
+          <div class="no-coupons text-center" *ngIf="!newcoupons">
+            <!-- <img
+              src="assets/img/hand-drawn-no-data-concept.png"
+              style="width: 60px; height: 40px"
+              alt="No Coupons"
+              class="no-coupon-img mb-3"
+            /> -->
+            <img
+              src="assets/img/hand-drawn-no-data-concept.png"
+              style="width: 60px; height: 40px"
+              alt="No Coupons"
+              class="no-coupon-img mb-3"
+            />
+            <h6 class="fw-bold">
+              {{ "order_review.coupon_modal.no_coupons" | translate }}
+            </h6>
+            <p class="text-muted small">
+              {{ "order_review.coupons.no_coupons_message" | translate }}
+            </p>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Modal Footer with Apply Button for Available Coupons -->
+      <div class="modal-footer border-0 p-3" *ngIf="filteredCoupons.length > 0 && !newcoupons">
+        <button
+          class="btn btn-primary w-100"
+          (click)="applySelectedCoupon()"
+          [disabled]="!selectedCoupon"
+          style="padding: 10px; font-size: 14px; font-weight: 600"
+        >
+          {{ "order_review.coupon_modal.apply" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .custom-shadow {
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+  }
+
+  .coupon-link:hover {
+    text-decoration: underline !important;
+  }
+
+  .coupon-link:not(:hover) {
+    text-decoration: none;
+  }
+</style>
+
+
+
+<div class="modal fade" id="exampleModalCenter" #exampleModalCenter tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header border-0" style="display: flex; justify-content: space-between">
+                <h5 class="modal-title fw-bold">Select Address</h5>
+                <button type="button" class="close" (click)="modalInstance.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- Modal Body -->
+            <div *ngIf="loadService" class="container my-4"
+                style=" display: flex; justify-content: center; align-items: center; width: 10vw; height: 10vw;">
+                <div *ngIf="loadService" class="spinner-border text-secondary" role="status">
+                    <span class="sr-only"></span>
+                </div>
+            </div>
+
+            <div *ngIf="!loadService" class="modal-body">
+                <div *ngFor="let address of CustomerDetails" class="border rounded p-2 mb-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <!-- <input type="radio" name="address" [value]="address.ID" style="cursor: pointer;"
+                                [checked]="address.ID === defaultAddress?.ID" (click)="passid(address.ID)" /> -->
+
+                            <input type="radio" name="address11" [value]="address.ID" [(ngModel)]="selectedAddress" />
+
+                            <div class="ms-2" style="font-size: small; white-space: pre-line">
+                                <span class="fw-bold">{{ address.NAME }}</span>
+                                <p class="text-muted mb-0">{{ address.ADDRESS_LINE_1 }}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm text-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer d-flex flex-column">
+                <button type="button" class="w-100" (click)="modalInstance.hide()" aria-label="Close"
+                    (click)="confirmAddress()">
+                    Select
+                </button>
+                <button type="button"  class="btn btn-outline-dark w-100 mt-2" (click)="AddNewAddress()">
+                    Add Address
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="addressModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg d-flex justify-content-center">
+        <div class="modal-content" style="max-width: 80%">
+            <div class="modal-header" style="padding: 11px 13px;">
+                <h5 class="modal-title fw-bold" style="font-size: 15px;">Select Address</h5>
+                <button type="button" style="font-size: 12px;" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body" style="padding-bottom: 8px;padding-top: 0px;">
+                <div *ngFor="let address of addresses" [ngStyle]="((address.PINCODE_FOR === 'B' || address.PINCODE_FOR === 'I') && address.TERRITORY_ID == defaultAddress.TERRITORY_ID) 
+                ? {} 
+                : { 'display': 'none' }"  class="border rounded p-2 mb-2" style="border: none !important;border-radius: 0px !important;border-bottom: 1px solid #CBCBCB !important;    padding-left: 0px !important;padding-right: 0pc !important;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <!-- Default Address Preselected -->
+                            <!-- <label for="">{{address.ID}} {{defaultAddress?.ID}}</label> -->
+                            <!-- <input type="radio" name="address" [value]="address.ID"
+                  [checked]="address.ID == defaultAddress?.ID" /> -->
+                            <input type="radio" name="address" [value]="address.ID" [(ngModel)]="selectedAddress" />
+
+                            <div class="ms-2" style="font-size: small; white-space: pre-line">
+                                <span class="fw-bold">{{ address.NAME }}</span>
+                                <p class="text-muted mb-0" style="font-size: 12px !important;">
+                                                      {{ address?.ADDRESS_LINE_1 }} {{address?.ADDRESS_LINE_2}} {{address?.LANDMARK}},{{ address?.COUNTRY_NAME }} ,{{ address?.STATE_NAME }}, {{ address?.DISTRICT_NAME }} ,{{address?.PINCODE}}
+
+                                </p>
+                            </div>
+                        </div>
+                        <div *ngIf="customertype == 'I'" >
+                            
+                            <button class="btn btn-sm" (click)="editAddress(address)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 18 18" fill="none">
+<path d="M14.3962 0.75V0.750977C14.7707 0.750051 15.1419 0.822538 15.488 0.96582L15.7409 1.08594C15.9878 1.21808 16.2145 1.38576 16.4128 1.58496H16.4118C16.9474 2.1198 17.2488 2.84564 17.2497 3.60254L17.236 3.88379C17.172 4.53733 16.8843 5.15192 16.4167 5.62109V5.62207L5.00458 17.0332C4.9704 17.0674 4.93323 17.0982 4.89325 17.125L4.76532 17.1934C4.72057 17.2119 4.67393 17.2259 4.62665 17.2354L4.48212 17.25H1.54852C1.49995 17.25 1.45141 17.2457 1.40399 17.2363L1.26532 17.1943C1.22047 17.1758 1.17756 17.1528 1.13739 17.126L1.02606 17.0332C0.991738 16.9989 0.960122 16.962 0.933289 16.9219L0.864929 16.7939C0.827811 16.7043 0.809209 16.6078 0.809265 16.5107V13.5771L0.822937 13.4336C0.850838 13.2922 0.920107 13.1605 1.02313 13.0566H1.02411L12.3688 1.5957L12.5759 1.40527C12.7919 1.22558 13.0344 1.07864 13.2946 0.969727L13.5583 0.874023C13.8271 0.791678 14.1072 0.749958 14.3893 0.75H14.3962ZM2.2868 13.8809V15.7725H4.17645L13.7067 6.24219L11.7673 4.30273L2.2868 13.8809ZM14.3913 2.22754C14.2556 2.22749 14.1211 2.24846 13.9919 2.28809L13.8649 2.33398C13.6983 2.4038 13.5472 2.50598 13.4206 2.63477H13.4196L12.8073 3.25293L14.7507 5.19629L15.3718 4.57617C15.6286 4.31834 15.7731 3.96943 15.7731 3.60547C15.7731 3.24132 15.6288 2.89169 15.3718 2.63379L15.3659 2.62891L15.362 2.62402C15.243 2.49025 15.0947 2.38499 14.9294 2.31641C14.8052 2.26492 14.6733 2.23485 14.5397 2.22754H14.3913Z" fill="#2A3B8F" stroke="#2A3B8F" stroke-width="0.5"/>
+</svg>
+                                <!-- Edit icon -->
+                            </button>
+                            <button class="btn btn-sm text-danger" *ngIf="!address.IS_DEFAULT"
+                                (click)="deleteAddress(address.ID)">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer d-flex flex-column" style="border-top: none !important;padding-top: 0px;">
+                <button type="button" class="w-100"  (click)="confirmAddress()" style="background-color: #3170DE;
+                border-radius: 5px;
+                border-color: #3170DE;
+                height: 35px;font-size: 14px;
+                color: white;">
+                    Select 
+                </button>
+                <!-- <button  *ngIf="customertype == 'I'"  type="button" class="w-100 mt-2" style="border-radius: 5px;" (click)="addNewAddress()">
+                    Add Address
+                </button> -->
+            </div>
+        </div>
+    </div>
+</div>

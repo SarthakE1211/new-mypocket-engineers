@@ -1,0 +1,126 @@
+.about-container {
+  max-width: 600px;
+  margin: auto;
+  //   padding: 20px;
+
+  .mobile-menu-header {
+    padding: 12px;
+    background-color: #f8f8f8;
+ 
+    .close-menu-btn {
+      border: none;
+      background: none;
+      padding: 0;
+      display: flex;
+      align-items: center;
+    }
+  }
+ 
+  .accordion-button::after {
+    display: none !important; /* Hides Bootstrap's default arrow icon */
+  }
+  
+  
+  .mobile-menu-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+    border-bottom: 1px solid #eaeaea;
+  }
+ 
+  // Back button styling
+  .close-menu-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      stroke: #000;
+    }
+  }
+
+  // Accordion styling
+  .accordion-item {
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    .accordion-button {
+      font-size: 16px;
+      font-weight: 500;
+      padding: 15px;
+      border-radius: 12px;
+      background: #f8f9fa;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .accordion-button:not(.collapsed) {
+      background-color: #e9ecef;
+    }
+
+    .accordion-body {
+      font-size: 14px;
+      padding: 15px;
+      color: #444;
+    }
+  }
+}
+
+// Responsive Styles
+@media (max-width: 768px) {
+  .about-container {
+    // padding: 15px;
+  }
+  .accordion-button {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-container {
+    // padding: 10px;
+  }
+  .mobile-menu-header {
+    font-size: 16px;
+  }
+}
+.orders-payments {
+  margin: 11px;
+  h3 {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+
+  ul {
+    list-style-type: disc;
+    padding-left: 20px;
+
+    li {
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+  }
+
+  strong {
+    color: #333;
+    font-size: 15px;
+  }
+}
+
+.headtitleclass{
+      font-weight: 700 !important;
+    font-size: 15px !important;
+    margin-bottom: 10px !important;
+}

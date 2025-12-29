@@ -1,0 +1,382 @@
+<section class="service-section py-0">
+  <div class="container pt-4 pb-4">
+    <!-- <h2 class="fw-bold">All Brands</h2> -->
+    <div
+      class="d-flex align-items-center justify-content-between"
+      style="padding-left: 10px"
+    >
+   
+    <div class="d-flex align-items-center">
+  <span
+    class="me-2"
+    style="
+      height: 24px;
+      width: 4px;
+      background-color: #f26522;
+      display: inline-block;
+    "
+  ></span>
+  <h2 class="fw-bold m-0 responsive-text">Refurbished Products</h2>
+</div>
+
+
+
+   <div class="dropdown" style="width: 300px; position: relative">
+  <button
+    class="btn btn-outline-secondary dropdown-toggle w-100 d-flex justify-content-between align-items-center"
+    type="button"
+    (click)="toggleDropdown1()"
+  >
+    {{
+      selectedOption1 === "All"
+        ? "All Categories"
+        : getCategoryNameById(selectedOption1)
+    }}
+  </button>
+
+  <ul
+    class="dropdown-menu"
+    *ngIf="isDropdownOpen1"
+    style="
+      display: block;
+      max-height: 200px;
+      overflow-y: auto;
+      right: 0;
+      left: auto;
+      position: absolute;
+      z-index: 1050;
+      background-color: white;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      border: 1px solid #ddd;
+    "
+  >
+    <!-- All Option -->
+    <li>
+      <a
+        class="dropdown-item"
+        [class.active]="selectedOption1 === 'All'"
+        (click)="selectFilter2('All'); toggleDropdown1()"
+        style="background-color: white"
+      >
+        All Categories
+      </a>
+    </li>
+
+    <!-- Category Options -->
+    <li *ngFor="let cat of InventoryCategory">
+      <a
+        class="dropdown-item"
+        [class.active]="selectedOption1 === cat.ID"
+        (click)="selectFilter2(cat.ID); toggleDropdown1()"
+        style="background-color: white"
+      >
+        {{ cat.CATEGORY_NAME }}
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+      
+    </div>
+
+    <div
+      class="container team d-flex justify-content-center align-items-center demo12"
+    >
+      <!-- <div *ngIf="loadService" class="spinner-border text-secondary" role="status">
+                    <span class="sr-only"></span>
+                </div> -->
+
+      <!-- <div class="d-flex align-items-center gap-2">
+  
+
+
+        <button
+          type="button"
+          class="btn-close text-reset"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div> -->
+    </div>
+
+<ng-container *ngIf="!loadServiceforinventory">
+  <div *ngIf="filteredInventoryData.length > 0; else noDataTemplate1" style="padding: 0px; padding-top: 20px">
+
+      <!-- <div
+  *ngIf="filteredInventoryData.length > 0; else noDataTemplate1"
+  style="padding: 0px"
+  class="offcanvas-body"
+> -->
+      <div
+        class="container team d-flex justify-content-center align-items-center demo12"
+      >
+        <div
+          *ngIf="!loadServiceforinventory"
+          class="row gx-5 justify-content-left"
+          style="width: 100vw"
+        >
+          <div
+            class="col-md-4 col-sm-6 mb-4"
+            *ngFor="
+              let product of filteredInventoryData
+                | slice : 0 : (showAll ? filteredInventoryData.length : 9)
+            "
+          >
+            <div class="product-card">
+              <div
+                style="cursor: pointer"
+                [routerLink]=" ['/shop/buy_now', product.ID]"
+                (click)=" InventoryId(product)"
+                [ngStyle]="{
+                  'background-image':
+                    'url(' +
+                    (product.INVENTORY_IMAGE
+                      ? IMAGEuRL + 'InventoryImages/' + product.INVENTORY_IMAGE
+                      : 'assets/img/services/no-image.png') +
+                    ')',
+                  'background-size': '100% 100%',
+                  'background-position': 'center',
+                  'background-repeat': 'no-repeat',
+
+                  height: '240px',
+                  'border-radius': '8px',
+                  'background-color': '#ffffff',
+                  border: 'none'
+                }"
+              ></div>
+
+              <!-- </div> -->
+              <!-- <h5 class="product-title">
+                                    {{product.VARIANT_NAME}}
+                                </h5> -->
+
+              <span
+                class="product-title"
+                style="
+                  font-size: 14px;
+                  padding-top: 7px;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  max-width: 100%;
+                  display: block;
+                "
+                [attr.title]="product.VARIANT_NAME || 'N/A'"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+              >
+                {{ product.VARIANT_NAME || "N/A" }}
+              </span>
+              <span
+                class="product-title"
+                style="
+                  font-size: 12px;
+                  padding-top: 0px;
+                  padding-bottom: 5px;
+                  color: #4d4d4d;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  max-width: 100%;
+                  display: block;
+                "
+                [attr.title]="product.INVENTORY_CATEGORY_NAME || 'N/A'"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+              >
+                {{ product.INVENTORY_CATEGORY_NAME || "N/A" }}
+              </span>
+
+              <div class="d-flex justify-content-between">
+                <div class="d-flex gap-2 mb-2">
+                  <div
+                    *ngIf="product.UNIT_STOCK != 0"
+                    style="color: #9b9d9f; font-size: 12px"
+                  >
+                    {{ product.UNIT_STOCK }}
+                    {{ "shop.leftInStock" | translate }}
+                  </div>
+                  <div
+                    style="font-size: 12px"
+                    *ngIf="product.UNIT_STOCK == 0"
+                    class="text-danger"
+                  >
+                    {{ "shop.outofstock" | translate }}
+                  </div>
+                </div>
+                <div
+                  *ngIf="product.QUANTITY_PER_UNIT == 1"
+                  class="d-flex gap-1 text-warning"
+                ></div>
+
+                <div
+                  *ngIf="product.QUANTITY_PER_UNIT != 1"
+                  class="d-flex gap-1 text-warning"
+                  style="font-size: 12px; color: #f36631"
+                >
+                  ( Pack of {{ product.QUANTITY_PER_UNIT }} )
+                </div>
+              </div>
+
+              <hr style="margin: 0px 0px 7px 0px" />
+              <div class="d-flex justify-content-between">
+                <div class="d-flex gap-2 mb-2">
+                  <span
+                    class="product-price"
+                    style="font-weight: bold; color: #3170de; font-size: 14px"
+                    *ngIf="product.DISCOUNT_ALLOWED == 1"
+                  >
+                    ₹{{ product.DISCOUNTED_PRICE | number }}
+                  </span>
+                  <span
+                    *ngIf="product.DISCOUNT_ALLOWED == 0"
+                    style="font-weight: bold; color: #3170de; font-size: 14px"
+                  >
+                    ₹{{ product.SELLING_PRICE | number }}
+                  </span>
+                </div>
+
+                <div class="d-flex gap-2">
+                  <span
+                    *ngIf="product.DISCOUNT_ALLOWED == 1"
+                    class="product-old-price"
+                    style="text-decoration: line-through; font-size: 14px"
+                  >
+                    ₹{{ product.SELLING_PRICE | number }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="d-flex gap-2">
+                <button
+                  *ngIf="product.IS_ALREADY_IN_CART == 1"
+                  [disabled]="product.UNIT_STOCK == 0"
+                  class="w-50"
+                  style="
+                    border-radius: 5px;
+                    color: #3170de;
+                    border: 1.4px solid;
+                  "
+                  routerLink="/shop/cart"
+                >
+                  {{ "shop.gotocart" | translate }}
+                </button>
+
+                            <!-- Add to Cart -->
+<button
+  *ngIf="product.IS_ALREADY_IN_CART == 0"
+  [disabled]="product.UNIT_STOCK == 0 || product.loadingBuyNowcart"
+  class="w-50"
+  style="
+    background-color: white;
+    border-radius: 5px;
+    color: #3170de;
+    border: 1.4px solid;
+  "
+  (click)="
+    (teritory_id !== 0 && teritory_id !== undefined && teritory_id !== null)
+      ? addToCart(product, '')
+      : openSuggestionModal()
+  "
+>
+  <span
+    *ngIf="product.loadingBuyNowcart"
+    class="spinner-border spinner-border-sm"
+  ></span>
+  <span>&nbsp;{{ 'shop.AddToCart' | translate }}</span>
+</button>
+
+<!-- Buy Now -->
+<button
+  class="btn btn-buy w-50"
+  [disabled]="product.UNIT_STOCK == 0 || product.loadingBuyNow"
+  (click)="
+    (teritory_id !== 0 && teritory_id !== undefined && teritory_id !== null)
+      ? handleBuyNow(product)
+      : openSuggestionModal()
+  "
+>
+  <span
+    *ngIf="product.loadingBuyNow"
+    class="spinner-border spinner-border-sm"
+  ></span>
+  <span>&nbsp;{{ 'shop.buyNow' | translate }}</span>
+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center mt-3">
+            <button
+              *ngIf="filteredInventoryData.length > 9 && !showAll"
+              class="btn btn-primary"
+              (click)="loadMore()"
+              [disabled]="loading"
+              style="background: #3170de"
+            >
+              <span
+                *ngIf="loading"
+                class="spinner-border spinner-border-sm"
+              ></span>
+              {{ loading ? "Loading..." : "Load More" }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+     
+    </div>
+     <ng-template #noDataTemplate1>
+        <div class="text-center p-3">
+          <img
+            src="assets/img/hand-drawn-no-data-concept.png"
+            alt="No Data Available"
+            class="img-fluid"
+            style="max-width: 350px"
+          />
+          <p class="text-muted mt-2">
+            <b>{{ "shop.NoDataAvailable" | translate }}</b>
+          </p>
+        </div>
+      </ng-template>
+
+    </ng-container>
+  </div>
+</section>
+
+ <div
+  class="modal fade"
+  id="suggestionModal"
+  tabindex="-1"
+  aria-labelledby="suggestionModalLabel"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center p-4 position-relative suggestion-modal-content">
+      <!-- Custom Close Icon Button -->
+      <button
+        type="button"
+        class="btn-close position-absolute"
+        style="top: 10px; right: 10px"
+        (click)="closeSuggestionModal()"
+        aria-label="Close"
+      ></button>
+
+      <div class="modal-body mt-2 suggestion-modal-body">
+        <h5
+          class="modal-title mb-3"
+          id="suggestionModalLabel"
+          style="font-size: 16px; font-weight: 600"
+        >
+        Product Not Deliverable
+        </h5>
+          <p class="text-muted mb-0" style="font-size: 14px;">
+         This product can’t be delivered to your location. Please select another location.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

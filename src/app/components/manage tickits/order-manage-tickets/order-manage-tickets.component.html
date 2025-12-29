@@ -1,0 +1,204 @@
+<div *ngIf="DrawerVisible">
+    <div class="mobile-menu-header offcanvas-header">
+      <div class="header-title">Create Support Ticket</div>
+      <button class="close-menu-btn" (click)="close()">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  
+    <div class="mobile-menu-content offcanvas-body">
+      <div class="custom-ticket-container" style="padding: 0px 16px 0px 16px !important;">
+        <div class="spinner-container" *ngIf="isSpinning">
+          <div class="spinner-border text-primary" role="status"></div>
+        </div>
+  
+        <div>
+          <div class="row">
+            <div class="col-1" *ngIf="index > 0">
+              <i class="bi bi-caret-left-fill" (click)="prevData()"></i>
+            </div>
+  
+            <div
+              class="col-11"
+              *ngIf="ticketQuestion['VALUE']"
+              style="margin-bottom: 5px;padding-left: 0px;"
+            >
+              <h6>{{ ticketQuestion["VALUE"] }}</h6>
+            </div>
+          </div>
+  
+          <div
+            class="row custom-ticket-group"
+            *ngFor="let group of ticketGroups"
+            (click)="nextData(group)"
+          >
+            <div class="col-10" style="font-size: 13px;">{{ group.VALUE }}</div>
+            <div class="col-2 text-center" style="text-align: end !important;">
+              <i
+                class="bi bi-arrow-right-circle"
+                style="color: #2A3B8F; font-size: 14px"
+              ></i>
+            </div>
+          </div>
+        </div>
+  
+        <div *ngIf="isLast">
+          <h3 class="custom-faq-heading">
+            We found some similar issues before this. Please read FAQs before
+            creating a support ticket.
+          </h3>
+  
+          <div class="faq-container" style="padding: 0px !important;background-color: transparent !important;">
+            <!-- <div class="faq-title">Frequently Asked Questions</div> -->
+          
+            <div *ngIf="faqs.length > 0" class="faq-list">
+              <div
+                *ngFor="let panel of faqs; let i = index"
+                class="faq-item"
+                [ngClass]="{ open: activePanelIndex === i }"
+              >
+                <button class="faq-question" (click)="togglePanel(i)" style="font-weight: 400;font-size: 14px;"> 
+                  <span>{{ panel.QUESTION }}</span>
+                  <svg
+                    [ngClass]="{ rotate: activePanelIndex === i }"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+          
+                <div class="faq-answer" *ngIf="activePanelIndex === i">
+                  <hr style="margin-top: 5px !important;margin-bottom: 5px !important;">
+                  <p style="font-size: 13px;margin-bottom: 0px;">{{ panel.ANSWER }}</p>
+                </div>
+              </div>
+            </div>
+          
+            <div *ngIf="faqs.length === 0" class="no-data-container">
+              <img
+                src="assets/img/no-data-concept.jpg"
+                alt="No Data Available"
+                class="no-data-img"
+              />
+              <!-- <div class="no-data-text">No FAQs available.</div> -->
+            </div>
+          </div>
+        </div>
+  
+        <div
+          class="text-center custom-no-data"
+          *ngIf="!isLast && nodata && !ticketQuestion['VALUE']"
+        >
+          <img
+            src="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+            alt="Data Not Found"
+            class="no-data-image"
+          />
+          <span>Data Not Found</span>
+        </div>
+  
+        
+      </div>
+    </div>
+
+    <div class="footer offcanvas-footer" *ngIf="isLast">
+      <div *ngIf="isAddTicket">
+        <div class="text-center"><b>Still Not Solved?</b></div>
+        <div class="text-center">
+          <button
+            class="btn btn-secondary me-2"
+            [disabled]="myTicketLoading" style="font-size: 12px;"
+            (click)="backToPrevious()"
+          >
+            Back
+          </button>
+
+          <button
+            class="btn btn-primary"
+            [disabled]="myTicketLoading" style="font-size: 12px;"
+            (click)="openTicketWindow()"
+          >
+            Add Support Ticket
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="!isAddTicket">
+        <textarea
+          class="form-control custom-textarea"
+          [(ngModel)]="DESCRIPTION"
+          placeholder="Describe your problem" maxlength="1000"
+        ></textarea>
+
+        <div class="d-flex align-items-center mt-3 attachment-info">
+          <label>Any Attachment? &nbsp;&nbsp;</label>
+          <div class="info-icon-container">
+            <div class="info-icon">i</div>
+            <div class="tooltip-message">
+              Please select an image (PNG, JPG, JPEG).
+            </div>
+          </div>
+
+          <button
+            class="btn btn-primary btn-sm me-2"
+            (click)="file.click()"
+            style="margin-left: 8px"
+          >
+            Upload
+          </button>
+          <i
+            *ngIf="fileDataLOGO_URL"
+            class="bi bi-eye-fill text-primary me-2"
+            (click)="viewFile()"
+            style="cursor: pointer"
+          ></i>
+          <i
+            class="bi bi-trash-fill text-danger"
+            (click)="clearImg()"
+            *ngIf="fileDataLOGO_URL"
+          ></i>
+
+          <input
+            type="file"
+            #file
+            accept="image/png, image/jpeg, image/jpg"
+            style="display: none"
+            (change)="onFileSelectedLOGO_URL($event)"
+          />
+        </div>
+
+        <div class="text-end mt-3">
+          <button class="btn btn-secondary me-2" (click)="cancel()">
+            Cancel
+          </button>
+          <button class="btn btn-primary" (click)="send()">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- <div *ngIf="isDrawerVisible" class="drawer">
+    <app-show-tickets></app-show-tickets>
+  </div> -->
+  

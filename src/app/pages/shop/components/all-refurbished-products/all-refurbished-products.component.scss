@@ -1,0 +1,205 @@
+.section {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+
+.custom-offcanvas-width {
+    width: 617px !important;
+    /* Set the offcanvas width */
+}
+
+/* Product Card Styling */
+.product-card {
+    // border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    transition: transform 0.3s;
+    background: #fff;
+    padding: 15px;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-title {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: #333;
+    transition: color 0.3s;
+}
+
+.product-title:hover {
+    color: #3170DE;
+}
+
+/* Image Styling */
+.product-image img {
+    border-radius: 8px;
+    object-fit: cover;
+    transition: opacity 0.3s;
+}
+
+.product-image img:hover {
+    opacity: 0.9;
+}
+
+.laptop-card {
+    transition: all 0.3s ease-in-out !important;
+    border-radius: 5px !important;
+    /* Optional for smooth edges */
+}
+
+.laptop-card:hover {
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25) !important;
+    /* Stronger and more spread */
+    transform: translateY(-2px) !important;
+    /* Slightly more lift effect */
+}
+
+.btn-buy {
+    background: #3170DE;
+    color: white;
+}
+
+// .btn-buy:hover {
+//   background: #333;
+// }
+
+
+
+
+
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+  width: 200px;
+}
+
+.dropdown-toggle {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #666;
+  box-shadow: none;
+}
+
+.filter-icon {
+  color: #1d4ed8; /* Blue color */
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+  padding: 5px 0;
+  z-index: 1000;
+  display: block;
+}
+
+.dropdown-item {
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  display: block;
+}
+
+.dropdown-item:hover {
+  background: #f0f0f0;
+}
+
+.dropdown-item.active {
+  font-weight: bold;
+  color: #3170DE;
+}
+
+
+
+::ng-deep .dropdown-toggle::after {
+  display: none; /* Hide default dropdown arrow */
+}
+
+::ng-deep .dropdown-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+::ng-deep .dropdown-toggle .bi-funnel {
+  font-size: 16px; /* Adjust size */
+  color: #1d4ed8;  /* Match blue color */
+}
+
+
+
+.responsive-text {
+    font-size: 15px !important;
+    /* Default size for small screens */
+}
+
+@media (min-width: 576px) {
+
+    /* Small devices (sm) */
+    .responsive-text {
+        font-size: 18px !important;
+    }
+}
+
+@media (min-width: 768px) {
+
+    /* Medium devices (md) */
+    .responsive-text {
+        font-size: 22px !important;
+    }
+}
+
+@media (min-width: 992px) {
+
+    /* Large devices (lg) */
+    .responsive-text {
+        font-size: 24px !important;
+    }
+}
+
+
+/* Responsive modal content */
+@media (max-width: 576px) {
+  .suggestion-modal-body h5 {
+    font-size: 16px !important;
+  }
+
+  .suggestion-modal-body p {
+    font-size: 14px !important;
+  }
+
+  .suggestion-modal-content {
+    padding: 20px 10px !important;
+  }
+}

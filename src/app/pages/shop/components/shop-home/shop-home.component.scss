@@ -1,0 +1,493 @@
+
+
+ 
+.container {
+  width: 100%;
+  max-width: 1286px; /* Default max-width */
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+ 
+/* For screens larger than 1440px */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1400px;
+  }
+}
+ 
+/* For screens larger than 1600px */
+@media (min-width: 1600px) {
+  .container {
+    max-width: 1500px;
+  }
+}
+ 
+/* For screens larger than 1920px (4K displays) */
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1700px;
+  }
+}
+ 
+/* For ultra-wide screens (e.g., 2560px and beyond) */
+@media (min-width: 2560px) {
+  .container {
+    max-width: 1900px;
+  }
+}
+ 
+ 
+.section
+{
+  padding: 10px;
+    display: flex
+;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+ 
+ 
+
+.custom-offcanvas-width {
+  width: 617px !important;
+  /* Set the offcanvas width */
+}
+
+/* Product Card Styling */
+.product-card {
+  // border: 1px solid #e1e1e1;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  transition: transform 0.3s;
+  background: #fff;
+  padding: 15px;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.product-title {
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #333;
+  transition: color 0.3s;
+}
+
+.product-title:hover {
+  color: #3170DE;
+}
+
+/* Image Styling */
+.product-image img {
+  border-radius: 8px;
+  object-fit: cover;
+  transition: opacity 0.3s;
+}
+
+.product-image img:hover {
+  opacity: 0.9;
+}
+
+.laptop-card {
+  transition: all 0.3s ease-in-out !important;
+  border-radius: 5px  !important; /* Optional for smooth edges */
+}
+
+.laptop-card:hover {
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25) !important; /* Stronger and more spread */
+  transform: translateY(-2px) !important; /* Slightly more lift effect */
+}
+
+.btn-buy {
+  background: #3170DE;
+  color: white;
+}
+
+// .btn-buy:hover {
+//   background: #333;
+// }
+
+//   filter css
+
+.filter-container {
+  position: relative;
+  display: inline-block;
+}
+
+.filter-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 200px;
+  /* Set button width */
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+// .dropdown-menu {
+//   position: absolute;
+//   top: 45px;
+//   left: 0;
+//   background: white;
+//   border: 1px solid #ddd;
+//   border-radius: 5px;
+//   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+//   width: 200px;
+//   /* Match filter button width */
+//   z-index: 1000;
+// }
+
+// .dropdown-item {
+//   padding: 10px;
+//   cursor: pointer;
+//   font-size: 14px;
+// }
+
+// .dropdown-item:hover {
+//   background-color: #f1f1f1;
+// }
+
+
+//   banner css
+
+
+.section-title {
+  text-align: center;
+  padding-bottom: 25px !important;
+  position: relative;
+}
+
+
+.disabled-link {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+
+
+// .offcanvas-body {
+//   max-height: 500px; /* यहां आप अपने हिसाब से ऊंचाई सेट कर सकते हैं */
+//   overflow-y: auto; /* Vertical Scrollbar को enable करने के लिए */
+//   padding: 0px;
+// }
+
+// /* Custom Scrollbar Styling (Optional) */
+// .offcanvas-body::-webkit-scrollbar {
+//   width: 8px; /* Scrollbar की चौड़ाई */
+// }
+
+// .offcanvas-body::-webkit-scrollbar-track {
+//   background: #f1f1f1; /* Scrollbar का बैकग्राउंड */
+//   border-radius: 10px;
+// }
+
+// .offcanvas-body::-webkit-scrollbar-thumb {
+//   background: #3170DE; /* Scrollbar का रंग */
+//   border-radius: 10px;
+// }
+
+// .offcanvas-body::-webkit-scrollbar-thumb:hover {
+//   background: #2458b3; /* Hover पर Scrollbar का रंग */
+// }
+
+
+
+/* Custom Offcanvas Styling */
+.custom-offcanvas-width {
+  width: 617px !important;
+  /* Set the offcanvas width */
+  overflow-x: hidden;
+  /* Prevent horizontal scrolling */
+  background: #ffffff;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.offcanvas-body {
+  overflow-x: hidden;
+  /* Ensure no horizontal scrolling inside the offcanvas */
+  padding-right: 10px;
+  /* Adjust padding to prevent content overflow */
+  max-width: 100%;
+  /* Ensure content does not exceed the offcanvas width */
+}
+
+/* Header Styling */
+.offcanvas-header {
+  background: linear-gradient(135deg, #3170DE, #5A9BFF);
+  color: white;
+  border-bottom: 1px solid #ddd;
+}
+
+.offcanvas-header h5 {
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+
+
+.loader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // background-color: rgba(255, 255, 255, 0.7); /* Optional: Adds a slight overlay */
+  // z-index: 1050; /* Ensures it stays on top */
+}
+
+
+// .box {
+//   width: 200px;
+//   height: 180px;
+//   background-color: #fff;
+//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* X, Y, Blur, Spread, Color */
+//   border-radius: 12px; /* Optional: Rounded corners */
+// }
+
+
+// element.style {
+//   width: 3835px;
+//   transform: translate3d(-1653px, 0px, 0px);
+//   transition: 0.25s;
+// }
+
+
+.box {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+// .box:hover {
+//   // transform: translateY(-5px);
+// }
+
+// @media (min-width: 992px) {
+//   .col-lg-3 {
+//     flex: 0 0 auto;
+//     // width: 80%;
+//     width: 70%;
+//     height: 190px;
+//   }
+// }
+
+
+// @media (min-width: 1023px) and (max-width: 1196px) {
+//   .product-container {
+//     display: grid;
+//     grid-template-columns: repeat(3, 1fr);
+//     gap: 16px; /* Adjust gap as needed */
+//   }
+// }
+
+// 
+
+
+
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+  width: 200px;
+}
+
+.dropdown-toggle {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #666;
+  box-shadow: none;
+}
+
+.filter-icon {
+  color: #1d4ed8; /* Blue color */
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+  padding: 5px 0;
+  z-index: 1000;
+  display: block;
+}
+
+.dropdown-item {
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  display: block;
+}
+
+.dropdown-item:hover {
+  background: #f0f0f0;
+}
+
+.dropdown-item.active {
+  font-weight: bold;
+  color: #3170DE;
+}
+
+
+
+::ng-deep .dropdown-toggle::after {
+  display: none; /* Hide default dropdown arrow */
+}
+
+::ng-deep .dropdown-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+::ng-deep .dropdown-toggle .bi-funnel {
+  font-size: 16px; /* Adjust size */
+  color: #1d4ed8;  /* Match blue color */
+}
+
+
+ 
+.responsive-text {
+  font-size: 14px !important;
+  /* Default size for small screens */
+}
+ 
+@media (min-width: 576px) {
+ 
+  /* Small devices (sm) */
+  .responsive-text {
+    font-size: 18px !important;
+  }
+}
+ 
+@media (min-width: 768px) {
+ 
+  /* Medium devices (md) */
+  .responsive-text {
+    font-size: 22px !important;
+  }
+}
+ 
+@media (min-width: 992px) {
+ 
+  /* Large devices (lg) */
+  .responsive-text {
+    font-size: 24px !important;
+  }
+}
+
+.product-price {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #3170DE;
+}
+ 
+
+@media (min-width: 992px) {
+  .col-lg-2-3 {
+    flex: 0 0 auto;
+    width: 25%;
+    max-width: 25%;
+  }
+}
+@media (min-width: 1200px) {
+  .col-xl-2-4 {
+    flex: 0 0 auto;
+    width: 20%;
+    max-width: 20%;
+  }
+}
+
+.service-name {
+  cursor: pointer;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* Ensures two-line limit */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  max-width: 100%; /* Adjust as needed */
+  position: relative;
+  font-size: 14px;
+}
+
+
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+
+
+/* Responsive modal content */
+@media (max-width: 576px) {
+  .suggestion-modal-body h5 {
+    font-size: 16px !important;
+  }
+
+  .suggestion-modal-body p {
+    font-size: 14px !important;
+  }
+
+  .suggestion-modal-content {
+    padding: 20px 10px !important;
+  }
+}
+
+
+@media (max-width: 576px) {
+  .offcanvas-header .dropdown {
+    width: 180px !important;
+  }
+
+  .offcanvas-header h5 {
+    font-size: 14px !important;
+    flex: 1;
+    margin-right: 8px;
+  }
+
+  .offcanvas-header {
+    flex-wrap: wrap;
+  }
+
+  .offcanvas-header .dropdown-toggle {
+    white-space: normal !important; /* allow text to wrap */
+    text-align: left !important;    /* optional for better readability */
+    word-break: break-word;         /* break long words if needed */
+    line-height: 1.2;               /* improve spacing when wrapped */
+  }
+}
+

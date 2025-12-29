@@ -1,0 +1,463 @@
+<!-- <div style="height: 86px"></div> -->
+
+<section class="service-section py-4">
+  <!-- <div class="container p-4"> -->
+  <div class="container pt-4 pb-4 ps-2 pe-2 m-auto">
+    <!-- <h2 class="fw-bold">Services</h2> -->
+    <div class="d-flex align-items-center justify-content-between" style="margin-top: 0px !important;">
+      <!-- Added justify-content-between to space out elements -->
+
+      <div class="d-flex align-items-center">
+        <!-- Spacer (orange bar) -->
+        <a
+          [routerLink]="'/service'"
+          class="back-button d-flex align-items-center justify-content-center"
+        >
+          <i class="bi bi-arrow-left text-white"></i>
+          <!-- <span style="font-weight: bold;color: white;"><</span> -->
+        </a>
+        <!-- <span class="me-2" style="height: 24px; width: 4px; background-color: #f26522; display: inline-block;"></span> -->
+
+        <p class="fw-bold m-0 responsive-text">
+          &nbsp; {{ "service.title" | translate }}
+        </p>
+      </div>
+
+      <div>
+        <!-- Back Button to Services page using routerLink -->
+        <!-- <a [routerLink]="'/service'" class="btn btn-link" style="text-decoration: none; color: inherit;">
+          <i class="bi bi-arrow-left-circle " style="    color: #3170DE; margin-right: 2px;"></i> <span style="color: #3170DE;">Back to home</span>
+        </a> -->
+      </div>
+    </div>
+
+    <div
+      class="d-flex flex-wrap justify-content-start"
+      style="padding-top: 15px"
+    >
+      <button
+        *ngFor="let category of groupedCategories"
+        class="btn btn-sm me-3 mb-2"
+        [ngClass]="{
+          'btn-custom': selectedCategory === category.NAME,
+          'btn-outline-secondary': selectedCategory !== category.NAME
+        }"
+        (click)="getProjectData(category, false, true)"
+        [attr.title]="category.NAME"
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
+      >
+        <!-- Truncate text -->
+        {{
+          category.NAME.length > 20
+            ? (category.NAME | slice : 0 : 20) + "..."
+            : category.NAME
+        }}
+      </button>
+    </div>
+
+    <!-- Service Cards Grid -->
+    <div class="service-card-container">
+      <div class="row pt-3 m-auto">
+        <!-- Show Spinner While Loading -->
+        <div *ngIf="loadingpage" class="text-center w-100">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">{{
+              "service.loading" | translate
+            }}</span>
+          </div>
+        </div>
+        <ng-container
+          *ngIf="
+            !loadingpage && PopularServices.length > 0;
+            else noDataTemplate
+          "
+        >
+          <div
+            class="col-12 col-xs-4 col-sm-4 col-md-4 col-xl-2-4 col-lg-2-3"
+            *ngFor="let service of PopularServices.slice(0, displayCount)"
+          >
+            <ng-container *ngIf="service.IS_PARENT === 0">
+              <div
+                class="card service-card hover-effect"
+                (click)="userID !== 0 ? openModal(service) : openLoginModal()"
+                style="cursor: pointer;padding: 5px !important;"
+              >
+<div style="width: 100%;
+    /* height: 200px; */
+    padding: 10px;
+    /* min-height: 200px; */
+    /* max-height: 200px; */
+    border-radius: 8px;
+    border: none;
+    background-color: rgb(245, 248, 253);">
+  <div
+                  [ngStyle]="{
+                    'background-image':
+                      'url(' +
+                      (service.SERVICE_IMAGE
+                        ? IMAGEuRL + 'Item/' + service.SERVICE_IMAGE
+                        : 'assets/img/services/no-image.png') +
+                      ')',
+                    'background-size': '100% 100%',
+                    'background-position': 'center',
+                    'background-repeat': 'no-repeat',
+                    width: PopularServices.length < 3 ? '100%' : '100%',
+                   'height':'200px',
+                   'min-height':'200px',
+                   'max-height':'200px',
+                    'border-radius': '8px',
+                    border: 'none',
+                    'background-color': '#f5f8fd'
+                  }"
+                ></div>
+</div>
+              
+
+                <p
+                  class="service-name"
+                  [attr.title]="service.NAME"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  style="
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 200px;height: 55px;
+                    margin-bottom: 0px !important;
+                  "
+                >
+                  {{ service.NAME }}
+                </p>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+
+        <!-- Load More Button back -->
+        <div
+          class="text-center mt-3"
+          *ngIf="displayCount < PopularServices.length"
+        >
+          <button class="btn btn-primary" (click)="loadMore()">
+            {{ "service.load_more" | translate }}
+          </button>
+        </div>
+        <!-- No Data Template -->
+        <ng-template #noDataTemplate>
+          <div *ngIf="!loadingpage" class="text-center w-100 no-data-container">
+            <img
+              src="assets/img/no-data-concept.jpg"
+              [alt]="'service.no_data' | translate"
+              class="img-fluid no-data-img"
+            />
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div
+  class="modal fade"
+  id="exampleModalCenter"
+  #exampleModalCenter
+  tabindex="-1"
+  role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document" >
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header border-0 d-flex justify-content-between" style="justify-content: flex-start !important;padding: 5px 0px 0px 10px;">
+       
+        <button
+          type="button"
+          class="btn-close" style="margin: 0px !important;font-size: 13px;"
+          (click)="modalInstance.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body" style="padding-top: 0px !important;">
+        <!-- Image Section -->
+        <div
+          class="bg-light mb-3 d-flex align-items-center justify-content-center"
+          style="height: 200px; border-radius: 8px; overflow: hidden"
+        >
+          <img
+            [src]="
+              ModalData?.SERVICE_IMAGE
+                ? IMAGEuRL + 'Item/' + ModalData.SERVICE_IMAGE
+                : 'assets/img/services/no-image.png'
+            "
+            alt="Service Image"
+            style="
+              height: 200px;
+              width: 200px;
+              object-fit: contain;
+              border-radius: 8px;
+            "
+          />
+        </div>
+
+        <!-- Details Section -->
+        <div class="d-flex justify-content-between">
+          <div>
+            <p style=" white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            display: block;margin-bottom: 0px;font-weight: 500; font-size: 16px;" [attr.title]="ModalData?.NAME || 'N/A'" data-bs-toggle="tooltip" data-bs-placement="top"> {{ModalData?.NAME}}</p>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between">
+          <div><p *ngIf="customertype !== 'B'" class="mb-1 text-muted" style="font-size: 14px;">
+              {{ "service.modal.base_price" | translate }}
+            </p>
+          </div>
+          <div class="text-end">
+             <p *ngIf="customertype !== 'B'" class="mb-1 fw-bold" style="font-size: 14px;">
+              ₹ {{ ModalData?.B2C_PRICE| number }}
+            </p>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between">
+          <div>
+           
+            <p class="mb-1 text-muted" style="font-size: 14px;">
+              {{
+                customertype === "B"
+                  ? ("service.modal.sla" | translate)
+                  : ("service.modal.estimate_time" | translate)
+              }}
+            </p>
+          </div>
+          <div class="text-end">
+            <p class="mb-1 fw-bold" style="font-size: 14px;">
+              <!-- {{ ModalData?.T_PREPARATION_HOURS || 0 }}h
+              {{ ModalData?.T_PREPARATION_MINUTES || 0 }}m -->
+              <!-- {{ ModalData?.DURARTION_HOUR || 0 }}h
+              {{ ModalData?.DURARTION_MIN || 0 }}m -->
+                                    {{(ModalData?.DURARTION_HOUR || 0) * 60 + (ModalData?.DURARTION_MIN || 0)}} min
+
+            </p>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between">
+          <div>
+           
+            <p class="mb-1 text-muted" style="font-size: 14px;">
+            Quantity
+            </p>
+          </div>
+          <div class="text-end">
+            <div class="d-flex align-items-center" *ngIf="ModalData?.MAX_QTY>1 else elseqtypart;">
+              <button class="btn btn-outline-secondary btn-sm px-2 py-1"
+                (click)="decreaseQty1(ModalData, $event)">
+                −
+              </button>
+              <span class="mx-2">{{ ModalData?.QTY }}</span>
+              <button class="btn btn-outline-secondary btn-sm px-2 py-1" (click)="increaseQty1(ModalData, ModalData?.MAX_QTY, $event)">
+                +
+              </button>
+            </div>
+            <ng-template #elseqtypart>1</ng-template>
+          </div>
+        </div>
+        <div class="about-container">
+        
+          <div
+            class="accordion"
+            id="aboutAccordion"
+            style="margin-top: 10px;"
+          >
+            <!-- Terms of Service -->
+           <div class="accordion-item">
+          <h2 class="accordion-header" id="heading0">
+            <button
+              class="accordion-button d-flex justify-content-between align-items-center"
+              type="button" style="color: #444444;"
+              (click)="toggleAccordion(0)"
+              [attr.aria-expanded]="activeIndex === 0"
+              aria-controls="collapse0"
+            >
+              Service Description
+              <i
+                class="ms-auto"
+                [ngClass]="{
+                  'bi bi-chevron-down': activeIndex !== 0,
+                  'bi bi-chevron-up': activeIndex === 0
+                }"
+              ></i>
+            </button>
+          </h2>
+          <div
+            id="collapse0"
+            class="accordion-collapse collapse"
+            aria-labelledby="heading0"
+            [class.show]="activeIndex === 0"
+            data-bs-parent="#aboutAccordion"
+          >
+            <div class="accordion-body" style="height: 200px; overflow-y: scroll;">
+              <div *ngIf="ServiceDescription!=='' && ServiceDescription!==undefined && ServiceDescription!==null" [innerHTML]="ServiceDescription"></div>
+              <hr *ngIf="ModalData?.SERVICE_DETAILS_IMAGE">
+              <div *ngIf="ModalData?.SERVICE_DETAILS_IMAGE">
+                <img
+                [src]=" IMAGEuRL + 'ServiceDetailsImage/' + ModalData.SERVICE_DETAILS_IMAGE"
+                alt="Service Details Image" class="img-fluid"
+                style="width: 100%;"/>
+              </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer border-0 d-flex justify-content-between">
+        <button
+          type="button"
+          class="btn btn-light flex-fill me-2"
+          (click)="modalInstance.hide()"
+        >
+          {{ "service.modal.close" | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-dark flex-fill ms-2"
+          (click)="openNextDrawer(ModalData); modalInstance.hide()"
+        >
+          {{ "service.modal.select" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap Modal -->
+<div
+  class="modal fade"
+  id="guestModal"
+  tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+  aria-labelledby="guestModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div
+      class="modal-content"
+      style="
+        border-radius: 12px;
+        background: #fff;
+        color: #000;
+        text-align: center;
+        border: none;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        width: 100%;
+        padding: 20px;
+      "
+    >
+      <div class="modal-header border-0">
+        <h5 class="fw-bold m-auto" style="color: #333; font-size: 20px">
+          <i class="bi bi-person-circle"></i>
+          {{ "service.guest.title" | translate }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="modal-body">
+        <p style="font-size: 15px; color: #555; line-height: 1.5">
+          {{ "service.guest.message" | translate }}
+        </p>
+      </div>
+
+      <div class="modal-footer border-0 d-flex justify-content-center">
+        <button
+          type="button"
+          class="btn btn-outline-dark px-4 py-2 rounded-pill border-black"
+          style="transition: 0.3s; font-weight: 500"
+          data-bs-dismiss="modal"
+        >
+          <i class="bi bi-x-circle"></i>
+          {{ "service.guest.cancel" | translate }}
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-primary px-4 py-2 rounded-pill"
+          style="
+            background-color: #0052cc;
+            border-color: #0052cc;
+            color: #fff;
+            font-weight: 500;
+            transition: 0.3s;
+          "
+          (click)="redirectToLogin()"
+        >
+          <i class="bi bi-box-arrow-in-right"></i>
+          {{ "service.guest.login" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  style="width: 500px"
+  class="offcanvas offcanvas-end"
+  tabindex="-1"
+  data-bs-backdrop="static"
+  id="offcanvasRight11"
+  aria-labelledby="offcanvasRightLabel"
+  [class.show]="isDrawerVisible"
+>
+  <!-- <div style="padding-bottom: 10px;" class="offcanvas-header">
+    <h5 *ngIf="!drawerData.ID" id="offcanvasRightLabel">Add Forms</h5>
+    <h5 *ngIf="drawerData.ID" id="offcanvasRightLabel">Update Forms</h5>
+    <button type="button" class="btn-close text-reset" (click)="drawerClose()" aria-label="Close"></button>
+
+  </div> -->
+
+  <div *ngIf="!loadepage" class="offcanvas-header border-bottom">
+    <h5 class="offcanvas-title fw-bold" style="font-size: 14px">
+      {{ drawerData.CATEGORY_NAME || ("service.drawer.title" | translate) }}
+    </h5>
+    <button type="button" class="btn-close" (click)="drawerClose()"></button>
+  </div>
+  <div *ngIf="userID !== 0" class="progress">
+    <div
+      style="background-color: #f36631 !important"
+      class="progress-bar"
+      role="progressbar"
+      [style.width.%]="homepageprogress"
+      [attr.aria-valuenow]="homepageprogress"
+      aria-valuemin="0"
+      aria-valuemax="100"
+    ></div>
+  </div>
+
+  <div *ngIf="!loadepage" class="demodash offcanvas-body d-flex flex-column" >
+    <app-shared-subcategory-drawer
+      [fromservice]="fromservice"
+      *ngIf="userID !== 0"
+      [data]="drawerData"
+      [drawerClose]="closeCallback"
+      [progress]="homepageprogress"
+      [isDrawerVisible]="isDrawerVisible"
+      [addresses]="addresses"
+      [DefaultAddressArray]="DefaultAddressArray"
+      [defaultAddress]="defaultAddress"
+      [imagePreview]="imagePreview"
+      [quantity]="cartquantity"
+      [showModal]="showModal"
+    ></app-shared-subcategory-drawer>
+  </div>
+</div>

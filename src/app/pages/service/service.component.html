@@ -1,0 +1,74 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-8">{{ 'service.title' | translate }}</h1>
+  
+  <div *ngIf="isLoading" class="flex justify-center items-center h-64">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+    <span class="sr-only">{{ 'service.loading' | translate }}</span>
+  </div>
+
+  <div *ngIf="!isLoading && (!services || services.length === 0)" class="text-center py-8">
+    <p class="text-gray-500">{{ 'service.no_data' | translate }}</p>
+  </div>
+
+  <div *ngIf="!isLoading && services && services.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let service of services" class="bg-white rounded-lg shadow-md overflow-hidden">
+      <div class="p-4">
+        <h3 class="text-xl font-semibold mb-2">{{service.name}}</h3>
+        <p class="text-gray-600 mb-4">{{service.description}}</p>
+        <div class="flex justify-between items-center">
+          <div>
+            <p class="text-sm text-gray-500">{{ 'service.base_price' | translate }}: ₹{{service.basePrice | number}}</p>
+            <p class="text-sm text-gray-500">{{ 'service.estimate_time' | translate }}: {{service.estimateTime}}</p>
+            <p class="text-sm text-gray-500">{{ 'service.sla' | translate }}: {{service.sla}}</p>
+          </div>
+          <button (click)="selectService(service)" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark">
+            {{ 'service.select' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="hasMore" class="text-center mt-8">
+    <button (click)="loadMore()" class="bg-gray-200 text-gray-700 px-6 py-2 rounded hover:bg-gray-300">
+      {{ 'service.load_more' | translate }}
+    </button>
+  </div>
+</div>
+
+<!-- Guest Modal -->
+<div *ngIf="showGuestModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+  <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+    <h2 class="text-xl font-bold mb-4">{{ 'service.guest.title' | translate }}</h2>
+    <p class="text-gray-600 mb-6">{{ 'service.guest.message' | translate }}</p>
+    <div class="flex justify-end space-x-4">
+      <button (click)="closeGuestModal()" class="px-4 py-2 text-gray-600 hover:text-gray-800">
+        {{ 'service.guest.cancel' | translate }}
+      </button>
+      <button (click)="navigateToLogin()" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark">
+        {{ 'service.guest.login' | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Service Details Modal -->
+<div *ngIf="selectedService" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+  <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4">
+    <h2 class="text-xl font-bold mb-4">{{ 'service.service_details' | translate }}</h2>
+    <div class="space-y-4">
+      <h3 class="text-lg font-semibold">{{selectedService.name}}</h3>
+      <p class="text-gray-600">{{selectedService.description}}</p>
+      <div class="flex justify-between items-center">
+        <div>
+          <p class="text-sm text-gray-500">{{ 'service.base_price' | translate }}: ₹{{selectedService.basePrice| number}}</p>
+          <p class="text-sm text-gray-500">{{ 'service.estimate_time' | translate }}: {{selectedService.estimateTime}}</p>
+          <p class="text-sm text-gray-500">{{ 'service.sla' | translate }}: {{selectedService.sla}}</p>
+        </div>
+        <button (click)="closeServiceDetails()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
+          {{ 'service.cancel' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div> 

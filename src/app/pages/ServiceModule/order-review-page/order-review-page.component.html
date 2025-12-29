@@ -1,0 +1,1153 @@
+<div *ngIf="loadFullPage" class="d-flex justify-content-center">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">{{
+      "order_review.loading" | translate
+    }}</span>
+  </div>
+</div>
+
+<div class="container mt-4" *ngIf="OrderReviewDetails && loadFullPage == false">
+  <div
+    class="card p-3 shadow"
+    style="border: none; box-shadow: none !important"
+  >
+    <div
+      class="d-flex align-items-center mt-3 justify-content-between p-2 p-lg-3"
+      style="
+        margin-top: 0px !important;
+        padding-top: 0px !important;
+        padding-left: 0px !important;
+      "
+    >
+      <div class="d-flex align-items-center">
+        <a
+          [routerLink]="'/service'"
+          class="back-button d-flex align-items-center justify-content-center"
+        >
+          <i class="bi bi-arrow-left text-white" style="font-size: 14px"></i>
+          <!-- <span style="font-weight: bold;color: white;"><</span> -->
+        </a>
+        <h2
+          style="margin-bottom: 0px; font-size: 18px !important"
+          class="fs-4 fs-lg-3 fw-bold order-title"
+        >
+          &nbsp;&nbsp; {{ "order_review.title" | translate }}
+        </h2>
+      </div>
+      <div></div>
+    </div>
+
+    <!-- Custom Media Query for Larger Screens -->
+    <style>
+      @media (min-width: 992px) {
+        /* Large screens */
+        .order-title {
+          font-size: 28px !important;
+        }
+      }
+    </style>
+
+    <div class="row">
+      <!-- Left Section -->
+      <div class="col-md-6">
+        <div
+          style="border-radius: 16px !important; padding: 10px !important"
+          *ngFor="let item of OrderReviewDetails?.CART_DETAILS"
+          class="card border rounded p-3 mb-3 shadow-sm"
+        >
+          <div class="card-body" style="padding: 2px">
+            <!-- Service Name & Icon -->
+
+            <div
+              *ngIf="item.IS_EXPRESS == 1"
+              class="express-badge"
+              style="
+                position: absolute;
+                top: 25px;
+                right: 0;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 6px 12px;
+                border-top-left-radius: 8px;
+                border-bottom-left-radius: 8px;
+                background-color: #2a3b8f;
+                color: white;
+                font-size: 14px;
+                z-index: 1;
+              "
+            >
+              <i class="bi bi-lightning me-1"></i>
+              <span class="full-text">Express service</span>
+            </div>
+            <div
+              class="d-flex align-items-center gap-3"
+              style="position: relative"
+            >
+              <!-- Service Icon -->
+              <!-- <div class="service-icon d-flex align-items-center justify-content-center rounded-circle bg-light"
+                style="width: 40px; height: 40px">
+                <img [src]="
+                    item.SERVICE_IMAGE
+                      ? IMAGEuRL + 'Item/' + item.SERVICE_IMAGE
+                      : 'assets/img/services/no-image.png'
+                  " class="rounded-circle" alt="Service Icon" style="width: 40px; height: 40px" />
+              </div> -->
+
+              <div
+                class="service-icon d-flex align-items-center justify-content-center rounded-circle bg-light"
+                style="width: 50px; height: 50px"
+              >
+                <img
+                  [src]="
+                    item.SERVICE_IMAGE
+                      ? IMAGEuRL + 'Item/' + item.SERVICE_IMAGE
+                      : 'assets/img/services/no-image.png'
+                  "
+                  alt="Service Icon"
+                  style="width: 36px; height: 36px; object-fit: contain"
+                />
+              </div>
+
+              <!-- Service Name & Order ID -->
+              <div>
+                <h6
+                  class="fw-bold mb-0"
+                  [title]="item.SERVICE_NAME"
+                  [attr.title]="item.SERVICE_NAME"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  style="
+                    font-size: 16px !important;
+                    font-weight: 600 !important;
+                  "
+                >
+                  {{ item.SERVICE_NAME }}
+                </h6>
+                <!-- <p *ngIf="item.ORDER_ID" class="text-muted small mb-0">
+                  {{ 'order_review.order_id' | translate }}: {{ item.ORDER_ID }}
+                </p> -->
+              </div>
+            </div>
+
+            <hr style="border: 1px solid #e7e6e6; margin: 11px" />
+
+            <!-- Date & Time -->
+            <div class="cart-bottom" style="padding: 0px">
+              <div class="cart-icon">
+                <i
+                  class="bi bi-clock"
+                  style="color: #2a3b8f !important; font-size: 12px !important"
+                ></i>
+              </div>
+              <span style="font-weight: 500">
+                {{ item.CREATED_MODIFIED_DATE | date : "EEE, MMM d" }} |
+                {{ formatTime(item.START_TIME) }} -
+                {{ formatTime(item.END_TIME) }}
+              </span>
+            </div>
+
+            <!-- Collapsible Details -->
+            <div class="mt-3">
+              <hr style="border: 1px solid #e7e6e6; margin: 11px" />
+
+              <button
+                class="btn w-100 text-start d-flex justify-content-between align-items-center"
+                (click)="item.isOpen = !item.isOpen"
+                style="
+                  background: transparent;
+                  border: none;
+                  outline: none;
+                  box-shadow: none;
+                "
+              >
+                <span
+                  class="fw-bold"
+                  style="
+                    font-size: 15px !important;
+                    font-weight: 600 !important;
+                  "
+                  >{{ "order_review.details" | translate }}</span
+                >
+                <i
+                  class="bi"
+                  [ngClass]="{
+                    'bi-chevron-down': !item.isOpen,
+                    'bi-chevron-up': item.isOpen
+                  }"
+                  class="text-primary"
+                  style="color: #212529 !important; font-size: 18px"
+                ></i>
+              </button>
+
+              <div *ngIf="item.isOpen" class="mt-2">
+                <hr class="my-2" />
+
+                <!-- <div class="d-flex justify-content-between">
+                  <p class="mb-1 text-muted" style="color: #636363 !important;">{{ customertype === 'B' ?
+                    ('order_review.sla' | translate) :
+                    ('order_review.estimate_time' | translate) }}</p>
+                  <p class="mb-1 fw-bold" style="color: #0E0E0E !important;font-weight: 500 !important;">
+                    {{ item.TOTAL_DURARTION_MIN }} mins
+                  </p>
+                </div> -->
+                <div class="d-flex justify-content-between">
+                  <p class="mb-1 text-muted" style="color: #636363 !important">
+                    {{ "order_review.device" | translate }}
+                  </p>
+                  <p
+                    class="mb-1 fw-bold"
+                    style="
+                      color: #0e0e0e !important;
+                      font-weight: 500 !important;
+                    "
+                  >
+                    <!-- {{item.CATEGORY_NAME }} -->
+                    {{ item.CATEGORY_NAME | slice : 0 : maxCharData }}
+                  </p>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p class="mb-1 text-muted" style="color: #636363 !important">
+                    {{ "order_review.service" | translate }}
+                  </p>
+                  <p
+                    class="mb-1 fw-bold"
+                    style="
+                      color: #0e0e0e !important;
+                      font-weight: 500 !important;
+                    "
+                  >
+                    <!-- {{
+                    item.SUB_CATEGORY_NAME }} -->
+                    {{ item.SUB_CATEGORY_NAME | slice : 0 : maxCharData }}
+                  </p>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p class="mb-0 text-muted" style="color: #636363 !important">
+                    {{ "order_review.quantity" | translate }}
+                  </p>
+                  <p
+                    class="mb-0 fw-bold"
+                    style="
+                      color: #0e0e0e !important;
+                      font-weight: 500 !important;
+                    "
+                  >
+                    {{ item.QUANTITY }}
+                  </p>
+                </div>
+
+                <div
+                  *ngIf="item.GUARANTEE_ALLOWED == 1 && customertype === 'I'"
+                  class="d-flex justify-content-between"
+                  style="margin-top: 4px; margin-bottom: 4px"
+                >
+                  <p class="mb-0 text-muted" style="color: #636363 !important">
+                    Guarantee Period
+                  </p>
+                  <p
+                    class="mb-0 fw-bold"
+                    style="
+                      color: #0e0e0e !important;
+                      font-weight: 500 !important;
+                    "
+                  >
+                    {{ formatPeriodCommon(item.GUARANTEE_PERIOD) }}
+                  </p>
+                </div>
+
+                <div
+                  *ngIf="item.WARRANTY_ALLOWED == 1 && customertype === 'I'"
+                  class="d-flex justify-content-between"
+                >
+                  <p class="mb-0 text-muted" style="color: #636363 !important">
+                    Warranty Period
+                  </p>
+                  <p
+                    class="mb-0 fw-bold"
+                    style="
+                      color: #0e0e0e !important;
+                      font-weight: 500 !important;
+                    "
+                  >
+                    {{ formatPeriodCommon(item.WARRANTY_PERIOD) }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accordion Section -->
+        <div class="accordion">
+          <div class="accordion-item mb-3 shadow-sm rounded">
+            <h2
+              class="accordion-header"
+              (click)="toggleAccordion('contactDetails')"
+            >
+              <button
+                class="accordion-button fw-bold d-flex align-items-center gap-2"
+                [class.collapsed]="!orderDetailsVisible['contactDetails']"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="17"
+                  viewBox="0 0 16 17"
+                  fill="none"
+                >
+                  <path
+                    d="M11.1308 16.4998C9.61051 16.4811 8.15971 15.859 7.09605 14.7722L1.73154 9.40768C-0.404648 7.28129 -0.58443 4.0058 1.3043 2.10635L2.52014 0.92966C2.81921 0.634149 3.22954 0.478383 3.64965 0.502423C4.06709 0.534464 4.45784 0.716041 4.75067 1.01511L7.43782 3.70226V3.70137C8.08223 4.30306 8.12051 5.31241 7.52327 5.96129L6.93493 6.54962C6.93493 6.54962 6.93493 6.69204 7.01059 6.80597L9.69775 9.49312C9.81168 9.59726 9.9354 9.59726 9.95409 9.56878L10.5424 8.98044C11.1913 8.3832 12.2006 8.42148 12.8023 9.06589L15.4895 11.753H15.4886C16.1099 12.3538 16.1481 13.3374 15.5741 13.9836L14.3965 15.1612H14.3974C13.5322 16.0272 12.3555 16.5096 11.1308 16.4998ZM2.32079 3.11304C0.972311 4.49 1.16191 6.82557 2.73823 8.40099L8.10274 13.7655C9.67908 15.3418 12.052 15.5314 13.3907 14.1829L14.5683 13.0347C14.5683 13.0347 14.5683 12.8923 14.4828 12.7784L11.7957 10.0912C11.7387 10.0343 11.6061 9.94882 11.5491 10.0156L10.9608 10.595L10.9599 10.5941C10.6493 10.8852 10.2354 11.0409 9.80991 11.0267C9.38445 11.0125 8.98214 10.83 8.69107 10.5185L6.00392 7.81262C5.69328 7.52158 5.50992 7.11925 5.49568 6.69379C5.48144 6.26833 5.6372 5.85444 5.92825 5.5438L6.50769 4.95546C6.50769 4.95546 6.50769 4.81305 6.43204 4.70892L3.74488 2.02085C3.67813 1.9541 3.5553 1.87844 3.48854 1.9354L2.32079 3.11304Z"
+                    fill="#2A3B8F"
+                  />
+                </svg>
+                {{ "order_review.contact_details.title" | translate }}
+              </button>
+            </h2>
+            <div
+              class="accordion-collapse"
+              [class.show]="orderDetailsVisible['contactDetails']"
+            >
+              <div class="accordion-body text-muted">
+                <div class="d-flex justify-content-between">
+                  <p class="mb-1 text-muted">
+                    {{
+                      "order_review.contact_details.mobile_number" | translate
+                    }}
+                  </p>
+                  <p
+                    class="mb-1 fw-bold"
+                    style="
+                      color: #0e0e0e !important;
+                      font-weight: 500 !important;
+                    "
+                  >
+                    {{ OrderReviewDetails?.CART_INFO[0]?.MOBILE_NO }}
+                  </p>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p class="mb-1 text-muted">
+                    {{ "order_review.contact_details.name" | translate }}
+                  </p>
+                  <p
+                    class="mb-1 fw-bold"
+                    style="
+                      color: #0e0e0e !important;
+                      font-weight: 500 !important;
+                    "
+                  >
+                    {{
+                      customertype === "B"
+                        ? user?.COMPANY_NAME
+                        : OrderReviewDetails?.CART_INFO[0]?.CONTACT_PERSON_NAME
+                    }}
+                  </p>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p class="mb-1 text-muted">
+                    {{ "order_review.contact_details.address" | translate }}
+                  </p>
+                  <p
+                    style="cursor: pointer"
+                    class="mb-1 fw-bold"
+                    style="
+                      color: #0e0e0e !important;
+                      font-weight: 500 !important;
+                    "
+                  >
+                    <span
+                      [attr.data-bs-toggle]="
+                        OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_1
+                          ?.length > maxCharLength
+                          ? 'tooltip'
+                          : null
+                      "
+                      data-bs-placement="top"
+                      [attr.title]="
+                        OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_1
+                          ?.length > maxCharLength
+                          ? OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_1
+                          : null
+                      "
+                    >
+                      {{
+                        OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_1
+                          | slice : 0 : maxCharLength
+                      }}
+                      <span
+                        *ngIf="
+                          OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_1
+                            ?.length > maxCharLength
+                        "
+                        >...</span
+                      > </span
+                    >,
+                    <span
+                      [attr.data-bs-toggle]="
+                        OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_2
+                          ?.length > maxCharLength
+                          ? 'tooltip'
+                          : null
+                      "
+                      data-bs-placement="top"
+                      [attr.title]="
+                        OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_2
+                          ?.length > maxCharLength
+                          ? OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_2
+                          : null
+                      "
+                    >
+                      {{
+                        OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_2
+                          | slice : 0 : maxCharLength
+                      }}
+                      <span
+                        *ngIf="
+                          OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_2
+                            ?.length > maxCharLength
+                        "
+                        >...</span
+                      >
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="accordion-item mb-3 shadow-sm rounded"
+            *ngIf="customertype == 'I'"
+          >
+            <h2
+              class="accordion-header"
+              (click)="toggleAccordion('reschedulePolicy')"
+            >
+              <button
+                class="accordion-button fw-bold d-flex align-items-center gap-2"
+                [class.collapsed]="!orderDetailsVisible['reschedulePolicy']"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  width="16"
+                  height="25"
+                  viewBox="0 0 16 25"
+                  fill="none"
+                >
+                  <ellipse
+                    cx="8"
+                    cy="12.5"
+                    rx="8"
+                    ry="12"
+                    fill="url(#pattern0_5044_960)"
+                  />
+                  <defs>
+                    <pattern
+                      id="pattern0_5044_960"
+                      patternContentUnits="objectBoundingBox"
+                      width="1"
+                      height="1"
+                    >
+                      <use
+                        xlink:href="#image0_5044_960"
+                        transform="matrix(0.03125 0 0 0.0208333 -0.25 0)"
+                      />
+                    </pattern>
+                    <image
+                      id="image0_5044_960"
+                      width="48"
+                      height="48"
+                      preserveAspectRatio="none"
+                      xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAVCSURBVHgB7VhNbttGFH5DSS7QFoh6glK7xC5QeVfEDmqdoNIJLJ8g5gmkXKB0ThD5BPYNoqJW0F0JpHa8M3OCqosGiGRx8r3hjDShfkiKDpAFP8AWORwO3+/33gxRiRIlSpQoAEFfCD8d+kcR0ZEUFLz707ukLwSHHgCPj3zXvt87+P04kvSaJPVERBd7B75vP28e+XV6IBTyQPMX351UICiRi78Qiw3xO5ZEp0uTJbEXAiHgFXgmnu/0r0fPz6kACikAy77WwqxCKCR18LyHr7TXzBnv1KgRDL0xbYmtQ4itvxBeDHDNlgzVnRDDqEat6zdecPPG60CBl2ocAvMzcw/UP06pSwWQ2wN7T/0my483j40CELZxO/RCvuZ8MNc2XB33oba25b0AQpwjtIJqlYK83sisQCLe7SUGN6PTE8oJGKILhnpFSwI53Tx5kTmEphXEsiW8CYeoJl/QFkB4DbAIvxva45KiM8qBao65rvovRBBVZScZJhxaUYXcbyoqDMK0xXh+rUoDzO1zeH17D+aSyki5KDazB1CU3iv5YXlb+CYE2T3w7xAOfzPnT6Z0l+T9JHaf+j2ej7kckvO82AaZFUCSPUqOqbwQdEGJvOA6sE4JFh5W6Ks1E+GjMW4mCuMmpCrAQjJjQCrF5VIuPjqpKgp01bhDHfD+vi5mSolkxbWFB4L/a9QxzypgIX1ZZ89wK0JFFTDMY+gymbRQxjXj3O8w7zvOnONpOll4Jin8B9QJO3Tecr+0qA8utyJPnvltKqKAbWFmjOur05Yd/wircayIbBq3z2b0s3k+24mfpwlvcHPlncKLJ5xnav1ZepHbqAAWG1sThyteNl0mu/2Ok3kuqBCXrGxW4Q1qEQ0lUeak3qhArUYD0okGly4VnX+uvKHmcgNX/4agWi+v8Ay73kQ7K5rCPApwWYcXjIDuqsSC2/vRjBqsCKjxJYcABN13JnScV3gGrN+Nr8TgNkM9yVPIOOZXFpnbv9SH+uZ+leW/v6fm3jP/NyT+fxyOynsJMGtNp6odrwtWJQNSaRRW7enL8G2GndUq4b+bks+sIqO42vL1qjrBHsf3VB/EnshCpRsV4IaLdDxaoZRP+Am1TVio/kknKNeJ3UO/n1xjp0p9MyeKCuYAWSGDD/5IOYVXMe/Qcz0WonA1rkfeD6bYYdHj5Dr3CLX55x3xiIooAE7nkAnj1ajPNLmqzG9iG8R8Xb9/Ph8T9Iee+9laHFYq1ExDF8nUtnqjApycYJiWWNQAdzIVvazCx3JrA8Da3IGquNaWx7NgLjzvDxZ76dARakc3oBSkspBmmNbu4dkFzNkGE7nm2ZMDnz/YXye8EpLpVapWxOUOVNrkIhdtB3opVxPPmGk4a4eaY0+8TGuWMmt5nukSb3pkdZ4iPrnw1li4nqe9zt5Om1iGCU2Xyb1LBV1oWpF6N/LOVHFDWPB8TmYeM895PYcyEn8CmQsZb2h4A82dKfqef5FwLPBlpUIvslhMzxnaYzp/uljPtadSDmT2gJypWA/n93A18zsq5yvaAqrGxMnvmjFVJzLUGxuZFeBkvhl5Dd60cBjokzblEXvjsu7YcGncqg+qhca6qk5kYB4bW5/MsUAcSnoRPtji37bm8BAnbi2zuWd+NxTJlKzqQLyB59w6ySv0gyigBUs9WsQX/E1zoOh+kaPFXN1oEqjUJ44+7OL4jVBtlUWkCg/F+/PJUlxKR753SPzKOzjV7yDeiwj/YEger3OBQ9sh53+H/meHVe7Xcry+CY9xIOBgT72u9y9RokSJEl8FPgHbaJiGmNWu9QAAAABJRU5ErkJggg=="
+                    />
+                  </defs>
+                </svg>
+                {{ "shop.CouponsandOffers" | translate }}
+              </button>
+            </h2>
+
+            <div
+              class="accordion-collapse"
+              [class.show]="orderDetailsVisible['reschedulePolicy']"
+            >
+              <div class="accordion-body text-muted">
+                <ng-container
+                  *ngIf="
+                    OrderReviewDetails?.CART_INFO[0]?.COUPON_ID;
+                    else noCoupon
+                  "
+                >
+                  <div
+                    class="coupon-box align-items-center p-3 border rounded shadow-sm bg-light"
+                    style="
+                      padding: 10px 0px 10px 10px !important;
+                      background-color: white !important;
+                    "
+                  >
+                    <div class="row" style="width: 100% !important">
+                      <!-- <div style="display: flex;justify-content: space-between;"> -->
+                      <div
+                        class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 m-0"
+                      >
+                        <strong
+                          style="
+                            font-weight: 600;
+                            font-size: 16px;
+                            color: black !important;
+                          "
+                          >{{
+                            OrderReviewDetails?.CART_INFO[0]?.COUPON_NAME
+                          }}</strong
+                        >
+                      </div>
+                      <div
+                        class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 m-0 text-muted textaligns"
+                        style="margin-top: 0px !important; font-size: 12px"
+                      >
+                        {{ "shop.CouponApplied" | translate }}:
+                        <strong>{{
+                          OrderReviewDetails?.CART_INFO[0]?.COUPON_CODE
+                        }}</strong>
+                      </div>
+                      <!-- </div> -->
+                    </div>
+                    <div
+                      class="row"
+                      style="width: 100% !important; margin-top: 7px"
+                    >
+                      <!-- <div style="display: flex;justify-content: space-between;"> -->
+                      <div
+                        class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 m-0 text-muted"
+                        style="margin-top: 0px !important; font-size: 12px"
+                      >
+                        {{ "shop.Discount" | translate }}: ₹{{
+                          OrderReviewDetails?.CART_INFO[0]?.COUPON_AMOUNT
+                            | number
+                        }}
+                      </div>
+                      <div
+                        class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 textaligns"
+                      >
+                        <button
+                          (click)="
+                            deleteCoupon(OrderReviewDetails?.CART_INFO[0])
+                          "
+                          *ngIf="!LoadRemove"
+                          class="btn btn-sm text-danger"
+                          style="
+                            border: 1px Solid;
+                            color: #0863e8 !important;
+                            font-weight: 500;
+                            font-size: 9px !important;
+                            margin-top: 0px;
+                          "
+                        >
+                          {{ "shop.Remove" | translate }}
+                        </button>
+                        <button
+                          *ngIf="LoadRemove"
+                          class="btn btn-sm text-danger"
+                          style="
+                            border: 1px Solid;
+                            color: #0863e8 !important;
+                            font-weight: 500;
+                            font-size: 9px !important;
+                            margin-top: 0px;
+                          "
+                        >
+                          {{ "shop.Remove" | translate }}&nbsp;<span
+                            class="spinner-border spinner-border-sm"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
+                        </button>
+                      </div>
+                      <!-- </div> -->
+                    </div>
+                    <!-- <div>
+                      <h6 class="m-0 text-success fw-bold" style="font-size: 14px">
+                        {{ 'order_review.coupons.applied' | translate }}:
+                        <strong>{{
+                          OrderReviewDetails?.CART_INFO[0]?.COUPON_CODE
+                          }}</strong>
+                      </h6>
+                      <p class="m-0 text-muted" style="font-size: 13px">
+                        {{ 'order_review.coupons.discount' | translate }}: ₹{{
+                        OrderReviewDetails?.CART_INFO[0]?.COUPON_AMOUNT
+                        }}
+                      </p>
+                    </div> -->
+                    <!-- <button (click)="deleteCoupon(OrderReviewDetails?.CART_INFO[0])"
+                      class="btn btn-sm text-danger border-0 d-flex align-items-center gap-1" style="
+                        font-size: 13px;
+                        background: transparent;
+                        transition: 0.3s;
+                      ">
+                      <i class="bi bi-trash3"></i> {{ 'order_review.coupons.remove' | translate }}
+                      <span *ngIf="loadbutton" class="spinner-border spinner-border-sm" role="status"></span>
+                    </button> -->
+                  </div>
+                </ng-container>
+
+                <ng-template #noCoupon>
+                  <div class="text-center" style="margin-top: 0px !important">
+                    <button
+                      class="btn btn-link text-primary d-flex align-items-center gap-2"
+                      (click)="
+                        openCouponModal(OrderReviewDetails?.CART_INFO[0])
+                      "
+                      [disabled]="isLoading"
+                      style="
+                        font-size: 15px !important;
+                        color: #2a3b8f !important;
+                        text-decoration: none !important;
+                        font-weight: 600;
+                        padding: 0px !important;
+                      "
+                    >
+                      <div
+                        style="
+                          display: flex;
+                          justify-content: space-between;
+                          width: 100% !important;
+                          align-self: baseline !important;
+                          align-items: center !important;
+                        "
+                      >
+                        <span style="font-size: 12px">{{
+                          "shop.Clickheretoviewallcoupons" | translate
+                        }}</span
+                        >&nbsp;
+                        <span
+                          *ngIf="isLoading"
+                          class="spinner-border spinner-border-sm"
+                        ></span>
+                      </div>
+
+                      <!-- <span *ngIf="!isLoading">{{ 'order_review.coupons.view_all' | translate }}</span> -->
+                    </button>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="accordion-item mb-3 shadow-sm rounded"
+            *ngIf="customertype == 'I'"
+          >
+            <h2
+              class="accordion-header"
+              (click)="toggleAccordion('cancelPolicy')"
+            >
+              <button
+                class="accordion-button fw-bold d-flex align-items-center gap-2"
+                [class.collapsed]="!orderDetailsVisible['cancelPolicy']"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="15"
+                  height="17"
+                  viewBox="0 0 15 17"
+                  fill="none"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M6.04539 12.6157C5.82809 12.8338 5.47385 12.8338 5.25655 12.6157C5.03851 12.3984 5.03851 12.0442 5.25655 11.8269L9.72167 7.36178C9.93897 7.14373 10.2932 7.14373 10.5105 7.36178C10.7286 7.57908 10.7286 7.93331 10.5105 8.15061L6.04539 12.6157Z"
+                    fill="#2A3B8F"
+                    stroke="#2A3B8F"
+                    stroke-width="0.2"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M10.5105 11.8269C10.7286 12.0442 10.7286 12.3984 10.5105 12.6157C10.2932 12.8338 9.93897 12.8338 9.72167 12.6157L5.25655 8.15061C5.03851 7.93331 5.03851 7.57908 5.25655 7.36178C5.47385 7.14373 5.82809 7.14373 6.04539 7.36178L10.5105 11.8269Z"
+                    fill="#2A3B8F"
+                    stroke="#2A3B8F"
+                    stroke-width="0.2"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M14.7674 5.43916V14.4535C14.7674 14.996 14.5516 15.5169 14.1684 15.9009C13.7844 16.2842 13.2634 16.5 12.7209 16.5H3.04651C2.504 16.5 1.98307 16.2842 1.59907 15.9009C1.21581 15.5169 1 14.996 1 14.4535V2.54651C1 2.004 1.21581 1.48307 1.59907 1.09907C1.98307 0.715814 2.504 0.5 3.04651 0.5H10.1594C10.5263 0.5 10.8761 0.654791 11.1232 0.926419L14.4288 4.56251C14.6469 4.80288 14.7674 5.1147 14.7674 5.43916ZM13.6512 5.43916C13.6512 5.39228 13.634 5.34763 13.6028 5.3134L10.2971 1.6773C10.2614 1.6386 10.2115 1.61628 10.1594 1.61628H3.04651C2.79944 1.61628 2.56353 1.71451 2.38865 1.88865C2.21451 2.06353 2.11628 2.29944 2.11628 2.54651V14.4535C2.11628 14.7006 2.21451 14.9365 2.38865 15.1113C2.56353 15.2855 2.79944 15.3837 3.04651 15.3837H12.7209C12.968 15.3837 13.2039 15.2855 13.3788 15.1113C13.5529 14.9365 13.6512 14.7006 13.6512 14.4535V5.43916Z"
+                    fill="#2A3B8F"
+                    stroke="#2A3B8F"
+                    stroke-width="0.2"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M9.93042 1.43021C9.93042 1.12212 10.1805 0.87207 10.4886 0.87207C10.7967 0.87207 11.0467 1.12212 11.0467 1.43021V4.40695C11.0467 4.50965 11.13 4.593 11.2327 4.593H13.8374C14.1455 4.593 14.3955 4.84305 14.3955 5.15114C14.3955 5.45923 14.1455 5.70928 13.8374 5.70928H11.2327C10.5131 5.70928 9.93042 5.12584 9.93042 4.40695V1.43021Z"
+                    fill="#2A3B8F"
+                    stroke="#2A3B8F"
+                    stroke-width="0.2"
+                  />
+                </svg>
+                {{ "order_review.cancellation_policy.title" | translate }}
+              </button>
+            </h2>
+            <div
+              class="accordion-collapse"
+              [class.show]="orderDetailsVisible['cancelPolicy']"
+            >
+              <div class="accordion-body text-muted">
+                {{ "order_review.cancellation_policy.description" | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Section -->
+      <div class="col-md-6">
+        <div class="accordion" *ngIf="customertype == 'I'">
+          <div class="accordion-item mb-3">
+            <h2
+              class="accordion-header"
+              (click)="toggleAccordion('paymentSummary')"
+            >
+              <button
+                class="accordion-button fw-bold d-flex align-items-center gap-2"
+                style="padding: 14px 11px"
+                [class.collapsed]="!orderDetailsVisible['paymentSummary']"
+              >
+                <svg
+                  _ngcontent-ecs-c33=""
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="18"
+                  viewBox="0 0 19 22"
+                  fill="none"
+                >
+                  <path
+                    _ngcontent-ecs-c33=""
+                    d="M14.55 3.50027L4.04996 3.5C4.06562 3.5 7.08126 3.50009 7.09687 3.50027C9.2844 3.52541 11.05 5.30652 11.05 7.5C11.05 9.69483 9.28223 11.4768 7.09284 11.4998C7.07856 11.4999 4.06427 11.5 4.04996 11.5L11.05 18.5M4.04996 7.5H14.55"
+                    stroke="#2A3B8F"
+                    stroke-width="1.3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+                {{ "order_review.payment_summary.title" | translate }}
+              </button>
+            </h2>
+            <div
+              class="accordion-collapse"
+              [class.show]="orderDetailsVisible['paymentSummary']"
+            >
+              <div class="accordion-body">
+                <div class="d-flex justify-content-between">
+                  <p class="mb-1">
+                    {{ "order_review.payment_summary.base_price" | translate }}
+                  </p>
+                  <p class="mb-1">
+                    ₹{{
+                      OrderReviewDetails?.CART_INFO[0]?.TOTAL_TAXABLE_AMOUNT
+                        | number
+                    }}
+                  </p>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p class="mb-1">
+                    {{ "order_review.payment_summary.tax" | translate }}
+                  </p>
+                  <p class="mb-1">
+                    ₹{{ OrderReviewDetails?.CART_INFO[0]?.TAX_AMOUNT | number }}
+                  </p>
+                </div>
+                <ng-container
+                  *ngIf="OrderReviewDetails?.CART_INFO[0]?.IS_EXPRESS === 1"
+                >
+                  <div class="d-flex justify-content-between">
+                    <p class="mb-1">
+                      {{
+                        "order_review.payment_summary.express_service"
+                          | translate
+                      }}
+                    </p>
+                    <p class="mb-1">
+                      ₹{{
+                        OrderReviewDetails?.CART_INFO[0]?.EXPRESS_CHARGES
+                          | number
+                      }}
+                    </p>
+                  </div>
+                </ng-container>
+
+                <!-- Show Discount if Coupon is Applied -->
+                <ng-container
+                  *ngIf="OrderReviewDetails?.CART_INFO[0]?.COUPON_ID"
+                >
+                  <div class="d-flex justify-content-between">
+                    <p class="mb-1">
+                      {{ "order_review.payment_summary.discount" | translate }}
+                    </p>
+                    <p class="mb-1">
+                      - ₹{{
+                        OrderReviewDetails?.CART_INFO[0]?.COUPON_AMOUNT | number
+                      }}
+                    </p>
+                  </div>
+                </ng-container>
+
+                <hr />
+                <div class="d-flex justify-content-between fw-bold">
+                  <p class="mb-1">
+                    {{ "order_review.payment_summary.total" | translate }}
+                  </p>
+                  <p class="mb-1">
+                    ₹{{
+                      OrderReviewDetails?.CART_INFO[0]?.TOTAL_AMOUNT | number
+                    }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- mt-3 -->
+        <div class="card shadow-sm p-3" style="border-radius: 16px !important">
+          <h5
+            *ngIf="customertype !== 'B'"
+            style="font-size: 14px !important; font-weight: bold"
+          >
+            {{ "order_review.payment_mode.title" | translate }}
+          </h5>
+          <div *ngIf="customertype !== 'B'" class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="online"
+              name="paymentMode"
+              [(ngModel)]="selectedPaymentMethod"
+              value="ONLINE"
+            />
+            <label
+              style="font-size: 13px"
+              class="form-check-label"
+              for="online"
+              >{{
+                "order_review.payment_mode.online_payment" | translate
+              }}</label
+            >
+          </div>
+          <!-- Payment Mode Selection -->
+          <div *ngIf="customertype !== 'B'" class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="cod"
+              name="paymentMode"
+              [(ngModel)]="selectedPaymentMethod"
+              value="COD"
+            />
+            <label style="font-size: 13px" class="form-check-label" for="cod">{{
+              "order_review.payment_mode.cash_on_delivery" | translate
+            }}</label>
+          </div>
+
+          <!-- Proceed to Pay Button -->
+          <button
+            style="background-color: #3170de; border-radius: 8px"
+            class="btn w-100 mt-3"
+            (click)="proceedToPay()"
+          >
+            <span class="proceed-to-pay-btn" *ngIf="customertype === 'B'">{{
+              "order_review.payment_mode.proceed" | translate
+            }}</span>
+            <span
+              *ngIf="customertype !== 'B' && selectedPaymentMethod == 'ONLINE'"
+              class="proceed-to-pay-btn"
+            >
+              {{ "order_review.payment_mode.proceed_to_pay" | translate }} ₹{{
+                OrderReviewDetails?.CART_INFO[0]?.TOTAL_AMOUNT | number
+              }}
+            </span>
+            <span
+              *ngIf="customertype !== 'B' && selectedPaymentMethod == 'COD'"
+              class="proceed-to-pay-btn"
+            >
+              {{ "order_review.payment_mode.proceed" | translate }}
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="modal fade"
+  id="couponModal"
+  tabindex="-1"
+  aria-labelledby="couponModalLabel"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-2">
+      <!-- Modal Header -->
+      <!-- Modal Header -->
+      <div
+        class="modal-header border-0 py-2 px-3 flex-column align-items-stretch"
+        *ngIf="!newcoupons"
+        style="background-color: #f8f9fa; border-radius: 6px"
+      >
+        <!-- Top Row: Back + Close -->
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <!-- Back Button -->
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+
+          <!-- Close Button -->
+        </div>
+
+        <!-- Bottom Row: Search Input -->
+        <div class="d-flex align-items-center">
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            *ngIf="couponcount > 0"
+            [placeholder]="
+              'order_review.coupon_modal.search_placeholder' | translate
+            "
+            [(ngModel)]="searchQuery"
+            style="font-size: 13px; flex: 1"
+          />
+        </div>
+      </div>
+
+      <div
+        class="border-0 p-3"
+        *ngIf="newcoupons"
+        style="background-color: #f8f9fa; border-radius: 6px"
+      >
+        <!-- Header Row -->
+        <div
+          class="d-flex align-items-center justify-content-between mb-2"
+          style="border-bottom: 1px solid #eaeaea; padding-bottom: 4px"
+        >
+          <!-- Back Button -->
+          <button
+            type="button"
+            class="btn btn-sm d-flex align-items-center"
+            (click)="goBackFromCoupon()"
+            style="font-size: 13px"
+          >
+            ←
+          </button>
+          <span style="margin-left: 10px">Coupon Code</span>
+          <!-- Close Button -->
+          <button
+            type="button"
+            class="btn-close"
+            (click)="goBackFromCoupon()"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <!-- Input Row -->
+        <div class="d-flex align-items-center justify-content-between">
+          <input
+            type="text"
+            class="form-control form-control-sm me-2"
+            placeholder="Enter your coupon code"
+            [(ngModel)]="searchQuery"
+            name="couponCode"
+            pattern="^[A-Za-z0-9]+$"
+            #couponCode="ngModel"
+            required
+            style="font-size: 13px; width: 70%"
+          />
+
+          <button
+            *ngIf="couponcount > 0 && !newcoupons"
+            class="btn btn-sm btn-primary"
+            (click)="applySelectedCoupon()"
+            style="font-size: 13px; min-width: 60px"
+            [disabled]="!couponCode.valid"
+          >
+            Apply
+          </button>
+          <button
+            *ngIf="newcoupons"
+            class="btn btn-sm btn-primary"
+            (click)="newcouponadd(couponCode.value)"
+            style="font-size: 13px; min-width: 60px"
+            [disabled]="!couponCode.valid"
+          >
+            Apply
+          </button>
+        </div>
+
+        <!-- Optional small validation message -->
+        <small
+          class="text-danger mt-1 d-block"
+          *ngIf="couponCode.invalid && couponCode.dirty"
+        >
+          Only letters and numbers are allowed.
+        </small>
+      </div>
+
+      <span *ngIf="!newcoupons">
+        <a
+          style="
+            margin-left: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #034a95;
+          "
+          (click)="addCoupon()"
+        >
+          Have a coupon code?
+        </a></span
+      >
+
+      <!-- Modal Body -->
+      <div
+        style="cursor: pointer; padding: 8px 8px 0px !important"
+        class="modal-body text-center p-3"
+      >
+        <ng-container
+          *ngIf="filteredCoupons.length > 0 && !newcoupons; else noCoupons"
+        >
+          <div
+            *ngFor="let coupon of filteredCoupons"
+            class="coupon-item d-flex justify-content-between align-items-center p-2 border-bottom small"
+            (click)="selectCoupon(coupon)"
+            [class.selected]="selectedCoupon?.COUPON_ID === coupon.COUPON_ID"
+            style="
+              border-radius: 10px;
+              margin-bottom: 12px;
+              background-color: #f8f9fa;
+              border: 0.5px solid #cbcbcb;
+              transition: transform 0.3s ease-in-out;
+            "
+            onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.15)';"
+            onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';"
+          >
+            <div class="p-3" style="padding: 3px !important">
+              <!-- Coupon Details -->
+              <div class="text-start" style="line-height: 25px">
+                <h6
+                  class="m-0 fw-bold text-dark"
+                  style="
+                    font-weight: 600;
+                    font-size: 14px;
+                    color: black !important;
+                  "
+                >
+                  {{
+                    coupon?.COUPON_NAME ? coupon?.COUPON_NAME : "Coupon Applied"
+                  }}
+                </h6>
+                <span
+                  class="m-0 text-muted"
+                  style="margin-top: 0px !important; font-size: 12px"
+                  >Code : {{ coupon.COUPON_CODE }}</span
+                >
+                &nbsp; &nbsp;
+                <span
+                  *ngIf="coupon.COUPON_VALUE_TYPE == 'P'"
+                  style="
+                    background-color: #ebd1d1;
+                    border-radius: 5px;
+                    padding: 4px;
+                    font-size: 10px !important;
+                    border: 1px solid #d3a5a5;
+                  "
+                >
+                  {{ coupon.COUPON_VALUE }}%
+                  {{ "order_review.coupons.discount" | translate }}
+                </span>
+                <span
+                  *ngIf="coupon.COUPON_VALUE_TYPE == 'A'"
+                  style="
+                    background-color: #ebd1d1;
+                    border-radius: 5px;
+                    padding: 4px;
+                    border: 1px solid #d3a5a5;
+                    font-size: 10px !important;
+                  "
+                >
+                  &#8377;{{ coupon.COUPON_VALUE | number }}
+                  {{ "order_review.coupons.discount" | translate }}
+                </span>
+              </div>
+            </div>
+
+            <div
+              style="cursor: pointer"
+              class="d-flex align-items-center gap-2"
+            >
+              <!-- Selection Indicator -->
+              <i
+                class="bi"
+                [ngClass]="
+                  selectedCoupon?.COUPON_ID === coupon.COUPON_ID
+                    ? 'bi-check-circle-fill text-success'
+                    : 'bi-circle'
+                "
+              ></i>
+
+              <!-- Delete Icon -->
+              <!-- <button class="btn btn-sm text-danger" (click)="removeCoupon($event, coupon)">
+                <i class="bi bi-trash"></i>
+              </button> -->
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- No Coupons Available -->
+        <ng-template #noCoupons>
+          <div class="no-coupons text-center" *ngIf="!newcoupons">
+            <!-- <img
+              src="assets/img/hand-drawn-no-data-concept.png"
+              style="width: 60px; height: 40px"
+              alt="No Coupons"
+              class="no-coupon-img mb-3"
+            /> -->
+            <img
+              src="assets/img/hand-drawn-no-data-concept.png"
+              style="width: 60px; height: 40px"
+              alt="No Coupons"
+              class="no-coupon-img mb-3"
+            />
+            <h6 class="fw-bold">
+              {{ "order_review.coupon_modal.no_coupons" | translate }}
+            </h6>
+            <p class="text-muted small">
+              {{ "order_review.coupons.no_coupons_message" | translate }}
+            </p>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Modal Footer with Apply Button for Available Coupons -->
+      <div class="modal-footer border-0 p-3" *ngIf="filteredCoupons.length > 0 && !newcoupons">
+        <button
+          class="btn btn-primary w-100"
+          (click)="applySelectedCoupon()"
+          [disabled]="!selectedCoupon"
+          style="padding: 10px; font-size: 14px; font-weight: 600"
+        >
+          {{ "order_review.coupon_modal.apply" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .custom-shadow {
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+  }
+</style>

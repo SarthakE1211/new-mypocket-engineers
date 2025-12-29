@@ -1,0 +1,165 @@
+/* You can add global styles to this file, and also import other style files */
+@import "./assets/scss/app.scss";
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+* {
+  // font-family: "Poppins", sans-serif;
+
+
+  font-family: "SF Pro Text";
+}
+
+/* You can add global styles to this file, and also import other style files */
+
+@import "./assets/scss/app.scss";
+/* You can add global styles to this file, and also import other style files */
+
+@import "./assets/scss/app.scss";
+
+h2,
+.h2 {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 0.001em;
+  line-height: 1.1;
+  text-transform: capitalize;
+  color: #1c2d3a;
+}
+
+.label.label-success {
+  background: #89c826;
+}
+
+.modal-header .btn-close {
+  background: #ff5c41;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 25px;
+  height: 25px;
+  opacity: 1;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.modal-content .btn-close>span {
+  font-size: 28px;
+  color: #fff;
+  line-height: 0.9;
+}
+
+// @media (max-width: 1460px) {
+.footer-bg .footer-details {
+  padding: 30px 15px !important;
+}
+
+// }
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+app-header,
+app-footer {
+  display: block;
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+
+body,
+div,
+span,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  font-family: "SF Pro Text";
+
+}
+
+
+
+@media screen and (max-width: 768px) {
+  .section-title p {
+    font-size: 17px !important;
+  }
+}

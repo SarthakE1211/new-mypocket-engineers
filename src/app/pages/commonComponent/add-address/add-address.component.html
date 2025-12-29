@@ -1,0 +1,483 @@
+<div *ngIf="modalVisible">
+  <div class="backdrop"></div>
+
+  <div class="map-container">
+    <div
+      class="map-header"
+      style="
+        background-color: #007bff;
+        padding: 12px 16px;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 6px;
+      "
+    >
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          width: 100%;
+        "
+      >
+        <p
+          class="mb-0"
+          style="
+            margin: 0;
+            font-weight: bold;
+            font-size: 16px;
+            color: white !important;
+          "
+        >
+          User Location
+        </p>
+        <p
+          class="text-muted small mb-0"
+          style="margin: 0; font-size: 12px; color: white !important"
+        >
+          Place the marker at your order location
+        </p>
+      </div>
+
+      <div style="text-align: end; padding: 6px" *ngIf="gettruecondition()">
+        <button class="close-menu-btn" (click)="closeMap()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Map Container -->
+    <div id="map"></div>
+
+    <div class="location-details">
+      <p style="margin-left:650px">{{ locationAddress || "Fetching address..." }}</p>
+    </div>
+
+    <div class="map-footer">
+      <button
+        [disabled]="!locationAddress"
+        style="
+          padding: 10px 20px;
+          font-size: 14px;
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        "
+        (click)="confirmLocation()"
+      >
+        Confirm Location
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isMobileMenuOpen" class="backdrop"></div>
+<div class="mobile-menu" [class.show]="isMobileMenuOpen">
+  <div *ngIf="showContent == 'addressTab'">
+    <div class="mobile-menu-header" style="justify-content: left">
+      <button class="close-menu-btn" (click)="closeMobileMenu()">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      Saved Addresses
+    </div>
+    <div *ngIf="loadAddresses" class="loading-container">
+      <div style="text-align: center" class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <div *ngIf="!loadAddresses" class="mobile-menu-content">
+      <div class="saved-addresses">
+        <div
+          class="address-card"
+          *ngFor="let address of addressData; let i = index"
+        >
+          <div class="address-header">
+            <div class="icon-text">
+              <i class="bi bi-house-door"></i>
+              <span class="address-name">{{ address.ADDRESS_LINE_1 }}</span>
+            </div>
+            <button class="edit-btn" (click)="editAddress(address)">
+              <i class="bi bi-pencil"></i>
+            </button>
+          </div>
+          <div class="address-details">
+            {{ address.ADDRESS_LINE_2 }}
+          </div>
+          <div class="default-badge" *ngIf="address.IS_DEFAULT">
+            Default Address
+          </div>
+        </div>
+
+        <div class="add-address" (click)="addNewAddress()">
+          + Add New Address
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="showContent == 'addressForm'">
+    <!-- <label for="">{{addressForm | json}} addresss</label> -->
+    <div *ngIf="addressForm">
+      <div
+        class="mobile-menu-header"
+        style="justify-content: right"
+        *ngIf="gettruecondition()"
+      >
+        <button class="close-menu-btn" (click)="closeMobileMenu()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="mobile-menu-content">
+        <div style="flex-shrink: 0; margin: 8px; text-align: center">
+          <svg
+            width="66"
+            height="66"
+            viewBox="0 0 66 66"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="66" height="65.1219" rx="32.561" fill="#FAFAFA" />
+            <circle cx="32.561" cy="32.561" r="26.561" fill="#F4F4F4" />
+            <path
+              d="M20.6299 39.2116C16.1906 33.1201 16.8468 24.7035 22.1766 19.3737C28.154 13.3963 37.8454 13.3963 43.8228 19.3737C49.1526 24.7035 49.8088 33.1201 45.3695 39.2116L36.0195 52.0413C34.5271 54.0892 31.4723 54.0891 29.9799 52.0413L20.6299 39.2116Z"
+              fill="#4C4C4C"
+            />
+            <circle cx="33.0137" cy="31.0567" r="5.97857" fill="#D9D9D9" />
+          </svg>
+        </div>
+
+        <div
+          class="address-form-content"
+          style="
+            background: #fcfcfd;
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+          "
+        >
+          <h2 class="form-title">Enter address details</h2>
+
+          <form
+            class="address-form"
+            #addressSubmit="ngForm"
+            (ngSubmit)="saveAddress(addressSubmit)"
+            style="flex: 1; display: flex; flex-direction: column"
+            (keydown)="onKeyDown($event)"
+          >
+            <div class="save-address-type">
+              <p class="section-label">Save Address As *</p>
+              <div class="address-type-options">
+                <label
+                  class="radio-container"
+                  [class.selected]="addressForm.TYPE === 'H'"
+                >
+                  <input
+                    type="radio"
+                    [(ngModel)]="addressForm.TYPE"
+                    name="addressType"
+                    value="H"
+                  />
+                  <span class="radio-label">Home</span>
+                </label>
+                <label
+                  class="radio-container"
+                  [class.selected]="addressForm.TYPE === 'F'"
+                >
+                  <input
+                    type="radio"
+                    [(ngModel)]="addressForm.TYPE"
+                    name="addressType"
+                    value="F"
+                  />
+                  <span class="radio-label">Work</span>
+                </label>
+                <label
+                  class="radio-container"
+                  [class.selected]="addressForm.TYPE === 'O'"
+                >
+                  <input
+                    type="radio"
+                    [(ngModel)]="addressForm.TYPE"
+                    name="addressType"
+                    value="O"
+                  />
+                  <span class="radio-label">Other</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- <div class="form-group">
+              <input type="text" class="form-control" [value]="locationCode || 'WJHV+GV5'" readonly />
+              <button type="button" class="change-btn" (click)="onshowMap()">
+                Change
+              </button>
+            </div> -->
+
+            <div
+              class="form-group"
+              style="
+                display: flex;
+                justify-content: center;
+                cursor: pointer;
+                font-weight: bold;
+              "
+            >
+              <span
+                (click)="onshowMap()"
+                style="color: #3170de"
+                class="form-text"
+                >Change Location</span
+              >
+            </div>
+
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="House number/flat no/floor no"
+                [(ngModel)]="addressForm.ADDRESS_LINE_1"
+                name="addressLine1"
+                required
+                #addressLine1="ngModel"
+                autocomplete="off"
+              />
+              <div
+                *ngIf="(addressLine1.errors?.['required'] && (addressLine1.touched || addressSubmitted))"
+                class="error-message"
+              >
+                Please enter house number/flat no/floor no.
+              </div>
+            </div>
+
+            <!-- {{Ecommtype }} -->
+
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="addressForm.ADDRESS_LINE_2"
+                placeholder="area/street/village"
+                name="addressLine2"
+              />
+            </div>
+
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Landmark (optional)"
+                [(ngModel)]="addressForm.LANDMARK"
+                name="LANDMARK"
+              />
+            </div>
+
+            <span style="display: none"> {{ searchPincode }} </span>
+            <div class="form-group pincode-field">
+              <!-- (click)="togglePincodeDropdown(selectedPincode); $event.stopPropagation()" -->
+              <div class="pincode-input-group">
+                <div class="input-container">
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="selectedPincode"
+                    [placeholder]="selectedPincode ? '' : 'Select pincode'"
+                    name="pincode"
+                    readonly
+                    #pincode="ngModel"
+                    autocomplete="false"
+                    required
+                  />
+                  <div
+                    *ngIf="isLoading"
+                    class="loading-container1 spinner-inside"
+                  >
+                    <div
+                      style="text-align: center"
+                      class="spinner-border"
+                      role="status"
+                    >
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- <div class="dropdown-icon">
+                <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
+                  <path d="M1 1L5 5L9 1" stroke="#666" stroke-width="1.5" />
+                </svg>
+              </div> -->
+              </div>
+              <div
+                *ngIf="pincode.errors?.['required'] && (pincode.touched || addressSubmitted)"
+                class="error-message"
+              >
+                Please Enter Valid Pincode
+              </div>
+
+              <!-- <div class="pincode-dropdown-container" *ngIf="showPincodeDropdown">
+              <div class="pincode-dropdown">
+                <div class="search-box">
+                  <input type="text" placeholder="Search pincode..." [(ngModel)]="searchPincode"
+                    (ngModelChange)="togglePincodeDropdown123(searchPincode)" name="pincodeSearch"
+                    (input)="filterPincodes($event)" (click)="$event.stopPropagation()" #pincodeSearch="ngModel" />
+                </div>
+                <div class="pincode-list">
+                  <div class="pincode-item" *ngFor="let pincode of filteredPincodes"
+                    (click)="selectPincode(pincode); $event.stopPropagation()">
+                    <span class="area">{{ pincode.PINCODE_NUMBER }}</span>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+            </div>
+            <!-- <div *ngIf="(pincode.errors?.['required'] && (pincode.touched || addressSubmitted))" class="error-message"
+              style="margin-top: -0.75rem">
+              Please Select Pincode.
+            </div> -->
+
+            <div class="form-group">
+              <input
+                type="text"
+                required
+                #cityName="ngModel"
+                class="form-control"
+                [(ngModel)]="addressForm.CITY_NAME"
+                placeholder="Enter city name"
+                name="cityName"
+              />
+            </div>
+            <div
+              style="margin-bottom: 20px !important; margin-top: 0px !important"
+              *ngIf="cityName.errors?.['required'] && (cityName.touched || addressSubmitted)"
+              class="error-message"
+            >
+              Please Enter City
+            </div>
+
+            <div class="form-group pincode-field">
+              <div
+                class="pincode-input-group"
+                (click)="toggleStatesDropdown(); $event.stopPropagation()"
+              >
+                <input
+                  type="text"
+                  class="form-control"
+                  name="state"
+                  [value]="selectedState || 'Select State...'"
+                  readonly
+                />
+                <div class="dropdown-icon">
+                  <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
+                    <path d="M1 1L5 5L9 1" stroke="#666" stroke-width="1.5" />
+                  </svg>
+                </div>
+              </div>
+
+              <div class="pincode-dropdown-container" *ngIf="showStateDropdown">
+                <div class="pincode-dropdown">
+                  <div class="search-box">
+                    <input
+                      type="text"
+                      placeholder="Search State..."
+                      [(ngModel)]="searchState"
+                      name="stateSearch"
+                      (input)="filterStates($event)"
+                      (click)="$event.stopPropagation()"
+                    />
+                  </div>
+                  <div class="pincode-list">
+                    <div
+                      class="pincode-item"
+                      *ngFor="let state of filteredStates"
+                      (click)="selectState(state); $event.stopPropagation()"
+                    >
+                      <!-- <span class="state">{{ state.code }}</span> -->
+                      <span class="area">{{ state.NAME }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="form-check"
+              *ngIf="VisibleIsDefault && gettruecondition()"
+            >
+              <input
+                class="form-check-input"
+                [(ngModel)]="addressForm.IS_DEFAULT"
+                type="checkbox"
+                name="flexCheckChecked"
+                id="flexCheckChecked"
+              />
+              <label
+                class="form-check-label"
+                for="flexCheckChecked"
+                style="font-size: 13px; font-weight: 600"
+              >
+                Is Default Address
+              </label>
+            </div>
+            <button
+              type="submit"
+              class="confirm-button"
+              style="margin-top: auto"
+              [disabled]="isConfirmLoading"
+            >
+              <span
+                *ngIf="isConfirmLoading"
+                class="spinner-border spinner-border-sm me-2"
+              ></span>
+              {{ isConfirmLoading ? "Confirming..." : "Confirm" }}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

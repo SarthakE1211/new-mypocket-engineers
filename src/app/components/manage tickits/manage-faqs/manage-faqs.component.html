@@ -1,0 +1,157 @@
+<!-- <div *ngIf="showContent == 'HelpandSupportTab'"> -->
+<div
+  class="mobile-menu-header border-bottom offcanvas-header"
+  style="justify-content: space-between"
+>
+ 
+  <div style="padding-left: 8px; font-weight: 600"> 
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2" (click)="close()"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg> 
+ Help & Support </div>
+  <!-- <div *ngIf="userID != 0 && userID != null && userID != undefined && !faqLoading">
+  <button *ngIf=" currentterritory!==undefined && currentterritory!==null && currentterritory!==0 && currentterritory!=='' && currentterritory!=='undefined'" class="btn btn-primary w-100" (click)="manageTickets()" style="background-color: #2a3b8f;    font-size: 13px;">
+    Manage Support Tickets
+  </button>
+</div> -->
+</div>
+
+<div
+  class="mobile-menu-content offcanvas-body"
+  style="overflow-y: auto; max-height: 80vh"
+>
+  <div class="faq-container" style="margin-bottom: 50px">
+    <!-- <div class="faq-title">FAQs</div> -->
+    <div *ngIf="faqheadLoading" class="loading-container">
+      <div style="text-align: center" class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <!-- No Data Available -->
+    <div
+      *ngIf="!faqheadLoading && faqDatahead.length === 0"
+      class="text-center w-100 no-data-container custom-faq"
+    >
+      <img
+        src="assets/img/no-data-concept.jpg"
+        alt="No Data Available"
+        class="img-fluid no-data-img"
+      />
+    </div>
+    <div *ngIf="!faqheadLoading && faqDatahead.length > 0" class="faq-list">
+      <div
+        *ngFor="let panel111 of faqDatahead; let i = index"
+        class="faq-item"
+        [ngClass]="{ open: activePanelIndex11111 === i }"
+      >
+        <button
+          class="faq-question"
+          (click)="togglePanel111111(i, panel111.ID)"
+        >
+          <span style="font-weight: 500;font-size: 14px;">{{ panel111.NAME }} </span>
+          <svg
+            [class.rotate]="activePanelIndex11111 === i"
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+
+        <div class="faq-answer" *ngIf="activePanelIndex11111 === i">
+          <!-- <p>{{ panel.ANSWER }}</p> -->
+          <div *ngIf="faqLoading" class="loading-container">
+            <div
+              style="text-align: center"
+              class="spinner-border"
+              role="status"
+            >
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+          <div *ngIf="faqData.length > 0">
+            <div
+              *ngFor="let panel of faqData; let j = index"
+              class="faq-item"
+              [ngClass]="{ open: activePanelIndex === j }"
+            >
+              <button class="faq-question" (click)="togglePanel(j)">
+                <span style="font-weight: 500;font-size: 14px;">{{ panel.QUESTION }}</span>
+                <svg
+                  [class.rotate]="activePanelIndex === j"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+
+              <div class="faq-answer" *ngIf="activePanelIndex === j">
+                <p>{{ panel.ANSWER }}</p>
+              </div>
+            </div>
+          </div>
+          <div
+            *ngIf="!faqLoading && faqData.length === 0"
+            class="text-center w-100 custom-faq"
+            style="min-height: 10px !important"
+          >
+            <img
+              src="assets/img/no-data-concept.jpg"
+              alt="No Data Available"
+              style="max-width: 100px !important; height: auto !important"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Offcanvas Drawer -->
+<div
+  *ngIf="isDrawerVisible"
+  id="offcanvasRight11"
+  class="offcanvas offcanvas-end widthclass"
+  tabindex="-1"
+  aria-labelledby="offcanvasRightLabel"
+>
+  <!-- <div class="offcanvas-header">
+        <h5 id="offcanvasRightLabel">Tickets</h5>
+        <button type="button" class="btn-close" (click)="TikitdrawerClose()" aria-label="Close"></button>
+      </div> -->
+  <div class="offcanvas-body" style="padding: 0px">
+    <app-show-tickets
+      [drawerClose]="closeCallback"
+      [isDrawerVisible]="isDrawerVisible"
+    ></app-show-tickets>
+  </div>
+</div>
+
+<!-- </div> -->

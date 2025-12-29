@@ -1,0 +1,660 @@
+// .order-details {
+//     max-width: 600px;
+//     margin: auto;
+//   }
+
+//   .accordion-button {
+//     font-weight: bold;
+//   }
+
+//   @media (max-width: 576px) {
+//     .order-details {
+//       padding: 10px;
+//     }
+//   }
+// .accordion-collapse {
+//     transition: height 0.15s ease-in-out; /* Speed up accordion toggle */
+// }
+.responsive-scroll {
+  max-height: 450px;
+  overflow: auto;
+}
+
+/* Medium and up screens */
+@media (min-width: 768px) {
+  .responsive-scroll {
+    max-height: 360px;
+  }
+}
+
+/* Large screens */
+@media (min-width: 992px) {
+  .responsive-scroll {
+    max-height: 300px;
+  }
+}
+
+
+.map-container {
+  width: 100%;
+  height: 500px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+}
+
+
+body {
+  font-size: 14px;
+  /* Set default font size */
+}
+
+h2,
+h5 {
+  font-size: 15px !important;
+  /* Keep headings within the range */
+}
+
+p,
+span,
+button {
+  font-size: 13px !important;
+}
+
+.accordion-button,
+.accordion-body,
+.status-item p,
+.btn {
+  font-size: 14px !important;
+}
+
+.badge {
+  font-size: 13px !important;
+  padding: 2px 6px;
+}
+
+// .scrollable-content {
+//     max-height: 142px; /* Adjust height as needed */
+//     overflow-y: auto;
+//     padding-right: 10px; /* Optional: To avoid scrollbar overlapping content */
+//   }
+.technician-card {
+  max-height: 900px;
+  /* Adjust as needed */
+  overflow-y: auto;
+}
+
+.scrollable-content1 {
+  max-height: 343px;
+  overflow: auto;
+}
+
+.scrollable-contentpart {
+  max-height: calc(100vh - 160px);
+  /* व्ह्यूपोर्ट उंचीवर आधारित */
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+@media (max-width: 768px) {
+  .scrollable-contentpart {
+    max-height: calc(100vh - 150px);
+  }
+}
+
+
+//   .accordion-collapse {
+//     transition: max-height 0.3s ease-in-out;
+//     max-height: 0;
+//     overflow: hidden;
+// }
+
+// .accordion-collapse.show {
+//     max-height: 1000px; /* Or set a sufficiently large value */
+//     overflow: scroll;
+// }
+
+.accordion-button {
+  background: #f8f9fa;
+  border: none;
+  cursor: pointer;
+  border-radius: 16px !important;
+
+}
+
+.accordion-button.collapsed {
+  background: #fff;
+}
+
+.accordion-collapse {
+  display: none;
+}
+
+.accordion-collapse.show {
+  display: block;
+}
+/* Default: Show text and icon */
+.show-details-btn {
+  display: inline-block;
+  cursor: pointer;
+  color: #2a3b8f;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: right;
+  position: relative;
+}
+
+/* Mobile View (max-width: 768px) */
+@media (max-width: 768px) {
+  .show-details-btn .btn-text {
+    display: none; /* Hide text on mobile */
+  }
+
+  .show-details-btn i {
+    font-size: 16px; /* Icon size */
+    color: #2a3b8f;
+  }
+}
+
+
+
+.badge-custom {
+  background-color: #092B9C;
+  /* Primary Blue */
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 12px 15px;
+  border-radius: 5px 0 0 5px;
+  /* Rounded left edge */
+  position: absolute;
+  top: 10px;
+  right: 0;
+  min-width: 130px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  /* Space between icon and text */
+}
+
+
+.accordion-collapse {
+  transition: max-height 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.accordion-collapse:not(.show) {
+  max-height: 0;
+}
+
+.accordion-collapse.show {
+  max-height: 500px;
+  /* Adjust height as needed */
+}
+
+
+
+.status-header {
+  background: #f0f5ff;
+  /* Light blue */
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 20px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 0;
+  height: 100%;
+  width: 2px;
+  background: #d3d3d3;
+  /* Light gray line */
+}
+
+.timeline-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.timeline-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-content {
+  flex-grow: 1;
+}
+
+.text-muted {
+  color: #6c757d !important;
+}
+
+
+/* Ensure status items are aligned */
+.status-container {
+  max-height: 250px;
+  /* Adjust based on your needs */
+  overflow-y: auto;
+  padding-left: 15px;
+  position: relative;
+}
+
+/* Add scrollbar */
+.status-container::-webkit-scrollbar {
+  width: 5px;
+}
+
+.status-container::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 5px;
+}
+
+.status-item {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+
+/* Vertical line between status items */
+.status-line {
+  position: absolute;
+  left: 5px;
+  top: 22px;
+  height: calc(100% - 10px);
+  width: 2px;
+  background: #ccc;
+}
+
+/* Adjust icon size */
+.status-icon {
+  font-size: 16px;
+  position: absolute;
+  left: -2px;
+}
+
+.technician-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 300px;
+  border-radius: 10px;
+}
+
+
+// shubham
+
+
+// shubham
+
+
+#map {
+  width: 100%;
+  height: 400px;
+  /* Ensure the map is visible */
+  border-radius: 8px;
+}
+
+
+.select-container {
+  display: flex;
+  justify-content: center;
+}
+
+body {
+  font-family: SF Pro Text;
+}
+
+.customer-message {
+
+  max-width: 50%;
+}
+
+
+
+.chat-container {
+  max-height: 88vh;
+  margin: 0 auto;
+  background-color: #f4f4f4;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+}
+
+.message-box {
+
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  padding-right: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f4f4f4;
+
+}
+
+
+.message-box::-webkit-scrollbar {
+  width: 2px;
+}
+
+.message-box::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 3px;
+}
+
+.message-box::-webkit-scrollbar-track {
+  background-color: #f4f4f4;
+  border-radius: 3px;
+}
+
+.message {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.customer-message {
+  max-width: 70%;
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+}
+
+.technician-message {
+  max-width: 70%;
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+}
+
+.customer-name,
+.technician-name {
+  font-weight: bold;
+  font-size: 10px !important;
+}
+
+.timestamp {
+
+  font-size: 10px !important;
+  color: gray;
+  margin-top: 5px;
+}
+
+.message-text {
+  font-size: 13px;
+  margin-top: 5px;
+  background-color: #e4e4e4;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.technician-message .message-text {
+  background-color: #aeb7e3;
+}
+
+.input-area {
+  display: flex;
+  justify-content: space-between;
+}
+
+textarea {
+  width: 80%;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  resize: none;
+}
+
+.whatsapp-send-icon {
+  width: 13%;
+  background-color: #334393;
+  color: white;
+  padding: 8px;
+  border: none;
+  border-radius: 10px;
+  margin-left: 5px;
+  margin-right: 20px;
+  height: 37px;
+  cursor: pointer;
+}
+
+.whatsapp-send-icon:hover {
+  background-color: #182464;
+}
+
+
+.paper-clip {
+  margin-right: 2px;
+  background-color: #f4f4f4;
+  border: none;
+  height: 37px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+// .map-container {
+//   height: 100vh;
+//   width: 100%;
+// }
+
+// #map {
+//   height: 100%;
+//   width: 100%;
+// }
+
+
+.onhover {
+
+  width: 100%;
+  height: 100px;
+  transition: all 0.7s ease-in-out;
+  /* Smooth transition */
+
+}
+
+.onhover:hover {
+  width: 100%;
+  /* Example of hover effect */
+  height: 100%;
+  background-color: lightgray;
+  /* Optional: Change background on hover */
+}
+
+.part-details-card1 {
+  // max-width: 340px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.part-total-card {
+  background: linear-gradient(to top right, #f8f9fa, #ffffff);
+  border-left: 4px solid #0d6efd;
+}
+
+
+.details-grid {
+  // display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px 15px;
+  font-size: 14px;
+  color: #333;
+}
+
+.text-secondary {
+  font-size: 14px;
+}
+
+.text-dark {
+  font-size: 14px;
+}
+
+.fw-bold {
+  font-size: 15px;
+}
+
+::ng-deep .modal-backdrop {
+  --bs-backdrop-zindex: 1040 !important;
+}
+
+.newclass.btn-light::after {
+  display: none !important;
+  /* Hides the dropdown arrow */
+  content: none !important;
+  /* Ensures no space remains */
+}
+
+.download-icon {
+  color: #2A3B8F;
+}
+
+@media (max-width: 400px) {
+  .myclass.p-3 {
+    padding: 8px;
+    /* Reduce padding */
+  }
+
+  .myclass .d-flex.justify-content-between {
+    flex-direction: column;
+    /* Stack label and value vertically */
+    align-items: flex-start;
+  }
+
+  .myclass .d-flex.justify-content-between p {
+    margin-bottom: 4px;
+    /* Reduce spacing */
+  }
+
+  .myclass .text-primary {
+    font-size: 14px;
+    /* Adjust font size for priority text */
+  }
+}
+
+
+
+
+// 
+
+.widthclass {
+
+  width: 60vw;
+}
+
+@media screen and (max-width: 767px) {
+  .widthclass {
+    width: 100vw;
+  }
+}
+
+
+/* Bottom Row: Clock Icon & Date */
+.cart-bottom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px !important;
+  color: #0E0E0E;
+  padding: 12px 0;
+}
+
+/* Clock Icon */
+.cart-icon {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  color: red;
+  font-size: 18px;
+}
+.accordion-button::after {
+  display: none !important;
+}
+
+.shadow-sm{
+  box-shadow: 0px 0px 9.8px 0px #00000014 !important;
+}
+
+.service-name {
+  cursor: pointer;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* Ensures two-line limit */
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  max-width: 100%; /* Adjust as needed */
+  position: relative;
+}
+
+/* Show tooltip only when text overflows */
+.service-name:hover::after {
+  content: attr(title); /* Display full text */
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  bottom: 100%; /* Position above */
+  left: 50%;
+  transform: translateX(-50%);
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Hide tooltip if text is fully visible */
+.service-name:not(:hover)::after {
+  visibility: hidden;
+  opacity: 0;
+}
+.text-success{
+  color: #2A3B8F !important ;
+}
+
+.btnhoverclas :hover{
+  color: white !important;
+}

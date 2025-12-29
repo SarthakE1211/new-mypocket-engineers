@@ -1,0 +1,552 @@
+<div *ngIf="loadepage" class="loading-overlay">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+<!-- Bootstrap Modal -->
+
+ 
+<div class="modal fade" id="confirmtoaddaddress" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+  <div class="modal-dialog modal-lg d-flex justify-content-center">
+    <div class="modal-content" style="max-width: 80%">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Confirm Address Change</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+ 
+      <div class="modal-body">
+        <div class="d-flex align-items-center">
+          Are you sure you want to change your address? Please note that after changing the address, your cart will be
+          cleared.
+        </div>
+ 
+      </div>
+ 
+      <div class="modal-footer d-flex flex-row">
+ 
+        <button type="button" class="btn btn-outline-dark w-10 mt-2" (click)="ConfirmcloseAddressModal()">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-dark w-10" (click)="Procced()">
+          Ok
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<div class="modal fade" id="addressModal1" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+  <div class="modal-dialog modal-lg d-flex justify-content-center">
+    <div class="modal-content" style="max-width: 80%">
+      <div class="modal-header" style="padding: 10px 15px !important;">
+        <h5 class="modal-title fw-bold" style="font-size: 15px;">Select Address</h5>
+        <button type="button" style="font-size: 12px;" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+ 
+      <div class="modal-body  overflow-auto" style="max-height: 400px;padding-bottom: 8px;padding-top: 0px;">
+        <div *ngFor="let address of addresses" [ngStyle]="((address.PINCODE_FOR === 'B' || address.PINCODE_FOR === 'S') && address.TERRITORY_ID == defaultAddress.TERRITORY_ID) 
+        ? {} 
+        : { 'display': 'none' }" class="border rounded p-2 mb-2" sclass="border rounded p-2 mb-2" style="border: none !important;border-radius: 0px !important;border-bottom: 1px solid #CBCBCB !important;    padding-left: 0px !important;padding-right: 0pc !important;">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <!-- Default Address Preselected -->
+              <!-- <input type="radio" name="address" [value]="address.ID"
+                                [checked]="address.ID === defaultAddress?.ID" /> -->
+              <input type="radio" name="address11" [value]="address.ID" [(ngModel)]="selectedAddress" />
+              <!-- <label for="">{{address.ID}} {{defaultAddress?.ID}}</label> -->
+ 
+              <div class="ms-2" style="font-size: small; white-space: pre-line">
+                <span class="fw-bold">{{ address.NAME }}</span>
+                <p class="text-muted mb-0">
+                  {{ address?.ADDRESS_LINE_1 }} {{address?.ADDRESS_LINE_2}} {{address?.LANDMARK}},{{ address?.COUNTRY_NAME }} ,{{ address?.STATE_NAME }}, {{ address?.DISTRICT_NAME }} ,{{address?.PINCODE}}
+                </p>
+              </div>
+            </div>
+            <div *ngIf="customertype == 'I'">
+              <button  class="btn btn-sm" (click)="editAddress(address)">
+                <svg xmlns="http://www.w3.org/2000/svg" style="width: 15px !important;
+    height: 15px !important;" width="15" height="15" viewBox="0 0 18 18" fill="none">
+<path d="M14.3962 0.75V0.750977C14.7707 0.750051 15.1419 0.822538 15.488 0.96582L15.7409 1.08594C15.9878 1.21808 16.2145 1.38576 16.4128 1.58496H16.4118C16.9474 2.1198 17.2488 2.84564 17.2497 3.60254L17.236 3.88379C17.172 4.53733 16.8843 5.15192 16.4167 5.62109V5.62207L5.00458 17.0332C4.9704 17.0674 4.93323 17.0982 4.89325 17.125L4.76532 17.1934C4.72057 17.2119 4.67393 17.2259 4.62665 17.2354L4.48212 17.25H1.54852C1.49995 17.25 1.45141 17.2457 1.40399 17.2363L1.26532 17.1943C1.22047 17.1758 1.17756 17.1528 1.13739 17.126L1.02606 17.0332C0.991738 16.9989 0.960122 16.962 0.933289 16.9219L0.864929 16.7939C0.827811 16.7043 0.809209 16.6078 0.809265 16.5107V13.5771L0.822937 13.4336C0.850838 13.2922 0.920107 13.1605 1.02313 13.0566H1.02411L12.3688 1.5957L12.5759 1.40527C12.7919 1.22558 13.0344 1.07864 13.2946 0.969727L13.5583 0.874023C13.8271 0.791678 14.1072 0.749958 14.3893 0.75H14.3962ZM2.2868 13.8809V15.7725H4.17645L13.7067 6.24219L11.7673 4.30273L2.2868 13.8809ZM14.3913 2.22754C14.2556 2.22749 14.1211 2.24846 13.9919 2.28809L13.8649 2.33398C13.6983 2.4038 13.5472 2.50598 13.4206 2.63477H13.4196L12.8073 3.25293L14.7507 5.19629L15.3718 4.57617C15.6286 4.31834 15.7731 3.96943 15.7731 3.60547C15.7731 3.24132 15.6288 2.89169 15.3718 2.63379L15.3659 2.62891L15.362 2.62402C15.243 2.49025 15.0947 2.38499 14.9294 2.31641C14.8052 2.26492 14.6733 2.23485 14.5397 2.22754H14.3913Z" fill="#2A3B8F" stroke="#2A3B8F" stroke-width="0.5"/>
+</svg>
+                <!-- Edit icon -->
+              </button>
+              <button  *ngIf="!address.IS_DEFAULT" class="btn btn-sm text-danger" (click)="deleteAddress(address.ID)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <div class="modal-footer d-flex flex-column" style="border-top: none !important;">
+        <button type="button" class="btn btn-dark w-100" (click)="ConfirmopenAddressModal('select')">
+          Select
+        </button>
+        <!-- <button *ngIf="customertype == 'I'" type="button" class="btn btn-outline-dark w-100 mt-2" (click)="ConfirmopenAddressModal('add')">
+          Add Address
+        </button> -->
+      </div>
+    </div>
+  </div>
+</div>
+ 
+
+<!-- <div *ngIf="!loadepage" class="offcanvas-header border-bottom">
+  <h5 class="offcanvas-title fw-bold" style="font-size: 14px">
+    {{ data.CATEGORY_NAME || "Service Details" }}
+  </h5>
+  <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+</div> -->
+
+<!-- <div *ngIf="!loadepage" class="demodash offcanvas-body d-flex flex-column"> -->
+<!-- Selected Device Type -->
+<p class="device-type" style="font-size: 13px;margin-bottom: 2px;">
+  {{ "servicejson.selected_service" | translate }} :
+  <span class="text-danger fw-bold"
+    style="font-size: 14px; white-space: nowrap;  text-overflow: ellipsis; max-width: 200px; display: inline-block;"
+    [attr.title]="data.NAME || 'N/A'" data-bs-toggle="tooltip" data-bs-placement="top">
+    {{ (data.NAME?.length > 40) ? (data.NAME | slice:0:40) + '...' : (data.NAME || 'N/A') }}
+  </span>
+</p>
+
+<p class="text-muted" style="font-size: 12px;">
+  {{ "servicejson.enter_details" | translate }}
+</p>
+
+<!-- Address Section -->
+<div *ngIf="defaultAddress" (click)="openAddressModal()" class="border rounded p-3 mb-2"
+  style="cursor: pointer;box-shadow: 0px 5px 90px 0px rgba(0, 0, 0, 0.1); font-size: 13px ; cursor: pointer;">
+  <div class="d-flex justify-content-between align-items-center">
+    <span class="fw-bold" style="font-size: 14px">
+      🏠 {{ defaultAddress.ADDRESS_LINE_1 }},
+      {{ defaultAddress.DISTRICT_NAME }}
+    </span>
+    <i class="bi bi-chevron-right"></i>
+  </div>
+  <p class="text-muted mb-0" style="padding-left: 25px; font-size: 12px">
+    {{ defaultAddress.ADDRESS_LINE_2 }}, {{ defaultAddress.PINCODE }}
+  </p>
+</div>
+
+<!-- System Formatting Section -->
+<div class="border rounded p-3 bg-light shadow-sm" style="border-color: #dee2e6 !important;
+    background: white !important;">
+  <p class="fw-bold mb-1" style="font-size: 14px; white-space: nowrap;  text-overflow: ellipsis; max-width: 200px;"
+    [attr.title]="data.NAME" data-bs-toggle="tooltip" data-bs-placement="top">
+    {{ (data.NAME?.length > 40) ? (data.NAME | slice:0:40) + '...' : (data.NAME || 'N/A') }}
+  </p>
+
+  <div  *ngIf="customertype !== 'B'" class="d-flex justify-content-between text-muted">
+    <span style="font-size: 12px">{{
+      "servicejson.base_price" | translate
+      }}</span>
+    <!-- <span *ngIf="customertype === 'B'" class="fw-bold" style="font-size: 13px">₹ {{ data.B2B_PRICE || "0" }}</span> -->
+    <span *ngIf="customertype !== 'B'" class="fw-bold" style="font-size: 13px">₹ {{ (data.B2C_PRICE| number) || "0" }}</span>
+  </div>
+  <div class="d-flex justify-content-between text-muted">
+    <span style="font-size: 12px"> {{ customertype === 'B' ? 'Estimated Duration' : 'Estimated Duration' }}
+    </span>
+    <span class="fw-bold" style="font-size: 13px">
+      <!-- {{ data?.T_PREPARATION_HOURS || 0 }}h {{ data?.T_PREPARATION_MINUTES || 0 }}m -->
+                      {{(data?.DURARTION_HOUR || 0) * 60 + (data?.DURARTION_MIN || 0)}} min
+
+      <!-- {{ data?.DURARTION_HOUR || 0 }}h {{ data?.DURARTION_MIN || 0 }}m -->
+    </span>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center mt-2">
+    <span style="font-size: 12px">{{
+      "servicejson.quantity" | translate
+      }}</span>
+
+    <div class="input-group qty-box">
+      <button class="btn btn-outline-secondary btn-sm" (click)="decreaseQty()" style="font-size: 12px">
+        -
+      </button>
+      <!-- {{data.QUANTITY}} -->
+      <input type="text" class="form-control text-center" [(ngModel)]="quantity" (ngModelChange)="changeData($event)"
+        readonly name="any" style="font-size: 12px" />
+
+      <button class="btn btn-outline-secondary btn-sm" (click)="increaseQty()" style="font-size: 12px">
+        +
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Input Fields -->
+<!-- Input Fields -->
+<div class="mt-3 border rounded p-3 shadow-sm" style="padding-bottom: 120px !important;">
+  <!-- Brand Name Field -->
+  <div class="d-flex justify-content-between align-items-center">
+    <label class="form-label text-muted mb-0" style="font-size: 12px"> {{ "servicejson.brand_name" | translate }}</label>
+    <span class="text-muted" style="font-size: 12px">(Optional)</span>
+  </div>
+  <input type="text" class="form-control custom-input" [(ngModel)]="data.BRAND_NAME" placeholder="Enter brand name"
+    style="font-size: 12px" maxlength="128" (focus)="isFocused = 'BRAND_NAME'" (blur)="isFocused = ''" />
+
+  <h6 style="color: red; font-size: 10px; margin-top:4px" *ngIf="
+  isFocused === 'BRAND_NAME' ||
+  (data.BRAND_NAME != undefined &&
+    data.BRAND_NAME != null &&
+    data.BRAND_NAME != '' &&
+    isFocused === 'BRAND_NAME')
+">
+    {{ data?.BRAND_NAME?.length || 0 }}/128
+  </h6>
+
+  <!-- Model Number Field with Info Icon -->
+  <div class="d-flex justify-content-between align-items-center mt-3">
+    <label class="form-label text-muted mb-0" style="font-size: 12px"> {{ "servicejson.model_number" | translate }}</label>
+    <div class="d-flex align-items-center">
+      <span class="text-muted me-1" style="font-size: 12px">(Optional)</span>
+      <i class="bi bi-info-circle text-primary" style="cursor: pointer; font-size: 12px" data-bs-toggle="modal"
+        data-bs-target="#modelNumberModal"></i>
+    </div>
+  </div>
+  <input type="text" class="form-control custom-input" [(ngModel)]="data.MODEL_NUMBER" placeholder="Enter model number"
+    style="font-size: 12px" maxlength="60" (focus)="isFocused = 'MODEL_NUMBER'" (blur)="isFocused = ''" />
+  <h6 style="color: red; font-size: 10px; margin-top:4px" *ngIf="
+  isFocused === 'MODEL_NUMBER' ||
+  (data.MODEL_NUMBER != undefined &&
+    data.MODEL_NUMBER != null &&
+    data.MODEL_NUMBER != '' &&
+    isFocused === 'MODEL_NUMBER')
+">
+    {{ data?.MODEL_NUMBER?.length || 0 }}/60
+  </h6>
+
+  <!-- Image Upload with Info Icon -->
+  <div class="d-flex justify-content-between align-items-center mt-3">
+    <label class="form-label text-muted mb-0" style="font-size: 12px">{{
+      "servicejson.upload_photo" | translate
+      }}</label>
+    <div class="d-flex align-items-center">
+      <span class="text-muted me-1" style="font-size: 12px">(Optional)</span>
+      <i class="bi bi-info-circle text-primary" style="cursor: pointer; font-size: 12px" data-bs-toggle="modal"
+        data-bs-target="#uploadPhotoModal1"></i>
+    </div>
+  </div>
+  <!-- Upload Container -->
+  <div class="upload-container d-flex align-items-center px-3">
+    <!-- s {{data.SERVICE_PHOTO_FILE}}s -->
+    <!-- <img *ngIf="imagePreview" [src]="imagePreview" class="preview-img me-2" alt="Profile Photo" /> -->
+
+    <span *ngIf="!data.SERVICE_PHOTO_FILE" style="font-size: 12px" class="placeholder-text"> {{ "servicejson.browse_photo" |translate }}</span>
+
+    <span *ngIf="data.SERVICE_PHOTO_FILE" style="font-size: 12px" class="text-truncate file-name"
+      title="{{ data.SERVICE_PHOTO_FILE }}">
+      {{
+      data.SERVICE_PHOTO_FILE.length > 36
+      ? (data.SERVICE_PHOTO_FILE | slice : 0 : 36) + "..."
+      : data.SERVICE_PHOTO_FILE
+      }}
+    </span>
+
+    <input #icon type="file" accept=".png, .jpg, .jpeg" (change)="fileChangeEvent($event)" class="file-input"
+      style="font-size: 12px !important" />
+
+    <i *ngIf="!data.SERVICE_PHOTO_FILE" (change)="fileChangeEvent($event)" class="bi bi-upload upload-icon"
+      (click)="icon.click()"></i>
+
+    <div *ngIf="data.SERVICE_PHOTO_FILE" class="d-flex align-items-center ms-2">
+      <!-- <a href="javascript:void(0)" class="text-primary me-2" (click)="openModal()">
+        <i class="bi bi-eye"></i>
+      </a> -->
+      <a href="javascript:void(0)" class="text-primary me-2" (click)="openModal()">
+        <i class="bi bi-eye"></i>
+      </a>
+
+      <a href="javascript:void(0)" class="text-danger" (click)="removeImage()">
+        <i class="bi bi-trash"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Progress Bar for Upload -->
+  <div *ngIf="isUploading" class="progress mt-2">
+    <div class="progress-bar" role="progressbar" [style.width.%]="progressPercent"></div>
+  </div>
+  <!-- {{imagePreview}} -->
+
+  <!-- Modal for Viewing Image -->
+  <div *ngIf="showModal" class="custom-modal">
+    <div class="modal-content">
+      <!-- {{imagePreview}} -->
+      <span style="cursor: pointer" class="custom-close-btn" (click)="closeModal()">&times;</span>
+      <img   style="position: relative;"  [src]="imagePreview" class="modal-img" alt="Uploaded Image" />
+    </div>
+  </div>
+
+  <!-- Description Field -->
+  <div class="d-flex justify-content-between align-items-center mt-3">
+    <label class="form-label text-muted mb-0" style="font-size: 12px">
+      {{"servicejson.add_description" | translate}}</label>
+    <span class="text-muted" style="font-size: 12px">(Optional)</span>
+  </div>
+  <textarea class="form-control custom-input" rows="3" [(ngModel)]="data.DESCRIPTION" placeholder="Enter description"
+    style="font-size: 12px" maxlength="256" (focus)="isFocused = 'DESCRIPTION'" (blur)="isFocused = ''"></textarea>
+  <h6 style="color: red; font-size: 10px; margin-top:4px" *ngIf="
+  isFocused === 'DESCRIPTION' ||
+  (data.DESCRIPTION != undefined &&
+    data.DESCRIPTION != null &&
+    data.DESCRIPTION != '' &&
+    isFocused === 'DESCRIPTION')
+">
+    {{ data?.DESCRIPTION?.length || 0 }}/256
+  </h6>
+</div>
+
+<!-- Drawer Footer -->
+<div class="drawer-footer mt-auto border-top pt-3" style="position: absolute;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    margin: 0px;
+    padding: 10px 16px;
+    background: #fff;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <!-- Buttons Group -->
+      <div style="display: flex;
+          justify-content: end;" class="col-12 text-center text-md-start mb-2 mb-md-0">
+        <button class="btn btn-outline-secondary" (click)="close()" data-bs-dismiss="offcanvas"
+          style="background-color: #f8f9fa; color: black; font-size: 12px">
+          {{ "servicejson.back" | translate }}
+        </button>
+
+        <!-- <button *ngIf="!InCart" style="margin-left: 12px" class="btn toggle-cart-btn px-3"
+          (click)="toggleCart(data)" [disabled]="isLoading">
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true">
+          </span>
+
+          <i *ngIf="!isLoading" class="bi" [ngClass]="{ 'bi-cart-check-fill': InCart, 'bi-cart-plus': !InCart }">
+          </i>
+
+          <span class="ms-2">
+            {{ isLoading ? "Processing..." : "Add to Cart" }}
+          </span>
+        </button> -->
+
+        <button *ngIf="InCart" style="margin-left: 12px" class="btn btn-success px-3"
+          [routerLink]="'/shop/cart'">
+          <i class="bi bi-cart-fill"></i>
+          <span class="ms-2">{{"servicejson.go_to_cart" | translate}}</span>
+        </button>
+        <button (click)="openDrawer2(data)" class="btn btn-dark" style="
+        background-color: #092b9c;
+        color: white;
+        border: none;
+        font-size: 12px; margin-left: 12px
+      " [disabled]="!data?.CATEGORY_NAME">
+       {{ "servicejson.next" | translate }}
+      <span class="text-muted" style="color: white !important; font-size: 12px">
+        <!-- (Select address and slot) -->
+        ({{ "servicejson.select_address_slot" | translate }})
+      </span>
+    </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- </div> -->
+
+<!-- Modal for Model Number Help -->
+<div class="modal fade" id="modelNumberModal" tabindex="-1" aria-labelledby="modelNumberModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title fw-bold" id="modelNumberModalLabel" style="color: #092b9c; font-size: 14px">
+          How to Find Model Number
+        </h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          style="font-size: 13px"></button>
+      </div>
+      <div class="modal-body text-center">
+        <p class="mb-1" style="text-align: justify; font-size: 13px">
+          Check the underside of your laptop for a sticker or engraving labeled
+          "Model" or "Model No." Refer to the image below for guidance.
+        </p>
+        <img src="assets/img/laptopproductno.png" class="img-fluid rounded shadow-sm" alt="Model Number Guide" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for Upload Photo Help -->
+<div class="modal fade" id="uploadPhotoModal1" tabindex="-1" aria-labelledby="uploadPhotoModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title fw-bold" id="uploadPhotoModalLabel" style="color: #092b9c; font-size: 14px">
+          How to Upload a Photo
+        </h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          style="font-size: 13px"></button>
+      </div>
+      <div class="modal-body text-center">
+        <p class="mb-1" style="text-align: justify; font-size: 13px">
+          Make sure the photo clearly shows your device details.
+        </p>
+        <img src="assets/img/Laptopmodalno.jfif" class="img-fluid rounded shadow-sm" alt="Upload Photo Guide" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Select Address and Slot Drawer 2 -->
+
+<div class="offcanvas offcanvas-end custom-drawer1" data-bs-backdrop="static" tabindex="-1" id="addressSlotDrawer22"
+  style="width: 500px">
+
+
+
+
+
+  <div class="offcanvas-header border-bottom">
+    <h5 class="offcanvas-title fw-bold" style="font-size: 14px">
+      Select Slot  
+    </h5>
+    <button type="button" class="btn-close" (click)="backaddress()" data-bs-dismiss="offcanvas"></button>
+  </div>
+
+  <div *ngIf="userID !== 0" class="progress">
+    
+    <div style=" background-color: #F36631 !important;" class="progress-bar" role="progressbar"
+      [style.width.%]="progress" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100"></div>
+  </div>
+
+  <div class="offcanvas-body">
+    <!-- Express Service -->
+    <div *ngIf="data?.IS_EXPRESS === 1" class="border rounded p-3 bg-light"
+      style="box-shadow: 0px 5px 90px 0px rgba(0, 0, 0, 0.1); font-size: 13px">
+      <div class="d-flex align-items-center">
+        <input type="radio" id="expressService" name="serviceOption" checked class="me-2" />
+        <label for="expressService" class="fw-bold" style="font-size: 14px">
+          <i>Express Service</i>
+        </label>
+      </div>
+      <p class="text-muted" style="font-size: 12px">
+        Same day service with our express checkout option with an additional
+        charge of
+        <b>{{ data?.EXPRESS_COST ? data.EXPRESS_COST + " INR" : "N/A" }}</b>.
+      </p>
+      <div *ngIf="data?.IS_EXPRESS === 1" class="d-flex justify-content-center mt-2">
+        <!-- <button class="btn" [ngClass]="{
+            'btn-outline-primary': data?.IS_EXPRESS1 === 0,
+            'btn-outline-danger': data?.IS_EXPRESS1 === 1
+          }" style="width: 50%; font-size: 13px" (click)="toggleExpressService()">
+          {{
+          data?.IS_EXPRESS1 === 1
+          ? "Remove Express Service"
+          : "Use Express Service"
+          }}
+        </button> -->
+
+        <button class="btn" [ngClass]="{
+            'btn-outline-primary': IS_EXPRESS === 0,
+            'btn-outline-danger': IS_EXPRESS === 1
+          }" style="width: 50%; font-size: 13px" (click)="toggleExpressService()">
+          {{
+          IS_EXPRESS === 1 ? "Remove Express Service" : "Use Express Service"
+          }}
+        </button>
+      </div>
+    </div>
+
+    <!-- <p *ngIf="selectedService?.IS_EXPRESS === 1" class="text-center mt-3" style="font-size: 13px">Or</p> -->
+    <p class="text-center mt-3" style="font-size: 13px">
+      Please select a date and time for the technician's visit
+    </p>
+
+    <div class="border date-time-container" style="box-shadow: 0px 5px 90px 0px rgba(0, 0, 0, 0.1); font-size: 13px">
+      <!-- Date Selection -->
+      <div class="date-picker-container">
+        <label class="form-label" style="font-size: 13px">Select a date</label>
+        <p class="selected-date" style="font-size: 12px">
+          {{ selectedDate }}
+        </p>
+        <div class="date-scroll">
+          <button *ngFor="let date of dates" class="date-button" [ngClass]="{
+              selected: selectedDate.trim() === date.fullDate.trim()
+            }" (click)="selectDate(date.fullDate)" style="font-size: 12px">
+            <span class="day">{{ date.display.split(" ")[0] }}</span>
+            <span class="date">{{ date.display.split(" ")[1] }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Time Slot Selection -->
+      <div class="time-slot-container">
+        <label class="form-label fw-bold" style="font-size: 13px">
+          Select a time slot
+        </label>
+        <div class="time-slot-wrapper">
+          <div *ngFor="let period of timeSlots" class="time-slot">
+            <p style="text-align: left; font-size: 13px" class="slot-title">
+              {{ period.period }}
+            </p>
+            <button class="slot-button" [ngClass]="{
+                'selected-slot':
+                  selectedSlot ===
+                  formatTime(period.times.start) +
+                    ' - ' +
+                    formatTime(period.times.end)
+              }" (click)="selectSlot(period.times)" [disabled]="period.times.disabled">
+              <span class="time-range">
+                {{ formatTime(period.times.start) }}<br />-<br />{{
+                formatTime(period.times.end)
+                }}
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <p *ngIf="isAllSlotsDisabled()" 
+      class="no-slots-message" 
+      style="color: red; font-size: 14px;">
+      No time slots are available for the selected date. 
+       </p>
+
+   <!-- <label for="">{{ timeSlots | json }}</label> -->
+      <!-- <ng-template #noSlotsMessage> -->
+     
+     
+       
+      <!-- </ng-template> -->
+    </div>
+
+    <!-- Remarks -->
+    <div class="border p-3 mt-3" style="
+        border-radius: 8px;
+        box-shadow: 0px 5px 90px 0px rgba(0, 0, 0, 0.1);
+        font-size: 13px;
+      ">
+      <label class="form-label fw-bold" style="font-size: 13px">Remarks</label>
+      <input type="text" class="form-control" [(ngModel)]="remark"
+    [placeholder]="'home.remarks_placeholder' | translate" style="font-size: 12px" maxlength="256"
+    (focus)="isFocused = 'REMARK'" (blur)="isFocused = ''" />
+  <h6 *ngIf="isFocused === 'REMARK'" style="color: red; font-size: 10px;margin-top:4px">
+    {{ remark?.length || 0 }}/256
+  </h6>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="offcanvas-footer border-top p-3 d-flex align-items-center">
+    <button class="btn btn-outline-secondary flex-grow-0 me-2" (click)="backaddress()" data-bs-dismiss="offcanvas"
+      style="font-size: 13px">
+      Back
+    </button>
+    <button class="btn btn-light flex-grow-0 me-2">
+      <!-- <i class="bi bi-cart"></i> -->
+      <!-- Bootstrap Cart Icon -->
+    </button>
+    <button class="btn btn-dark flex-grow-1 text-white" (click)="bookNow()" style="font-size: 14px">
+      Confirm
+    </button>
+  </div>
+</div>

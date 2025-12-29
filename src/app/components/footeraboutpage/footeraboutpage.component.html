@@ -1,0 +1,265 @@
+<section class="page-title overlay" style="background-image: url(assets/img/page-title.jpg)">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <h2 class="text-white fw-bold">About Us</h2>
+          <!-- <ol class="breadcrumb">
+            <li>
+              <a href="index.html">Home</a>
+            </li>
+            <li><a href="#" style="cursor: text;">About Us</a></li><li>Contact</li>
+          </ol> -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-7 order-2 order-lg-1">
+        <h5 class="section-title-sm">Know About</h5>
+        <h2 class="section-title section-title-border-half">
+          PockIT Engineers
+        </h2>
+        <p>
+          PockIT Engineers is a global IT company with over 30 years of
+          experience, offering a comprehensive suite of IT services, including
+          cloud solutions, networking, security, and managed services.
+          Partnering with leading brands across various industries we deliver
+          cutting-edge technology solutions tailored to our customers' needs.
+        </p>
+        <p>
+          Our experienced IT professionals bring extensive industry expertise
+          and best-in-class capabilities to understand your unique requirements,
+          design tailored solutions, and ensure smooth implementation and
+          continuous support.
+        </p>
+      </div>
+      <!-- philosophy image -->
+      <div class="col-lg-5 align-self-center order-1 order-lg-2 mb-md-50">
+        <img
+          class="img-fluid w-100"
+          src="assets/img/philosophy.jpg"
+          alt="philosophy-image"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="    padding: 0px 0px;" >
+  <div class="container">
+    <div class="row rounded bg-secondary">
+      <!-- ceo image -->
+      <div
+        class="col-lg-5 rounded-left ceo-image"
+        style="background-image: url(assets/img/ceo.jpg)"
+      ></div>
+      <div class="col-lg-7">
+        <!-- ceo content -->
+        <div class="p-5">
+          <h2 class="section-title section-title-border-half-white text-white">
+            We are efficient to <br />
+            make your business rise
+          </h2>
+          <p class="text-white">
+            With over 30 years of IT expertise, PockIT Engineers is committed to
+            delivering innovative solutions tailored to your unique business
+            needs. Our team of skilled professionals combines technical prowess
+            with a customer-centric approach to exceed expectations and drive
+            your success.
+          </p>
+          <img src="assets/img/ceo-signature.png" alt="ceo-signature" />
+          <h5 class="text-white">Mohit Manchanda</h5>
+          <h6 class="text-white">CEO</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h5 class="section-title-sm">Best Reason</h5>
+          <h2 class="section-title section-title-border-half">Why Choose Us</h2>
+        </div>
+  
+        <!-- accordion -->
+        <div class="col-lg-6">
+            <div id="accordion" class="mb-md-50">
+              <div
+                class="card border-0 mb-4"
+                *ngFor="let item of accordionItems; let i = index"
+              >
+                <div class="card-header bg-gray border p-0">
+                  <a
+                    class="card-link h5 d-block text-dark mb-0 py-10 px-4"
+                    [class.collapsed]="openedIndex !== i"
+                    [attr.data-bs-toggle]="'collapse'"
+                    [attr.href]="'#' + item.id"
+                    (click)="toggle(i)"
+                  >
+                    <i
+                      class="bi me-2 text-primary"
+                      [ngClass]="openedIndex === i ? 'bi-dash-lg' : 'bi-plus-lg'"
+                    ></i>
+                    {{ item.title }}
+                  </a>
+                </div>
+          
+                <div
+                  [id]="item.id"
+                  class="collapse"
+                  [class.show]="openedIndex === i"
+                  [attr.data-bs-parent]="'#accordion'"
+                >
+                  <div class="card-body font-secondary text-color ps-0 pb-0">
+                    {{ item.content }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+  
+        <!-- progressbar -->
+        <div class="col-lg-6">
+          <div class="progressbar">
+            <h5 class="progressbar-title">Visibility Across Your IT Landscape</h5>
+            <div class="progress" data-percent="99%">
+              <div class="progress-bar progress-bar-striped" style="width: 99%">
+                <div class="progress-bar-value">99%</div>
+              </div>
+            </div>
+          </div>
+          <div class="progressbar">
+            <h5 class="progressbar-title">Data Protection Assurance</h5>
+            <div class="progress" data-percent="75%">
+              <div class="progress-bar progress-bar-striped" style="width: 75%">
+                <div class="progress-bar-value">75%</div>
+              </div>
+            </div>
+          </div>
+          <div class="progressbar">
+            <h5 class="progressbar-title">Cost Savings Up to 50%</h5>
+            <div class="progress" data-percent="50%">
+              <div class="progress-bar progress-bar-striped" style="width: 50%">
+                <div class="progress-bar-value">50%</div>
+              </div>
+            </div>
+          </div>
+          <div class="progressbar">
+            <h5 class="progressbar-title">Efficient IT Operations</h5>
+            <div class="progress" data-percent="75%">
+              <div class="progress-bar progress-bar-striped" style="width: 75%">
+                <div class="progress-bar-value">75%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+
+  <section
+  class="fun-facts overlay-dark section-sm"
+  style="background-image: url(assets/img/cta.jpg)"
+>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-sm-6 mb-4 mb-lg-0">
+        <div
+          class="d-flex flex-sm-row flex-column justify-content-lg-center align-items-center text-center text-sm-start"
+        >
+          <i class="round-icon bi bi-hdd-network me-sm-3 me-0 mb-3 mb-sm-0"></i>
+          <div class="text-center text-sm-start">
+            <!-- <h2 class="count text-white mb-0" data-count="230">230</h2> -->
+            <h2 class="count text-white mb-0" #countEl [attr.data-count]="230">0</h2>
+
+            <p class="text-white mb-0">Projects Done</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-sm-6 mb-4 mb-lg-0">
+        <div
+          class="d-flex flex-sm-row flex-column justify-content-lg-center align-items-center text-center text-sm-start"
+        >
+          <i class="round-icon bi bi-emoji-smile me-sm-3 me-0 mb-3 mb-sm-0"></i>
+          <div class="text-center text-sm-start">
+            <!-- <h2 class="count text-white mb-0" data-count="789">789</h2> -->
+            <h2 class="count text-white mb-0" #countEl [attr.data-count]="789">0</h2>
+
+            <p class="text-white mb-0">Satisfied Clients</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-sm-6 mb-4 mb-lg-0">
+        <div
+          class="d-flex flex-sm-row flex-column justify-content-lg-center align-items-center text-center text-sm-start"
+        >
+          <i class="round-icon bi bi-hand-thumbs-up me-sm-3 me-0 mb-3 mb-sm-0"></i>
+          <div class="text-center text-sm-start">
+            <!-- <h2 class="count text-white mb-0" data-count="200">200</h2> -->
+            <h2 class="count text-white mb-0" #countEl [attr.data-count]="200">0</h2>
+
+            <p class="text-white mb-0">Appreciation</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-sm-6 mb-4 mb-lg-0">
+        <div
+          class="d-flex flex-sm-row flex-column justify-content-lg-center align-items-center text-center text-sm-start"
+        >
+          <i class="round-icon bi bi-trophy me-sm-3 me-0 mb-3 mb-sm-0"></i>
+          <div class="text-center text-sm-start">
+            <!-- <h2 class="count text-white mb-0" data-count="10">10</h2> -->
+            <h2 class="count text-white mb-0" #countEl [attr.data-count]="10">0</h2>
+
+            <p class="text-white mb-0">Awards Win</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="bg-gray py-4">
+  <div class="container">
+    <div class="carousel client-logo-carousel">
+      <owl-carousel-o *ngIf="clientLogos.length > 0" [options]="logoCarouselOptions">
+        <ng-container *ngFor="let logo of clientLogos">
+          <ng-template carouselSlide>
+
+            <div style="  display: flex;
+    align-items: center;"> 
+                <a
+         
+                class="text-center d-block outline-0 py-3 px-2 slick-slide slick-cloned"
+                data-slick-index="18"
+                aria-hidden="true"
+                tabindex="-1"
+              
+                >
+                  <img
+                    class="d-unset"
+                    [src]="logo.imageUrl"
+                    alt="client-logo"
+                  />
+                </a>
+            </div>
+          
+          </ng-template>
+        </ng-container>
+      </owl-carousel-o>
+    </div>
+  </div>
+</section>
+

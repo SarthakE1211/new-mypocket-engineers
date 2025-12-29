@@ -1,0 +1,760 @@
+<div class="container">
+  <div *ngIf="loaddata" class="spinner-overlay">
+    <div class="spinner-border text-primary spinner-size" role="status">
+      <span class="sr-only"></span>
+    </div>
+  </div>
+  <div class="card p-4 mb-4 mt-4" style="
+      background: white;
+      border: none;
+      box-shadow: none !important;
+      padding-top: 10px !important;
+    ">
+    <div class="order-details-container">
+      <h3 style="font-weight: 700; font-size: 20px">
+        {{ "shop.OrderDetails" | translate }}
+      </h3>
+      <div *ngIf="orderdataarray?.INVOICE_NUMBER">
+        <button class="btn  btn-sm invoice-btn-xs"
+          (click)="downloadshopinvoice(orderdataarray.INVOICE_NUMBER)">
+          <i class="bi bi-download me-1"></i>
+          Invoice
+        </button>
+      </div>
+
+      <!-- <div *ngIf="RejectRemark" class="box-shadow" style="color: red">
+        {{ RejectRemark }}
+      </div> -->
+
+      <!-- {{currentterritory}} -->
+      <!-- <div class="position-absolute top-0 end-0 p-3" style="padding: 10px 10px 0px 0px !important;" *ngIf="currentterritory!==undefined && currentterritory!==null && currentterritory!==0 && currentterritory!=='' && currentterritory!=='undefined'"> -->
+      <div class="position-absolute top-0 end-0 p-3" style="padding: 10px 10px 0px 0px !important"
+        *ngIf=" currentterritory !== 0  && !orderdataarray?.IS_CANCELATION_REQUESTED  && orderdataarray?.ORDER_STATUS !=='OC'  && orderdataarray?.ORDER_STATUS !=='OR' && OrderCardData !== 'OS' && OrderCardData === 'OP' ">
+        <div ngbDropdown class="d-inline-block">
+          <button class="btn btn-light newclass" ngbDropdownToggle style="padding: 0px 6px !important">
+            <i class="bi bi-three-dots-vertical"></i>
+          </button>
+
+          <ul ngbDropdownMenu class="dropdown-menu-end" style="padding: 2px;">
+            <!-- <li *ngIf="OrderCardData === 'OS' && currentterritory !== 0">
+              <a
+                style="cursor: pointer"
+                class="dropdown-item"
+                (click)="openticketdrawer()"
+              >
+                <i
+                  class="bi bi-ticket-detailed me-2"
+                  style="color: #2a3b8f"
+                ></i>
+                {{ "Raise Support Ticket" }}
+              </a>
+            </li> -->
+            <li *ngIf="OrderCardData == 'OP' && !orderdataarray?.IS_CANCELATION_REQUESTED">
+              <a style="cursor: pointer ; font-size: 13px;" class="dropdown-item" (click)="openDrawer('cancel')">
+                <i class="bi bi-x-circle me-2"></i>{{ "order_details.cancel" | translate }}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="position-absolute top-0 end-0 p-3" style="padding: 10px 10px 0px 0px !important"
+        *ngIf=" currentterritory !== 0  && !orderdataarray?.IS_CANCELATION_REQUESTED  && orderdataarray?.ORDER_STATUS !=='OC'  && orderdataarray?.ORDER_STATUS !=='OR' && orderdataarray?.ORDER_STATUS === 'OS' ">
+        <div ngbDropdown class="d-inline-block">
+          <button class="btn btn-light newclass" ngbDropdownToggle style="padding: 0px 6px !important">
+            <i class="bi bi-three-dots-vertical"></i>
+          </button>
+
+          <ul ngbDropdownMenu class="dropdown-menu-end">
+            <li *ngIf="OrderCardData === 'OS' && currentterritory !== 0">
+              <a style="cursor: pointer" class="dropdown-item" (click)="openticketdrawer()">
+                <i class="bi bi-ticket-detailed me-2" style="color: #2a3b8f"></i>
+                {{ "Raise Support Ticket" }}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <!-- Product Details Section -->
+      <div class="col-md-6" style="
+          border-radius: 16px !important;
+          border-radius: var(--bs-card-border-radius);
+          box-shadow: 0px 2px 12px 0px #0000001f;
+        ">
+        <div class="card-body">
+          <div>
+            <div *ngFor="let DetailsData of OrderDetailsData">
+              <div class="col-12 text-center mb-3">
+                <img [src]="
+                    DetailsData.INVENTORY_IMAGE
+                      ? IMAGEuRL +
+                        'InventoryImages/' +
+                        DetailsData.INVENTORY_IMAGE
+                      : 'assets/img/services/no-image.png'
+                  " style="height: 243px; border-radius: 8px" class="img-fluid" alt="{{ DetailsData.BRAND_NAME }}"
+                  (error)="handleImageError($event)" />
+              </div>
+              <h6 style="
+                  font-size: 15px !important;
+                  font-weight: 600 !important;
+                  margin-bottom: 4px !important;
+                ">
+                {{ DetailsData.VARIANT_NAME }}
+              </h6>
+              <h6 style="
+                  color: #8a8787;
+                  font-size: 13px !important;
+                  font-weight: 500 !important;
+                  margin-bottom: 2px !important;
+                ">
+                {{ DetailsData.CATEGORY_NAME }}
+              </h6>
+
+              <div style="font-weight: 500; margin-top: 12px !important"
+                class="d-flex align-items-center justify-content-between mt-3" *ngIf="
+                  DetailsData != undefined &&
+                  DetailsData.WARRANTY_CARD !== null &&
+                  DetailsData.WARRANTY_CARD !== undefined &&
+                  DetailsData.WARRANTY_CARD !== ''
+                ">
+                <span class="me-2" style="font-weight: 500; font-size: 15px !important">Warrantee Card</span>
+                <div class="input-group input-group-sm w-auto" style="font-size: 15px !important">
+                  <svg style="cursor: pointer" (click)="openwaranteecard(DetailsData.WARRANTY_CARD)"
+                    xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+
+                    <g id="SVGRepo_iconCarrier">
+                      <path
+                        d="M12.5535 16.5061C12.4114 16.6615 12.2106 16.75 12 16.75C11.7894 16.75 11.5886 16.6615 11.4465 16.5061L7.44648 12.1311C7.16698 11.8254 7.18822 11.351 7.49392 11.0715C7.79963 10.792 8.27402 10.8132 8.55352 11.1189L11.25 14.0682V3C11.25 2.58579 11.5858 2.25 12 2.25C12.4142 2.25 12.75 2.58579 12.75 3V14.0682L15.4465 11.1189C15.726 10.8132 16.2004 10.792 16.5061 11.0715C16.8118 11.351 16.833 11.8254 16.5535 12.1311L12.5535 16.5061Z"
+                        fill="#2a3b8f" />
+                      <path
+                        d="M3.75 15C3.75 14.5858 3.41422 14.25 3 14.25C2.58579 14.25 2.25 14.5858 2.25 15V15.0549C2.24998 16.4225 2.24996 17.5248 2.36652 18.3918C2.48754 19.2919 2.74643 20.0497 3.34835 20.6516C3.95027 21.2536 4.70814 21.5125 5.60825 21.6335C6.47522 21.75 7.57754 21.75 8.94513 21.75H15.0549C16.4225 21.75 17.5248 21.75 18.3918 21.6335C19.2919 21.5125 20.0497 21.2536 20.6517 20.6516C21.2536 20.0497 21.5125 19.2919 21.6335 18.3918C21.75 17.5248 21.75 16.4225 21.75 15.0549V15C21.75 14.5858 21.4142 14.25 21 14.25C20.5858 14.25 20.25 14.5858 20.25 15C20.25 16.4354 20.2484 17.4365 20.1469 18.1919C20.0482 18.9257 19.8678 19.3142 19.591 19.591C19.3142 19.8678 18.9257 20.0482 18.1919 20.1469C17.4365 20.2484 16.4354 20.25 15 20.25H9C7.56459 20.25 6.56347 20.2484 5.80812 20.1469C5.07435 20.0482 4.68577 19.8678 4.40901 19.591C4.13225 19.3142 3.9518 18.9257 3.85315 18.1919C3.75159 17.4365 3.75 16.4354 3.75 15Z"
+                        fill="#2a3b8f" />
+                    </g>
+                  </svg>
+                </div>
+              </div>
+              <div style="font-weight: 500; margin-top: 10px !important"
+                class="d-flex align-items-center justify-content-between mt-3">
+                <span class="me-2" style="font-weight: 500; font-size: 15px !important">{{ "shop.Quantity" | translate
+                  }}</span>
+                <div class="input-group input-group-sm w-auto" style="font-size: 15px !important">
+                  {{ DetailsData.QUANTITY }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr />
+
+          <!-- Price Details -->
+          <div *ngFor="let summary of OrderSummaryData">
+            <p class="mb-1" style="font-weight: 500; font-size: 15px !important">
+              {{ "shop.Items" | translate }}:
+              <span class="float-end" style="font-weight: 500; font-size: 15px !important">&#8377; {{
+                summary.GROSS_AMOUNT | number }}</span>
+            </p>
+            <p class="mb-1" style="font-weight: 500; font-size: 15px !important">
+              {{ "shop.Delivery" | translate }}:
+              <span class="float-end" style="font-weight: 500; font-size: 15px !important">&#8377; {{
+                summary.DELIVERY_CHARGES | number }}</span>
+            </p>
+            <p class="mb-1" style="font-weight: 500; font-size: 15px !important">
+              {{ "shop.Discount" | translate }}:
+              <span class="float-end" style="font-weight: 500; font-size: 15px !important">- &#8377; {{
+                summary.DISCOUNT_CHARGES | number }}</span>
+            </p>
+            <hr />
+            <p style="font-weight: 500; font-size: 15px !important">
+              {{ "shop.Total" | translate }}:
+              <span class="float-end" style="font-weight: 500; font-size: 15px !important">&#8377; {{ summary.NET_AMOUNT
+                | number }}</span>
+            </p>
+          </div>
+          <hr />
+
+          <!-- Delivery Address -->
+          <div *ngFor="let address of OrderAddressData">
+            <p class="fw-bold mb-1" style="
+                font-weight: 600 !important;
+                margin-bottom: 10px !important;
+              ">
+              {{ "shop.DeliveryTo" | translate }}
+            </p>
+            <p *ngIf="address.ARCHIVE_FLAG == 'H'" class="mb-1">
+              <i class="bi bi-house-door"></i> &nbsp;
+              <b style="font-weight: 500 !important">{{
+                "shop.Home" | translate
+                }}</b>
+            </p>
+            <p *ngIf="address.ARCHIVE_FLAG == 'F'" class="mb-1">
+              <i class="bi bi-building"></i> &nbsp;
+              <b style="font-weight: 500 !important">{{
+                "shop.Office" | translate
+                }}</b>
+            </p>
+            <p class="text-muted small">
+              {{ address.ADDRESS_LINE_1 + " " + address.ADDRESS_LINE_2 }}
+            </p>
+          </div>
+
+          <hr />
+          <p class="fw-bold text-success" style="margin-bottom: 0px !important; font-size: 14px">
+            {{ "shop.DeliverBy" | translate }} :
+            <b style="font-size: 14px">{{
+              Orderdata
+              | date
+              : "MMMM d, y -
+              hh:mm a"
+              }}</b>
+          </p>
+        </div>
+      </div>
+
+      <!-- Order Status Section -->
+
+      <div class="col-md-6 mobile-padding" style="border-radius: 13px !important;">
+
+        <!-- <div class="col-md-6 pe-0 px-0 mt-2
+            pe-md-3 px-md-3 mt-md-0"
+     style="border-radius: 13px !important;"> -->
+
+        <!-- Order Rejected -->
+        <div *ngIf="orderdataarray?.ORDER_STATUS === 'OR'" class="alert alert-danger mt-1"
+          style="border-radius: 16px !important;padding: 11px;">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-x-circle-fill text-danger me-2"></i>
+            <strong>{{
+              "order_details.order_rejected" | translate
+              }}</strong>
+          </div>
+          <p class="mt-1 text-muted" style="margin-bottom: 0px !important;font-size: 13px;">
+            {{
+            orderdataarray?.REJECTION_REMARK ||("order_details.no_remark_provided" | translate)
+            }}
+          </p>
+        </div>
+
+        <!-- Order Accepted with Remark -->
+        <div
+          *ngIf="orderdataarray?.ACCEPTANCE_REMARK !==null && orderdataarray?.ACCEPTANCE_REMARK !==undefined && orderdataarray?.ACCEPTANCE_REMARK !==''"
+          class="alert alert-success mt-1" style="border-radius: 16px !important;padding: 11px;">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-check-circle-fill text-success me-2"></i>
+            <strong>{{
+              "order_details.order_accepted" | translate
+              }}</strong>
+          </div>
+          <p class="mt-1 text-muted" style="margin-bottom: 0px !important;font-size: 13px;">
+            {{ orderdataarray?.ACCEPTANCE_REMARK }}
+          </p>
+        </div>
+
+        <!-- Order Canceled with Remark -->
+        <div *ngIf="orderdataarray?.CANCELLATION_REMARK && orderdataarray?.ORDER_STATUS !=='OC'"
+          class="alert alert-warning mt-1" style="border-radius: 16px !important;padding: 11px;">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-exclamation-circle-fill text-warning me-2"></i>
+            <strong>{{
+              "order_details.cancellation_rejected" | translate
+              }}</strong>
+          </div>
+          <p class="mt-1 text-muted" style="margin-bottom: 0px !important;font-size: 13px;">
+            {{
+            orderdataarray?.CANCELLATION_REMARK ||
+            ("order_details.cancellation_rejected_without_remark"
+            | translate)
+            }}
+          </p>
+        </div>
+
+
+
+
+        <div class="accordion scrollable-content1">
+          <div class="accordion-item shadow-sm rounded" style="
+              margin-top: 0px !important;
+              box-shadow: 0px 2px 12px 0px #0000001f !important;
+              border: none;
+              border-radius: 16px !important;
+            ">
+
+            <button
+              class="btn btn-outline-primary w-100 text-start fw-semibold d-flex justify-content-between align-items-center"
+              type="button" (click)="toggleAccordion()" [attr.aria-expanded]="isAccordionOpen" style="
+                color: black !important;
+                border: none !important;
+                padding-top: 10px;
+              ">
+              <span><svg xmlns="http://www.w3.org/2000/svg" width="17" height="19" viewBox="0 0 17 19" fill="none">
+                  <path
+                    d="M3.03349 4.34689H7.10048M3.03349 6.78709H8.72728M9.88764 14L10.7608 14.8731L13.1339 12.5M11.5742 9.32753V2.3134C11.5742 1.86417 11.21 1.5 10.7608 1.5H1.8134C1.36417 1.5 1 1.86417 1 2.3134V15.3278C1 15.777 1.36417 16.1412 1.8134 16.1412H8.30167M15.4308 13.4138C15.4308 15.6705 13.6013 17.5 11.3445 17.5C9.08776 17.5 7.25829 15.6705 7.25829 13.4138C7.25829 11.157 9.08776 9.32753 11.3445 9.32753C13.6013 9.32753 15.4308 11.157 15.4308 13.4138Z"
+                    stroke="#2A3B8F" stroke-width="1.3" stroke-linecap="round" />
+                </svg>
+                {{ "shop.OrderStatus" | translate }}
+                <button style="
+                    margin: 0px !important;
+                    font-size: 12px;
+                    background-color: #3170de;
+                    padding: 3px 7px;
+                  " class="btn btn-primary m-2" (click)="TrackOrderGetURL()" *ngIf="
+                    !gettrackurlBoole &&
+                    orderdataarray != undefined &&
+                    orderdataarray?.IS_SHIP_ORDER &&
+                    (orderdataarray?.ORDER_STATUS == 'OS' ||
+                      orderdataarray?.ORDER_STATUS == 'DO')
+                  ">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 1024 1024"
+                    class="icon" version="1.1" fill="#3170DE" stroke="#3170DE">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+
+                    <g id="SVGRepo_iconCarrier">
+                      <path
+                        d="M709.485714 277.942857C709.485714 160.914286 614.4 65.828571 497.371429 65.828571S292.571429 160.914286 292.571429 277.942857c0 73.142857 204.8 358.4 204.8 358.4s212.114286-277.942857 212.114285-358.4z"
+                        fill="#ffffffF4B1B2" />
+
+                      <path
+                        d="M497.371429 709.485714l-21.942858-29.257143c-36.571429-51.2-219.428571-307.2-219.428571-387.657142C256 160.914286 365.714286 51.2 497.371429 51.2s241.371429 109.714286 241.371428 241.371429c0 87.771429-182.857143 336.457143-226.742857 387.657142l-14.628571 29.257143z m0-607.085714C394.971429 102.4 307.2 182.857143 307.2 292.571429c0 43.885714 102.4 204.8 190.171429 321.828571C585.142857 497.371429 687.542857 336.457143 687.542857 292.571429c0-109.714286-87.771429-190.171429-190.171428-190.171429z"
+                        fill="#ffffff" />
+
+                      <path
+                        d="M928.914286 819.2H102.4C58.514286 819.2 14.628571 782.628571 14.628571 731.428571s36.571429-87.771429 87.771429-87.771428h138.971429c14.628571 0 29.257143 14.628571 29.257142 29.257143s-7.314286 29.257143-21.942857 29.257143h-146.285714c-14.628571 0-29.257143 14.628571-29.257143 29.257142s14.628571 29.257143 29.257143 29.257143h819.2c14.628571 0 29.257143 14.628571 29.257143 29.257143s-7.314286 29.257143-21.942857 29.257143z"
+                        fill="#ffffff" />
+
+                      <path
+                        d="M928.914286 936.228571H226.742857c-14.628571 0-29.257143-14.628571-29.257143-29.257142s14.628571-29.257143 29.257143-29.257143h694.857143c14.628571 0 29.257143-14.628571 29.257143-29.257143s-14.628571-29.257143-29.257143-29.257143H102.4c-14.628571 0-29.257143-14.628571-29.257143-29.257143s14.628571-29.257143 29.257143-29.257143h819.2c43.885714 0 87.771429 36.571429 87.771429 87.771429s-36.571429 87.771429-80.457143 87.771428z"
+                        fill="#ffffff" />
+
+                      <path
+                        d="M497.371429 263.314286m-80.457143 0a80.457143 80.457143 0 1 0 160.914285 0 80.457143 80.457143 0 1 0-160.914285 0Z"
+                        fill="#ffffffFDFBFB" />
+
+                      <path
+                        d="M497.371429 365.714286C438.857143 365.714286 394.971429 321.828571 394.971429 263.314286S438.857143 160.914286 497.371429 160.914286s102.4 43.885714 102.4 102.4S555.885714 365.714286 497.371429 365.714286z m0-153.6c-29.257143 0-51.2 21.942857-51.2 51.2s21.942857 51.2 51.2 51.2 51.2-21.942857 51.2-51.2-21.942857-51.2-51.2-51.2z"
+                        fill="#ffffff" />
+                    </g>
+                  </svg>
+                  &nbsp; Track Order
+                </button>
+
+                <button style="
+                    margin: 0px !important;
+                    font-size: 12px;
+                    background-color: #3170de;
+                    padding: 3px 7px;
+                  " class="btn btn-primary m-2" *ngIf="
+                    gettrackurlBoole &&
+                    orderdataarray != undefined &&
+                    orderdataarray?.IS_SHIP_ORDER &&
+                    (orderdataarray?.ORDER_STATUS == 'OS' ||
+                      orderdataarray?.ORDER_STATUS == 'DO')
+                  ">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 1024 1024"
+                    class="icon" version="1.1" fill="#3170DE" stroke="#3170DE">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+
+                    <g id="SVGRepo_iconCarrier">
+                      <path
+                        d="M709.485714 277.942857C709.485714 160.914286 614.4 65.828571 497.371429 65.828571S292.571429 160.914286 292.571429 277.942857c0 73.142857 204.8 358.4 204.8 358.4s212.114286-277.942857 212.114285-358.4z"
+                        fill="#ffffffF4B1B2" />
+
+                      <path
+                        d="M497.371429 709.485714l-21.942858-29.257143c-36.571429-51.2-219.428571-307.2-219.428571-387.657142C256 160.914286 365.714286 51.2 497.371429 51.2s241.371429 109.714286 241.371428 241.371429c0 87.771429-182.857143 336.457143-226.742857 387.657142l-14.628571 29.257143z m0-607.085714C394.971429 102.4 307.2 182.857143 307.2 292.571429c0 43.885714 102.4 204.8 190.171429 321.828571C585.142857 497.371429 687.542857 336.457143 687.542857 292.571429c0-109.714286-87.771429-190.171429-190.171428-190.171429z"
+                        fill="#ffffff" />
+
+                      <path
+                        d="M928.914286 819.2H102.4C58.514286 819.2 14.628571 782.628571 14.628571 731.428571s36.571429-87.771429 87.771429-87.771428h138.971429c14.628571 0 29.257143 14.628571 29.257142 29.257143s-7.314286 29.257143-21.942857 29.257143h-146.285714c-14.628571 0-29.257143 14.628571-29.257143 29.257142s14.628571 29.257143 29.257143 29.257143h819.2c14.628571 0 29.257143 14.628571 29.257143 29.257143s-7.314286 29.257143-21.942857 29.257143z"
+                        fill="#ffffff" />
+
+                      <path
+                        d="M928.914286 936.228571H226.742857c-14.628571 0-29.257143-14.628571-29.257143-29.257142s14.628571-29.257143 29.257143-29.257143h694.857143c14.628571 0 29.257143-14.628571 29.257143-29.257143s-14.628571-29.257143-29.257143-29.257143H102.4c-14.628571 0-29.257143-14.628571-29.257143-29.257143s14.628571-29.257143 29.257143-29.257143h819.2c43.885714 0 87.771429 36.571429 87.771429 87.771429s-36.571429 87.771429-80.457143 87.771428z"
+                        fill="#ffffff" />
+
+                      <path
+                        d="M497.371429 263.314286m-80.457143 0a80.457143 80.457143 0 1 0 160.914285 0 80.457143 80.457143 0 1 0-160.914285 0Z"
+                        fill="#ffffffFDFBFB" />
+
+                      <path
+                        d="M497.371429 365.714286C438.857143 365.714286 394.971429 321.828571 394.971429 263.314286S438.857143 160.914286 497.371429 160.914286s102.4 43.885714 102.4 102.4S555.885714 365.714286 497.371429 365.714286z m0-153.6c-29.257143 0-51.2 21.942857-51.2 51.2s21.942857 51.2 51.2 51.2 51.2-21.942857 51.2-51.2-21.942857-51.2-51.2-51.2z"
+                        fill="#ffffff" />
+                    </g>
+                  </svg>
+                  &nbsp; Track Order&nbsp;
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </button>
+
+                <button style="
+                    margin: 0px !important;
+                    font-size: 12px;
+                    background-color: #3170de;
+                    padding: 3px 7px;
+                  " class="btn btn-primary m-2" *ngIf="
+                    !gettrackurlBoole &&
+                    orderdataarray != undefined &&
+                    !orderdataarray?.IS_SHIP_ORDER &&
+                    orderdataarray?.MANUAL_COURIER_URL !== null &&
+                    orderdataarray?.MANUAL_COURIER_URL !== undefined &&
+                    orderdataarray?.MANUAL_COURIER_URL !== '' &&
+                    (orderdataarray?.ORDER_STATUS == 'OS' ||
+                      orderdataarray?.ORDER_STATUS == 'DO')
+                  " (click)="ClickTrack(orderdataarray?.MANUAL_COURIER_URL)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 1024 1024"
+                    class="icon" version="1.1" fill="#3170DE" stroke="#3170DE">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+
+                    <g id="SVGRepo_iconCarrier">
+                      <path
+                        d="M709.485714 277.942857C709.485714 160.914286 614.4 65.828571 497.371429 65.828571S292.571429 160.914286 292.571429 277.942857c0 73.142857 204.8 358.4 204.8 358.4s212.114286-277.942857 212.114285-358.4z"
+                        fill="#ffffffF4B1B2" />
+
+                      <path
+                        d="M497.371429 709.485714l-21.942858-29.257143c-36.571429-51.2-219.428571-307.2-219.428571-387.657142C256 160.914286 365.714286 51.2 497.371429 51.2s241.371429 109.714286 241.371428 241.371429c0 87.771429-182.857143 336.457143-226.742857 387.657142l-14.628571 29.257143z m0-607.085714C394.971429 102.4 307.2 182.857143 307.2 292.571429c0 43.885714 102.4 204.8 190.171429 321.828571C585.142857 497.371429 687.542857 336.457143 687.542857 292.571429c0-109.714286-87.771429-190.171429-190.171428-190.171429z"
+                        fill="#ffffff" />
+
+                      <path
+                        d="M928.914286 819.2H102.4C58.514286 819.2 14.628571 782.628571 14.628571 731.428571s36.571429-87.771429 87.771429-87.771428h138.971429c14.628571 0 29.257143 14.628571 29.257142 29.257143s-7.314286 29.257143-21.942857 29.257143h-146.285714c-14.628571 0-29.257143 14.628571-29.257143 29.257142s14.628571 29.257143 29.257143 29.257143h819.2c14.628571 0 29.257143 14.628571 29.257143 29.257143s-7.314286 29.257143-21.942857 29.257143z"
+                        fill="#ffffff" />
+
+                      <path
+                        d="M928.914286 936.228571H226.742857c-14.628571 0-29.257143-14.628571-29.257143-29.257142s14.628571-29.257143 29.257143-29.257143h694.857143c14.628571 0 29.257143-14.628571 29.257143-29.257143s-14.628571-29.257143-29.257143-29.257143H102.4c-14.628571 0-29.257143-14.628571-29.257143-29.257143s14.628571-29.257143 29.257143-29.257143h819.2c43.885714 0 87.771429 36.571429 87.771429 87.771429s-36.571429 87.771429-80.457143 87.771428z"
+                        fill="#ffffff" />
+
+                      <path
+                        d="M497.371429 263.314286m-80.457143 0a80.457143 80.457143 0 1 0 160.914285 0 80.457143 80.457143 0 1 0-160.914285 0Z"
+                        fill="#ffffffFDFBFB" />
+
+                      <path
+                        d="M497.371429 365.714286C438.857143 365.714286 394.971429 321.828571 394.971429 263.314286S438.857143 160.914286 497.371429 160.914286s102.4 43.885714 102.4 102.4S555.885714 365.714286 497.371429 365.714286z m0-153.6c-29.257143 0-51.2 21.942857-51.2 51.2s21.942857 51.2 51.2 51.2 51.2-21.942857 51.2-51.2-21.942857-51.2-51.2-51.2z"
+                        fill="#ffffff" />
+                    </g>
+                  </svg>
+                  &nbsp; Track Order
+                </button>
+              </span>
+
+              <i class="bi" [ngClass]="{
+                  'bi-chevron-down': !isAccordionOpen,
+                  'bi-chevron-up': isAccordionOpen
+                }"></i>
+            </button>
+
+            <div class="accordion-collapse" [ngClass]="{ show: isAccordionOpen }"
+              [style.display]="isAccordionOpen ? 'block' : 'none'">
+              <div class="accordion-body p-3" style="padding: 9px 12px 1px 15px !important">
+                <!-- Check if data exists -->
+                <div *ngIf="Shopordersstatus.length > 0; else noDataTemplate" class="scrollable-content">
+                  <div class="status-container position-relative">
+                    <div *ngFor="let order of Shopordersstatus; let i = index"
+                      class="timeline-item d-flex position-relative mb-3">
+                      <!-- Icon + Line -->
+                      <div class="timeline-icon-container position-relative me-2">
+                        <i class="bi bi-check-circle fs-5" style="
+                            color: #2a3b8f;
+                            z-index: 1;
+                            position: relative;
+                            font-size: 15px !important;
+                          "></i>
+                        <div class="timeline-line" *ngIf="i < Shopordersstatus.length - 1"></div>
+                      </div>
+
+                      <!-- Content -->
+                      <div class="d-flex flex-column" style="margin-top: -4px !important">
+                        <span style="color: black; font-size: 14px">{{ order.ORDER_STATUS }}.</span>
+                        <span style="color: black; font-size: 11px">{{
+                          order.DATE_TIME | date : "yyyy-MM-dd hh:mm a"
+                          }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- No Data Template -->
+                <ng-template #noDataTemplate>
+                  <div class="text-center p-3">
+                    <img src="assets/img/hand-drawn-no-data-concept.png" alt="No Data Available" class="img-fluid"
+                      style="max-width: 150px" />
+                    <p class="text-muted mt-2">
+                      <b>{{ "shop.NoDataAvailable" | translate }}</b>
+                    </p>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+
+            <!-- <div *ngIf="OrderCardDataForRating == 'OS'" class="accordion-item m-2 shadow-sm rounded" style="border: none !important;
+    box-shadow: none !important;margin: 14px !important;">
+
+              <div class="accordion-body" style="border: none !important;
+    box-shadow: none !important;
+    padding: 0px !important;">
+                <form #CityMasterPage="ngForm" style="padding-bottom: 15px !important;">
+                  <div class="p-3 rounded shadow-sm border">
+
+                    <div style="cursor: pointer;" class="mb-2 d-flex justify-content-between">
+                      <div class="d-flex align-items-center">
+                        <ng-container *ngFor="let star of [1, 2, 3, 4, 5]; let i = index">
+                          <i class="bi me-2" [ngClass]="
+                              RATING >= star
+                                ? 'bi-star-fill text-warning'
+                                : 'bi-star text-warning'
+                            " (click)="setRating(star)">
+                          </i>
+                        </ng-container>
+                        <span class="ms-2 text-muted small">({{ RATING }} / 5)</span>
+                      </div>
+                    </div>
+                    <textarea class="form-control mb-3" rows="3" [(ngModel)]="COMMENTS" name="COMMENTS" maxlength="256"
+                      placeholder="Tell us how we can improve"></textarea>
+                    <button *ngIf="(!isSubmitted && !feedbacksubmitted ) else elseblockload" (click)="SubmitRating()" class="btn btn-primary w-100 m-2 " style="margin: 0px !important;background-color: #3170DE;width: 100% !important;">
+                      Submit
+                    </button>
+                    <ng-template #elseblockload>
+                     <button *ngIf="isSubmitted && !feedbacksubmitted " class="btn btn-primary w-100 m-2 " style="margin: 0px !important;background-color: #3170DE;width: 100% !important;">
+                      Submit &nbsp;
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    </button></ng-template>
+                  </div>
+                </form>
+              </div>
+            </div> -->
+
+            <!-- Show "Rate Experience" card -->
+          </div>
+
+          <div *ngIf="OrderCardDataForRating === 'OS' && !feedbacksubmitted" class="accordion-item shadow-sm rounded"
+            style="
+              border: none !important;
+              box-shadow: none !important;
+              margin-top: 20px !important;
+              font-size: 13px;
+            ">
+            <div class="accordion-body p-0">
+              <div class="p-2 rounded shadow-sm border bg-white" style="
+                  box-shadow: 0px 2px 12px 0px #0000001f !important;
+                  border: none;
+                  border-radius: 13px !important;
+                ">
+                <div class="d-flex justify-content-between align-items-center mb-1" style="
+                    margin-bottom: 0px !important;
+                    padding: 5px 5px 5px 5px;
+                  ">
+                  <h6 class="fw-semibold text-dark mb-0" style="font-size: 13px">
+                    <i class="bi bi-star text-warning"></i>&nbsp; Rate Your
+                    Experience
+                  </h6>
+                  <button class="btn btn-warning fw-semibold px-2 py-1 small-btn shadow-sm" style="
+                      font-size: 11px;
+                      background: #fffbe6;
+                      color: #d48806;
+                      border-color: #ffe58f;
+                    " (click)="openFeedbackModal()">
+                    <i class="bi bi-star-fill me-1"></i> Add Rating
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Show feedback details if already submitted -->
+          <div *ngIf="feedbacksubmitted" class="accordion-item shadow-sm" style="
+              margin-top: 20px !important;
+              font-size: 13px;
+              box-shadow: 0px 2px 12px 0px #0000001f !important;
+              border: none;
+              border-radius: 16px !important;
+            ">
+            <div class="accordion-body p-3 rounded bg-white" style="
+                padding: 12px !important;
+                box-shadow: 0px 2px 12px 0px #0000001f !important;
+                border: none;
+                border-radius: 16px !important;
+              ">
+              <h6 class="fw-semibold text-dark mb-2" style="font-size: 13px">
+                <i class="bi bi-star-fill text-warning me-1"></i> Your Rating
+              </h6>
+
+              <div class="d-flex align-items-center mb-2">
+                <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+                  <i style="margin-right: 5px;" class="bi me-1" [ngClass]="
+                      RATING >= star
+                        ? 'bi-star-fill text-warning'
+                        : 'bi-star text-warning'
+                    "></i>
+                </ng-container>
+                <span class="ms-2 text-muted small" style="font-size: 11px">({{ RATING }} / 5)</span>
+              </div>
+
+              <p class="bg-light p-2 rounded small text-dark" style="font-size: 12px; margin-bottom: 0">
+                {{ COMMENTS || "No comments" }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <button style="
+                margin: 20px 0px !important;
+            background-color: #3170de;
+            width: 97% !important;
+          " class="btn btn-primary w-100 m-2" (click)="openDialer('9582700865')">
+          <!-- Contact Us -->
+          {{ "shop.Contact Us" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- cancelDrawer -->
+
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="cancelDrawer" aria-labelledby="cancelDrawerLabel"
+    data-bs-backdrop="static">
+    <!-- Header -->
+    <div class="offcanvas-header border-bottom">
+      <h5 class="fw-bold mb-0" id="cancelDrawerLabel" style="font-size: 14px">
+        {{ "order_details.cancel_order" | translate }}
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+
+    <!-- Body: Flex column, grow content -->
+    <div class="offcanvas-body d-flex flex-column" style="background-color: #f5f8ff">
+      <!-- Spinner while loading -->
+      <div *ngIf="reasonsisLoading" class="d-flex justify-content-center align-items-center" style="height: 200px">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">{{
+            "order_details.loading" | translate
+            }}</span>
+        </div>
+      </div>
+
+      <!-- Content when loaded -->
+      <div *ngIf="!reasonsisLoading" class="flex-grow-1">
+        <label class="form-label fw-semibold mb-3" style="font-size: 14px;">{{
+          "order_details.select_cancellation_reason" | translate
+          }}</label>
+        <div class="border rounded-3 p-3 bg-white shadow-sm">
+          <div class="responsive-scroll">
+            <div *ngFor="let reason of cancelReasons; let i = index" class="form-check mb-2" style="font-size: 13px;">
+              <input class="form-check-input" type="checkbox" [id]="'reason' + i" [value]="reason"
+                [(ngModel)]="reason.selected" />
+              <label class="form-check-label" [for]="'reason' + i">
+                {{ reason.label }}
+              </label>
+            </div>
+          </div>
+
+          <!-- Textarea -->
+          <div class="form-group mt-2" style="font-size: 13px !important">
+            <textarea style="width: 100% ;font-size: 13px !important" class="form-control rounded-3" rows="3"
+              [placeholder]="'order_details.describe_problem' | translate" [(ngModel)]="comment"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sticky Footer -->
+      <div class="drawer-footer mt-auto d-flex justify-content-between border-top pt-3">
+        <button class="btn btn-primary w-100 rounded-3 d-flex align-items-center justify-content-center"
+          [disabled]="loading" (click)="openConfirmModal()">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+          {{ "order_details.cancel_order" | translate }}
+        </button>
+      </div>
+
+      <!-- Confirmation Modal -->
+      <div class="modal fade" id="confirmCancelModal" tabindex="-1" aria-labelledby="confirmCancelLabel"
+        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="confirmCancelLabel">
+                {{ "order_details.confirm_cancellation" | translate }}
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              {{ "order_details.confirm_cancel_message" | translate }}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                {{ "order_details.no" | translate }}
+              </button>
+              <button type="button" class="btn btn-danger" (click)="confirmCancel()">
+                {{ "order_details.yes_cancel" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- rescheduleDrawer -->
+
+  <div *ngIf="isFAQDrawerVisible" id="offcanvasFAQ" class="offcanvas offcanvas-end widthclass" tabindex="-1"
+    aria-labelledby="offcanvasFAQLabel">
+    <button style="display: none" id="closefaq" #closefaq type="button" data-bs-dismiss="offcanvas" class="btn-close"
+      (click)="FAQdrawerClose()" aria-label="Close"></button>
+
+    <div class="offcanvas-body" style="padding: 0px">
+      <app-order-show-tickets [drawerClose]="FAQcloseCallback" [isFAQDrawerVisible]="isFAQDrawerVisible"
+        [shoporderid]="shoporderid" [warrentydata]="warrentydata" [shopalldata]="shopalldata" [type]="type">
+      </app-order-show-tickets>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div #feedbackModal class="modal fade" id="feedbackModal" tabindex="-1" data-bs-backdrop="static"
+  data-bs-keyboard="false" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content rounded-3 shadow-sm border-0 p-2">
+      <div class="modal-header border-0 pb-1">
+        <h6 class="modal-title fw-semibold d-flex align-items-center">
+          <i class="bi bi-record-circle-fill me-1" style="color: #334393"></i>
+          Rate Us
+        </h6>
+        <button type="button" class="btn-close" (click)="closeFeedbackModal()"></button>
+      </div>
+
+      <div class="modal-body p-2">
+        <form (ngSubmit)="SubmitRating()">
+          <p class="fw-medium text-dark mb-1" style="font-size: 13px">
+            How would you rate your experience?
+          </p>
+          <div class="d-flex gap-1 justify-content-left mb-2">
+            <i class="bi" [ngClass]="
+                RATING >= star
+                  ? 'bi-star-fill text-warning'
+                  : 'bi-star text-muted'
+              " *ngFor="let star of [1, 2, 3, 4, 5]" (click)="RATING = star"
+              style="font-size: 14px; cursor: pointer"></i>
+          </div>
+
+          <textarea class="form-control bg-light rounded-2 border-0 p-2" [(ngModel)]="COMMENTS" name="COMMENTS"
+            placeholder="Tell us how we can improve" rows="2" maxlength="256"
+            style="font-size: 12px; width: 100%"></textarea>
+
+          <div class="modal-footer border-0 pt-3" style="padding: 10px 0px">
+            <button type="submit" class="btn w-100 py-2 rounded-2 fw-medium" style="
+                color: white !important;
+                background-color: #334393 !important;
+                font-size: 13px;
+              " [disabled]="RATING === 0 || isSubmitted">
+              Submit
+              <span *ngIf="isSubmitted" class="spinner-border spinner-border-sm ms-2" role="status"
+                aria-hidden="true"></span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

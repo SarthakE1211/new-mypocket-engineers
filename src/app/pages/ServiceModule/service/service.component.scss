@@ -1,0 +1,344 @@
+@media (min-width: 1200px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl {
+    max-width: 1260px; /* Adjust based on your layout preference */
+  }
+}
+
+.responsive-text {
+  font-size: 15px !important; /* Default size for small screens */
+}
+
+@media (min-width: 576px) {
+  /* Small devices (sm) */
+  .responsive-text {
+    font-size: 18px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  /* Medium devices (md) */
+  .responsive-text {
+    font-size: 20px !important;
+  }
+}
+
+@media (min-width: 992px) {
+  /* Large devices (lg) */
+  .responsive-text {
+    font-size: 22px !important;
+  }
+}
+
+// Service card css
+/* Section padding & background */
+.service-section {
+  padding: 10px;
+  background-color: #f8f9fa;
+}
+
+/* Container styling */
+.container {
+  padding: 10px;
+  border-radius: 10px;
+  background: #fff;
+}
+.btn-custom {
+  background-color: #2a3b8f !important;
+  color: white !important; /* Ensure text remains visible */
+  border-color: #2a3b8f !important;
+}
+
+.btn-custom:hover {
+  background-color: #1e2c6d !important; /* Slightly darker shade on hover */
+  border-color: #1e2c6d !important;
+}
+
+/* Updated Service Card Styling */
+.service-card {
+  border-radius: 12px;
+  // padding: 10px;
+  // box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05); /* Softer shadow */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 90%;
+  // border: 1px solid #E5E7EB; /* Subtle border */
+  border: 0px;
+}
+
+// .service-card:hover {
+//     transform: scale(1.03);
+//     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+// }
+
+/* Service Card Image */
+.service-card img {
+  width: 260px; /* Standardize icon size */
+  height: 165px;
+  object-fit: contain;
+  border-radius: 0; /* Remove unnecessary border radius */
+  padding: 5px;
+}
+
+/* Service Name */
+.service-card p {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1f2937; /* Darker gray */
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .service-card {
+    padding: 8px;
+  }
+  .service-card img {
+    width: 172px;
+    height: 105px;
+  }
+  .service-card p {
+    font-size: 13px;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .service-card {
+    padding: 5px;
+  }
+
+  .service-card p {
+    font-size: 13px;
+  }
+}
+@media (min-width: 768px) {
+  .container,
+  .container-md,
+  .container-sm {
+    max-width: 847px;
+  }
+}
+
+@media (max-width: 576px) {
+  .service-card {
+    padding: 3px;
+  }
+
+  .service-card p {
+    font-size: 12px;
+  }
+}
+
+/* Service Card Container with Scroll */
+.service-card-container {
+  max-height: 500px;
+  overflow-y: auto;
+  // padding-right: 10px;
+  overflow-x: hidden;
+}
+
+/* Scrollbar Styling */
+.service-card-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.service-card-container::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.service-card-container::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+/* Modal Body */
+.modal-body {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 15px !important;
+}
+
+/* Container Width for Large Screens */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1254px;
+  }
+}
+
+// other css
+/* Button Group for responsiveness */
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+/* Button styling */
+.btn-group .btn {
+  border-radius: 5px;
+}
+
+/* Adjusting global container styles (previously inside :host ::ng-deep) */
+:host ::ng-deep {
+  @media (min-width: 1200px) {
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl {
+      max-width: 1254px;
+    }
+  }
+}
+// .loading-overlay {
+//     position: fixed;
+//     top: 0;
+//     left: 0;
+//     width: 100%;
+//     height: 100%;
+//     background: rgba(255, 255, 255, 0.8);
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     z-index: 1050;
+//   }
+.no-data-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.no-data-img {
+  max-width: 250px;
+  opacity: 0.6;
+}
+.hover-effect {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  padding: 12px;
+
+  @media (min-width: 768px) {
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    }
+  }
+}
+
+.back-button {
+  width: 25px;
+  height: 25px;
+  background-color: #2a3b8f;
+  border-radius: 50%;
+  text-decoration: none;
+  display: flex;
+}
+
+.back-button i {
+  font-size: 16px;
+}
+
+::ng-deep .progress,
+::ng-deep .progress-stacked {
+  --bs-progress-height: 5px;
+}
+.service-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Ensures two-line limit */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  max-width: 100%; /* Adjust as needed */
+  position: relative;
+}
+
+/* Show tooltip only when text overflows */
+.service-name:hover::after {
+  content: attr(title); /* Display full text */
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  bottom: 100%; /* Position above */
+  left: 50%;
+  transform: translateX(-50%);
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Hide tooltip if text is fully visible */
+.service-name:not(:hover)::after {
+  visibility: hidden;
+  opacity: 0;
+}
+
+@media (min-width: 992px) {
+  .col-lg-2-3 {
+    flex: 0 0 auto;
+    width: 25%;
+    max-width: 25%;
+  }
+}
+@media (min-width: 1200px) {
+  .col-xl-2-4 {
+    flex: 0 0 auto;
+    width: 20%;
+    max-width: 20%;
+  }
+}
+
+.about-container {
+  max-width: 100%;
+  margin: auto;
+  //   padding: 20px;
+
+  .accordion-button::after {
+    display: none !important; /* Hides Bootstrap's default arrow icon */
+  }
+  
+
+  // Accordion styling
+  .accordion-item {
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    border: none;
+    box-shadow: none;
+
+    .accordion-button {
+      font-size: 14px;
+      font-weight: 500;
+      padding: 9px 15px;
+      border-radius: 5px;
+      background: #f8f9fa;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .accordion-button:not(.collapsed) {
+      background-color: #e9ecef;
+    }
+
+    .accordion-body {
+      font-size: 14px;
+      padding: 9px 15px;
+      color: #444;
+    }
+  }
+}
+

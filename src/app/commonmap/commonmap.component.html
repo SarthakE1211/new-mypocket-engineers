@@ -1,0 +1,529 @@
+<div
+  class="modal fade"
+  id="addressmodalSubCatClick"
+  tabindex="-1"
+  aria-labelledby="addressmodalSubCatClickLabel"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  style="z-index: 11010"
+>
+  <div class="modal-dialog">
+    <div
+      class="modal-content p-1"
+      style="background-color: transparent !important; border: none !important"
+    >
+      <!-- <div class="modal-header border-bottom py-2">
+        <h5 class="modal-title fw-bold">
+          {{ "home.reviews.title" | translate }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close" style="display: none;" id="closemodaladd"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+
+        ></button>
+      </div> -->
+
+      <div class="modal-body p-2">
+        <div *ngIf="modalVisible">
+          <!-- <div class="backdrop"></div> -->
+
+          <div class="map-container">
+            <div
+              class="map-header"
+              style="
+                background-color: #007bff;
+                padding: 12px 16px;
+                color: #fff;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-radius: 6px;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  /* justify-content: center; */
+                  /* flex-direction: column; */
+                  justify-content: space-between;
+                  width: 100%;
+                "
+              >
+                <div>
+                  <p
+                    class="mb-0"
+                    style="
+                      margin: 0;
+                      font-weight: bold;
+                      font-size: 16px;
+                      color: white !important;
+                    "
+                  >
+                    User Location (Place the marker at your order location)
+                  </p>
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    style="
+                      color: white !important;
+                      border: none !important;
+                      background: transparent !important;
+                    "
+                    data-bs-dismiss="modal"
+                    (click)="closeaddressmodalSubCatClick()"
+                    aria-label="Close"
+                  >
+                    <i
+                      class="bi bi-x"
+                      style="font-size: 26px; padding: 0px !important"
+                    ></i>
+                  </button>
+                </div>
+              </div>
+              <div
+                style="text-align: end; padding: 6px"
+                *ngIf="gettruecondition()"
+              >
+                <!-- <button class="close-menu-btn" (click)="closeMap()">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button> -->
+              </div>
+            </div>
+
+            <!-- Map Container -->
+            <div id="map"></div>
+
+            <!-- <div class="location-details">
+              <p style="margin-left:650px">{{ locationAddress || "Fetching address..." }}</p>
+            </div> -->
+            <div class="location-details text-center">
+              <p  class="address-text">{{ locationAddress || "Fetching address..." }}</p>
+            </div>
+
+            <div class="map-footer">
+              <button
+                [disabled]="!locationAddress"
+                style="
+                  padding: 10px 20px;
+                  font-size: 14px;
+                  background-color: #007bff;
+                  color: #fff;
+                  border: none;
+                  border-radius: 6px;
+                  cursor: pointer;
+                  transition: background-color 0.3s;
+                "
+                (click)="confirmLocation()"
+              >
+                Confirm Location
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="showAddressDetailsForm" class="address-form-container">
+          <div class="card shadow-sm address-form-card" style="border: none">
+            <div
+              class="card-header position-relative d-flex align-items-center justify-content-center"
+              style="height: 80px; border-bottom: none"
+            >
+              <div class="icon-wrapper">
+                <svg
+                  width="66"
+                  height="67"
+                  viewBox="0 0 66 67"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    cx="33"
+                    cy="33.5"
+                    r="32.7988"
+                    stroke="#FFDFBE"
+                    stroke-width="0.402439"
+                  />
+                  <circle
+                    cx="33.0004"
+                    cy="33.5"
+                    r="26.3598"
+                    stroke="#FFDFBE"
+                    stroke-width="0.402439"
+                  />
+                  <path
+                    d="M20.6299 39.7112C16.1906 33.6198 16.8468 25.2031 22.1766 19.8733C28.154 13.8959 37.8454 13.8959 43.8228 19.8733C49.1526 25.2031 49.8088 33.6198 45.3695 39.7112L36.0195 52.541C34.5271 54.5888 31.4723 54.5888 29.9799 52.541L20.6299 39.7112Z"
+                    fill="#2A3B8F"
+                  />
+                  <circle
+                    cx="33.0137"
+                    cy="31.5595"
+                    r="5.97857"
+                    fill="#FDEEE9"
+                  />
+                </svg>
+              </div>
+              <div>
+                <button
+                  type="button"
+                  class="close-btn"
+                  data-bs-dismiss="modal"
+                  (click)="closeaddressmodalSubCatClick()"
+                  aria-label="Close"
+                >
+                  <i
+                    class="bi bi-x"
+                    style="font-size: 26px; padding: 0px !important"
+                  ></i>
+                </button>
+              </div>
+            </div>
+
+            <form
+              #addressSubmit="ngForm"
+              (ngSubmit)="saveAddressAdd(addressSubmit)"
+              class="p-3"
+            >
+              <div
+                style="
+                  background-color: #f4f7f9;
+                  padding: 15px;
+                  height: 70vh;
+                  overflow-y: scroll;
+                "
+              >
+                <h2
+                  class="form-title mb-0 ms-3"
+                  style="
+                    padding: 0px 0px 15px;
+                    margin-left: 0px !important;
+                    font-size: 17px;
+                  "
+                >
+                  Enter address details
+                </h2>
+                <div
+                  class="mb-3"
+                  style="border-radius: 8px; padding: 12px; background: #fdfdfd"
+                >
+                  <label
+                    class="form-label text-muted small"
+                    style="display: flex"
+                    >Save address as *</label
+                  >
+                  <div class="btn-group custom-btn-group">
+                    <button
+                      type="button"
+                      class="btn"
+                      style="margin-right: 10px !important"
+                      [ngClass]="{
+                        'btn-outline-primary': addressForm.TYPE !== 'H',
+                        'btn-primary': addressForm.TYPE === 'H',
+                        colorcodes: addressForm.TYPE === 'H'
+                      }"
+                      (click)="addressForm.TYPE = 'H'"
+                    >
+                      Home
+                    </button>
+                    <button
+                      type="button"
+                      class="btn"
+                      style="margin-right: 10px !important"
+                      [ngClass]="{
+                        'btn-outline-primary': addressForm.TYPE !== 'F',
+                        'btn-primary': addressForm.TYPE === 'F',
+                        colorcodes: addressForm.TYPE === 'F'
+                      }"
+                      (click)="addressForm.TYPE = 'F'"
+                    >
+                      Work
+                    </button>
+                    <button
+                      style="margin-left: 10px"
+                      style="margin-right: 10px !important"
+                      type="button"
+                      class="btn"
+                      [ngClass]="{
+                        'btn-outline-primary': addressForm.TYPE !== 'O',
+                        'btn-primary': addressForm.TYPE === 'O',
+                        colorcodes: addressForm.TYPE === 'O'
+                      }"
+                      (click)="addressForm.TYPE = 'O'"
+                    >
+                      Other
+                    </button>
+                  </div>
+                </div>
+
+                <div class="mb-3 contact-details" *ngIf="!asGuest">
+                  <label class="form-label" style="font-size: 13px"
+                    >Contact Person Details</label
+                  >
+                  <div style="font-size: 13px">
+                    {{ data.CUSTOMER_NAME }}
+                    <b>{{ data.CUSTOMER_MOBILE_NO }}</b>
+                  </div>
+                </div>
+                <div
+                  style="border-radius: 8px; padding: 12px; background: #fdfdfd"
+                >
+                  <div
+                    class="form-group position-relative"
+                    style="padding: 10px"
+                  >
+                    <!-- <input
+              type="text"
+              class="form-control"
+              [value]="locationCode || 'WJHV+GV5'"
+              readonly
+              autocomplete="off"
+            /> -->
+                    <button
+                      type="button"
+                      style="font-size: 13px"
+                      class="btn btn-link position-absolute end-0 top-50 translate-middle-y"
+                      (click)="onshowMap()"
+                    >
+                      Change Location
+                    </button>
+                  </div>
+
+                  <div class="row mt-2">
+                    <!-- Address Line 1 -->
+                    <div class="col-md-6">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="House number/flat no/floor no"
+                        [(ngModel)]="addressForm.ADDRESS_LINE_1"
+                        name="addressLine1"
+                        required
+                        #addressLine1="ngModel"
+                        autocomplete="off"
+                        maxlength="256"
+                      />
+                      <div
+                        *ngIf="(addressLine1.errors?.['required'] && (addressLine1.touched || addressSubmitted))"
+                        class="error-message"
+                      >
+                        Please enter house number/flat no/floor no.
+                      </div>
+                    </div>
+
+                    <!-- Address Line 2 -->
+                    <div class="col-md-6">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Area/street/village"
+                        [(ngModel)]="addressForm.ADDRESS_LINE_2"
+                        name="addressLine2"
+                        autocomplete="off"
+                        required
+                        #addressLine2="ngModel"
+                        maxlength="256"
+                      />
+                      <div
+                        *ngIf="(addressLine2.errors?.['required'] && (addressLine2.touched || addressSubmitted))"
+                        class="error-message"
+                      >
+                        Please enter Area/street/village.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row mt-2">
+                    <!-- Landmark -->
+                    <div class="col-md-6">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Landmark (optional)"
+                        [(ngModel)]="addressForm.LANDMARK"
+                        name="landmark"
+                        autocomplete="off"
+                        maxlength="128"
+                      />
+                    </div>
+
+                    <!-- Pincode Dropdown -->
+                    <div class="col-md-6">
+                      <div class="position-relative">
+                        <!-- (click)="togglePincodeDropdown(); $event.stopPropagation()" -->
+                        <div class="dropdown-wrapper">
+                          <input
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="selectedPincode"
+                            placeholder="Select pincode"
+                            name="pincode"
+                            #pincode="ngModel"
+                            required
+                            maxlength="64"
+                            readonly
+                            autocomplete="off"
+                          />
+                          <div
+                            *ngIf="isPincodeLoading"
+                             class="loading-container1 spinner-inside"
+                          >
+                            <div
+                              style="text-align: center"
+                              class="spinner-border"
+                              role="status"
+                            >
+                              <span class="visually-hidden">Loading...</span>
+                            </div>
+                          </div>
+                          <!-- <span class="dropdown-icon"></span> -->
+                        </div>
+                        <!-- <div
+                  *ngIf="(pincode.errors?.['required'] && (pincode.touched || addressSubmitted))"
+                  class="error-message"
+                >
+                  Please Select Pin Code.
+                </div> -->
+                        <!-- <div *ngIf="showPincodeDropdown" class="dropdown-menu show">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search pincode..."
+                    [(ngModel)]="searchPincode"
+                    name="pincodeSearch"
+                    (input)="filterPincodes($event)"
+                    (click)="$event.stopPropagation()"
+                    autocomplete="off"
+                  />
+                  <div
+                    class="dropdown-item"
+                    *ngFor="let pincode of filteredPincodes"
+                    (click)="selectPincode(pincode)"
+                  >
+                    {{ pincode.PINCODE_NUMBER }}
+                  </div>
+                </div> -->
+                        <div
+                          style="font-size: 12px"
+                          *ngIf="
+                            pincode.invalid &&
+                            (pincode.touched || addressSubmitted)
+                          "
+                          class="text-danger mt-1"
+                        >
+                          <div *ngIf="pincode.errors?.['required']">
+                            Please select pincode.
+                          </div>
+                          <div *ngIf="pincode.errors?.['maxlength']">
+                            Max length exceeded.
+                          </div>
+                          <!-- Add more conditions if needed -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row mt-2">
+                    <!-- City -->
+                    <div class="col-md-6">
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="addressForm.CITY_NAME"
+                        [placeholder]="'Enter City'"
+                        name="CITY_NAME"
+                        autocomplete="off"
+                        maxlength="128"
+                        required
+                        #CITY_NAME="ngModel"
+                      />
+                      <div
+                        *ngIf="(CITY_NAME.errors?.['required'] && (CITY_NAME.touched || addressSubmitted))"
+                        class="error-message"
+                      >
+                        Please enter City.
+                      </div>
+                    </div>
+
+                    <!-- State Dropdown -->
+                    <div class="col-md-6">
+                      <div class="position-relative">
+                        <div
+                          class="dropdown-wrapper"
+                          (click)="
+                            toggleStatesDropdown(); $event.stopPropagation()
+                          "
+                        >
+                          <input
+                            type="text"
+                            class="form-control"
+                            [value]="selectedState || 'Select State...'"
+                            readonly
+                            autocomplete="off"
+                          />
+                          <span class="dropdown-icon"></span>
+                        </div>
+                        <div
+                          *ngIf="showStateDropdown"
+                          class="dropdown-menu show"
+                        >
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Search State..."
+                            [(ngModel)]="searchState"
+                            name="stateSearch"
+                            (input)="filterStates($event)"
+                            (click)="$event.stopPropagation()"
+                            autocomplete="off"
+                          />
+                          <div
+                            class="dropdown-item"
+                            *ngFor="let state of filteredStates"
+                            (click)="selectState(state)"
+                          >
+                            {{ state.NAME }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-center mt-3">
+                  <button
+                    [disabled]="isAddrssSaving"
+                    type="submit"
+                    class="btn btn-primary w-100"
+                  >
+                    <span
+                      *ngIf="isAddrssSaving"
+                      class="spinner-border spinner-border-sm me-2"
+                    ></span>
+                    Confirm
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- </div> -->

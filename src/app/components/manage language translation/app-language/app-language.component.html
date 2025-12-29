@@ -1,0 +1,47 @@
+<!-- <div *ngIf="showContent === 'languageTab'"> -->
+<div
+  class="mobile-menu-header d-flex align-items-center"
+  style="justify-content: flex-start"
+>
+  <button class="close-menu-btn" (click)="close()" aria-label="Back">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+  </button>
+  <span class="language-title">Language settings</span>
+</div>
+
+<!-- <div class="mobile-menu-content">
+    <span class="language-title">Language settings</span>
+  </div> -->
+
+<div class="language-list-container">
+  <div *ngIf="appLanguageLoading" class="loading-container">
+    <div style="text-align: center" class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!appLanguageLoading">
+    <div class="language-option" *ngFor="let lang of appLanguageData">
+      <input
+        type="radio"
+        [id]="lang.ID"
+        [value]="lang.ID"
+        [(ngModel)]="selectedLanguage"
+        (change)="onLanguageChange(lang)"
+      />
+      <label [for]="lang.ID">{{ lang.NAME }}</label>
+    </div>
+  </div>
+</div>
+<!-- </div> -->

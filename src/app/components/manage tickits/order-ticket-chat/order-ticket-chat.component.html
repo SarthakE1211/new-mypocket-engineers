@@ -1,0 +1,140 @@
+<div *ngIf="isLoading" class="loading-container">
+  <div style="text-align: center" class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+
+<div *ngIf="!isLoading" class="chat-container">
+  <div class="chat-header border-bottom">
+    <div class="left-section">
+      <button class="close-menu-btn" style="margin-top: 5px" (click)="close()">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <span class="chat-id">#{{ drawerData?.TICKET_NO }}</span>
+    </div>
+
+    <button class="toggle-btn" (click)="toggleChatBox()">
+      {{ isChatBoxVisible ? "▲" : "▼" }}
+    </button>
+  </div>
+  <span style="display: none">{{ getmsgssssss() }}</span>
+
+  <div class="chat-body" #chatMessages (scroll)="onScroll()">
+    <div class="chat-message-box" *ngIf="isChatBoxVisible">
+      <div class="chat-section">
+        <div class="chat-label">Subject</div>
+        <div class="chat-content">{{ drawerData?.SUBJECT }}</div>
+      </div>
+
+      <div class="chat-section">
+        <div class="chat-label">Question</div>
+        <div class="chat-content">{{ drawerData?.QUESTION }}</div>
+      </div>
+    </div>
+
+    <div class="chat-messages">
+      <div
+        class="chat-message"
+        [ngClass]="{
+          'center-message': message.SENDER === 'X',
+          'right-message': message.SENDER === 'U',
+          'left-message': message.SENDER === 'S'
+        }"
+        *ngFor="let message of chatData; let i = index"
+      >
+        <div
+          style="font-weight: bold; font-size: 12px"
+          *ngIf="
+            (message.SENDER === 'U' || message.SENDER === 'S') &&
+            message.SENDER_ID !== decrepteduserID
+          "
+        >
+          {{ message.TICKET_TAKEN_EMPLOYEE }}
+        </div>
+
+        <div
+          class="message-text"
+          [ngClass]="{ 'text-center': message.SENDER === 'X' }"
+        >
+          {{ message.DESCRIPTION }}
+        </div>
+
+        <div *ngIf="message.URL">
+          <img
+            [src]="retriveimgUrl + 'ticket/' + message.URL"
+            alt="Attachment"
+            class="message-image"
+          />
+        </div>
+
+        <div class="message-time" *ngIf="message.SENDER !== 'X'">
+          {{ formatDate(message.CREATED_MODIFIED_DATE) }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <label for="">{{ drawerData.STATUS }}</label> -->
+  <div
+    class="chat-footer"
+    *ngIf="drawerData.STATUS !== 'C' && drawerData.STATUS !== 'B'"
+  >
+    <button
+      class="attachment-btn"
+      (click)="fileInput.click()"
+      style="color: white"
+    >
+      <!-- 📎 -->
+      <i class="bi bi-paperclip"></i>
+    </button>
+
+    <input
+      type="file"
+      #fileInput
+      style="display: none"
+      accept="image/*"
+      (change)="onFileSelected($event)"
+    />
+
+    <div class="input-container">
+      <div class="image-container" *ngIf="imagePreview">
+        <img [src]="imagePreview" alt="Selected Image" class="preview-image" />
+        <span class="remove-file" (click)="removeFile()">❌</span>
+      </div>
+
+      <input
+        type="text"
+        placeholder="Type your message..."
+        [(ngModel)]="FormData.DESCRIPTION"
+        class="chat-input"
+      />
+      <!-- </div> -->
+
+      <button class="send-btn" (click)="sendMessage()">
+        <!-- &#9658; -->
+        <i class="bi bi-send-fill"></i>
+      </button>
+
+      <!-- <button class="send-btnnnn" (click)="closeticket()">Close ticket</button> -->
+      <button
+        class="btn btn-danger"
+        *ngIf="showcloseticket"
+        (click)="closeticket()"
+      >
+        <span>Close <i class="bi bi-x-circle"></i></span>
+      </button>
+    </div>
+  </div>
+</div>

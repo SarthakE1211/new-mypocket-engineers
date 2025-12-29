@@ -1,0 +1,392 @@
+<app-common-loader *ngIf="isLoading" class="overlay-loader"></app-common-loader>
+<app-flastscreen *ngIf="flashscreen" class="overlay-loader"></app-flastscreen>
+
+<div *ngIf="!flashscreen">
+  <div
+    *ngIf="
+      !needLogeIn &&
+      routePath !== 'privacy_policy_page' && routePath !== 'terms-conditions'
+    "
+  >
+    <app-header></app-header>
+
+    <main class="main" style="min-height: 60vh !important">
+      <router-outlet></router-outlet>
+    </main>
+
+    <app-footer></app-footer>
+  </div>
+
+  <!-- <label for="">needlogin {{ needLogeIn }}isLoading {{ isLoading }}</label> -->
+  <!-- <div *ngIf="routePath=='privacy_policy_page' else elsePrivacyPo" >
+    <app-privacypolicy-without-login></app-privacypolicy-without-login>
+  </div> -->
+
+  <div
+    *ngIf="
+      routePath == 'privacy_policy_page' || routePath == 'terms-conditions';
+      else elsePrivacyPo
+    "
+  >
+    <span *ngIf="routePath == 'privacy_policy_page'">
+      <app-privacypolicy-without-login></app-privacypolicy-without-login>
+    </span>
+    <span *ngIf="routePath == 'terms-conditions'">
+      <app-terms-and-condition-without-login></app-terms-and-condition-without-login>
+    </span>
+  </div>
+  <ng-template #elsePrivacyPo>
+    <div *ngIf="needLogeIn">
+      <app-login></app-login>
+    </div>
+  </ng-template>
+</div>
+
+<!-- Image Modal -->
+<div
+  class="modal fade"
+  id="imageModal"
+  tabindex="-1"
+  (wheel)="onScroll($event)"
+  (keydown)="onKeydown($event)"
+>
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+    <div class="modal-content bg-transparent border-0 shadow-none">
+      <!-- Top Right Buttons: Zoom Out (-), Zoom In (+), Rotate (↻), Close (✖) -->
+      <div class="position-absolute top-0 end-0 m-3 d-flex gap-2">
+        <button class="btn btn-light" (click)="zoomOut()">-</button>
+        <button class="btn btn-light" (click)="zoomIn()">+</button>
+        <button class="btn btn-light" (click)="rotateImage()">↻</button>
+        <button class="btn btn-light" data-bs-dismiss="modal">✖</button>
+      </div>
+
+      <div
+        class="modal-body text-center d-flex justify-content-center align-items-center"
+      >
+        <div class="position-relative">
+          <!-- Zoomable & Rotatable Image -->
+          <img
+            #imageElement
+            [src]="apiservice.getImageSrc()"
+            class="img-fluid zoomable-image"
+            [ngStyle]="{
+              transform:
+                'scale(' + zoomLevel + ') rotate(' + rotationAngle + 'deg)'
+            }"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button
+  data-bs-toggle="offcanvas"
+  data-bs-target="#offcanvasRightttttttttttttttttttttt"
+  (click)="chatwithcustomer()"
+  aria-controls="offcanvasRightttttttttttttttttttttt"
+  #btnclickkkkformsg
+  style="display: none"
+></button>
+
+<div
+  class="offcanvas offcanvas-end"
+  data-bs-backdrop="static"
+  tabindex="-1"
+  id="offcanvasRightttttttttttttttttttttt"
+  aria-labelledby="offcanvasRightLabel"
+>
+  <div class="offcanvas-header">
+    <h5 id="offcanvasRightLabel">Chat with {{ chatwith }}</h5>
+    <button
+      type="button"
+      (click)="closechat()"
+      class="btn-close text-reset"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body" style="overflow: hidden !important">
+    <div class="d-flex justify-content-center" *ngIf="msgspin">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <div class="chat-container" *ngIf="!msgspin">
+      <!-- <div style="x">
+        <span (click)="getmsgs()"></span>
+      </div> -->
+      <span style="display: none">{{ getmsgssssss() }}</span>
+      <div
+        class="message-box"
+        style="height: 80vh; overflow: auto"
+        id="scrollableDivvvvv"
+        #scrollableDivvvvv
+      >
+        <!-- Customer's message -->
+        <div *ngIf="groupeddata != undefined && groupeddata != null">
+          <!-- <nz-spin [nzSpinning]="msgspin"> -->
+          <div *ngFor="let msgdate of getKeys(groupeddata)">
+            <div style="text-align: center; font-size: 10px; font-weight: 800">
+              {{ msgdate | date : "dd/MM/yyyy" }}
+            </div>
+
+            <div *ngFor="let messageeee of groupeddata[msgdate]">
+              <div
+                class="message customer-message"
+                *ngIf="messageeee['BY_CUSTOMER'] == false"
+              >
+                <span class="customer-name">{{
+                  messageeee["TECHNICIAN_NAME"]
+                }}</span>
+                <div>
+                  <div class="message-text" style="overflow-wrap: anywhere">
+                    {{ messageeee["MESSAGE"] }}
+
+                    <div
+                      *ngIf="
+                        messageeee['ATTACHMENT_URL'] != null &&
+                        messageeee['ATTACHMENT_URL'] != '' &&
+                        messageeee['ATTACHMENT_URL'] != undefined
+                      "
+                    >
+                      <img
+                        *ngIf="
+                          messageeee['ATTACHMENT_URL'].split('.').pop() ==
+                            'png' ||
+                          messageeee['ATTACHMENT_URL'].split('.').pop() ==
+                            'jpeg' ||
+                          messageeee['ATTACHMENT_URL'].split('.').pop() ==
+                            'jpg' ||
+                          messageeee['ATTACHMENT_URL'].split('.').pop() ==
+                            'avif' ||
+                          messageeee['ATTACHMENT_URL'].split('.').pop() ==
+                            'jifi'
+                        "
+                        width="100%"
+                        height="100px"
+                        [src]="
+                          urllll + 'OrderChat/' + messageeee['ATTACHMENT_URL']
+                        "
+                        alt=""
+                      />
+                      <video
+                        width="100%"
+                        height="100px"
+                        controls
+                        *ngIf="
+                          messageeee['ATTACHMENT_URL'].split('.').pop() ==
+                            'mp4' ||
+                          messageeee['ATTACHMENT_URL'].split('.').pop() ==
+                            'mov' ||
+                          messageeee['ATTACHMENT_URL'].split('.').pop() ==
+                            'avi' ||
+                          messageeee['ATTACHMENT_URL'].split('.').pop() ==
+                            'wmv' ||
+                          messageeee['ATTACHMENT_URL'].split('.').pop() == 'mkv'
+                        "
+                      >
+                        <source
+                          [src]="
+                            urllll + 'OrderChat/' + messageeee['ATTACHMENT_URL']
+                          "
+                          type="video/mp4"
+                        />
+                      </video>
+                    </div>
+                  </div>
+
+                  <div
+                    style="text-align: right !important; width: 100%"
+                    class="timestamp"
+                  >
+                    {{ messageeee["SEND_DATE"] | date : "dd/MM | hh:mm a" }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Technician's message -->
+              <div
+                class="message technician-message"
+                *ngIf="messageeee['BY_CUSTOMER'] == true"
+              >
+                <span class="technician-name">{{
+                  messageeee["SENDER_USER_ID_USER"]
+                }}</span>
+                <div class="message-text" style="overflow-wrap: anywhere">
+                  <div [innerHTML]="transform(messageeee['MESSAGE'])"></div>
+
+                  <div
+                    *ngIf="
+                      messageeee['ATTACHMENT_URL'] != null &&
+                      messageeee['ATTACHMENT_URL'] != '' &&
+                      messageeee['ATTACHMENT_URL'] != undefined
+                    "
+                  >
+                    <img
+                      *ngIf="
+                        messageeee['ATTACHMENT_URL'].split('.').pop() ==
+                          'png' ||
+                        messageeee['ATTACHMENT_URL'].split('.').pop() ==
+                          'jpeg' ||
+                        messageeee['ATTACHMENT_URL'].split('.').pop() == 'jpg'
+                      "
+                      class="onhover"
+                      [src]="
+                        urllll + 'OrderChat/' + messageeee['ATTACHMENT_URL']
+                      "
+                      alt=""
+                    />
+                    <video
+                      width="100%"
+                      height="100px"
+                      controls
+                      *ngIf="
+                        messageeee['ATTACHMENT_URL'].split('.').pop() == 'mp4'
+                      "
+                    >
+                      <source
+                        [src]="
+                          urllll + 'OrderChat/' + messageeee['ATTACHMENT_URL']
+                        "
+                        type="video/mp4"
+                      />
+                      <source src="movie.ogg" type="video/ogg" />
+                    </video>
+                  </div>
+                </div>
+                <span class="timestamp">
+                  {{ messageeee["SEND_DATE"] | date : "dd/MM | hh:mm a" }}</span
+                >
+              </div>
+            </div>
+          </div>
+          <!-- </nz-spin> -->
+        </div>
+      </div>
+      <div *ngIf="showimagebox">
+        <img
+          *ngIf="
+            ICON.split('.').pop() == 'png' ||
+            ICON.split('.').pop() == 'jpeg' ||
+            ICON.split('.').pop() == 'jpg'
+          "
+          width="200px"
+          height="200px"
+          [src]="urllll + 'OrderChat/' + ICON"
+          alt=""
+        />
+        <video
+          width="100%"
+          height="200px"
+          controls
+          *ngIf="ICON.split('.').pop() == 'mp4'"
+        >
+          <source [src]="urllll + 'OrderChat/' + ICON" type="video/mp4" />
+        </video>
+      </div>
+      <!-- <nz-spin [nzSpinning]="isSpinning"> -->
+      <div class="input-area">
+        <button class="paper-clip" *ngIf="!progressBarImageOne">
+          <span (click)="fileInput.click()" style="font-size: 20px !important"
+            ><i class="bi bi-upload"></i
+          ></span>
+        </button>
+        <!-- <nz-progress [nzPercent]="percentImageOne" [nzWidth]="30" nzType="circle"
+              *ngIf="progressBarImageOne"></nz-progress> -->
+        <input
+          accept="image/*,video/*"
+          #fileInput
+          name="albumimage"
+          type="file"
+          (change)="onFileSelected($event)"
+          style="display: none"
+          required
+        />
+        <!-- <button nz-button nzType="default" class="paper-clip" (click)="showemoj()">
+              <span style="font-size: 16px !important" nz-icon nzType="smile" nzTheme="outline"></span>
+            </button> -->
+
+        <!-- <ng-template #popoverTemplate>
+              <div style="padding: 0px !important">
+                <nz-progress
+                  [nzPercent]="percentImageOne"
+                  [nzWidth]="30"
+                  nzType="circle"
+                  *ngIf="progressBarImageOne"
+                ></nz-progress>
+                <span
+                  *ngIf="!progressBarImageOne"
+                  nz-icon
+                  nzType="upload"
+                  nzTheme="outline"
+                  (click)="fileInput.click()"
+                ></span>
+                <input
+                  accept="image/*,video/*"
+                  #fileInput
+                  name="albumimage"
+                  type="file"
+                  (change)="onFileSelected($event)"
+                  style="display: none"
+                  required
+                />
+              </div>
+            </ng-template> -->
+        <textarea
+          placeholder="Type your message..."
+          rows="1"
+          #textArea
+          id="messages2"
+          [(ngModel)]="BODY_TEXT"
+          name="BODY_TEXT"
+          (keydown)="handleEnter($event)"
+        ></textarea>
+        <div style="text-align: end">
+          <button
+            type="button"
+            class="whatsapp-send-icon"
+            style="width: 100% !important"
+            (click)="sendmessage()"
+          >
+            <i class="bi bi-send"></i>
+            <!-- <span nz-icon nzType="send" nzTheme="outline"></span> -->
+          </button>
+        </div>
+      </div>
+      <!-- </nz-spin> -->
+      <!-- (emojiSelect)="onEmojiSelect($event)" -->
+      <!-- <emoji-mart *ngIf="showEmojiPicker" (emojiSelect)="onEmojiSelect($event)" [showPreview]="false"></emoji-mart> -->
+    </div>
+  </div>
+</div>
+
+<!-- Cookie Modal -->
+<!-- Isolated Cookie Modal -->
+<!-- <div class="cookie-modal-backdrop" *ngIf="!cookiesAccepted && !isPrivacyPolicyPage">
+  <div class="cookie-modal-box">
+    <h5>This website uses cookies</h5>
+    <p>This site uses cookies. By continuing to browse the site you are agreeing to our use of cookies. <br> <a routerLink="/privacy_policy_page" target="_blank">Find out more about our use of cookies.</a></p>
+    <div class="cookie-modal-actions">
+      <button class="cookie-btn-accept" (click)="acceptCookies()">Accept & Close</button>
+    </div>
+  </div>
+</div> -->
+
+<!-- <div class="modal fade" *ngIf="!cookiesAccepted" id="cookiesmodall" tabindex="-1" >
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+    <div class="modal-content bg-transparent border-0 shadow-none">
+
+
+      <div class="modal-body text-center d-flex justify-content-center align-items-center">
+        <div class="position-relative">
+         <h5>🍪 Cookie Consent</h5>
+    <p>This website uses cookies to ensure you get the best experience on our website. <a href="/privacy-policy" target="_blank">Learn more</a>.</p>
+    <div class="modal-actions">
+      <button class="btn-accept" (click)="acceptCookies()">Accept</button>
+    </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
