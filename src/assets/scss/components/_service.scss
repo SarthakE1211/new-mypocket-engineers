@@ -7,7 +7,6 @@
     fill: var(--theme-default5);
     color: var(--theme-default5);
 }
-
 .icon-line-color {
     fill: var(--theme-default5);
     color: var(--theme-default5);
@@ -42,7 +41,6 @@
 }
 .service-section {
     position: relative;
-
     .property-service {
         >div {
             .service-box {
@@ -61,7 +59,6 @@
                     background-color: var(--theme-default3);
                     position: relative;
                     @extend %flex-center;
-
                     svg{
                         height: 35px;
                         width: 35px;
@@ -73,7 +70,6 @@
                         background-color: var(--theme-default3);
                         opacity: 0.05;
                     }
-
                     &::after {
                         pointer-events: none;
                         position: absolute;
@@ -90,12 +86,10 @@
                         opacity: 0;
                         transform: scale(0.9);
                     }
-
                     img {
                         width: 40%;
                     }
                 }
-
                 h3 {
                     background: $theme-font-color;
                     -webkit-background-clip: text;
@@ -103,21 +97,17 @@
                     font-weight: 600;
                     line-height: 1.5;
                     color: $theme-font-color;
-
                     font-size: calc(16px + (20 - 16) * ((100vw - 320px) / (1920 - 320)));
                     filter: drop-shadow(5px 5px 12px rgba($theme-color3, 0.2));
                 }
-
                 p {
                     color: rgba($theme-sub-font-color, 0.7);
                     line-height: 1.6;
                     margin-bottom: -3px;
                 }
-
                 &:hover {
                     transform: translateY(-5px);
                     transition: 0.5s;
-
                     .icon-round {
                         &::after {
                             animation: sonarEffect 1.3s ease-out 75ms;
@@ -127,13 +117,11 @@
             }
         }
     }
-
     .title-2 {
         h2 {
             margin-top: -2px;
         }
     }
-
     &.service-2 {
         .property-service {
             >div {
@@ -143,12 +131,10 @@
                     padding: 60px 40px;
                     height: 100%;
                     transition: 0.5s;
-
                     .hover-line {
                         margin-bottom: 45px;
                         position: relative;
                         display: inline-block;
-
                         &::before {
                             position: absolute;
                             content: "";
@@ -162,7 +148,6 @@
                             bottom: -7px;
                         }
                     }
-
                     h3 {
                         color: $theme-sub-font-color;
                         background: transparent;
@@ -170,13 +155,11 @@
                         -webkit-text-fill-color: unset;
                         font-size: calc(18px + (22 - 18) * ((100vw - 320px) / (1920 - 320)));
                     }
-
                     p {
                         margin-bottom: 30px;
                         line-height: 1.75;
                         color: rgba($title-color, 0.7);
                     }
-
                     .btn {
                         box-shadow: none;
                         transition: 0.5s;
@@ -184,7 +167,6 @@
                             vertical-align: -3px;
                         }
                     }
-
                     &:hover {
                         background-color: rgba($theme-color3,0.1);
                         .hover-line {
@@ -197,23 +179,19 @@
                                 transition: width 0.3s;
                             }
                         }
-
                         .btn {
                             background-color: var(--theme-default5);
                             transition: 0.5s;
                             color: $white;
-
                             span {
                                 color: $white;
                                 vertical-align: -2px;
                             }
-
                             &::before {
                                 @extend %common-lightafter;
                                 opacity: 0.35;
                                 box-shadow: 0px 10px 12.5px var(--theme-default5);
                             }
-
                             &:hover {
                                 background-color: transparent;
                             }
@@ -221,25 +199,20 @@
                     }
                 }
             }
-
             &.about-service {
                 >div {
                     .service-box {
                         border-radius: 10px;
-
                         .service-icon,
                         .icon-line-color {
                             fill: var(--theme-default3);
                         }
-
                         .hover-line {
                             &::before {
                                 background-color: var(--theme-default3);
                             }
                         }
-
                         .btn {
-
                             border: 2px solid transparent;
                             span {
                                 vertical-align: -3px;
@@ -248,12 +221,10 @@
                                 background: none;
                                 box-shadow: none;
                             }
-
                             &::after {
                                 border-radius: 8px;
                             }
                         }
-
                         &:hover {
                             .btn {
                                 background: none;
@@ -268,7 +239,6 @@
                 }
             }
         }
-
         &.color-7 {
             .property-service {
                 >div {
@@ -278,7 +248,6 @@
                                 background-color: var(--theme-default10);
                             }
                         }
-
                         &:hover {
                             .btn {
                                 background-color: var(--theme-default10);
@@ -286,7 +255,6 @@
                                     vertical-align: -3px;
                                     color: $white;
                                 }
-
                                 &::before {
                                     @extend %common-lightafter;
                                     opacity: 0.35;
@@ -299,7 +267,6 @@
             }
         }
     }
-
     &.service-bg {
         .title-3 {
             margin-top: -2px;
@@ -315,22 +282,18 @@
             z-index: -1;
         }
     }
-
     &.color-7 {
-
         .service-icon,
         .icon-line-color {
             fill: var(--theme-default10);
         }
     }
 }
-
 .service-slider {
     .service-wrapper {
         .top-img-box {
             margin-bottom: -20px;
             margin-left: 40px;
-
             >div {
                 width: 67px;
                 height: 67px;
@@ -338,31 +301,26 @@
                 background-image: var(--theme-gradient9);
                 @extend %flex-center;
                 position: relative;
-
                 &::after {
                     @extend %common-lightafter;
                     opacity: 0.3;
                     box-shadow: -5.15px 8.572px 25px var(--theme-default7);
                 }
-
                 img {
                     width: 60%;
                 }
             }
         }
-
         .service-details {
             border-radius: 5px;
             padding: 40px;
             background-color: $white;
             box-shadow: 0 0 35px rgba($black, 0.07);
-
             p {
                 line-height: 1.75;
                 margin-bottom: 10px;
                 color: rgba($title-color, 0.7);
             }
-
             h3 {
                 color: $title-color;
                 font-size: calc(18px + (22 - 18) * ((100vw - 320px) / (1920 - 320)));
@@ -378,14 +336,12 @@
                     }
                 }
             }
-
             a {
                 background: var(--theme-gradient9);
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 position: relative;
                 font-weight: 600;
-
                 &::after {
                     position: absolute;
                     content: "";
@@ -399,38 +355,31 @@
             }
         }
     }
-
     .slick-list {
         margin: -30px -12px;
-
         .slick-track {
             .slick-slide {
                 margin-bottom: 0;
-
                 >div {
                     margin: 30px 20px;
                 }
             }
         }
     }
-
     &.arrow-gradient {
         &.arrow-right {
             .slick-prev {
                 right: 15.5%;
             }
-
             .slick-next {
                 right: 12.3%;
             }
-
             .slick-arrow {
                 top: -62px;
             }
         }
     }
 }
-
 /**=====================
      service css end
 ==========================**/

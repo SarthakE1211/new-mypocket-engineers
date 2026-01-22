@@ -1,186 +1,196 @@
-
-// address slot css
-
 .custom-drawer {
-    max-width: 450px;
-  }
-  
-  .overflow-auto {
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-  
-  .btn-outline-dark {
-    border-radius: 8px;
-    padding: 8px 16px;
-  }
-  
-  .btn-primary {
-    background-color: #092B9C !important;
-    color: white;
-    border: none;
-  }
-  
-  .date-time-container {
-    padding: 20px;
-    // max-width: 500px;
-    margin: auto;
-    background: #f8f9fa;
-    border-radius: 8px;
-  }
-  
-  .form-label {
-    font-weight: bold;
-  }
-  
-  .selected-date {
-    text-align: center;
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-    background: #eee;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  
+  max-width: 450px;
+}
+.overflow-auto {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.btn-outline-dark {
+  border-radius: 8px;
+  padding: 8px 16px;
+}
+.btn-primary {
+  background-color: #092B9C !important;
+  color: white;
+  border: none;
+}
+.date-time-container {
+  padding: 20px;
+  margin: auto;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+.form-label {
+  font-weight: bold;
+}
+.selected-date {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  background: #eee;
+  padding: 10px;
+  border-radius: 5px;
+}
 .date-scroll {
   display: flex;
-  overflow-x: auto; /* Enables horizontal scrolling */
+  overflow-x: auto;
   gap: 8px;
   padding: 10px;
   white-space: nowrap;
-  
-  /* Hide scrollbar for WebKit browsers */
-  // &::-webkit-scrollbar {
-  //   display: none;
-  // }
-
-  /* Hide scrollbar for Firefox */
-  // scrollbar-width: none;
-
-  /* Hide scrollbar for Edge & IE */
-  // -ms-overflow-style: none;
 }
 .date-scroll::-webkit-scrollbar {
   height: 8px;
 }
-
 .date-scroll::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
-
 .date-scroll::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 4px;
 }
-
 .date-scroll::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-
-/* Firefox */
 .date-scroll {
   scrollbar-width: thin;
   scrollbar-color: #888 #f1f1f1;
 }
-
-  
-  .date-button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    // padding: 10px;
-    padding: 12px 24px;
-    width: 60px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    background: white;
-    cursor: pointer;
-  }
-  
-  .date-button .day {
-    font-size: 12px;
-    font-weight: bold;
-  }
-  
-  .date-button .date {
-    font-size: 16px;
-  }
-  
-  .date-button.selected {
-    background: #092B9C;
-    color: white;
-  }
-  
-  .time-slot-container {
-    margin-top: 20px;
-  }
-  .time-slot-container {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  
-  .time-slot-wrapper {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-  
-  .time-slot {
-    flex: 1;
-    text-align: center;
-    min-width: 150px;}
-  
-  .slot-title {
-    font-weight: bold;
-    font-size: 14px;
-    margin-bottom: 8px;
-  }
-  
-  .slot-button {
-    width: 100%;
-    padding: 14px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    background-color: white;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.3s ease-in-out;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
-  
-  .slot-button:hover {
-    border-color: #092B9C;
-  }
-  
-  .selected {
-    background-color: #092B9C;
-    color: white;
-    border-color: #092B9C;
-  }
-  
-  .time-range {
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 1.2;
-  }
-  .offcanvas-footer {
-    display: flex;
-    gap: 8px; /* Space between buttons */
-  }
-  .btn-dark {
-    background-color: #092B9C; /* Match button color */
-    border: none;
-  }
-  .selected-slot {
-    background-color: #092B9C !important; /* Bootstrap primary color */
-    color: white !important;
-    border: 1px solid #0056b3 !important;
-  }
-  
+.date-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 24px;
+  width: 60px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+}
+.date-button .day {
+  font-size: 12px;
+  font-weight: bold;
+}
+.date-button .date {
+  font-size: 16px;
+}
+.date-button.selected {
+  background: #092B9C;
+  color: white;
+}
+.time-slot-container {
+  margin-top: 20px;
+}
+.time-slot-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.time-slot-wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.time-slot {
+  flex: 1;
+  text-align: center;
+  min-width: 150px;
+}
+.slot-title {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.slot-button {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: white;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.slot-button:hover {
+  border-color: #092B9C;
+}
+.selected {
+  background-color: #092B9C;
+  color: white;
+  border-color: #092B9C;
+}
+.time-range {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.offcanvas-footer {
+  display: flex;
+  gap: 8px;
+}
+.btn-dark {
+  background-color: #092B9C;
+  border: none;
+}
+.selected-slot {
+  background-color: #092B9C !important;
+  color: white !important;
+  border: 1px solid #0056b3 !important;
+}
+.p-0-important {
+  padding: 0px !important;
+}
+.text-13-mb-10-bg-white {
+  font-size: 13px;
+  margin-bottom: 10px;
+  background-color: white !important;
+}
+.font-14 {
+  font-size: 14px
+}
+.font-12 {
+  font-size: 12px;
+}
+.w-50-font-13 {
+  width: 50%;
+  font-size: 13px
+}
+.font-13-mt0-left {
+  font-size: 13px;
+  margin-top: 0px !important;
+  text-align: left !important;
+}
+.font-13-bg-white {
+  font-size: 13px;
+  background-color: white !important;
+}
+.font-13 {
+  font-size: 13px
+}
+.text-left-font-13 {
+  text-align: left;
+  font-size: 13px
+}
+.text-red-font-14-mt-11 {
+  color: red;
+  font-size: 14px;
+  margin-top: 11px;
+}
+.rounded-8-font-13 {
+  border-radius: 8px;
+  font-size: 13px;
+}
+.text-red-font-10-mt-4 {
+  color: red;
+  font-size: 10px;
+  margin-top: 4px
+}
+.font-14 {
+  font-size: 14px
+}

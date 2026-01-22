@@ -12,7 +12,6 @@
     z-index: 12;
     top: 0;
     left: 0;
-
     &.img-gif {
         overflow: hidden;
         img {
@@ -20,7 +19,6 @@
         }
     }
 }
-
 .loader-text {
     text-align: center;
     img {
@@ -33,7 +31,6 @@
         padding: 0 15px;
     }
 }
-
 .loader-img {
     text-align: center;
     display: flex;
@@ -44,7 +41,6 @@
         height: 150px;
     }
 }
-
 /**=====================
     loader css end
 ==========================**/

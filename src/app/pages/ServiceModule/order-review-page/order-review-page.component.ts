@@ -7,7 +7,6 @@ import { ApiServiceService } from 'src/app/Service/api-service.service';
 declare var Razorpay: any;
 import { Meta, Title } from '@angular/platform-browser';
 import { CartService } from 'src/app/Service/cart.service';
-
 @Component({
   selector: 'app-order-review-page',
   templateUrl: './order-review-page.component.html',
@@ -24,13 +23,11 @@ export class OrderReviewPageComponent {
   isLoading: boolean = false;
   isLoadingPayment: boolean = false;
   customertype: any = this.apiservice.getCustomerType();
-  selectedPaymentMethod: string = 'ONLINE'; // Default Payment Mode
-
+  selectedPaymentMethod: string = 'ONLINE'; 
   userID: any = this.apiservice.getUserId();
   user: any;
   coupons: any = [];
   IMAGEuRL: any;
-
   orderDetailsVisible: { [key: string]: boolean } = {
     contactDetails: false,
     orderStatus: false,
@@ -38,11 +35,8 @@ export class OrderReviewPageComponent {
     cancelPolicy: false,
     paymentSummary: false,
   };
-
   updateSEO() {
-    // alert('ddd')
     this.titleService.setTitle('Review Your Order - PockIT Web');
-
     this.metaService.updateTag({
       name: 'description',
       content:
@@ -53,8 +47,6 @@ export class OrderReviewPageComponent {
       content:
         'order review, final order check, online shopping review, verify cart, secure checkout, confirm order details',
     });
-
-    // Open Graph (For Facebook, LinkedIn)
     this.metaService.updateTag({
       property: 'og:title',
       content: 'Review Your Order - PockIT Web',
@@ -64,13 +56,10 @@ export class OrderReviewPageComponent {
       content:
         'Verify your cart items and confirm your order details at PockIT Web before secure checkout.',
     });
-    // this.metaService.updateTag({ property: 'og:image', content: 'https://pockitweb.uvtechsoft.com/assets/images/order-review.jpg' });
     this.metaService.updateTag({
       property: 'og:url',
       content: 'https://pockitweb.uvtechsoft.com/order-review',
     });
-
-    // Twitter Card
     this.metaService.updateTag({
       name: 'twitter:title',
       content: 'Review Your Order - PockIT Web',
@@ -80,12 +69,10 @@ export class OrderReviewPageComponent {
       content:
         'Check your order details before completing the purchase at PockIT Web. Fast and secure checkout.',
     });
-    // this.metaService.updateTag({ name: 'twitter:image', content: 'https://pockitweb.uvtechsoft.com/assets/images/order-review.jpg' });
     this.metaService.updateTag({
       name: 'twitter:card',
       content: 'summary_large_image',
     });
-
     let link: HTMLLinkElement =
       document.querySelector("link[rel='canonical']") ||
       document.createElement('link');
@@ -93,53 +80,42 @@ export class OrderReviewPageComponent {
     link.setAttribute('href', window.location.href);
     document.head.appendChild(link);
   }
-
   constructor(
     private route: ActivatedRoute,
     private apiservice: ApiServiceService,
     private message: ToastrService,
     private cartService: CartService,
-
     private router: Router,
     private metaService: Meta,
     private titleService: Title
   ) {
     this.updateSEO();
   }
-
   cartID: any;
   maxCharLength: number = 16;
   maxCharData: number = 30;
-
   ngOnInit() {
     this.setMaxCharLengthBasedOnScreen();
     window.addEventListener('resize', () => this.setMaxCharLengthBasedOnScreen());
-
     const serviceId = this.route.snapshot.paramMap.get('id');
     this.IMAGEuRL = this.apiservice.retriveimgUrl2();
-
     if (this.customertype === 'B') {
       this.selectedPaymentMethod = 'COD';
     }
-
     if (serviceId) {
       this.cartID = serviceId;
       this.fetchOrderReviewDetails(serviceId);
       this.getCustomers();
     }
-
-    // Ensure scrollbar is present if missing
     setTimeout(() => {
       const doc = document.documentElement;
       const body = document.body;
-
-      // Check if content fits within the viewport height
       if (doc.scrollHeight <= window.innerHeight) {
-        body.style.overflowY = 'auto'; // Force scrollbar if missing
-        body.style.paddingRight = '0px'; // Prevent extra padding
+        body.style.overflowY = 'auto'; 
+        body.style.paddingRight = '0px'; 
       } else {
-        body.style.overflowY = ''; // Keep default behavior
-        body.style.paddingRight = ''; // Reset padding when scrollbar exists
+        body.style.overflowY = ''; 
+        body.style.paddingRight = ''; 
       }
     }, 300);
   }
@@ -158,103 +134,35 @@ export class OrderReviewPageComponent {
       });
     }
   }
-
-  // formatPeriod(days: number): string {
-  //   if (!days || isNaN(days)) return '-';
-
-  //   if (days >= 365) {
-  //     const years = Math.floor(days / 365);
-  //     return `${years} ${years > 1 ? 'yrs' : 'yr'}`;
-  //   } else if (days >= 30) {
-  //     const months = Math.floor(days / 30);
-  //     return `${months} ${months > 1 ? 'months' : 'month'}`;
-  //   } else {
-  //     return `${days} ${days > 1 ? 'days' : 'day'}`;
-  //   }
-  // }
-
-  // formatPeriod1(days: number): string {
-  //   if (!days || isNaN(days)) return '-';
-
-  //   const years = Math.floor(days / 365);
-  //   const remainingDaysAfterYears = days % 365; // Remaining days after extracting years
-  //   const months = Math.floor(remainingDaysAfterYears / 30);
-  //   const remainingDays = remainingDaysAfterYears % 30; // Remaining days after extracting months
-
-  //   let result = '';
-
-  //   if (years > 0) {
-  //     result += `${years} ${years > 1 ? 'yrs' : 'yr'}`;
-  //   }
-
-  //   if (months > 0) {
-  //     result += ` ${months} ${months > 1 ? 'months' : 'month'}`;
-  //   }
-
-  //   if (remainingDays > 0 && months === 0) { // Show days only if there are no months
-  //     result += ` ${remainingDays} ${remainingDays > 1 ? 'days' : 'day'}`;
-  //   }
-
-  //   return result.trim(); // Remove any extra spaces
-  // }
-
-
-  // formatPeriod(days: number): string {
-  //   if (!days || isNaN(days)) return '-';
-
-  //   if (days >= 365) {
-  //     const years = Math.floor(days / 365);
-  //     return `${years} ${years > 1 ? 'yrs' : 'year'}`;
-  //   } else if (days >= 30) {
-  //     const months = Math.floor(days / 30);
-  //     const remainingDays = days % 30;
-  //     return remainingDays > 0
-  //       ? `${months} ${months > 1 ? 'months' : 'month'} ${remainingDays} ${remainingDays > 1 ? 'days' : 'day'}`
-  //       : `${months} ${months > 1 ? 'months' : 'month'}`;
-  //   } else {
-  //     return `${days} ${days > 1 ? 'days' : 'day'}`;
-  //   }
-  // }
-
-
   formatPeriodCommon(days: number): string {
     if (!days || isNaN(days)) return '-';
-
     const years = Math.floor(days / 365);
     const remainingDaysAfterYears = days % 365;
     const months = Math.floor(remainingDaysAfterYears / 30);
     const remainingDays = remainingDaysAfterYears % 30;
-
-    let result: string[] = []; // Explicitly defining the type as string[]
-
+    let result: string[] = []; 
     if (years > 0) {
       result.push(`${years} ${years > 1 ? 'yrs' : 'year'}`);
     }
-
     if (months > 0) {
       result.push(`${months} ${months > 1 ? 'months' : 'month'}`);
     }
-
     if (remainingDays > 0) {
       result.push(`${remainingDays} ${remainingDays > 1 ? 'days' : 'day'}`);
     }
-
     return result.length > 0 ? result.join(' ') : '-';
   }
-
   formatTime(timeString: string): string {
     if (!timeString) return 'N/A';
     const [hours, minutes, seconds] = timeString.split(':').map(Number);
     const date = new Date();
     date.setHours(hours, minutes, seconds);
-
     return new Intl.DateTimeFormat('en-US', {
       hour: '2-digit',
       minute: '2-digit',
       hour12: true,
     }).format(date);
   }
-
   getCustomers() {
     this.apiservice
       .getcustomer(0, 0, 'id', 'desc', ' AND ID = ' + this.userID)
@@ -269,19 +177,12 @@ export class OrderReviewPageComponent {
       );
   }
   loadFullPage: boolean = false;
-  // Fetch order review details
   fetchOrderReviewDetails(serviceId: any) {
-
-
-
     this.loadFullPage = true;
     this.apiservice.getCartGetDetails(serviceId).subscribe(
       (data) => {
         if (data['code'] == 200) {
           this.loadFullPage = false;
-
-
-
           this.OrderReviewDetails = data['data'];
         }
       },
@@ -289,16 +190,8 @@ export class OrderReviewPageComponent {
       }
     );
   }
-
-  // Get filtered coupons based on search query
-  // get filteredCoupons() {
-  //   return this.coupons.filter((coupon: any) =>
-  //     coupon.COUPON_CODE.toLowerCase().includes(this.searchQuery.toLowerCase())
-  //   );
-  // }
   get filteredCoupons() {
     const query = this.searchQuery.toLowerCase();
-
     return this.coupons.filter((coupon: any) =>
       coupon.COUPON_CODE?.toLowerCase().includes(query) ||
       coupon.COUPON_NAME?.toLowerCase().includes(query)
@@ -307,20 +200,17 @@ export class OrderReviewPageComponent {
   countryID: any;
   couponcount: any = 0;
   TERRITORY_ID: any;
-  // Open Coupon Modal
   openCouponModal(data: any) {
     this.countryID = data.COUNTRY_ID;
     this.isLoading = true;
     this.TERRITORY_ID = sessionStorage.getItem('CurrentTerritory');
-
     this.apiservice
       .getCoupanDetails(this.userID, data.ID, data.COUNTRY_ID, 'S', this.TERRITORY_ID)
       .subscribe(
         (response) => {
           if (response?.code === 200) {
-            this.coupons = response.data; // Directly use API response
+            this.coupons = response.data; 
             this.couponcount = this.coupons.length;
-
           } else {
             this.couponcount = 0;
           }
@@ -333,8 +223,6 @@ export class OrderReviewPageComponent {
         }
       );
   }
-
-  // Show Coupon Modal
   showCouponModal() {
     let modalElement = document.getElementById('couponModal');
     if (modalElement) {
@@ -342,13 +230,9 @@ export class OrderReviewPageComponent {
       modal.show();
     }
   }
-
-  // Select Coupon
   selectCoupon(coupon: any) {
     this.selectedCoupon = coupon;
   }
-
-  // Apply Selected Coupon
   applySelectedCoupon() {
     if (this.selectedCoupon) {
       let data = {
@@ -358,40 +242,31 @@ export class OrderReviewPageComponent {
         COUPON_CODE: this.selectedCoupon.COUPON_CODE,
         TYPE: 'S',
       };
-
       this.apiservice.ApplyCoupan(data).subscribe((response: any) => {
         if (response?.code === 200) {
           this.message.success('Coupon successfully applied', '');
           this.closeCouponModal();
         } else {
-          this.message.error('Invalid coupan code', '');
+          this.message.error('Invalid coupon code', '');
         }
       });
     } else {
       this.message.error('Please select a coupon first!');
     }
   }
-
-  // Remove Coupon
   removeCoupon(event: Event, coupon: any) {
-    event.stopPropagation(); // Prevent parent click event
-
-    // Remove coupon from list
+    event.stopPropagation(); 
     this.coupons = this.coupons.filter(
       (c: any) => c.COUPON_ID !== coupon.COUPON_ID
     );
-
-    // If the removed coupon was selected, reset selectedCoupon
     if (this.selectedCoupon?.COUPON_ID === coupon.COUPON_ID) {
       this.selectedCoupon = null;
-
       let data = {
         CUSTOMER_ID: this.userID,
         CART_ID: this.cartID,
         COUPON_CODE: coupon.COUPON_CODE,
         TYPE: 'S',
       };
-
       this.apiservice.RemoveCoupan(data).subscribe((response: any) => {
         if (response?.code === 200) {
           this.message.success('Coupon successfully removed', '');
@@ -406,10 +281,8 @@ export class OrderReviewPageComponent {
   LoadRemove: boolean = false;
   deleteCoupon(data: any) {
     this.loadbutton = true;
-
     if (data) {
       this.selectedCoupon = null;
-
       let payloaddata = {
         CUSTOMER_ID: this.userID,
         CART_ID: this.cartID,
@@ -422,12 +295,10 @@ export class OrderReviewPageComponent {
           this.LoadRemove = false;
           this.message.success('Coupon successfully removed', '');
           this.loadbutton = true;
-
           this.fetchOrderReviewDetails(this.cartID);
         } else {
           this.LoadRemove = false;
           this.loadbutton = true;
-
           this.message.error('Failed to remove coupon', '');
         }
       }, err => {
@@ -435,12 +306,9 @@ export class OrderReviewPageComponent {
       });
     }
   }
-
-  // Close Coupon Modal
   closeCouponModal() {
     this.fetchOrderReviewDetails(this.cartID);
     this.loadbutton = false;
-
     let modalElement = document.getElementById('couponModal');
     if (modalElement) {
       let modal = bootstrap.Modal.getInstance(modalElement);
@@ -448,50 +316,29 @@ export class OrderReviewPageComponent {
         modal.hide();
       }
     }
-
-    // Force remove 'modal-open' class & inline styles from body
     document.body.classList.remove('modal-open');
     document.body.style.overflow = '';
     document.body.style.paddingRight = '';
   }
-
-
-  // Toggle Accordion Section
   toggleAccordion(section: string) {
     this.orderDetailsVisible[section] = !this.orderDetailsVisible[section];
   }
-
-  RAZOR_PAY_KEY = 'rzp_test_SO1E5ovbNuNP0B'; // Razorpay API Keytest
-  // RAZOR_PAY_KEY = 'rzp_live_UOLu84DuvGULjK'; // Razorpay API Key live
-
+  RAZOR_PAY_KEY = 'rzp_test_SO1E5ovbNuNP0B'; 
   getFinalAmount(): number {
-
     const cartInfo = this.OrderReviewDetails?.CART_INFO[0]?.TOTAL_AMOUNT;
-
     return cartInfo
-    // if (!cartInfo) return 0;
-
-    // // Calculate Final Amount with Discount
-    // return (
-    //   cartInfo.FINAL_AMOUNT - (cartInfo.COUPON_ID ? cartInfo.COUPON_AMOUNT : 0)
-    // );
   }
-
   proceedToPay() {
     if (this.customertype === 'B') {
       this.selectedPaymentMethod = 'COD'
     }
     const cartInfo = this.OrderReviewDetails?.CART_INFO[0];
-
     if (!cartInfo || !this.user) {
       this.message.error('Cart or user details are missing. Please try again.');
       return;
     }
-
     const cartId = this.cartID;
     const finalAmount = this.getFinalAmount();
-
-
     if (this.selectedPaymentMethod === 'COD') {
       const payload = {
         CART_ID: cartId,
@@ -501,17 +348,14 @@ export class OrderReviewPageComponent {
         TERRITORYID: cartInfo?.TERRITORY_ID,
         TYPE: 'S',
       };
-
       this.apiservice.CreateOrder(payload).subscribe((response: any) => {
         if (response?.code === 200) {
-          this.cartService.fetchAndUpdateCartDetails(this.userID); // ⭐️ Common Call
-
+          this.cartService.fetchAndUpdateCartDetails(this.userID); 
           if (this.customertype === 'B') {
             this.message.success('Order placed successfully.', '');
           } else {
             this.message.success('Order placed successfully via Cash on Delivery.', '');
           }
-
           this.router.navigate(['/service']);
         } else {
           this.message.error('Failed to place order. Please try again.', '');
@@ -527,12 +371,10 @@ export class OrderReviewPageComponent {
         amount: finalAmount * 100
       }
       this.apiservice.createRazorpayOrdertoRzp(dataForRzpOrder).subscribe((responserzp: any) => {
-
-        // this.isLoading = false; // Stop loader
         if (responserzp?.code === 200 && responserzp.data.amount) {
           const options = {
             key: this.RAZOR_PAY_KEY,
-            amount: finalAmount * 100, // Razorpay expects amount in paisa
+            amount: finalAmount * 100, 
             currency: 'INR',
             name: this.user.NAME,
             order_id: responserzp.data.id,
@@ -557,16 +399,11 @@ export class OrderReviewPageComponent {
                 RESPONSE_MESSAGE: 'Transaction success',
                 CLIENT_ID: 1,
                 TERRITORYID: cartInfo?.TERRITORY_ID,
-
               };
-
               this.apiservice
                 .addPaymentTransactions(body)
                 .subscribe((response: any) => {
                   if (response?.code === 200) {
-
-                    // create order call
-
                     const payload = {
                       CART_ID: cartId,
                       PAYMENT_METHOD: 'ONLINE',
@@ -576,33 +413,25 @@ export class OrderReviewPageComponent {
                       Razorpay_ID: responserzp.data.id,
                       TYPE: 'S',
                     };
-
                     this.apiservice.CreateOrder(payload).subscribe((response: any) => {
                       if (response?.code === 200) {
-                        this.cartService.fetchAndUpdateCartDetails(this.userID); // ⭐️ Common Call
-
+                        this.cartService.fetchAndUpdateCartDetails(this.userID); 
                         if (this.customertype === 'B') {
-                          // this.message.success('Order placed successfully.', '');
                         } else {
                           this.message.success('Order placed successfully', '');
                         }
-
                         this.router.navigate(['/service']);
                       } else {
                         this.message.error('Failed to place order. Please try again.', '');
                       }
                     });
-
-
-
-                    // End create order call
                     this.message.success(
                       'Payment successful. Your order has been placed!',
                       ''
                     );
                     setTimeout(() => {
-                      this.router.navigate(['/service']); // Change '/home' to your actual route
-                    }, 1000); // 1 second delayyyyy
+                      this.router.navigate(['/service']); 
+                    }, 1000); 
                   } else {
                     this.message.error(
                       'Payment successful, but order processing failed. Please contact support.',
@@ -620,7 +449,6 @@ export class OrderReviewPageComponent {
               color: '#3399cc',
             },
           };
-
           const razorpay = new Razorpay(options);
           razorpay.open();
         } else {
@@ -643,7 +471,6 @@ export class OrderReviewPageComponent {
   goBackFromCoupon() {
     this.newcoupons = false;
   }
-
   newcouponadd(newcopon: any) {
     let data = {
       CUSTOMER_ID: this.userID,
@@ -659,14 +486,9 @@ export class OrderReviewPageComponent {
         this.newcoupons = false;
         newcopon = '';
         this.searchQuery = '';
-
       } else {
-        this.message.error('Invalid coupan code', '');
+        this.message.error('Invalid coupon code', '');
       }
     });
-
-
-
   }
-
 }

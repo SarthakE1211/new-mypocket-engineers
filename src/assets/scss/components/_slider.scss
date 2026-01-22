@@ -7,62 +7,49 @@
   position: relative;
   height: 100vh;
   min-height: 800px;
-
   * {
     box-sizing: border-box;
-
     &:before {
       box-sizing: border-box;
     }
-
     &:after {
       box-sizing: border-box;
     }
   }
-
   .m--blend-dark {
     .fnc-slide__inner {
       background-color: #05213d;
     }
-
     .fnc-slide__mask-inner {
       background-color: #05213d;
     }
   }
-
   .m--navbg-dark {
     background-color: var(--theme-default2);
   }
-
   .m--navbg-green {
     background-color: var(--theme-default2);
   }
-
   .m--navbg-red {
     background-color: var(--theme-default2);
   }
-
   .m--blend-blue {
     .fnc-slide__inner {
       background-color: #59aecb;
     }
-
     .fnc-slide__mask-inner {
       background-color: #2D7791;
     }
   }
-
   .m--navbg-blue {
     background-color: #2D7791;
   }
 }
-
 .fnc-slider__slides {
   position: relative;
   height: 100%;
   transition: transform 1s 0.6666666667s;
 }
-
 .fnc-slide {
   overflow: hidden;
   position: absolute;
@@ -72,18 +59,15 @@
   height: 100%;
   transform: translate3d(0, 0, 0);
 }
-
 .fnc-slide.m--before-sliding {
   z-index: 2 !important;
   transform: translate3d(100%, 0, 0);
 }
-
 .fnc-slide.m--active-slide {
   z-index: 1;
   transition: transform 1s 0.6666666667s ease-in-out;
   transform: translate3d(0, 0, 0);
 }
-
 .fnc-slide__inner {
   position: relative;
   height: 100%;
@@ -91,70 +75,57 @@
   background-position: center top;
   transform: translate3d(0, 0, 0);
 }
-
 .m--global-blending-active {
   .fnc-slide__inner {
     background-blend-mode: luminosity;
   }
 }
-
 .m--blend-bg-active {
   .fnc-slide__inner {
     background-blend-mode: luminosity;
   }
 }
-
 .m--before-sliding {
   .fnc-slide__inner {
     transform: translate3d(-100%, 0, 0);
   }
-
   .fnc-slide__mask {
     transform: rotate(-10deg) translate3d(200px, 0, 0);
     opacity: 0;
   }
-
   .fnc-slide__mask-inner {
     transform: translateY(0) rotate(10deg) translateX(-200px) translateZ(0);
   }
-
   .fnc-slide__heading-line {
     transform: translateY(100%);
-
     span {
       transform: translateY(-100%);
     }
   }
 }
-
 .m--active-slide {
   .fnc-slide__inner {
     transition: transform 1s 0.6666666667s ease-in-out;
     transform: translate3d(0, 0, 0);
   }
-
   .fnc-slide__mask {
     transition: transform 0.7s 1.2222222222s, opacity 0.35s 1.2222222222s;
     transform: translate3d(0, 0, 0);
     opacity: 1;
   }
-
   .fnc-slide__mask-inner {
     transition: transform 0.7s 1.2222222222s;
     transform: translateX(0);
   }
-
   .fnc-slide__heading-line {
     transition: transform 1.5s 1s;
     transform: translateY(0);
-
     span {
       transition: transform 1.5s 1s;
       transform: translateY(0);
     }
   }
 }
-
 .fnc-slide__mask {
   overflow: hidden;
   z-index: 1;
@@ -169,30 +140,25 @@
   transform-origin: 50% 0;
   transition-timing-function: ease-in-out;
 }
-
 .m--previous-slide {
   .fnc-slide__mask {
     transition: transform 0.7s 0.3333333333s, opacity 0.35s 0.6833333333s;
     transform: rotate(10deg) translate3d(-200px, 0, 0);
     opacity: 0;
   }
-
   .fnc-slide__mask-inner {
     transition: transform 0.7s 0.3333333333s;
     transform: translateY(0) rotate(-10deg) translateX(200px) translateZ(0);
   }
-
   .fnc-slide__heading-line {
     transition: transform 1.5s;
     transform: translateY(-100%);
-
     span {
       transition: transform 1.5s;
       transform: translateY(100%);
     }
   }
 }
-
 .fnc-slide__mask-inner {
   z-index: -1;
   position: absolute;
@@ -209,7 +175,6 @@
   transform-origin: 50% 16.5vh;
   transition-timing-function: ease-in-out;
 }
-
 .fnc-slide__content {
   z-index: 2;
   position: absolute;
@@ -218,12 +183,10 @@
   padding: 40px;
   background-color: rgba(255, 255, 255, 0.5);
 }
-
 .fnc-slide__heading {
   margin-bottom: 15px;
   text-transform: uppercase;
 }
-
 .fnc-slide__heading-line {
   overflow: hidden;
   position: relative;
@@ -232,12 +195,10 @@
   color: $theme-font-color;
   word-spacing: 10px;
   display: block;
-
   span {
     display: block;
   }
 }
-
 .fnc-slide__action-btn {
   position: relative;
   margin: auto;
@@ -246,7 +207,6 @@
   background-color: $white;
   border-radius: 28px;
   line-height: 4;
-
   &:before {
     content: "";
     position: absolute;
@@ -259,7 +219,6 @@
     height: 54px;
     transition: all .5s ease;
   }
-
   span {
     position: relative;
     font-size: 14px;
@@ -270,7 +229,6 @@
     vertical-align: middle;
     color: $theme-font-color;
   }
-
   svg {
     position: relative;
     top: 0;
@@ -281,35 +239,29 @@
     transform: translateX(-5px);
     transition: all .5s ease;
   }
-
   &:hover {
     &:before {
       width: 100%;
       background: rgba($theme-font-color, 1);
     }
-
     svg {
       transform: translateX(0);
       stroke: $white;
     }
-
     span {
       color: $white;
     }
   }
-
   &:active {
     transform: scale(.96);
   }
 }
-
 .fnc-nav {
   z-index: 5;
   position: absolute;
   right: 0;
   bottom: 0;
 }
-
 .fnc-nav__bgs {
   z-index: -1;
   overflow: hidden;
@@ -319,7 +271,6 @@
   width: 100%;
   height: 100%;
 }
-
 .fnc-nav__bg {
   position: absolute;
   left: 0;
@@ -327,22 +278,18 @@
   width: 100%;
   height: 100%;
 }
-
 .fnc-nav__bg.m--nav-bg-before {
   z-index: 2 !important;
   transform: translateX(100%);
 }
-
 .fnc-nav__bg.m--active-nav-bg {
   z-index: 1;
   transition: transform 1s 0.6666666667s;
   transform: translateX(0);
 }
-
 .fnc-nav__controls {
   font-size: 0;
 }
-
 .fnc-nav__control {
   overflow: hidden;
   position: relative;
@@ -359,11 +306,9 @@
   cursor: pointer;
   transition: background-color 0.5s;
 }
-
 .fnc-nav__control.m--active-control {
   background: #1F2833;
 }
-
 .fnc-nav__control-progress {
   position: absolute;
   left: 0;
@@ -375,7 +320,6 @@
   transform: scaleX(0);
   transition-timing-function: linear !important;
 }
-
 .m--with-autosliding {
   .m--active-control {
     .fnc-nav__control-progress {
@@ -383,28 +327,24 @@
     }
   }
 }
-
 .m--prev-control {
   .fnc-nav__control-progress {
     transform: translateX(100%);
     transition: transform 0.5s !important;
   }
 }
-
 .m--reset-progress {
   .fnc-nav__control-progress {
     transform: scaleX(0);
     transition: transform 0s 0s !important;
   }
 }
-
 .m--autosliding-blocked {
   .fnc-nav__control-progress {
     transition: all 0s 0s !important;
     transform: scaleX(0) !important;
   }
 }
-
 .demo-cont__credits {
   box-sizing: border-box;
   overflow-y: auto;
@@ -422,59 +362,47 @@
   transition: transform 0.7s;
   transform: translate3d(100%, 0, 0) rotateY(-45deg);
   will-change: transform;
-
   * {
     box-sizing: border-box;
-
     &:before {
       box-sizing: border-box;
     }
-
     &:after {
       box-sizing: border-box;
     }
   }
 }
-
 .credits-active {
   .demo-cont__credits {
     transition: transform 0.7s 0.2333333333s;
     transform: translate3d(0, 0, 0);
   }
-
   .example-slider {
     transform: translate3d(-400px, 0, 0) rotateY(10deg) scale(0.9);
   }
 }
-
 .example-slider {
   transform: translate3d(0, 0, 0);
   transition: transform 0.7s;
-
   .fnc-slide-1 {
     .fnc-slide__inner {
       background-image: url("../../images/layout/layout-1.jpg");
     }
-
     .fnc-slide__mask-inner {
       background-image: url("../../images/layout/layout-1.jpg");
     }
   }
-
   .fnc-slide-2 {
     .fnc-slide__inner {
       background-image: url("../../images/layout/layout-2.jpg");
     }
-
     .fnc-slide__mask-inner {
       background-image: url("../../images/layout/layout-2.jpg");
     }
   }
-
   .fnc-slide-3 {
     .fnc-slide__inner {
       background-image: url("../../images/property/1.jpg");
-
       &:before {
         content: "";
         position: absolute;
@@ -485,12 +413,10 @@
         background: rgba(255, 255, 255, 0.1);
       }
     }
-
     .fnc-slide__mask-inner {
       background-image: url("../../images/property/1.jpg");
     }
   }
-
   .fnc-slide-4 {
     .fnc-slide__inner {
       &:before {
@@ -504,15 +430,12 @@
       }
     }
   }
-
   .fnc-slide__heading {
     font-family: SF Pro Text;
   }
-
   .fnc-slide__action-btn {
     font-family: SF Pro Text;
   }
-
   .fnc-nav__control {
     font-family: SF Pro Text;
   }

@@ -4,7 +4,6 @@ import * as bootstrap from 'bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from 'src/app/Service/api-service.service';
 import { CartService } from 'src/app/Service/cart.service';
-
 @Component({
   selector: 'app-all-refurbished-products',
   templateUrl: './all-refurbished-products.component.html',
@@ -19,9 +18,7 @@ export class AllRefurbishedProductsComponent {
   userID: any = this.apiservice.getUserId();
   loading: boolean = false;
   guestaddressss: any;
-
   showAll: boolean = false;
-
   constructor(
     private apiservice: ApiServiceService,
     private message: ToastrService,
@@ -29,27 +26,21 @@ export class AllRefurbishedProductsComponent {
     private route: ActivatedRoute,
     private router: Router
   ) {}
-
   IMAGEuRL: any;
   Addressdata: any = [];
-
   isDropdownOpen1: boolean = false;
-
   toggleDropdown1() {
     this.isDropdownOpen1 = !this.isDropdownOpen1;
   }
-
   ngOnInit() {
     this.inventory();
     this.getInventoryCategory();
     this.IMAGEuRL = this.apiservice.retriveimgUrl2();
     this.USERID = this.apiservice.getUserId();
-
     if (this.USERID !== 0) {
       this.Address();
     } else {
       this.guestaddressss = this.apiservice.getUserAddress();
-
       if (this.guestaddressss !== '') {
         this.guestaddressss = JSON.parse(this.guestaddressss);
         if (
@@ -58,14 +49,8 @@ export class AllRefurbishedProductsComponent {
           this.guestaddressss.TERRITORY_ID !== 0 &&
           this.guestaddressss.TERRITORY_ID !== ''
         ) {
-          //  if( this.teritory_id !==0 &&  this.teritory_id !==undefined &&  this.teritory_id !==null){
           this.teritory_id = this.guestaddressss.TERRITORY_ID;
-          // this.getTopSellingLaptops();
-          // this.brands();
           this.inventory();
-          // this.InventoryunitMapping(this.InvertoryId);
-
-          // }
         } else {
           this.teritory_id = 0;
         }
@@ -74,7 +59,6 @@ export class AllRefurbishedProductsComponent {
       }
     }
   }
-
   Address() {
     this.apiservice
       .getAddress(
@@ -88,19 +72,14 @@ export class AllRefurbishedProductsComponent {
         if (data['code'] == 200) {
           this.Addressdata = data.data;
           if (this.Addressdata.length > 0) {
-            // Ensure array has at least one entry
             this.STATE_ID = this.Addressdata[0].STATE_ID;
-            this.ADDRESS_ID = this.Addressdata[0].ID; // Use "ID" instead of "ADDRESS_ID" as per JSON
+            this.ADDRESS_ID = this.Addressdata[0].ID; 
             this.teritory_id = this.Addressdata[0].TERRITORY_ID;
             if (
               this.teritory_id !== 0 &&
               this.teritory_id !== undefined &&
               this.teritory_id !== null
             ) {
-              // this.getTopSellingLaptops();
-              // this.brands();
-              // this.inventory();
-              // this.InventoryunitMapping(this.InvertoryId);
             }
           } else {
           }
@@ -109,10 +88,8 @@ export class AllRefurbishedProductsComponent {
         }
       });
   }
-
   loadServiceforRefurbished: boolean = false;
   InventoryCategory: any[] = [];
-
   getInventoryCategory() {
     this.apiservice.InventoryCategoryget(0, 0, 'SEQ_NO', 'asc', ' AND IS_ACTIVE = 1').subscribe(
       (data) => {
@@ -124,12 +101,10 @@ export class AllRefurbishedProductsComponent {
       },
       (error) => {
         this.InventoryCategory = [];
-        
       }
     );
   }
 filteredInventoryData: any[] = [];
-
   inventory() {
     this.loadServiceforinventory = true;
     const USERID = this.apiservice.getUserId();
@@ -152,39 +127,25 @@ filteredInventoryData: any[] = [];
         }
       });
   }
-
-
-
 selectFilter2(option: any) {
   this.selectedOption1 = option;
   this.applyCategoryFilter();
   this.showAll = false;
 }
-
-
 applyCategoryFilter() {
-
-  
-  
   if (this.selectedOption1 === 'All') {
     this.filteredInventoryData = this.inventorydata;
   } else {
-    const selectedId = parseInt(this.selectedOption1, 10); // convert to number
+    const selectedId = parseInt(this.selectedOption1, 10); 
     this.filteredInventoryData = this.inventorydata.filter(
       (item) => item.INVENTORY_CATEGORY_ID == selectedId
     );
   }
-  
-  
 }
-
-
-
   getCategoryNameById(id: any): string {
     const found = this.InventoryCategory.find((cat: any) => cat.ID == id);
     return found ? found.CATEGORY_NAME : 'All';
   }
-
   addTOcartdata: any = [];
   STATE_ID: any;
   ADDRESS_ID: any;
@@ -195,31 +156,21 @@ applyCategoryFilter() {
   IS_TEMP_CART = 1;
   displayednventory: any[] = [];
   displayLimitnventory: number = 4;
-
   IS_TEMP_CART1 = 0;
   TYPE1 = 'P';
   selectedOption1: any = 'All';
-
   inventorydataForDrawer: any[] = [];
-
   addToCart(product: any, type: any) {
-    // if (this.USERID == 0) {
-    //   this.message.error('Log in to shop and use all features..');
-
-    // } else {
-
     if (this.USERID == 0) {
       this.openLoginModal();
       return;
     }
-    product.loadingBuyNowcart = true; // Activate loader for clicked product
-
+    product.loadingBuyNowcart = true; 
     const ID = product.ID;
     const unit_id = product.UNIT_ID;
     const quentity_per_unit = product.QUANTITY_PER_UNIT;
     const unit_name = product.UNIT_NAME;
     const SERVICE_ID = 0;
-
     this.apiservice
       .CartGetforaddtocart1(
         this.customer_id,
@@ -236,28 +187,17 @@ applyCategoryFilter() {
         unit_name
       )
       .subscribe((data) => {
-        product.loadingBuyNowcart = false; // Activate loader for clicked product
-
+        product.loadingBuyNowcart = false; 
         if (data['code'] == 200) {
-          this.addTOcartdata.CART_ID = data.data.CART_ID; // Extract only CART_ID
-
-          // this.apiservice.addItemToCart(ID)
-          this.cartService.fetchAndUpdateCartDetails(this.USERID); // ⭐️ Common Cal
+          this.addTOcartdata.CART_ID = data.data.CART_ID; 
+          this.cartService.fetchAndUpdateCartDetails(this.USERID); 
           this.message.success('Item added to cart successfully.');
           sessionStorage.setItem(
             'CART_ID_FOR_CART',
             this.addTOcartdata.CART_ID.toString()
-          ); // Convert to string before storing
-
+          ); 
           if (type == 'S') {
-            // this.DrawerName = data.BRAND_NAME
-            //
-            // if (this.offcanvasInstance) {
-            //   this.offcanvasInstance.show();
-            // }
-
             const USERID = this.apiservice.getUserId();
-            //  this.loadServicefordrawer = true
             this.apiservice
               .getinventoryData1(
                 0,
@@ -271,33 +211,24 @@ applyCategoryFilter() {
               .subscribe((data) => {
                 if (data['code'] == 200) {
                   this.inventorydataForDrawer = data.data;
-                  // this.loadServicefordrawer = false;
                   this.updateDisplayedInventorydata();
                   this.inventory();
                 } else {
                   this.inventorydataForDrawer = [];
-                  // this.loadServicefordrawer = false;
                 }
               });
           } else {
             this.inventory();
           }
         } else {
-          product.loadingBuyNowcart = false; // Activate loader for clicked product
-
+          product.loadingBuyNowcart = false; 
           this.addTOcartdata = [];
         }
       });
-
-    // }
   }
   filteredTotalCount: number = 0;
-
   updateDisplayedInventorydata() {
     let filteredData = [];
-
-    
-
     if (this.selectedOption1 === 'All') {
       filteredData = this.inventorydataForDrawer;
     } else {
@@ -306,12 +237,9 @@ applyCategoryFilter() {
           String(item.INVENTORY_CATEGORY_ID) === String(this.selectedOption1)
       );
     }
-
     this.filteredTotalCount = filteredData.length;
     this.displayednventory = filteredData.slice(0, this.displayLimitnventory);
-    
   }
-
   inventoryMappingdata: any = [];
   UNIT_ID: any;
   UNIT_NAME: any;
@@ -322,15 +250,10 @@ applyCategoryFilter() {
   unit_name: any;
   TYPE = 'SH';
   cartdata: any = [];
-
   InventoryunitMapping(ID: any) {
     if (this.USERID == 0) {
-      // this.message.error('Log in to shop and use all features.');
-      // return;
-      // this.openLoginModal();
       return;
     }
-
     this.apiservice
       .getinventoryunitMapping(0, 0, 'id', 'desc', ' AND ITEM_ID = ' + ID)
       .subscribe((data) => {
@@ -344,25 +267,16 @@ applyCategoryFilter() {
         }
       });
   }
-
   InventoryId(product: any) {
-    
-
     const ID = product.ID;
     const UNIT_ID = product.UNIT_ID;
     const QUANTITY_PER_UNIT = product.QUANTITY_PER_UNIT;
-
-    sessionStorage.setItem('InventoryID', ID.toString()); // Store ID correctly
-    sessionStorage.setItem('UNIT_ID', UNIT_ID.toString()); // Store ID correctly
-    sessionStorage.setItem('QUANTITY_PER_UNIT', QUANTITY_PER_UNIT.toString()); // Store ID correctly
-    // this.inventoryId = ID;
-    //
+    sessionStorage.setItem('InventoryID', ID.toString()); 
+    sessionStorage.setItem('UNIT_ID', UNIT_ID.toString()); 
+    sessionStorage.setItem('QUANTITY_PER_UNIT', QUANTITY_PER_UNIT.toString()); 
   }
-
   openLoginModal() {
-    // this.message.info('Please log in to access services and other features.');
     if (this.userID === 0) {
-      // Open modal if user is guest
       const modalElement = document.getElementById('guestModal');
       if (modalElement) {
         const modal = new bootstrap.Modal(modalElement);
@@ -370,24 +284,19 @@ applyCategoryFilter() {
       }
     }
   }
-
   loadMore() {
     this.loading = true;
     setTimeout(() => {
       this.showAll = true;
       this.loading = false;
-    }, 1000); // Simulating a small delay for smooth UI
+    }, 1000); 
   }
-
   buyNow(product: any) {
-    
-
     if (this.USERID == 0) {
       this.openLoginModal();
       return;
     }
-    product.loadingBuyNow = true; // Activate loader for clicked product
-
+    product.loadingBuyNow = true; 
     this.ID = product.ID;
     this.unit_id = product.UNIT_ID;
     this.quentity_per_unit = product.QUANTITY_PER_UNIT;
@@ -409,12 +318,10 @@ applyCategoryFilter() {
       )
       .subscribe(
         (data) => {
-          product.loadingBuyNow = false; // Disable loader for this product
-
+          product.loadingBuyNow = false; 
           if (data['code'] == 200) {
             this.cartdata.CART_ID = data.data.CART_ID;
             sessionStorage.setItem('CART_ID', this.cartdata.CART_ID.toString());
-            // sessionStorage.setItem('Home', Home);
             this.router.navigate([
               '/shop/check-out',
               this.cartdata.CART_ID,
@@ -425,18 +332,14 @@ applyCategoryFilter() {
           }
         },
         (error) => {
-          product.loadingBuyNow = false; // Disable loader in case of error
-          
+          product.loadingBuyNow = false; 
         }
       );
   }
-
       handleBuyNow(product: any) {
   this.buyNow(product);
   this.InventoryunitMapping(product.ID);
 }
-
-
     openSuggestionModal() {
         const modalEl = document.getElementById('suggestionModal');
         if (modalEl) {
@@ -444,7 +347,6 @@ applyCategoryFilter() {
           modal.show();
         }
       }
-    
       closeSuggestionModal() {
         const modalEl = document.getElementById('suggestionModal');
         if (modalEl) {
@@ -453,5 +355,4 @@ applyCategoryFilter() {
           modalInstance.hide();
         }
       }
-  
 }

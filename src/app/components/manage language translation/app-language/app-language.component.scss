@@ -7,7 +7,6 @@
 .mobile-menu-header {
   padding: 12px;
   background-color: #f8f8f8;
-
   .close-menu-btn {
     border: none;
     background: none;
@@ -16,16 +15,13 @@
     align-items: center;
   }
 }
-
 .language-list-container {
   padding: 12px;
-
   .language-option {
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 8px 0;
-
     input[type="radio"] {
       appearance: none;
       width: 20px;
@@ -34,14 +30,13 @@
       border-radius: 50%;
       position: relative;
       cursor: pointer;
-      background-color: #fff; // Outer circle white
-
+      background-color: #fff;
       &:checked {
         &::after {
           content: "";
           width: 10px;
           height: 10px;
-          background-color: #3f51b5; // Inner circle blue
+          background-color: #3f51b5;
           border-radius: 50%;
           position: absolute;
           top: 50%;
@@ -50,7 +45,6 @@
         }
       }
     }
-
     label {
       font-size: 14px;
       font-weight: 500;
@@ -58,7 +52,6 @@
       flex-grow: 1;
     }
   }
-
   .loading-spinner {
     text-align: center;
     padding: 16px;
@@ -66,8 +59,6 @@
     color: #666;
   }
 }
-
-// Responsiveness
 @media (min-width: 768px) {
   .language-list-container {
     padding: 18px;
@@ -75,23 +66,26 @@
     margin: 0 auto;
   }
 }
-
 @media (min-width: 1200px) {
   .language-list-container {
     max-width: 600px;
   }
 }
-
 .loading-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100px;
-
   .spinner-border {
     width: 2rem;
     height: 2rem;
     border-width: 0.25rem;
-    color: #3170de; // This sets the color to your desired color
+    color: #3170de;
   }
+}
+.justify-start {
+  justify-content: flex-start
+}
+.text-center {
+  text-align: center
 }

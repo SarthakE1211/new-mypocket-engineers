@@ -1,5 +1,3 @@
-// import { Component } from '@angular/core';
-
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import * as bootstrap from 'bootstrap';
 import { Modal } from 'bootstrap';
@@ -9,7 +7,6 @@ import { ApiServiceService } from 'src/app/Service/api-service.service';
 import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
-
 export interface Product {
   id: number;
   name: string;
@@ -17,7 +14,6 @@ export interface Product {
   image: string;
   category: string;
 }
-
 @Component({
   selector: 'app-service',
   templateUrl: './service.component.html',
@@ -34,8 +30,6 @@ export class ServiceComponent {
   defaultAddress: any;
   userID: any = this.apiservice.getUserId();
   addressID: any = this.apiservice.getUserAddress();
-  // @ViewChild('guestModal') guestModal!: TemplateRef<any>;
-
   constructor(
     private cookie: CookieService,
     private apiservice: ApiServiceService,
@@ -47,11 +41,8 @@ export class ServiceComponent {
   ) {
     this.updateSEO();
   }
-
   customertype: any = this.apiservice.getCustomerType();
-
   updateSEO() {
-    // alert('ddd')
     this.titleService.setTitle('Services - PockIT Web');
     this.metaService.updateTag({
       name: 'description',
@@ -63,8 +54,6 @@ export class ServiceComponent {
       content:
         'IT network services, cybersecurity solutions, cloud computing, firewall security, computer parts, laptop accessories, network monitoring',
     });
-
-    // Open Graph (For Facebook, LinkedIn)
     this.metaService.updateTag({
       property: 'og:title',
       content: 'IT Network Services & Computer Parts - PockIT Web',
@@ -74,13 +63,10 @@ export class ServiceComponent {
       content:
         'Get professional IT network services and shop high-quality computer parts at PockIT Web. Secure, fast, and reliable solutions.',
     });
-
     this.metaService.updateTag({
       property: 'og:url',
       content: 'https://my.pockitengineers.com/services',
     });
-
-    // Twitter Card
     this.metaService.updateTag({
       name: 'twitter:title',
       content: 'IT Network Services & Computer Parts - PockIT Web',
@@ -90,7 +76,6 @@ export class ServiceComponent {
       content:
         'Find expert IT network solutions and high-quality computer parts at PockIT Web. Secure & reliable solutions for businesses.',
     });
-
     this.metaService.updateTag({
       name: 'twitter:card',
       content: 'summary_large_image',
@@ -102,24 +87,17 @@ export class ServiceComponent {
     link.setAttribute('href', window.location.href);
     document.head.appendChild(link);
   }
-
   token = this.cookie.get('token');
-
   ngOnInit() {
     this.IMAGEuRL = this.apiservice.retriveimgUrl2();
-    // this.getProjectData();
-    // this.geServiceCategories();
-
     if (this.userID === 0) {
-      // Ensure addressID is an object
       if (typeof this.addressID === 'string') {
         try {
           this.addressID = JSON.parse(this.addressID);
         } catch (error) {
-          return; // Stop execution if JSON parsing fails
+          return; 
         }
       }
-
       if (this.addressID?.PINCODE) {
         this.apiservice
           .getterritoryPincodeData(
@@ -133,9 +111,6 @@ export class ServiceComponent {
             (data: any) => {
               if (data?.code === 200 && data?.data?.length > 0) {
                 this.DefaultAddressArray = data.data[0];
-
-                // Fetch related data
-                // this.getProjectData();
                 this.geServiceCategories();
               } else {
               }
@@ -147,16 +122,14 @@ export class ServiceComponent {
     } else {
       this.getAddresses1();
     }
-
     setTimeout(() => {
       if (document.documentElement.scrollHeight <= window.innerHeight) {
-        document.body.style.overflowY = 'auto'; // Force scrollbar if missing
+        document.body.style.overflowY = 'auto'; 
       } else {
-        document.body.style.overflowY = ''; // Keep default behavior
+        document.body.style.overflowY = ''; 
       }
-    }, 300); // Delay to allow content to load
+    }, 300); 
   }
-
   getAddresses1() {
     this.apiservice
       .getAddresses1data(
@@ -170,20 +143,12 @@ export class ServiceComponent {
         (data) => {
           if (data['code'] == 200) {
             this.addresses = data['data'];
-
-            // Get default address
             this.defaultAddress =
               this.addresses.find((addr) => addr.IS_DEFAULT === 1) ||
               this.addresses[0];
-
             this.DefaultAddressArray = this.defaultAddress;
-
             if (this.DefaultAddressArray['TERRITORY_ID']) {
-              // this.getProjectData();
-              // this.getBannerData();
-              // this.generateDates(); // Populate the dates array
               this.geServiceCategories();
-              // this.getpincode();
             } else {
               this.message.error(
                 'Territory not found, Please select other pincode'
@@ -195,13 +160,10 @@ export class ServiceComponent {
       );
   }
   handleImageError(event: any) {
-    event.target.src = 'assets/img/services/no-image.png'; // Set default image
+    event.target.src = 'assets/img/services/no-image.png'; 
   }
-
   openLoginModal() {
-    // this.message.info('Please log in to access services and other features.');
     if (this.userID === 0) {
-      // Open modal if user is guest
       const modalElement = document.getElementById('guestModal');
       if (modalElement) {
         const modal = new bootstrap.Modal(modalElement);
@@ -209,20 +171,11 @@ export class ServiceComponent {
       }
     }
   }
-
   redirectToLogin() {
     if (this.userID == 0 || this.userID == null || this.userID == undefined) {
       this.cookie.deleteAll();
       sessionStorage.clear();
       localStorage.clear();
-      // this.message.success('You have successfully logged out!', 'Success', {
-      //   timeOut: 1500,
-      //   positionClass: 'toast-top-right',
-      //   progressBar: true,
-      //   closeButton: true,
-      //   progressAnimation: 'decreasing',
-      //   toastClass: 'ngx-toastr custom-toast',
-      // });
       this.router.navigate(['/login']).then(() => {
         window.location.reload();
       });
@@ -232,20 +185,13 @@ export class ServiceComponent {
   ngAfterViewInit() {
     this.modalInstance = new Modal(this.modalElement.nativeElement);
   }
-
   ModalData: any;
   quantity: number = 1;
 ServiceDescription:any='';
   openModal(data: any) {
         this.ServiceDescription = data.DESCRIPTION? this.sanitizer.bypassSecurityTrustHtml(data.DESCRIPTION):'No description available.';
-
-    // this.ServiceDescription=data.DESCRIPTION;
-    
     this.ModalData = data;
-    
-
-    this.quantity = 1; // Reset quantity when modal opens
-
+    this.quantity = 1; 
     this.modalInstance.show();
   }
   increaseQty() {
@@ -258,13 +204,11 @@ ServiceDescription:any='';
       );
     }
   }
-
   decreaseQty() {
     if (this.quantity > 1) {
       this.quantity--;
     }
   }
-
   categories: any[] = [];
   ServiceCategories: any[] = [];
   groupedCategories: any[] = [];
@@ -282,16 +226,11 @@ ServiceDescription:any='';
         (data) => {
           if (data['code'] === 200) {
             this.ServiceCategories = data.data;
-
-            // Group data by unique NAME, but keep the full object
             this.groupedCategories = data.data.filter(
               (item: any, index: any, self: any) =>
                 index === self.findIndex((t: any) => t.NAME === item.NAME)
             );
-
             this.selectedCategory = this.groupedCategories[0]?.NAME || '';
-
-            // Initialize the category selection based on session storage or default
             if (
               sessionStorage.getItem('categoryidforsearch') != null &&
               sessionStorage.getItem('categoryidforsearch') !== '' &&
@@ -304,7 +243,6 @@ ServiceDescription:any='';
                 (category) => category.ID.toString() === categoryIdFromSession
               );
               this.selectedCategory = selectedCategory?.NAME;
-
               if (
                 sessionStorage.getItem('categoryidforsearch22') != null &&
                 sessionStorage.getItem('categoryidforsearch22') !== '' &&
@@ -317,7 +255,6 @@ ServiceDescription:any='';
               } else {
                 this.filterdata = '';
               }
-
               this.getProjectData(selectedCategory, true);
               sessionStorage.setItem('categoryidforsearch', '');
               sessionStorage.setItem('categoryidforsearch22', '');
@@ -333,23 +270,13 @@ ServiceDescription:any='';
         (error) => {}
       );
   }
-
-  loadingpage: boolean = false; // Add loadingpage flag
-
+  loadingpage: boolean = false; 
   getProjectData(category: any, event: boolean, eventt: boolean = false) {
-    //
-
     if (eventt) {
       this.selectedCategory = category.NAME;
     } else {
     }
-
-    // this.selectedCategory = category.NAME;
-
-    // this.selectedCategory = ''
-    // Set loadingpage to true when fetching data
     this.loadingpage = true;
-
     if (event) {
       this.apiservice
         .getServicesForWeb(
@@ -369,15 +296,14 @@ ServiceDescription:any='';
               } else {
                 this.PopularServices = [];
               }
-              this.loadingpage = false; // Hide spinner after data loads
+              this.loadingpage = false; 
             } else {
-              this.loadingpage = false; // Hide spinner after data loads
-
+              this.loadingpage = false; 
               this.message.error('Error fetching popular services', '');
             }
           },
           (error) => {
-            this.loadingpage = false; // Hide spinner in case of error
+            this.loadingpage = false; 
           }
         );
     } else {
@@ -399,24 +325,21 @@ ServiceDescription:any='';
               } else {
                 this.PopularServices = [];
               }
-              this.loadingpage = false; // Hide spinner after data loads
+              this.loadingpage = false; 
             } else {
-              this.loadingpage = false; // Hide spinner after data loads
-
+              this.loadingpage = false; 
               this.message.error('Error fetching popular services', '');
             }
           },
           (error) => {
-            this.loadingpage = false; // Hide spinner in case of error
+            this.loadingpage = false; 
           }
         );
     }
   }
-
   displayCount: number = 10;
   loadMore() {
     this.loadingpage = true;
-
     setTimeout(() => {
       if (this.displayCount < this.PopularServices.length) {
         this.displayCount += 10;
@@ -424,33 +347,26 @@ ServiceDescription:any='';
       this.loadingpage = false;
     }, 1000);
   }
-
   isDrawerVisible: boolean = false;
   drawerData: any = [];
   originalBackdropOpacity: string = '';
   imagePreview: any = null;
   showModal: boolean = false;
-
-  // isDrawerVisible: boolean = false;
-  // drawerData: any = [];
   cartquantity: any;
   homepageprogress: any = 0;
-
   decreaseProgress() {
     if (this.homepageprogress > 0) {
-      this.homepageprogress -= 50; // Decrease progress on back
+      this.homepageprogress -= 50; 
     }
   }
-
   fromservice: boolean = false;
   updateProgress1() {
     this.fromservice = true;
-    this.homepageprogress += 50; // Adjust increment as needed
+    this.homepageprogress += 50; 
     if (this.homepageprogress > 100) {
       this.homepageprogress = 100;
     }
   }
-
   openNextDrawer(data: any) {
     setTimeout(() => {
       const serviceDrawer = document.getElementById('offcanvasRight11');
@@ -464,12 +380,10 @@ ServiceDescription:any='';
       }
       this.drawerData = data;
       this.cartquantity =this.drawerData.QTY == 0 ? 1 : this.drawerData.QTY;
-
       this.showModal = false;
       this.imagePreview = null;
       this.drawerData.SERVICE_PHOTO_FILE = '';
       this.drawerData.DESCRIPTION = '';
-
       this.isDrawerVisible = true;
     }, 200);
   }
@@ -487,35 +401,28 @@ ServiceDescription:any='';
       }
     }, 300);
   }
-
   get closeCallback() {
     return this.drawerClose.bind(this);
   }
-  activeIndex: number | null = null; // Tracks the currently opened section
-
+  activeIndex: number | null = null; 
   toggleAccordion(index: number) {
-    this.activeIndex = this.activeIndex === index ? null : index; // Toggle open/close
+    this.activeIndex = this.activeIndex === index ? null : index; 
   }
   cartspinner: boolean = false;
-
   increaseQty1(item: any, maxQty: number, event: Event) {
     event.stopPropagation();
     if (item.QTY < maxQty) {
       this.ModalData.QTY++;
     } else {
-      // If already at max, show alert or toast
      this.message.info('You have reached the limit of max quantity','');
     }
   }
-  
   decreaseQty1(item: any, event: Event) {
     event.stopPropagation();
     if (item.QTY > 1) {
       this.ModalData.QTY--;
     } else {
-      // If already at max, show alert or toast
      this.message.info('Quantity cannot be less than 1','');
     }
   }
-  
 }

@@ -1,73 +1,28 @@
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-/>
-
-<!-- {{
-  DefaultAddressArray | json
-}} -->
-
-<!-- Fullscreen Overlay Spinner -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 <div *ngIf="loadingPage" class="spinner-overlay">
   <div class="spinner-border text-primary spinner-size" role="status">
     <span class="sr-only"></span>
   </div>
 </div>
-
 <main class="main">
-  <section
-    id="hero"
-    class="hero section"
-    style="
-      margin: 15px 30px;
-      border-radius: 17px;
-      padding: 0px 0px;
-      background-color: white !important;
-    "
-  >
+  <section id="hero" class="hero section card-white">
     <div class="carousel hero-carousel-container">
-      <owl-carousel-o
-        *ngIf="carouselItems.length > 0"
-        [options]="carouselOptions"
-        style="padding: 0px"
-      >
+      <owl-carousel-o *ngIf="carouselItems.length > 0" [options]="carouselOptions" class="p-0">
         <ng-container *ngFor="let item of carouselItems">
           <ng-template carouselSlide>
             <div class="carousel-item">
-              <!-- <img
-                [ngStyle]="{
-                  'background-image':
-                    'url(' + IMAGEuRL + 'BannerImages/' + item.IMAGE_URL + ')',
-                  'background-size': '100% 100%',
-                  'background-position': 'center',
-                  'background-repeat': 'no-repeat',
-
-                }"
-                alt="{{ item.IMAGE_URL }}"
-                class="carousel-image"
-              /> -->
-
-              <div
-                class="carousel-image"
-                [ngStyle]="{
+              <div class="carousel-image" [ngStyle]="{
                   'background-image':
                     'url(' + IMAGEuRL + 'BannerImages/' + item.IMAGE_URL + ')',
                   'background-size': '100% 100%',
                   'background-position': 'center',
                   'background-repeat': 'no-repeat'
-                }"
-              ></div>
-              <div class="carousel-container" style="text-align: left">
-                <h3
-                  [style.color]="item.TITLE_COLOR + ' !important'"
-                  class="carousel-title"
-                >
+                }"></div>
+              <div class="carousel-container text-left">
+                <h3 [style.color]="item.TITLE_COLOR + ' !important'" class="carousel-title">
                   {{ item.TITLE }}
                 </h3>
-                <h6
-                  [style.color]="item.SUB_TITLE_COLOR + ' !important'"
-                  class="carousel-title"
-                >
+                <h6 [style.color]="item.SUB_TITLE_COLOR + ' !important'" class="carousel-title">
                   {{ item.SUB_TITLE }}
                 </h6>
               </div>
@@ -77,93 +32,32 @@
       </owl-carousel-o>
     </div>
   </section>
-
-  <section
-    id="agents"
-    class="agents section"
-    style="padding: 10px; padding-top: 20px"
-    *ngIf="
+  <section id="agents" class="agents section p-10-pt-20" *ngIf="
       DefaultAddressArray?.TERRITORY_ID === 0 ||
       DefaultAddressArray?.TERRITORY_ID === null ||
       DefaultAddressArray.length === 0
-    "
-  >
-    <div
-      class="container d-flex flex-wrap justify-content-between align-items-start gap-4 p-0"
-      data-aos="fade-up"
-    >
-      <!-- Service Categories Card -->
+    ">
+    <div class="container d-flex flex-wrap justify-content-between align-items-start gap-4 p-0" data-aos="fade-up">
       <div
-        class="card bg-white rounded-4 shadow pt-4 pb-4 ps-2 pe-2 text-center border-0 mt-2 service-categories"
-        style="padding-bottom: 9px !important; box-shadow: none !important"
-      >
-        <!-- Section Title -->
-        <div
-          class="container section-title d-flex justify-content-between align-items-start"
-          style="padding-top: 0px; padding-bottom: 7px; background: white"
-        >
+        class="card bg-white rounded-4 shadow pt-4 pb-4 ps-2 pe-2 text-center border-0 mt-2 service-categories pb-9-no-shadow">
+        <div class="container section-title d-flex justify-content-between align-items-start pt-0-pb-7-bg-white">
           <div class="d-flex align-items-center">
-            <span
-              class="me-2"
-              style="
-                height: 24px;
-                width: 4px;
-                background-color: #f26522;
-                display: inline-block;
-              "
-            ></span>
+            <span class="me-2 indicator-bar"></span>
             <p class="fw-bold m-0 responsive-text">
               {{ "home.service_categories.title" | translate }}
             </p>
           </div>
         </div>
-
-        <!-- Loader -->
-        <div
-          *ngIf="loadCategories1"
-          class="spinner-border text-secondary mx-auto my-3"
-          role="status"
-        >
+        <div *ngIf="loadCategories1" class="spinner-border text-secondary mx-auto my-3" role="status">
           <span class="sr-only">Loading...</span>
         </div>
-
-        <!-- Category Cards Grid -->
-        <div
-          *ngIf="!loadCategories1"
-          class="row gy-4 w-100"
-          style="
-            padding-right: 0px;
-            margin: 0px auto;
-            max-height: 350px;
-            overflow-y: auto;
-          "
-        >
-          <div
-            *ngFor="let category of displayedCategories1; let i = index"
-            class="col-12 col-sm-4 col-md-4 col-lg-2-3 col-xl-2-4"
-            data-aos="fade-up"
-            [attr.data-aos-delay]="(i + 1) * 100"
-            style="margin-bottom: 10px; margin-top: 18px"
-          >
-            <div
-              class="popular-card"
-              style="
-                padding: 5px 5px 10px 5px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-              "
-              (click)="openServiceDrawerViewOnly(category)"
-            >
-              <div
-                style="
-                  background-color: rgb(245, 248, 253) !important;
-                  padding: 10px !important;
-                "
-              >
-                <div
-                  [ngStyle]="{
+        <div *ngIf="!loadCategories1" class="row gy-4 w-100 scroll-container">
+          <div *ngFor="let category of displayedCategories1; let i = index"
+            class="col-12 col-sm-4 col-md-4 col-lg-2-3 col-xl-2-4 mt-18-mb-10" data-aos="fade-up"
+            [attr.data-aos-delay]="(i + 1) * 100">
+            <div class="popular-card flex-center-column-box" (click)="openServiceDrawerViewOnly(category)">
+              <div class="bg-light-blue-p-10">
+                <div [ngStyle]="{
                     'background-image':
                       'url(' +
                       (category.ICON
@@ -176,136 +70,62 @@
                     width: '100%',
                     'aspect-ratio': '1 / 1',
                     'border-radius': '8px',
-
                     border: 'none'
-                  }"
-                  class="img-fluid cc"
-                  role="img"
-                  [attr.aria-label]="category.title"
-                ></div>
+                  }" class="img-fluid cc" role="img" [attr.aria-label]="category.title"></div>
               </div>
-
-              <p
-                class="service-name mt-2"
-                [attr.title]="category.title"
-                style="
-                  text-align: center;
-                  white-space: pre-line;
-                  color: #0e0e0e;
-                  font-weight: 600;
-                  margin: 0;
-                "
-              >
+              <p class="service-name mt-2 text-center-preline-bold" [attr.title]="category.title">
                 {{ category.title }}
               </p>
             </div>
           </div>
         </div>
-
-        <!-- Load More Button -->
-        <div
-          class="text-center w-100 mt-3"
-          *ngIf="displayedCategories1.length < ServiceCateogriesView.length"
-        >
-          <button
-            class="btn btn-primary"
-            (click)="loadMore2()"
-            [disabled]="loadMoreLoading1"
-          >
+        <div class="text-center w-100 mt-3" *ngIf="displayedCategories1.length < ServiceCateogriesView.length">
+          <button class="btn btn-primary" (click)="loadMore2()" [disabled]="loadMoreLoading1">
             <span *ngIf="!loadMoreLoading1">Load More</span>
-            <span
-              *ngIf="loadMoreLoading1"
-              class="spinner-border spinner-border-sm"
-            ></span>
+            <span *ngIf="loadMoreLoading1" class="spinner-border spinner-border-sm"></span>
           </button>
         </div>
       </div>
     </div>
   </section>
-  <section
-    *ngIf="userID !== 0 && PopularServices.length > 0"
-    id="services"
-    class="services section"
-    style="padding: 10px; padding-top: 20px"
-  >
-    <!-- Section Title -->
+  <section *ngIf="userID !== 0 && PopularServices.length > 0" id="services" class="services section p-10-pt-20">
     <div
-      class="container section-title d-flex justify-content-between align-items-start rounded-top-4"
-      data-aos="fade-up"
-      style="padding: 22px 28px 0px; background: white"
-    >
+      class="container section-title d-flex justify-content-between align-items-start rounded-top-4 p-22-28-0-bg-white"
+      data-aos="fade-up">
       <div class="d-flex align-items-center">
-        <span
-          class="me-2"
-          style="
-            height: 24px;
-            width: 4px;
-            background-color: #f26522;
-            display: inline-block;
-          "
-        ></span>
+        <span class="me-2 indicator-bar"></span>
         <p class="fw-bold m-0 responsive-text">
           {{ "home.service_categories.popular_services" | translate }}
         </p>
       </div>
-
       <div class="view-catalogue">
-        <span
-          style="font-weight: 600; cursor: pointer; color: #f16b3f"
-          [routerLink]="['/services']"
-          >{{ "home.service_categories.view_all" | translate }}</span
-        >
+        <span class="fw-600-pointer-orange" [routerLink]="['/services']">{{ "home.service_categories.view_all" |
+          translate }}</span>
       </div>
     </div>
-    <!-- End Section Title -->
-
-    <div
-      class="container team d-flex justify-content-center align-items-center demo12 rounded-bottom-4"
-      style="background: white; padding-bottom: 7px"
-    >
-      <div
-        *ngIf="loadService"
-        class="spinner-border text-secondary"
-        role="status"
-      >
+    <div class="container team d-flex justify-content-center align-items-center demo12 rounded-bottom-4 bg-white-pb-7">
+      <div *ngIf="loadService" class="spinner-border text-secondary" role="status">
         <span class="sr-only"></span>
       </div>
-
       <div *ngIf="!loadService" class="row demo11 w-100">
-        <owl-carousel-o
-          *ngIf="PopularServices.length >= 4 || isMobile"
-          [options]="carouselOptions1"
-          [ngStyle]="{
+        <owl-carousel-o *ngIf="PopularServices.length >= 4 || isMobile" [options]="carouselOptions1" [ngStyle]="{
             'max-width': PopularServices.length === 1 ? '300px' : '100%'
-          }"
-          style="padding: 0px"
-        >
+          }" class="p-0">
           <ng-container *ngFor="let service of PopularServices">
             <ng-template carouselSlide>
-              <div class="popular-card" style="padding: 12px">
-                <div
-                  style="
-                    background-color: rgb(245, 248, 253) !important;
-                    padding: 10px !important;
-                  "
-                >
-                  <div
-                    [ngStyle]="{
+              <div class="popular-card p-12">
+                <div class="bg-light-blue-p-10">
+                  <div [ngStyle]="{
                       display: 'flex',
                       'align-items': 'center',
                       'background-color': '#f5f8fd',
                       padding: '10px !important',
                       'justify-content':
                         PopularServices.length === 1 ? 'unset' : 'center'
-                    }"
-                    class="member"
-                    (click)="
+                    }" class="member" (click)="
                       userID !== 0 ? openDrawer(service) : openLoginModal()
-                    "
-                  >
-                    <!-- <div style="background-color: rgb(245, 248, 253) !important; padding: 10px !important;"> -->
-                    <div
-                      [ngStyle]="{
+                    ">
+                    <div [ngStyle]="{
                         'background-image':
                           'url(' +
                           (service.SERVICE_IMAGE
@@ -321,44 +141,27 @@
                         'border-radius': '8px',
                         border: 'none',
                         cursor: 'pointer'
-                      }"
-                      class="img-fluid cc"
-                      role="img"
-                      [attr.aria-label]="service.NAME"
-                    ></div>
-                    <!-- </div> -->
+                      }" class="img-fluid cc" role="img" [attr.aria-label]="service.NAME"></div>
                   </div>
                 </div>
-
-                <p
-                  class="service-name"
-                  [attr.title]="service.NAME"
-                  [ngStyle]="{
+                <p class="service-name" [attr.title]="service.NAME" [ngStyle]="{
                     'text-align':
                       PopularServices.length === 1 ? 'left' : 'center',
                     'white-space': 'pre-line',
                     color: '#0e0e0e',
                     'font-weight': '600',
                     margin: '0px'
-                  }"
-                >
+                  }">
                   {{ service.NAME }}
                 </p>
               </div>
             </ng-template>
           </ng-container>
         </owl-carousel-o>
-
         <div *ngIf="PopularServices.length < 4 && !isMobile" class="row w-100">
-          <div
-            class="col-12 col-md-4 col-sm-6 col-lg-2-3 col-xl-2-4 mb-3"
-            *ngFor="let service of PopularServices"
-          >
-            <div
-              (click)="userID !== 0 ? openDrawer(service) : openLoginModal()"
-            >
-              <div
-                [ngStyle]="{
+          <div class="col-12 col-md-4 col-sm-6 col-lg-2-3 col-xl-2-4 mb-3" *ngFor="let service of PopularServices">
+            <div (click)="userID !== 0 ? openDrawer(service) : openLoginModal()">
+              <div [ngStyle]="{
                   'background-image':
                     'url(' +
                     (service.SERVICE_IMAGE
@@ -375,11 +178,7 @@
                   border: 'none',
                   'background-color': '#f5f8fd',
                   cursor: 'pointer'
-                }"
-                class="img-fluid cc"
-                role="img"
-                [attr.aria-label]="service.NAME"
-              ></div>
+                }" class="img-fluid cc" role="img" [attr.aria-label]="service.NAME"></div>
               <p class="service-name" [attr.title]="service.NAME">
                 {{ service.NAME || "N/A" }}
               </p>
@@ -388,53 +187,27 @@
         </div>
       </div>
     </div>
-
-    <!-- Bootstrap Modal -->
-    <div
-      class="modal fade"
-      id="addressModal"
-      tabindex="-1"
-      aria-hidden="true"
-      data-bs-backdrop="static"
-      data-bs-keyboard="false"
-    >
+    <div class="modal fade" id="addressModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+      data-bs-keyboard="false">
       <div class="modal-dialog modal-lg d-flex justify-content-center">
-        <div class="modal-content" style="max-width: 80%">
+        <div class="modal-content max-w-80">
           <div class="modal-header">
             <h5 class="modal-title fw-bold">
               {{ "home.address_modal.title" | translate }}
             </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-            ></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
-
-          <div class="modal-body overflow-auto" style="max-height: 400px">
-            <div
-              *ngFor="let address of addresses"
-              class="border rounded p-2 mb-2"
-              [ngStyle]="
+          <div class="modal-body overflow-auto max-h-400">
+            <div *ngFor="let address of addresses" class="border rounded p-2 mb-2" [ngStyle]="
                 (address.PINCODE_FOR === 'B' || address.PINCODE_FOR === 'S') &&
                 address.TERRITORY_ID == defaultAddress.TERRITORY_ID
                   ? {}
                   : { display: 'none' }
-              "
-            >
+              ">
               <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
-                  <input
-                    type="radio"
-                    name="address"
-                    [value]="address.ID"
-                    [(ngModel)]="selectedAddress"
-                  />
-
-                  <div
-                    class="ms-2"
-                    style="font-size: small; white-space: pre-line"
-                  >
+                  <input type="radio" name="address" [value]="address.ID" [(ngModel)]="selectedAddress" />
+                  <div class="ms-2 fs-small-preline">
                     <span class="fw-bold">{{ address.NAME }}</span>
                     <p class="text-muted mb-0">
                       {{ address.ADDRESS_LINE_1 }}, {{ address.DISTRICT_NAME }}
@@ -445,514 +218,234 @@
                   <button class="btn btn-sm" (click)="editAddress(address)">
                     <i class="bi bi-pencil"></i>
                   </button>
-                  <button
-                    *ngIf="!address.IS_DEFAULT"
-                    class="btn btn-sm text-danger"
-                    (click)="deleteAddress(address.ID)"
-                  >
+                  <button *ngIf="!address.IS_DEFAULT" class="btn btn-sm text-danger"
+                    (click)="deleteAddress(address.ID)">
                     <i class="bi bi-trash"></i>
                   </button>
                 </div>
               </div>
             </div>
           </div>
-
           <div class="modal-footer d-flex flex-column">
-            <button
-              type="button"
-              class="btn btn-dark w-100"
-              (click)="confirmAddress()"
-            >
+            <button type="button" class="btn btn-dark w-100" (click)="confirmAddress()">
               {{ "home.address_modal.select" | translate }}
             </button>
-            <!-- <button *ngIf="customertype == 'I'"  type="button" class="btn btn-outline-dark w-100 mt-2" (click)="addNewAddress()">
-              {{ "home.address_modal.add_address" | translate }}
-            </button> -->
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Select Service Drawer 1 -->
-    <div
-      class="offcanvas offcanvas-end custom-drawer"
-      data-bs-backdrop="static"
-      tabindex="-1"
-      id="serviceOffcanvas"
-      style="width: 558px"
-    >
+    <div class="offcanvas offcanvas-end custom-drawer w-558" data-bs-backdrop="static" tabindex="-1"
+      id="serviceOffcanvas">
       <div *ngIf="loadepage" class="loading-overlay">
         <div class="spinner-border text-primary" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
-
       <div *ngIf="!loadepage" class="offcanvas-header border-bottom">
-        <h5 class="offcanvas-title fw-bold" style="font-size: 14px">
+        <h5 class="offcanvas-title fw-bold fs-14">
           {{
-            selectedService.CATEGORY_NAME ||
-              ("servicejson.service_details" | translate)
+          selectedService.CATEGORY_NAME ||
+          ("servicejson.service_details" | translate)
           }}
         </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="offcanvas"
-          (click)="getProjectData()"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" (click)="getProjectData()"></button>
       </div>
-
       <div *ngIf="userID !== 0" class="progress">
-        <div
-          style="background-color: #f36631 !important"
-          class="progress-bar"
-          role="progressbar"
-          [style.width.%]="homepageprogress"
-          [attr.aria-valuenow]="homepageprogress"
-          aria-valuemin="0"
-          aria-valuemax="100"
-        ></div>
+        <div class="progress-bar bg-f36631" role="progressbar" [style.width.%]="homepageprogress"
+          [attr.aria-valuenow]="homepageprogress" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
-
-      <div
-        *ngIf="!loadepage"
-        class="demodash offcanvas-body d-flex flex-column"
-      >
-        <p class="device-type" style="font-size: 13px; margin-bottom: 2px">
+      <div *ngIf="!loadepage" class="demodash offcanvas-body d-flex flex-column">
+        <p class="device-type fs-13-mb-2">
           {{ "servicejson.selected_service" | translate }} :
-          <span
-            class="text-danger fw-bold"
-            style="
-              font-size: 14px;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              max-width: 200px;
-              display: inline-block;
-            "
-            [attr.title]="selectedService.NAME || 'N/A'"
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-          >
+          <span class="text-danger fw-bold ellipsis-text" [attr.title]="selectedService.NAME || 'N/A'"
+            data-bs-toggle="tooltip" data-bs-placement="top">
             {{
-              selectedService.NAME?.length > 40
-                ? (selectedService.NAME | slice : 0 : 40) + "..."
-                : selectedService.NAME || "N/A"
+            selectedService.NAME?.length > 40
+            ? (selectedService.NAME | slice : 0 : 40) + "..."
+            : selectedService.NAME || "N/A"
             }}
           </span>
         </p>
-
-        <p class="text-muted" style="font-size: 12px">
+        <p class="text-muted fs-12">
           {{ "servicejson.enter_details" | translate }}
         </p>
-
-        <!-- Address Section -->
-        <div
-          *ngIf="defaultAddress"
-          (click)="openAddressModal()"
-          class="border rounded p-3 mb-2"
-          style="
-            box-shadow: 0px 5px 90px 0px rgba(0, 0, 0, 0.1);
-            font-size: 13px;
-            cursor: pointer;
-          "
-        >
+        <div *ngIf="defaultAddress" (click)="openAddressModal()" class="border rounded p-3 mb-2 card-shadow-pointer">
           <div class="d-flex justify-content-between align-items-center">
-            <span class="fw-bold" style="font-size: 14px">
+            <span class="fw-bold fs-14">
               🏠 {{ defaultAddress.ADDRESS_LINE_1 }},
               {{ defaultAddress.DISTRICT_NAME }}
             </span>
             <i class="bi bi-chevron-right"></i>
           </div>
-          <p class="text-muted mb-0" style="font-size: 12px">
+          <p class="text-muted mb-0 fs-12">
             {{ defaultAddress.ADDRESS_LINE_2 }}, {{ defaultAddress.PINCODE }}
           </p>
         </div>
-
-        <div
-          class="border rounded p-3 bg-light shadow-sm"
-          style="border-color: #dee2e6 !important; background: white !important"
-        >
-          <p
-            class="fw-bold mb-1"
-            style="
-              font-size: 14px;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              max-width: 200px;
-            "
-            [attr.title]="selectedService.NAME || 'N/A'"
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-          >
+        <div class="border rounded p-3 bg-light shadow-sm border-bg-white">
+          <p class="fw-bold mb-1 ellipsis-text" [attr.title]="selectedService.NAME || 'N/A'" data-bs-toggle="tooltip"
+            data-bs-placement="top">
             {{
-              selectedService.NAME?.length > 40
-                ? (selectedService.NAME | slice : 0 : 40) + "..."
-                : selectedService.NAME || "N/A"
+            selectedService.NAME?.length > 40
+            ? (selectedService.NAME | slice : 0 : 40) + "..."
+            : selectedService.NAME || "N/A"
             }}
           </p>
-          <div
-            *ngIf="customertype !== 'B'"
-            class="d-flex justify-content-between text-muted"
-          >
-            <span style="font-size: 12px">{{
+          <div *ngIf="customertype !== 'B'" class="d-flex justify-content-between text-muted">
+            <span class="fs-12">{{
               "servicejson.base_price" | translate
-            }}</span>
-            <!-- <span *ngIf="customertype === 'B'" class="fw-bold" style="font-size: 13px">₹ {{ selectedService.B2B_PRICE ||
-              "0" }}</span> -->
-            <!-- <span *ngIf="customertype !== 'B'" class="fw-bold" style="font-size: 13px">₹ {{ selectedService.B2C_PRICE ||
-              "0" }}</span> -->
-            <span
-              *ngIf="customertype !== 'B'"
-              class="fw-bold"
-              style="font-size: 13px"
-            >
+              }}</span>
+            <span *ngIf="customertype !== 'B'" class="fw-bold fs-13">
               ₹
               {{
-                selectedService?.B2C_PRICE
-                  ? (selectedService.B2C_PRICE | number)
-                  : "0"
+              selectedService?.B2C_PRICE
+              ? (selectedService.B2C_PRICE | number)
+              : "0"
               }}
             </span>
           </div>
           <div class="d-flex justify-content-between text-muted">
-            <!-- <span style="font-size: 12px">{{ customertype === 'B' ? 'servicejson.sla' : ('servicejson.estimate_time' | translate) }}</span> -->
-
-            <span style="font-size: 12px">
+            <span class="fs-12">
               {{
-                customertype === "B"
-                  ? ("servicejson.sla" | translate)
-                  : ("servicejson.estimate_time" | translate)
+              customertype === "B"
+              ? ("servicejson.sla" | translate)
+              : ("servicejson.estimate_time" | translate)
               }}
             </span>
-
-            <span class="fw-bold" style="font-size: 13px">
-              <!-- {{ selectedService?.DURARTION_HOUR || 0 }}h
-              {{ selectedService?.DURARTION_MIN || 0 }}m -->
+            <span class="fw-bold fs-13">
               {{
-                (selectedService?.DURARTION_HOUR || 0) * 60 +
-                  (selectedService?.DURARTION_MIN || 0)
+              (selectedService?.DURARTION_HOUR || 0) * 60 +
+              (selectedService?.DURARTION_MIN || 0)
               }}
               min
             </span>
           </div>
-
           <div class="d-flex justify-content-between align-items-center mt-2">
-            <span style="font-size: 12px">{{
+            <span class="fs-12">{{
               "servicejson.quantity" | translate
-            }}</span>
+              }}</span>
             <div class="input-group qty-box">
-              <button
-                class="btn btn-outline-secondary btn-sm"
-                (click)="decreaseQty()"
-                style="font-size: 12px"
-              >
+              <button class="btn btn-outline-secondary btn-sm fs-12" (click)="decreaseQty()">
                 -
               </button>
-              <input
-                type="text"
-                class="form-control text-center"
-                [(ngModel)]="quantity"
-                readonly
-                style="font-size: 12px"
-              />
-              <button
-                class="btn btn-outline-secondary btn-sm"
-                (click)="increaseQty()"
-                style="font-size: 12px"
-              >
+              <input type="text" class="form-control text-center fs-12" [(ngModel)]="quantity" readonly />
+              <button class="btn btn-outline-secondary btn-sm fs-12" (click)="increaseQty()">
                 +
               </button>
             </div>
           </div>
         </div>
-
-        <!-- Input Fields -->
-        <div
-          class="mt-3 border rounded p-3 shadow-sm"
-          style="padding-bottom: 120px !important"
-        >
-          <!-- Brand Name Field -->
+        <div class="mt-3 border rounded p-3 shadow-sm pb-120">
           <div class="d-flex justify-content-between align-items-center">
-            <label class="form-label text-muted mb-0" style="font-size: 12px">
+            <label class="form-label text-muted mb-0 fs-12">
               {{ "servicejson.brand_name" | translate }}
             </label>
-
-            <span class="text-muted" style="font-size: 12px">(Optional)</span>
+            <span class="text-muted fs-12">(Optional)</span>
           </div>
-          <input
-            type="text"
-            class="form-control custom-input"
-            [(ngModel)]="selectedService.BRAND_NAME"
-            placeholder=" {{ 'servicejson.enter_brand_name' | translate }}"
-            style="font-size: 12px"
-            maxlength="128"
-            (focus)="isFocused = 'brandname'"
-            (blur)="isFocused = ''"
-          />
-          <h6
-            style="color: red; font-size: 10px; margin-top: 4px"
-            *ngIf="
+          <input type="text" class="form-control custom-input fs-12" [(ngModel)]="selectedService.BRAND_NAME"
+            placeholder=" {{ 'servicejson.enter_brand_name' | translate }}" maxlength="128"
+            (focus)="isFocused = 'brandname'" (blur)="isFocused = ''" />
+          <h6 class="text-red-fs-10-mt-4" *ngIf="
               isFocused === 'brandname' ||
               (data.BRAND_NAME != undefined &&
                 data.BRAND_NAME != null &&
                 data.BRAND_NAME != '' &&
                 isFocused === 'brandname')
-            "
-          >
+            ">
             {{ selectedService?.BRAND_NAME?.length || 0 }}/128
           </h6>
-
-          <!-- Model Number Field with Info Icon -->
           <div class="d-flex justify-content-between align-items-center mt-3">
-            <label class="form-label text-muted mb-0" style="font-size: 12px">
+            <label class="form-label text-muted mb-0 fs-12">
               {{ "servicejson.model_number" | translate }}
             </label>
-
             <div class="d-flex align-items-center">
-              <span class="text-muted me-1" style="font-size: 12px"
-                >(Optional)</span
-              >
-              <i
-                class="bi bi-info-circle text-primary"
-                style="cursor: pointer; font-size: 12px"
-                data-bs-toggle="modal"
-                data-bs-target="#modelNumberModal22"
-              ></i>
+              <span class="text-muted me-1 fs-12">(Optional)</span>
+              <i class="bi bi-info-circle text-primary cursor-pointer-fs-12" data-bs-toggle="modal"
+                data-bs-target="#modelNumberModal22"></i>
             </div>
           </div>
-          <input
-            type="text"
-            class="form-control custom-input"
-            [(ngModel)]="selectedService.MODEL_NUMBER"
-            placeholder=" {{ 'servicejson.enter_model_number' | translate }}"
-            style="font-size: 12px"
-            maxlength="60"
-            (focus)="isFocused = 'model'"
-            (blur)="isFocused = ''"
-          />
-          <h6
-            style="color: red; font-size: 10px; margin-top: 4px"
-            *ngIf="
+          <input type="text" class="form-control custom-input fs-12" [(ngModel)]="selectedService.MODEL_NUMBER"
+            placeholder=" {{ 'servicejson.enter_model_number' | translate }}" maxlength="60"
+            (focus)="isFocused = 'model'" (blur)="isFocused = ''" />
+          <h6 class="text-red-fs-10-mt-4" *ngIf="
               isFocused === 'model' ||
               (data.MODEL_NUMBER != undefined &&
                 data.MODEL_NUMBER != null &&
                 data.MODEL_NUMBER != '' &&
                 isFocused === 'model')
-            "
-          >
+            ">
             {{ selectedService?.MODEL_NUMBER?.length || 0 }}/60
           </h6>
-
-          <!-- Image Upload with Info Icon -->
           <div class="d-flex justify-content-between align-items-center mt-3">
-            <label class="form-label text-muted mb-0" style="font-size: 12px">{{
+            <label class="form-label text-muted mb-0 fs-12">{{
               "servicejson.upload_photo" | translate
-            }}</label>
+              }}</label>
             <div class="d-flex align-items-center">
-              <span class="text-muted me-1" style="font-size: 12px"
-                >(Optional)</span
-              >
-              <i
-                class="bi bi-info-circle text-primary"
-                style="cursor: pointer; font-size: 12px"
-                data-bs-toggle="modal"
-                data-bs-target="#uploadPhotoModal"
-              ></i>
+              <span class="text-muted me-1 fs-12">(Optional)</span>
+              <i class="bi bi-info-circle text-primary cursor-pointer-fs-12" data-bs-toggle="modal"
+                data-bs-target="#uploadPhotoModal"></i>
             </div>
           </div>
-          <!-- Upload Container -->
           <div class="upload-container d-flex align-items-center px-3">
-            <span
-              *ngIf="!selectedService.SERVICE_PHOTO_FILE"
-              class="placeholder-text"
-            >
-              {{ "servicejson.browse_photo" | translate }}</span
-            >
-
-            <span
-              *ngIf="selectedService.SERVICE_PHOTO_FILE"
-              class="text-truncate file-name"
-              title="{{ selectedService.SERVICE_PHOTO_FILE }}"
-            >
+            <span *ngIf="!selectedService.SERVICE_PHOTO_FILE" class="placeholder-text">
+              {{ "servicejson.browse_photo" | translate }}</span>
+            <span *ngIf="selectedService.SERVICE_PHOTO_FILE" class="text-truncate file-name"
+              title="{{ selectedService.SERVICE_PHOTO_FILE }}">
               {{
-                selectedService.SERVICE_PHOTO_FILE.length > 36
-                  ? (selectedService.SERVICE_PHOTO_FILE | slice : 0 : 36) +
-                    "..."
-                  : selectedService.SERVICE_PHOTO_FILE
+              selectedService.SERVICE_PHOTO_FILE.length > 36
+              ? (selectedService.SERVICE_PHOTO_FILE | slice : 0 : 36) +
+              "..."
+              : selectedService.SERVICE_PHOTO_FILE
               }}
             </span>
-
-            <input
-              #icon
-              type="file"
-              accept=".png, .jpg, .jpeg"
-              (change)="fileChangeEvent($event)"
-              class="file-input"
-            />
-
-            <i
-              *ngIf="!selectedService.SERVICE_PHOTO_FILE"
-              (change)="fileChangeEvent($event)"
-              class="bi bi-upload upload-icon"
-              (click)="icon.click()"
-            ></i>
-
-            <div
-              *ngIf="selectedService.SERVICE_PHOTO_FILE"
-              class="d-flex align-items-center ms-2"
-            >
-              <a
-                href="javascript:void(0)"
-                class="text-primary me-2"
-                (click)="openModal()"
-              >
+            <input #icon type="file" accept=".png, .jpg, .jpeg" (change)="fileChangeEvent($event)" class="file-input" />
+            <i *ngIf="!selectedService.SERVICE_PHOTO_FILE" (change)="fileChangeEvent($event)"
+              class="bi bi-upload upload-icon" (click)="icon.click()"></i>
+            <div *ngIf="selectedService.SERVICE_PHOTO_FILE" class="d-flex align-items-center ms-2">
+              <a href="javascript:void(0)" class="text-primary me-2" (click)="openModal()">
                 <i class="bi bi-eye"></i>
               </a>
-
-              <a
-                href="javascript:void(0)"
-                class="text-danger"
-                (click)="removeImage()"
-              >
+              <a href="javascript:void(0)" class="text-danger" (click)="removeImage()">
                 <i class="bi bi-trash"></i>
               </a>
             </div>
           </div>
-
-          <!-- Progress Bar for Upload -->
           <div *ngIf="isUploading" class="progress mt-2">
-            <div
-              class="progress-bar"
-              role="progressbar"
-              [style.width.%]="progressPercent"
-            ></div>
+            <div class="progress-bar" role="progressbar" [style.width.%]="progressPercent"></div>
           </div>
-
-          <!-- Modal for Viewing Image -->
           <div *ngIf="showModal" class="custom-modal">
             <div class="modal-content">
-              <span
-                class="custom-close-btn"
-                style="cursor: pointer"
-                (click)="closeModal()"
-                >&times;</span
-              >
-              <img
-                style="position: relative"
-                [src]="imagePreview"
-                class="modal-img"
-                alt="Uploaded Image"
-              />
+              <span class="custom-close-btn cursor-pointer" (click)="closeModal()">&times;</span>
+              <img [src]="imagePreview" class="modal-img position-relative" alt="Uploaded Image" />
             </div>
           </div>
-
-          <!-- Description Field -->
           <div class="d-flex justify-content-between align-items-center mt-3">
-            <label class="form-label text-muted mb-0" style="font-size: 12px">{{
+            <label class="form-label text-muted mb-0 fs-12">{{
               "servicejson.add_description" | translate
-            }}</label>
-            <span class="text-muted" style="font-size: 12px">(Optional)</span>
+              }}</label>
+            <span class="text-muted fs-12">(Optional)</span>
           </div>
-          <textarea
-            name="desc"
-            class="form-control custom-input"
-            rows="3"
-            [(ngModel)]="selectedService.DESCRIPTION"
-            placeholder="{{ 'servicejson.enter_description' | translate }}"
-            style="font-size: 12px"
-            maxlength="256"
-            (focus)="isFocused = 'DESCRIPTION'"
-            (blur)="isFocused = ''"
-          ></textarea>
-          <h6
-            *ngIf="
+          <textarea name="desc" class="form-control custom-input fs-12" rows="3"
+            [(ngModel)]="selectedService.DESCRIPTION" placeholder="{{ 'servicejson.enter_description' | translate }}"
+            maxlength="256" (focus)="isFocused = 'DESCRIPTION'" (blur)="isFocused = ''"></textarea>
+          <h6 *ngIf="
               isFocused === 'DESCRIPTION' ||
               (data.DESCRIPTION && isFocused === 'DESCRIPTION')
-            "
-            style="color: red; font-size: 10px; margin-top: 4px"
-          >
+            " class="text-red-fs-10-mt-4">
             {{ selectedService.DESCRIPTION?.length || 0 }}/256
           </h6>
         </div>
-
-        <!-- Drawer Footer -->
-        <div
-          class="drawer-footer mt-auto border-top pt-3"
-          style="
-            position: absolute;
-            bottom: 0px;
-            left: 0;
-            right: 0;
-            width: 100%;
-            margin: 0px;
-            padding: 10px 16px;
-            background: #fff;
-            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
-          "
-        >
+        <div class="drawer-footer mt-auto border-top pt-3 footer-absolute">
           <div class="container-fluid">
             <div class="row align-items-center">
-              <div
-                style="display: flex; justify-content: end"
-                class="col-12 text-center text-md-start mb-2 mb-md-0 p-0"
-              >
-                <button
-                  class="btn btn-outline-secondary"
-                  (click)="getProjectData()"
-                  data-bs-dismiss="offcanvas"
-                  style="
-                    background-color: #f8f9fa;
-                    color: black;
-                    font-size: 12px;
-                  "
-                >
+              <div class="col-12 text-center text-md-start mb-2 mb-md-0 p-0 flex-end">
+                <button class="btn btn-outline-secondary bg-f8f9fa-text-black-fs-12 " (click)="getProjectData()"
+                  data-bs-dismiss="offcanvas">
                   {{ "servicejson.back" | translate }}
                 </button>
-
-                <!-- <button *ngIf="selectedService.IS_ALREADY_IN_CART == 0" style="margin-left: 12px"
-                  class="btn toggle-cart-btn  px-3 " (click)="toggleCart(selectedService)"
-                  [ngClass]="{ added: isInCart }" [disabled]="isLoading">
-                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
-                    aria-hidden="true"></span>
-                  <i *ngIf="!isLoading" class="bi" [ngClass]="{
-                      'bi-cart-check-fill': isInCart,
-                      'bi-cart-plus': !isInCart
-                    }"></i>
-                  <span class="ms-2">
-                    {{
-                    isLoading
-                    ? ("servicejson.processing" | translate)
-                    : isInCart
-                    ? ("servicejson.remove_from_cart" | translate)
-                    : ("servicejson.add_to_cart" | translate)
-                    }}
-                  </span>
-                </button>
-
-                <button *ngIf="selectedService.IS_ALREADY_IN_CART == 1" style="margin-left: 12px"
-                  class="btn btn-success  px-3 " [routerLink]="'/shop/cart'">
-                  <i class="bi bi-cart-fill"></i>
-                  <span class="ms-2">{{
-                    "servicejson.go_to_cart" | translate
-                    }}</span>
-                </button> -->
-                <button
-                  (click)="openDrawer2(selectedService)"
-                  class="btn btn-dark"
-                  style="
-                    background-color: #092b9c;
-                    color: white;
-                    border: 'none';
-                    font-size: 12px;
-                    margin-left: 12px;
-                  "
-                  [disabled]="!selectedService?.CATEGORY_NAME"
-                >
+                <button (click)="openDrawer2(selectedService)" class="btn btn-dark btn-blue-white-fs-12"
+                  [disabled]="!selectedService?.CATEGORY_NAME">
                   {{ "servicejson.next" | translate }}
-                  <span
-                    class="text-muted"
-                    style="color: white !important; font-size: 12px"
-                  >
+                  <span class="text-muted text-white-fs-12">
                     ({{ "servicejson.select_address_slot" | translate }})
                   </span>
                 </button>
@@ -962,321 +455,151 @@
         </div>
       </div>
     </div>
-
-    <!-- Select Address and Slot Drawer 2 -->
-    <div
-      class="offcanvas offcanvas-end custom-drawer1"
-      data-bs-backdrop="static"
-      tabindex="-1"
-      id="addressSlotDrawer"
-      style="width: 500px"
-    >
+    <div class="offcanvas offcanvas-end custom-drawer1 w-500" data-bs-backdrop="static" tabindex="-1"
+      id="addressSlotDrawer">
       <div class="offcanvas-header border-bottom">
-        <h5 class="offcanvas-title fw-bold" style="font-size: 14px">
+        <h5 class="offcanvas-title fw-bold fs-14">
           {{ "home.address_slot.title" | translate }}
         </h5>
-        <button
-          type="button"
-          class="btn-close"
-          (click)="backaddress()"
-          data-bs-dismiss="offcanvas"
-        ></button>
+        <button type="button" class="btn-close" (click)="backaddress()" data-bs-dismiss="offcanvas"></button>
       </div>
-
       <div *ngIf="userID !== 0" class="progress">
-        <div
-          style="background-color: #f36631 !important"
-          class="progress-bar"
-          role="progressbar"
-          [style.width.%]="homepageprogress"
-          [attr.aria-valuenow]="homepageprogress"
-          aria-valuemin="0"
-          aria-valuemax="100"
-        ></div>
+        <div class="progress-bar bg-f36631" role="progressbar" [style.width.%]="homepageprogress"
+          [attr.aria-valuenow]="homepageprogress" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
-
       <div class="offcanvas-body">
-        <!-- Express Service -->
-        <div
-          *ngIf="selectedService?.IS_EXPRESS === 1"
-          class="border rounded p-3 bg-light"
-          style="
-            box-shadow: 0px 5px 90px 0px rgba(0, 0, 0, 0.1);
-            font-size: 13px;
-          "
-        >
+        <div *ngIf="selectedService?.IS_EXPRESS === 1" class="border rounded p-3 bg-light card-shadow-fs-13">
           <div class="d-flex align-items-center">
-            <input
-              type="radio"
-              id="expressService"
-              name="serviceOption"
-              checked
-              class="me-2"
-            />
-            <label for="expressService" class="fw-bold" style="font-size: 14px">
+            <input type="radio" id="expressService" name="serviceOption" checked class="me-2" />
+            <label for="expressService" class="fw-bold fs-14">
               <i>{{ "home.express_service" | translate }}</i>
             </label>
           </div>
-
-          <p class="text-muted" style="font-size: 12px">
+          <p class="text-muted fs-12">
             {{ "home.express_service_desc" | translate }}
             <b>{{
               selectedService?.EXPRESS_COST
-                ? selectedService.EXPRESS_COST + " INR"
-                : "N/A"
-            }}</b
-            >.
+              ? selectedService.EXPRESS_COST + " INR"
+              : "N/A"
+              }}</b>.
           </p>
-
           <div class="d-flex justify-content-center mt-2">
-            <button
-              class="btn"
-              [ngClass]="{
+            <button class="btn w-50-fs-13" [ngClass]="{
                 'btn-outline-primary': IS_EXPRESS === 0,
                 'btn-outline-danger': IS_EXPRESS === 1
-              }"
-              style="width: 50%; font-size: 13px"
-              (click)="toggleExpressService()"
-            >
+              }" (click)="toggleExpressService()">
               {{
-                IS_EXPRESS === 1
-                  ? ("home.remove_express_service" | translate)
-                  : ("home.use_express_service" | translate)
+              IS_EXPRESS === 1
+              ? ("home.remove_express_service" | translate)
+              : ("home.use_express_service" | translate)
               }}
             </button>
           </div>
         </div>
-
-        <p class="text-center mt-3" style="font-size: 13px">
+        <p class="text-center mt-3 fs-13">
           {{ "home.select_date_time" | translate }}
         </p>
-
-        <div
-          class="border date-time-container"
-          style="
-            box-shadow: 0px 5px 90px 0px rgba(0, 0, 0, 0.1);
-            font-size: 13px;
-          "
-        >
-          <!-- Date Selection -->
+        <div class="border date-time-container card-shadow-fs-13">
           <div class="date-picker-container">
-            <label class="form-label" style="font-size: 13px">{{
+            <label class="form-label fs-13">{{
               "home.select_date" | translate
-            }}</label>
-            <p class="selected-date" style="font-size: 12px">
+              }}</label>
+            <p class="selected-date fs-12">
               {{ selectedDate }}
             </p>
             <div class="date-scroll">
-              <button
-                *ngFor="let date of dates"
-                class="date-button"
-                [ngClass]="{
+              <button *ngFor="let date of dates" class="date-button fs-12" [ngClass]="{
                   selected: selectedDate.trim() === date.fullDate.trim()
-                }"
-                [disabled]="holidaysdates.includes(date.fullDate)"
-                (click)="selectDate(date.fullDate)" 
-                style="font-size: 12px"
-              >
+                }" [disabled]="holidaysdates.includes(date.fullDate)" (click)="selectDate(date.fullDate)">
                 <span class="day">{{ date.display.split(" ")[0] }}</span>
                 <span class="date">{{ date.display.split(" ")[1] }}</span>
               </button>
             </div>
           </div>
-
-          <!-- Time Slot Selection -->
           <div class="time-slot-container">
-            <label class="form-label fw-bold" style="font-size: 13px">
+            <label class="form-label fw-bold fs-13">
               {{ "home.select_time_slot" | translate }}
             </label>
             <div class="time-slot-wrapper">
               <div *ngFor="let period of timeSlots" class="time-slot">
-                <p style="text-align: left; font-size: 13px" class="slot-title">
+                <p class="slot-title text-left-fs-13">
                   {{ period.period }}
                 </p>
-                <button
-                  class="slot-button"
-                  [ngClass]="{
+                <button class="slot-button" [ngClass]="{
                     'selected-slot':
                       selectedSlot ===
                       formatTime(period.times.start) +
                         ' - ' +
                         formatTime(period.times.end)
-                  }"
-                  (click)="selectSlot(period.times)"
-                  [disabled]="period.times.disabled"
-                >
+                  }" (click)="selectSlot(period.times)" [disabled]="period.times.disabled">
                   <span class="time-range">
                     {{ formatTime(period.times.start) }}<br />-<br />{{
-                      formatTime(period.times.end)
+                    formatTime(period.times.end)
                     }}
                   </span>
                 </button>
               </div>
             </div>
           </div>
-
-          <p
-            *ngIf="isAllSlotsDisabled()"
-            class="no-slots-message"
-            style="color: red; font-size: 14px; margin-top: 11px"
-          >
+          <p *ngIf="isAllSlotsDisabled()" class="no-slots-message text-red-fs-14-mt-11">
             {{ "home.no_slots_available" | translate }}
           </p>
         </div>
-
-        <!-- Remarks -->
-
-        <div
-          class="border p-3 mt-3"
-          style="
-            border-radius: 8px;
-            box-shadow: 0px 5px 90px 0px rgba(0, 0, 0, 0.1);
-            font-size: 13px;
-          "
-        >
-          <label class="form-label fw-bold" style="font-size: 13px">{{
+        <div class="border p-3 mt-3 card-rounded-shadow-fs-13">
+          <label class="form-label fw-bold fs-13">{{
             "home.remarks" | translate
-          }}</label>
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="remark"
-            [placeholder]="'home.remarks_placeholder' | translate"
-            style="font-size: 12px"
-            maxlength="256"
-            (focus)="isFocused = 'REMARK'"
-            (blur)="isFocused = ''"
-          />
-          <h6
-            *ngIf="isFocused === 'REMARK'"
-            style="color: red; font-size: 10px; margin-top: 4px"
-          >
+            }}</label>
+          <input type="text" class="form-control fs-12" [(ngModel)]="remark"
+            [placeholder]="'home.remarks_placeholder' | translate" maxlength="256" (focus)="isFocused = 'REMARK'"
+            (blur)="isFocused = ''" />
+          <h6 *ngIf="isFocused === 'REMARK'" class="text-red-fs-10-mt-4">
             {{ remark?.length || 0 }}/256
           </h6>
         </div>
       </div>
-
-      <!-- Footer -->
       <div class="offcanvas-footer border-top p-3 d-flex align-items-center">
-        <button
-          class="btn btn-outline-secondary flex-grow-0 me-2"
-          (click)="backaddress()"
-          data-bs-dismiss="offcanvas"
-          style="font-size: 13px"
-        >
+        <button class="btn btn-outline-secondary flex-grow-0 me-2 fs-13" (click)="backaddress()"
+          data-bs-dismiss="offcanvas">
           {{ "home.back" | translate }}
         </button>
         <button class="btn btn-light flex-grow-0 me-2"></button>
-        <button
-          class="btn btn-dark flex-grow-1 text-white"
-          (click)="bookNow()"
-          style="font-size: 14px"
-        >
+        <button class="btn btn-dark flex-grow-1 text-white fs-14" (click)="bookNow()">
           {{ "home.confirm" | translate }}
         </button>
       </div>
     </div>
   </section>
-  <!-- /Services Section -->
-
-  <!-- Agents Section -->
-  <section
-    id="agents"
-    class="agents section"
-    style="padding: 10px; padding-top: 20px"
-    *ngIf="OfferData.length > 0 || ServiceCateogries.length > 0"
-  >
-    <div
-      class="container d-flex flex-wrap justify-content-between align-items-start gap-4 p-0"
-      data-aos="fade-up"
-    >
-      <!-- Left Side: Service Categories -->
+  <section id="agents" class="agents section p-10-pt-20" *ngIf="OfferData.length > 0 || ServiceCateogries.length > 0">
+    <div class="container d-flex flex-wrap justify-content-between align-items-start gap-4 p-0" data-aos="fade-up">
       <div
-        class="card bg-white rounded-4 shadow pt-4 pb-4 ps-2 pe-2 text-center border-0 mt-2 shadow-sm service-categories"
-        style="padding-bottom: 9px !important; box-shadow: none !important"
-        [ngClass]="{ 'full-width': OfferData.length === 0 }"
-      >
-        <!-- Section Title -->
-        <div
-          class="container section-title d-flex justify-content-between align-items-start"
-          data-aos="fade-up"
-          style="padding-top: 0px; padding-bottom: 7px; background: white"
-        >
+        class="card bg-white rounded-4 shadow pt-4 pb-4 ps-2 pe-2 text-center border-0 mt-2 shadow-sm service-categories pb-9-no-shadow"
+        [ngClass]="{ 'full-width': OfferData.length === 0 }">
+        <div class="container section-title d-flex justify-content-between align-items-start pt-0-pb-7-bg-white"
+          data-aos="fade-up">
           <div class="d-flex align-items-center">
-            <span
-              class="me-2"
-              style="
-                height: 24px;
-                width: 4px;
-                background-color: #f26522;
-                display: inline-block;
-              "
-            ></span>
+            <span class="me-2 indicator-bar"></span>
             <p class="fw-bold m-0 responsive-text">
               {{ "home.service_categories.title" | translate }}
             </p>
           </div>
         </div>
-        <!-- End Section Title -->
-
         <div
-          class="container d-flex flex-column justify-content-center align-items-center"
-          style="
-            background: white;
-            padding-bottom: 22px;
-            padding-right: 0px !important;
-            padding-left: 0px !important;
-            margin: 0px auto;
-          "
-        >
-          <!-- Loader -->
-          <div
-            *ngIf="loadCategories"
-            class="spinner-border text-secondary mx-auto"
-            role="status"
-          >
+          class="container d-flex flex-column justify-content-center align-items-center bg-white-pb-22-pr-0-pl-0-m-auto">
+          <div *ngIf="loadCategories" class="spinner-border text-secondary mx-auto" role="status">
             <span class="sr-only">{{
               "home.service_categories.loading" | translate
-            }}</span>
+              }}</span>
           </div>
-
-          <!-- Scrollable Categories Grid -->
-          <div
-            *ngIf="!loadCategories"
-            class="row gy-4 w-100"
-            style="max-height: 350px; overflow-y: auto; padding-right: 0px"
-          >
-            <div
-              *ngFor="let category of displayedCategories; let i = index"
-              class="col-12 col-sm-4 col-md-4"
-              [ngClass]="
+          <div *ngIf="!loadCategories" class="row gy-4 w-100 max-h-350-overflow-auto-pr-0">
+            <div *ngFor="let category of displayedCategories; let i = index"
+              class="col-12 col-sm-4 col-md-4 mt-18-mb-10" [ngClass]="
                 OfferData.length === 0
                   ? 'col-lg-2-3 col-xl-2-4'
                   : 'col-lg-2-33 col-xl-2-44'
-              "
-              data-aos="fade-up"
-              [attr.data-aos-delay]="(i + 1) * 100"
-              style="margin-bottom: 10px; margin-top: 18px"
-            >
-              <div
-                class="popular-card"
-                style="
-                  padding: 5px 5px 10px 5px;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  flex-direction: column;
-                "
-                (click)="openServiceDrawer(category)"
-              >
-                <div
-                  style="
-                    background-color: rgb(245, 248, 253) !important;
-                    padding: 10px !important;
-                  "
-                >
-                  <div
-                    [ngStyle]="{
+              " data-aos="fade-up" [attr.data-aos-delay]="(i + 1) * 100">
+              <div class="popular-card flex-center-column-padded" (click)="openServiceDrawer(category)">
+                <div class="bg-light-blue-p-10">
+                  <div [ngStyle]="{
                       'background-image':
                         'url(' +
                         (category.ICON
@@ -1290,76 +613,36 @@
                       width: displayedCategories.length < 3 ? '100%' : '100%',
                       'aspect-ratio': '1 / 1',
                       'border-radius': '8px',
-
                       border: 'none'
-                    }"
-                    class="img-fluid cc"
-                    role="img"
-                    [attr.aria-label]="category.title"
-                  ></div>
+                    }" class="img-fluid cc" role="img" [attr.aria-label]="category.title"></div>
                 </div>
-
-                <p
-                  class="service-name"
-                  [attr.title]="category.title"
-                  [ngStyle]="{
+                <p class="service-name" [attr.title]="category.title" [ngStyle]="{
                'text-align': displayedCategories.length === 1 ? 'left' : 'center',
                'white-space': 'pre-line',
                color: '#0e0e0e',
                'font-weight': '600',
                'margin': '0px',
-
-
-             }"
-                >
+             }">
                   {{ category.title }}
                 </p>
               </div>
             </div>
           </div>
-
-          <!-- Load More Button (Stays at the Bottom) -->
-          <!-- <div class="text-center w-100 mt-3" *ngIf="displayedCategories.length < ServiceCateogries.length">
-    <button style="font-size: 14px !important;" class="btn btn-primary" type="button"  (click)="loadMore()">Load More</button>
-  </div> -->
-          <!-- Load More Button with Spinner -->
-          <div
-            class="text-center w-100 mt-3"
-            *ngIf="displayedCategories.length < ServiceCateogries.length"
-          >
-            <button
-              class="btn btn-primary"
-              (click)="loadMore()"
-              [disabled]="loadMoreLoading"
-            >
+          <div class="text-center w-100 mt-3" *ngIf="displayedCategories.length < ServiceCateogries.length">
+            <button class="btn btn-primary" (click)="loadMore()" [disabled]="loadMoreLoading">
               <span *ngIf="!loadMoreLoading">Load More</span>
-              <span
-                *ngIf="loadMoreLoading"
-                class="spinner-border spinner-border-sm"
-              ></span>
+              <span *ngIf="loadMoreLoading" class="spinner-border spinner-border-sm"></span>
             </button>
           </div>
-
-          <!-- <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-    Button with data-bs-target
-  </button> -->
         </div>
       </div>
-
-      <!-- Right Side: Offer Cards (30% Width, only if OfferData exists) -->
-      <div
-        *ngIf="OfferData.length > 0"
-        class="offer-side"
-        style="align-self: center !important"
-      >
-        <div class="offer-wrapper" style="margin: 20px 0px">
+      <div *ngIf="OfferData.length > 0" class="offer-side align-self-center">
+        <div class="offer-wrapper my-20">
           <div class="offer-carousel-container">
-            <owl-carousel-o [options]="carouselOptions2" style="padding: 0px">
+            <owl-carousel-o [options]="carouselOptions2" class="p-0">
               <ng-container *ngFor="let offer of OfferData">
                 <ng-template carouselSlide>
-                  <div
-                    class="offer-card"
-                    [ngStyle]="{
+                  <div class="offer-card" [ngStyle]="{
                       'background-image':
                         'url(' +
                         IMAGEuRL +
@@ -1370,18 +653,9 @@
                       'background-size': '100% 100%',
                       'background-position': 'center',
                       'background-repeat': 'no-repeat'
-                    }"
-                  >
-                    <span
-                      [style.color]="offer.TITLE_COLOR"
-                      style="font-size: 20px"
-                      >{{ offer.TITLE }}</span
-                    >
-                    <span
-                      [style.color]="offer.SUB_TITLE_COLOR"
-                      style="font-size: 14px; white-space: pre-line"
-                      >{{ offer.SUB_TITLE }}</span
-                    >
+                    }">
+                    <span [style.color]="offer.TITLE_COLOR" class="fs-20">{{ offer.TITLE }}</span>
+                    <span [style.color]="offer.SUB_TITLE_COLOR" class="fs-14-preline">{{ offer.SUB_TITLE }}</span>
                   </div>
                 </ng-template>
               </ng-container>
@@ -1390,150 +664,62 @@
         </div>
       </div>
     </div>
-
-    <!-- Service Drawer -->
-    <div
-      class="offcanvas offcanvas-end custom-drawer12"
-      data-bs-backdrop="static"
-      id="isServiceDrawerOpen"
-      tabindex="-1"
-    >
+    <div class="offcanvas offcanvas-end custom-drawer12" data-bs-backdrop="static" id="isServiceDrawerOpen"
+      tabindex="-1">
       <div class="offcanvas-header border-bottom">
         <h5 class="offcanvas-title">{{ selectedService?.title }}</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="offcanvas"
-          (click)="closeDrawer()"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" (click)="closeDrawer()"></button>
       </div>
-
-      <!-- Progress Bar -->
-      <!-- <div class="progress mt-2">
-  <div
-    class="progress-bar"
-    role="progressbar"
-    [style.width.%]="progress"
-    [attr.aria-valuenow]="progress"
-    aria-valuemin="0"
-    aria-valuemax="100"
-  ></div>
-</div> -->
-
       <div *ngIf="userID !== 0" class="progress">
-        <div
-          style="
-            border-radius: 0px !important;
-            height: 5px !important;
-
-            background-color: #f36631 !important;
-          "
-          class="progress-bar"
-          role="progressbar"
-          [style.width.%]="progress"
-          [attr.aria-valuenow]="progress"
-          aria-valuemin="0"
-          aria-valuemax="100"
-        ></div>
+        <div class="progress-bar bar-small-orange" role="progressbar" [style.width.%]="progress"
+          [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
-
       <div class="offcanvas-body">
-        <p style="font-size: 14px; margin-bottom: 2px">
-          <strong
-            >{{ "home.service_drawer.selected_category" | translate }}:</strong
-          >
+        <p class="fs-14-mb-2">
+          <strong>{{ "home.service_drawer.selected_category" | translate }}:</strong>
           {{ selectedService?.title }}
         </p>
-        <p style="font-size: 13px; margin-bottom: 8px" class="text-muted">
+        <p class="text-muted fs-13-mb-8">
           {{ "home.service_drawer.select_service_type" | translate }}
         </p>
-
-        <!-- Loader -->
         <div *ngIf="loading" class="text-center my-3">
           <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">{{
               "home.service_drawer.loading" | translate
-            }}</span>
+              }}</span>
           </div>
         </div>
-
-        <!-- List of Devices (Show only when not loading) -->
         <ul *ngIf="!loading" class="list-group list-container">
-          <li
-            *ngFor="let device of selectedService?.children"
+          <li *ngFor="let device of selectedService?.children"
             class="list-group-item list-group-item-action d-flex align-items-center shadow-sm"
-            (click)="openActionDrawer(device)"
-          >
-            <!-- <img
-              [src]="
-                device.ICON
-                  ? IMAGEuRL + 'SubCategory/' + device.ICON
-                  : 'assets/img/services/no-image.png'
-              "
-              alt="Device Image"
-              class="item-icon rounded-circle" style="padding: 2px !important;"
-            /> -->
-            <div
-              style="
-                width: 60px;
-                height: 60px;
-                border-radius: 50%;
-                border: 2px solid #ccc;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background-color: white;
-              "
-            >
-              <img
-                [src]="
+            (click)="openActionDrawer(device)">
+            <div class="circle-box">
+              <img [src]="
                   device.ICON
                     ? IMAGEuRL + 'SubCategory/' + device.ICON
                     : 'assets/img/services/no-image.png'
-                "
-                alt="Device Image"
-                style="width: 40px; height: 40px; object-fit: contain"
-              />
+                " alt="Device Image" class="img-40-contain" />
             </div>
-
             <span class="ms-3 flex-grow-1">{{ device.title }}</span>
             <i class="bi bi-chevron-right"></i>
           </li>
         </ul>
       </div>
-
-      <!-- Back Button -->
       <div class="offcanvas-footer">
-        <button
-          class="btn btn-outline-secondary flex-grow-0 me-2"
-          (click)="closeDrawer()"
-          data-bs-dismiss="offcanvas"
-          style="font-size: 13px"
-        >
+        <button class="btn btn-outline-secondary flex-grow-0 me-2 fs-13" (click)="closeDrawer()"
+          data-bs-dismiss="offcanvas">
           {{ "home.service_drawer.back" | translate }}
         </button>
       </div>
     </div>
-
-    <!-- Action Drawer -->
-    <div
-      class="offcanvas offcanvas-end show custom-drawer"
-      *ngIf="isActionDrawerOpen"
-      tabindex="-1"
-    >
+    <div class="offcanvas offcanvas-end show custom-drawer" *ngIf="isActionDrawerOpen" tabindex="-1">
       <div class="offcanvas-header border-bottom">
         <h5 class="offcanvas-title">{{ selectedDevice?.title }}</h5>
-        <button
-          type="button"
-          class="btn-close"
-          (click)="isActionDrawerOpen = false"
-        ></button>
+        <button type="button" class="btn-close" (click)="isActionDrawerOpen = false"></button>
       </div>
       <div class="offcanvas-body">
         <p>
-          <strong
-            >{{ "home.service_details.selected_service" | translate }}:</strong
-          >
+          <strong>{{ "home.service_details.selected_service" | translate }}:</strong>
           {{ selectedService?.title }}
         </p>
         <p>
@@ -1541,354 +727,148 @@
           {{ selectedDevice?.title }}
         </p>
         <p>{{ "home.service_details.choose_action" | translate }}</p>
-
         <ul class="list-group list-container">
-          <li
-            *ngFor="let action of selectedDevice?.children"
+          <li *ngFor="let action of selectedDevice?.children"
             class="list-group-item list-group-item-action d-flex align-items-center"
-            (click)="openActionDrawercomplete(action)"
-          >
-            <img
-              [src]="action.image"
-              alt="Action Image"
-              class="item-icon rounded-circle"
-              style="padding: 2px !important"
-            />
+            (click)="openActionDrawercomplete(action)">
+            <img [src]="action.image" alt="Action Image" class="item-icon rounded-circle p-2" />
             <span class="ms-3 flex-grow-1">{{ action.title }}</span>
             <i class="bi bi-chevron-right"></i>
           </li>
         </ul>
       </div>
-
-      <!-- Back Button -->
       <div class="offcanvas-footer">
-        <button
-          class="btn btn-outline-secondary flex-grow-0 me-2"
-          (click)="isActionDrawerOpen = false"
-          style="font-size: 13px"
-        >
+        <button class="btn btn-outline-secondary flex-grow-0 me-2 fs-13" (click)="isActionDrawerOpen = false">
           {{ "home.service_drawer.back" | translate }}
         </button>
       </div>
     </div>
-
-    <!-- Main Drawer -->
-    <div
-      class="offcanvas offcanvas-end show custom-drawer15"
-      *ngIf="isDrawerOpen"
-      tabindex="-1"
-      data-bs-backdrop="static"
-    >
+    <div class="offcanvas offcanvas-end show custom-drawer15" *ngIf="isDrawerOpen" tabindex="-1"
+      data-bs-backdrop="static">
       <div class="offcanvas-header border-bottom">
         <h5 class="offcanvas-title">{{ selectedService?.title }}</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="offcanvas"
-          (click)="onBackClick()"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" (click)="onBackClick()"></button>
       </div>
-
       <div *ngIf="userID !== 0" class="progress">
-        <div
-          style="background-color: #f36631 !important"
-          class="progress-bar"
-          role="progressbar"
-          [style.width.%]="progress"
-          [attr.aria-valuenow]="progress"
-          aria-valuemin="0"
-          aria-valuemax="100"
-        ></div>
+        <div class="progress-bar bg-f36631" role="progressbar" [style.width.%]="progress"
+          [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
-
       <div class="offcanvas-body">
-        <p style="font-size: 14px; margin-bottom: 2px">
+        <p class="fs-14-mb-2">
           <span class="highlight-text r">
             {{ selectedService?.title }} >
-            <span style="font-weight: bold"> {{ selectedDevice?.title }}</span>
+            <span class="fw-bold"> {{ selectedDevice?.title }}</span>
           </span>
         </p>
-        <p style="font-size: 13px; margin-bottom: 8px" class="text-muted">
+        <p class="text-muted fs-13-mb-8">
           {{ "home.service_drawer.select_service_type" | translate }}
         </p>
-
-        <!-- Loader -->
         <div *ngIf="cartspinner" class="text-center my-3">
           <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">{{
               "home.service_drawer.loading" | translate
-            }}</span>
+              }}</span>
           </div>
         </div>
-
-        <!-- Service List -->
         <div *ngIf="!cartspinner">
           <div *ngFor="let service of servicesList" class="mb-3">
             <ng-container *ngIf="service.IS_PARENT == 0; else parentBlock">
-              <div
-                class="service-card1 p-3 shadow-sm border rounded"
-                style="padding-top: 0px !important ; position: relative"
-                (click)="
+              <div class="service-card1 p-3 shadow-sm border rounded pt-0-relative" (click)="
                   userID !== 0 ? openNextDrawer(service) : openLoginModal();
                   $event.stopPropagation()
-                "
-              >
+                ">
                 <div class="service-details d-flex align-items-center">
-                  <!-- Image Icon -->
-                  <div
-                    class="service-icon"
-                    style="
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-                      height: 140px;
-                    "
-                  >
-                    <div
-                      style="
-                        width: 60px;
-                        height: 60px;
-                        border-radius: 50%;
-                        border: 2px solid #ccc;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        background-color: white;
-                      "
-                    >
-                      <img
-                        [src]="
+                  <div class="service-icon flex-center-h-140">
+                    <div class="circle-box">
+                      <img [src]="
                           service.SERVICE_IMAGE
                             ? IMAGEuRL + 'Item/' + service.SERVICE_IMAGE
                             : 'assets/img/services/no-image.png'
-                        "
-                        class="item-iconnew"
-                        alt="Service Icon"
-                        style="
-                          width: 40px;
-                          height: 40px;
-                          object-fit: contain;
-                          border: none;
-                        "
-                      />
+                        " class="item-iconnew img-40-contain-no-border" alt="Service Icon" />
                     </div>
                   </div>
-
-                  <!-- Service Info -->
-                  <div class="flex-grow-1 ms-3" style="padding-top: 15px">
-                    <h6
-                      class="fw-bold mb-1"
-                      style="
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        max-width: 200px;
-                        font-size: 14px;
-                      "
-                      [attr.title]="service.NAME || 'N/A'"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                    >
+                  <div class="flex-grow-1 ms-3 pt-15">
+                    <h6 class="fw-bold mb-1 ellipsis-text-200" [attr.title]="service.NAME || 'N/A'"
+                      data-bs-toggle="tooltip" data-bs-placement="top">
                       {{
-                        service.NAME?.length > 35
-                          ? (service.NAME | slice : 0 : 35) + "..."
-                          : service.NAME || "-"
+                      service.NAME?.length > 35
+                      ? (service.NAME | slice : 0 : 35) + "..."
+                      : service.NAME || "-"
                       }}
                     </h6>
-
-                    <!-- Base Price & Time -->
-                    <div
-                      *ngIf="customertype !== 'B'"
-                      class="d-flex justify-content-between"
-                    >
-                      <p style="font-size: 13px" class="text-muted mb-1">
+                    <div *ngIf="customertype !== 'B'" class="d-flex justify-content-between">
+                      <p class="text-muted mb-1 fs-13">
                         {{ "home.service_card.base_price" | translate }}
                       </p>
-                      <!-- <p *ngIf="customertype === 'B'" class="fw-bold mb-1">
-                        ₹ {{ service.B2B_PRICE || "N/A" }}
-                      </p> -->
-                      <p
-                        style="font-size: 13px"
-                        *ngIf="customertype !== 'B'"
-                        class="fw-bold mb-1"
-                      >
+                      <p *ngIf="customertype !== 'B'" class="fw-bold mb-1 fs-13">
                         ₹
                         {{
-                          service?.B2C_PRICE
-                            ? (service.B2C_PRICE | number)
-                            : "0"
+                        service?.B2C_PRICE
+                        ? (service.B2C_PRICE | number)
+                        : "0"
                         }}
                       </p>
                     </div>
                     <div class="d-flex justify-content-between">
-                      <p style="font-size: 13px" class="text-muted mb-1">
+                      <p class="text-muted mb-1 fs-13">
                         {{
-                          customertype === "B"
-                            ? "Estimated Duration"
-                            : ("home.service_card.estimate_time" | translate)
+                        customertype === "B"
+                        ? "Estimated Duration"
+                        : ("home.service_card.estimate_time" | translate)
                         }}
                       </p>
-                      <p style="font-size: 13px" class="fw-bold mb-1">
-                        <!-- {{ service?.DURARTION_HOUR || 0 }}hh
-                        {{ service?.DURARTION_MIN || 0 }}m -->
+                      <p class="fw-bold mb-1 fs-13">
                         {{
-                          (service?.DURARTION_HOUR || 0) * 60 +
-                            (service?.DURARTION_MIN || 0)
+                        (service?.DURARTION_HOUR || 0) * 60 +
+                        (service?.DURARTION_MIN || 0)
                         }}
                         min
                       </p>
                     </div>
-
-                    <!-- Quantity & Ratings -->
-                    <div
-                      class="d-flex justify-content-between align-items-center mt-2"
-                    >
-                      <p style="font-size: 13px" class="text-muted mb-1">
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                      <p class="text-muted mb-1 fs-13">
                         {{ "home.service_card.qty" | translate }}
                       </p>
-
-                      <!-- ADD TO CART Button when quantity is 0 -->
-                      <!-- <ng-container *ngIf="
-                          service.QUANTITY === 0 || !service.QUANTITY;
-                          else qtyBlock
-                        ">
-                        <button style="margin-left: 12px" class="btn toggle-cart-btn rounded-pill px-2 py-1 fw-bold"
-                          (click)="
-                            increaseQty1(service, service.MAX_QTY, $event)
-                          " [disabled]="isLoading">
-                          <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
-                            aria-hidden="true"></span>
-                          <i *ngIf="!isLoading" class="bi" [ngClass]="{
-                              'bi-cart-check-fill': isInCart,
-                              'bi-cart-plus': !isInCart
-                            }"></i>
-                          <span class="ms-2">{{
-                            "home.service_card.add_to_cart" | translate
-                            }}</span>
-                        </button>
-                      </ng-container> -->
-
-                      <!-- Qty Increase Decrease UI -->
-                      <!-- qtyBlock -->
-                      <!-- <ng-container>
-                        <div class="d-flex align-items-center">
-                          <button class="btn btn-outline-secondary btn-sm px-2 py-1"
-                            (click)="decreaseQty1(service, $event)">
-                            −
-                          </button>
-                          <span class="mx-2">{{ service.QUANTITY }}</span>
-                          <button class="btn btn-outline-secondary btn-sm px-2 py-1" (click)="
-                              increaseQty1(service, service.MAX_QTY, $event)
-                            ">
-                            +
-                          </button>
-                        </div>
-                      </ng-container> -->
                     </div>
-
                     <div class="d-flex justify-content-between">
                       <span class="text-muted small">
-                        <ng-container
-                          *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
-                        >
-                          <i
-                            style="margin-right: 5px"
-                            class="fa"
-                            [ngClass]="
+                        <ng-container *ngFor="let star of [1, 2, 3, 4, 5]; let i = index">
+                          <i class="fa mr-5" [ngClass]="
                               +service.AVG_RATINGS >= i + 1
                                 ? 'fa fa-star text-warning'
                                 : 'fa fa-star-o text-secondary'
-                            "
-                          ></i>
+                            "></i>
                         </ng-container>
                       </span>
-
-                      <a
-                        *ngIf="service.AVG_RATINGS > 0"
-                        style="cursor: pointer; font-size: 13px"
-                        class="text-primary small mt-2 d-block"
-                        (click)="openReviews(service, $event)"
-                        >View reviews</a
-                      >
+                      <a *ngIf="service.AVG_RATINGS > 0" class="text-primary small mt-2 d-block cursor-pointer-fs-13"
+                        (click)="openReviews(service, $event)">View reviews</a>
                     </div>
                   </div>
-
-                  <!-- Arrow Button -->
-                  <span
-                    class="arrow-icon ms-2"
-                    (click)="
+                  <span class="arrow-icon ms-2" (click)="
                       userID !== 0 ? openNextDrawer(service) : openLoginModal();
                       $event.stopPropagation()
-                    "
-                  >
+                    ">
                     <i class="bi bi-chevron-right"></i>
                   </span>
                 </div>
-                <!-- Top-Right Corner: Create Badge & Eye Icon -->
-                <div
-                  style="position: absolute; top: 0; right: 0"
-                  class="d-flex align-items-center"
-                >
-                  <!-- Create Badge -->
-                  <span
-                    *ngIf="service.IS_EXPRESS == 1"
-                    style="
-                      width: 143.97547912597656;
-                      height: 33;
-                      gap: 8px;
-                      border-top-left-radius: 8px;
-                      border-bottom-left-radius: 8px;
-                      padding: 8px;
-                      background-color: #27358f;
-
-                      color: #fff;
-                      padding: 5px 10px;
-                      font-size: 14px;
-                    "
-                    class="badge d-flex align-items-center"
-                  >
+                <div class="d-flex align-items-center position-absolute-top-right">
+                  <span *ngIf="service.IS_EXPRESS == 1" class="badge d-flex align-items-center btn-custom-left">
                     <i class="bi bi-lightning me-1 full-text"></i>
                     <span class="full-text">Express service</span>
-                    <span class="short-text"
-                      ><i class="bi bi-lightning me-1"></i
-                    ></span>
+                    <span class="short-text"><i class="bi bi-lightning me-1"></i></span>
                   </span>
-
-                  <!-- Eye Icon -->
-                  <!-- <span class="eye-icon p-2" (click)="
-                          openDescriptionModal(service); $event.stopPropagation()
-                        ">
-                        <i class="bi bi-info-circle"></i>
-                      </span> -->
                 </div>
                 <div class="d-flex mt-2">
-                  <!-- Show Description button - Left -->
                   <button
                     class="btn btn-light border rounded-3 w-50 me-2 px-4 py-2 d-flex justify-content-center align-items-center shadow-sm"
                     (click)="
                       openDescriptionModal(service); $event.stopPropagation()
-                    "
-                  >
-                    <!-- <i class="bi bi-info-circle me-2 text-primary"></i> -->
-                    <!-- <span>Service Description</span> -->
+                    ">
                     <span class="full-text">Service Description</span>
                     <span class="short-text">Description</span>
                   </button>
-
-                  <!-- Next button - Right -->
-                  <!-- <button
-                    class="btn btn-primary rounded-3 w-50 px-4 py-2 d-flex justify-content-center align-items-center shadow-sm"
-                    (click)="
-                      userID !== 0 ? openNextDrawer(service) : openLoginModal();
-                      $event.stopPropagation()
-                    "
-                  >
-                    <span>Next</span>
-                    <i class="bi bi-arrow-right ms-2"></i>
-                  </button> -->
                   <button
-                    class="btn btn-primary rounded-3 w-50 px-4 py-2 d-flex justify-content-center align-items-center shadow-sm"
-                  >
+                    class="btn btn-primary rounded-3 w-50 px-4 py-2 d-flex justify-content-center align-items-center shadow-sm">
                     <span>Next</span>
                     <i class="bi bi-arrow-right ms-2"></i>
                   </button>
@@ -1897,110 +877,46 @@
               <div *ngIf="modalVisible1">
                 <div class="backdrop"></div>
                 <div class="map-container">
-                  <div
-                    class="map-header"
-                    style="
-                      background-color: #007bff;
-                      padding: 12px 16px;
-                      color: #fff;
-                      display: flex;
-                      align-items: center;
-                      justify-content: space-between;
-                      border-radius: 6px;
-                    "
-                  >
-                    <div
-                      style="
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        flex-direction: column;
-                        width: 100%;
-                      "
-                    >
-                      <p
-                        class="mb-0"
-                        style="font-weight: bold; font-size: 16px; color: white"
-                      >
+                  <div class="map-header btn-flex-space">
+                    <div class="flex-center-column-full">
+                      <p class="mb-0 fw-bold-fs-16-white">
                         User Location
                       </p>
-                      <p
-                        class="small mb-0"
-                        style="font-size: 12px; color: white"
-                      >
+                      <p class="small mb-0 fs-12-white">
                         Place the marker at your order location
                       </p>
                     </div>
-
-                    <div
-                      style="text-align: end; padding: 6px"
-                      *ngIf="gettruecondition()"
-                    >
+                    <div class="text-end-p-6" *ngIf="gettruecondition()">
                       <button class="close-menu-btn" (click)="closeMap()">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                           <line x1="18" y1="6" x2="6" y2="18"></line>
                           <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
                       </button>
                     </div>
                   </div>
-
                   <div id="map"></div>
-
                   <div class="location-details">
                     <p>{{ locationAddress || "Fetching address..." }}</p>
                   </div>
-
                   <div class="map-footer">
-                    <button
-                      [disabled]="!locationAddress"
-                      style="
-                        padding: 10px 20px;
-                        font-size: 14px;
-                        background-color: #007bff;
-                        color: #fff;
-                        border: none;
-                        border-radius: 6px;
-                        cursor: pointer;
-                        transition: background-color 0.3s;
-                      "
-                      (click)="confirmLocation()"
-                    >
+                    <button [disabled]="!locationAddress" class="btn-primary1" (click)="confirmLocation()">
                       Confirm Location
                     </button>
                   </div>
                 </div>
               </div>
             </ng-container>
-
-            <!-- IS_PARENT == 1 -->
             <ng-template #parentBlock>
-              <!-- called -->
               <ul class="list-group">
-                <li
-                  class="list-group-item list-group-item-action d-flex align-items-center"
-                  (click)="openActionDrawer(service)"
-                >
-                  <img
-                    [src]="
+                <li class="list-group-item list-group-item-action d-flex align-items-center"
+                  (click)="openActionDrawer(service)">
+                  <img [src]="
                       service.SERVICE_IMAGE
                         ? IMAGEuRL + 'Item/' + service.SERVICE_IMAGE
                         : 'assets/img/services/no-image.png'
-                    "
-                    alt="Device Image"
-                    class="item-icon rounded-circle"
-                    style="padding: 2px !important"
-                  />
+                    " alt="Device Image" class="item-icon rounded-circle p-2" />
                   <span class="ms-3 flex-grow-1">{{ service.NAME }}</span>
                   <i class="bi bi-chevron-right"></i>
                 </li>
@@ -2009,220 +925,95 @@
           </div>
         </div>
       </div>
-
-      <!-- Footer -->
-      <!-- Back Button -->
       <div class="offcanvas-footer">
-        <button
-          class="btn btn-outline-secondary flex-grow-0 me-2"
-          data-bs-dismiss="offcanvas"
-          (click)="onBackClick()"
-          style="font-size: 13px"
-        >
+        <button class="btn btn-outline-secondary flex-grow-0 me-2 fs-13" data-bs-dismiss="offcanvas"
+          (click)="onBackClick()">
           {{ "home.service_drawer.back" | translate }}
         </button>
       </div>
     </div>
-
-    <!-- Reviews Modal -->
   </section>
 </main>
-<div
-  style="width: 600px"
-  class="offcanvas offcanvas-end"
-  data-bs-backdrop="static"
-  tabindex="-1"
-  id="offcanvasRight11"
-  aria-labelledby="offcanvasRightLabel"
-  [class.show]="isDrawerVisible"
->
+<div class="offcanvas offcanvas-end w-600" data-bs-backdrop="static" tabindex="-1" id="offcanvasRight11"
+  aria-labelledby="offcanvasRightLabel" [class.show]="isDrawerVisible">
   <div *ngIf="!loadepage" class="offcanvas-header border-bottom">
-    <h5 class="offcanvas-title fw-bold" style="font-size: 14px">
+    <h5 class="offcanvas-title fw-bold fs-14">
       {{ drawerData.CATEGORY_NAME || "Service Details" }}
     </h5>
     <button type="button" class="btn-close" (click)="drawerClose()"></button>
   </div>
-
   <div *ngIf="userID !== 0" class="progress">
-    <div
-      style="background-color: #f36631 !important"
-      class="progress-bar"
-      role="progressbar"
-      [style.width.%]="progress"
-      [attr.aria-valuenow]="progress"
-      aria-valuemin="0"
-      aria-valuemax="100"
-    ></div>
+    <div class="progress-bar bg-f36631" role="progressbar" [style.width.%]="progress" [attr.aria-valuenow]="progress"
+      aria-valuemin="0" aria-valuemax="100"></div>
   </div>
-
   <div *ngIf="!loadepage" class="demodash offcanvas-body d-flex flex-column">
-    <app-shared-subcategory-drawer
-      *ngIf="userID !== 0 && isDrawerVisible"
-      [data]="drawerData"
-      [progress]="progress"
-      [drawerClose]="closeCallback"
-      [isDrawerVisible]="isDrawerVisible"
-      [addresses]="addresses"
-      [quantity]="cartquantity"
-      [imagePreview]="imagePreview"
-      [showModal]="showModal"
-      [DefaultAddressArray]="DefaultAddressArray"
-      [defaultAddress]="defaultAddress"
-    ></app-shared-subcategory-drawer>
+    <app-shared-subcategory-drawer *ngIf="userID !== 0 && isDrawerVisible" [data]="drawerData" [progress]="progress"
+      [drawerClose]="closeCallback" [isDrawerVisible]="isDrawerVisible" [addresses]="addresses"
+      [quantity]="cartquantity" [imagePreview]="imagePreview" [showModal]="showModal"
+      [DefaultAddressArray]="DefaultAddressArray" [defaultAddress]="defaultAddress"></app-shared-subcategory-drawer>
   </div>
 </div>
-
-<!-- Modal for Model Number Help -->
-<div
-  class="modal fade"
-  id="modelNumberModal22"
-  tabindex="-1"
-  aria-labelledby="modelNumberModalLabel"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
-  aria-hidden="true"
->
+<div class="modal fade" id="modelNumberModal22" tabindex="-1" aria-labelledby="modelNumberModalLabel"
+  data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h6
-          class="modal-title fw-bold"
-          id="modelNumberModalLabel"
-          style="color: #092b9c; font-size: 14px"
-        >
+        <h6 class="modal-title fw-bold text-092b9c-fs-14" id="modelNumberModalLabel">
           How to Find Model Number
         </h6>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-          style="font-size: 13px"
-        ></button>
+        <button type="button" class="btn-close fs-13" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body text-center">
-        <p class="mb-1" style="text-align: justify; font-size: 13px">
+        <p class="mb-1 text-justify-fs-13">
           Check the underside of your laptop for a sticker or engraving labeled
           "Model" or "Model No." Refer to the image below for guidance.
         </p>
-        <img
-          src="assets/img/laptopproductno.png"
-          class="img-fluid rounded shadow-sm"
-          alt="Model Number Guide"
-        />
+        <img src="assets/img/laptopproductno.png" class="img-fluid rounded shadow-sm" alt="Model Number Guide" />
       </div>
     </div>
   </div>
 </div>
-
-<!-- Modal for Upload Photo Help -->
-<div
-  class="modal fade"
-  id="uploadPhotoModal"
-  tabindex="-1"
-  aria-labelledby="uploadPhotoModalLabel"
-  aria-hidden="true"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
->
+<div class="modal fade" id="uploadPhotoModal" tabindex="-1" aria-labelledby="uploadPhotoModalLabel" aria-hidden="true"
+  data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h6
-          class="modal-title fw-bold"
-          id="uploadPhotoModalLabel"
-          style="color: #092b9c; font-size: 14px"
-        >
+        <h6 class="modal-title fw-bold text-092b9c-fs-14" id="uploadPhotoModalLabel">
           How to Upload a Photo
         </h6>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-          style="font-size: 13px"
-        ></button>
+        <button type="button" class="btn-close fs-13" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body text-center">
-        <p class="mb-1" style="text-align: justify; font-size: 13px">
+        <p class="mb-1 text-justify-fs-13">
           Make sure the photo clearly shows your device details.
         </p>
-        <img
-          src="assets/img/Laptopmodalno.jfif"
-          class="img-fluid rounded shadow-sm"
-          alt="Upload Photo Guide"
-        />
+        <img src="assets/img/Laptopmodalno.jfif" class="img-fluid rounded shadow-sm" alt="Upload Photo Guide" />
       </div>
     </div>
   </div>
 </div>
-
-<!-- Guest Modal -->
-<div
-  class="modal fade"
-  id="guestModal"
-  tabindex="-1"
-  aria-labelledby="guestModalLabel"
-  aria-hidden="true"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
->
+<div class="modal fade" id="guestModal" tabindex="-1" aria-labelledby="guestModalLabel" aria-hidden="true"
+  data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-dialog-centered">
-    <div
-      class="modal-content"
-      style="
-        border-radius: 12px;
-        background: #fff;
-        color: #000;
-        text-align: center;
-        border: 'none';
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        width: 100%;
-        padding: 20px;
-      "
-    >
+    <div class="modal-content card-white-shadow">
       <div class="modal-header border-0">
-        <h5 class="fw-bold m-auto" style="color: #333; font-size: 20px">
+        <h5 class="fw-bold m-auto text-333-fs-20">
           <i class="bi bi-person-circle"></i>
           {{ "home.guest_title" | translate }}
         </h5>
-        <button
-          style="margin-left: 0px"
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close ml-0" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-
       <div class="modal-body">
-        <p style="font-size: 15px; color: #555; line-height: 1.5">
+        <p class="fs-15-color-555-line-15">
           {{ "home.guest_message" | translate }}
         </p>
       </div>
-
       <div class="modal-footer border-0 d-flex justify-content-center">
-        <button
-          type="button"
-          class="btn btn-outline-dark px-4 py-2 rounded-pill border-black"
-          style="transition: 0.3s; font-weight: 500"
-          data-bs-dismiss="modal"
-        >
+        <button type="button" class="btn btn-outline-dark px-4 py-2 rounded-pill border-black transition-fw-500"
+          data-bs-dismiss="modal">
           <i class="bi bi-x-circle"></i> {{ "home.cancel" | translate }}
         </button>
-
-        <button
-          type="button"
-          class="btn btn-primary px-4 py-2 rounded-pill"
-          style="
-            background-color: #0052cc;
-            border-color: #0052cc;
-            color: #fff;
-            font-weight: 500;
-            transition: 0.3s;
-          "
-          (click)="redirectToLogin()"
-        >
+        <button type="button" class="btn btn-primary px-4 py-2 rounded-pill btn-blue-500" (click)="redirectToLogin()">
           <i class="bi bi-box-arrow-in-right"></i>
           {{ "home.login" | translate }}
         </button>
@@ -2230,432 +1021,203 @@
     </div>
   </div>
 </div>
-
-<!-- Service Description Modal -->
-<div
-  class="modal fade"
-  id="descriptionModal"
-  tabindex="-1"
-  aria-labelledby="descriptionModalLabel"
-  aria-hidden="true"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
->
+<div class="modal fade" id="descriptionModal" tabindex="-1" aria-labelledby="descriptionModalLabel" aria-hidden="true"
+  data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h6 class="modal-title fw-bold" id="descriptionModalLabel">
           Service Description
         </h6>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div
-        class="modal-body description-content"
-        style="max-height: 70vh; overflow-y: auto"
-      >
+      <div class="modal-body description-content max-h-70vh-scroll">
         <div class="servicedesc" [innerHTML]="selectedServiceDescription"></div>
-
-        <!-- Image Section -->
-        <div
-          *ngIf="serviceData?.SERVICE_DETAILS_IMAGE"
-          class="text-center mt-3"
-        >
-          <img
-            [src]="
+        <div *ngIf="serviceData?.SERVICE_DETAILS_IMAGE" class="text-center mt-3">
+          <img [src]="
               IMAGEuRL +
               'ServiceDetailsImage/' +
               serviceData.SERVICE_DETAILS_IMAGE
-            "
-            class="img-fluid"
-            alt="Service Image"
-          />
+            " class="img-fluid" alt="Service Image" />
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<div
-  class="offcanvas offcanvas-end custom-drawer12"
-  data-bs-backdrop="static"
-  id="viewOnlyServiceDrawer"
-  tabindex="-1"
->
+<div class="offcanvas offcanvas-end custom-drawer12" data-bs-backdrop="static" id="viewOnlyServiceDrawer" tabindex="-1">
   <div class="offcanvas-header border-bottom">
     <h5 class="offcanvas-title">{{ viewOnlySelectedCategoryTitle }}</h5>
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="offcanvas"
-      (click)="closeViewOnlyCategoryDrawer()"
-    ></button>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+      (click)="closeViewOnlyCategoryDrawer()"></button>
   </div>
-
   <div class="offcanvas-body">
-    <p style="font-size: 14px; margin-bottom: 2px">
+    <p class="fs-14-mb-2">
       <strong>Selected Category:</strong>
       {{ viewOnlySelectedCategoryTitle }}
     </p>
-    <p style="font-size: 12px; margin-bottom: 8px" class="text-muted">
+    <p class="text-muted fs-12-mb-8">
       Select a sub Category:
     </p>
-
-    <!-- Loader -->
     <div *ngIf="loadingViewOnly" class="text-center my-3">
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
     </div>
-
-    <!-- Subcategories -->
-    <ul
-      *ngIf="!loadingViewOnly && viewOnlySubCategories.length"
-      class="list-group list-container"
-      style="max-height: 500px"
-    >
-      <li
-        *ngFor="let device of viewOnlySubCategories"
+    <ul *ngIf="!loadingViewOnly && viewOnlySubCategories.length" class="list-group list-container max-height-500">
+      <li *ngFor="let device of viewOnlySubCategories"
         class="list-group-item list-group-item-action d-flex align-items-center shadow-sm"
-        (click)="openActionDrawerViewOnly(device, 'parrent0')"
-      >
-        <!-- <img
-          [src]="
-            device.ICON
-              ? IMAGEuRL + 'SubCategory/' + device.ICON
-              : 'assets/img/services/no-image.png'
-          "
-          alt="Device Image"
-          class="item-icon rounded-circle"  style="padding: 2px !important;"
-        /> -->
-        <div
-          style="
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: 2px solid #ccc;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: white;
-          "
-        >
-          <img
-            [src]="
+        (click)="openActionDrawerViewOnly(device, 'parrent0')">
+        <div class="circle-box">
+          <img [src]="
               device.ICON
                 ? IMAGEuRL + 'SubCategory/' + device.ICON
                 : 'assets/img/services/no-image.png'
-            "
-            alt="Device Image"
-            style="width: 40px; height: 40px; object-fit: contain"
-          />
+            " alt="Device Image" class="img-40-contain" />
         </div>
         <span class="ms-3 flex-grow-1">{{ device.title }}</span>
         <i class="bi bi-chevron-right"></i>
       </li>
     </ul>
-
-    <!-- No data -->
-    <div
-      *ngIf="!loadingViewOnly && viewOnlySubCategories.length === 0"
-      class="text-center text-muted"
-    >
+    <div *ngIf="!loadingViewOnly && viewOnlySubCategories.length === 0" class="text-center text-muted">
       No subcategories available.
     </div>
   </div>
-
   <div class="offcanvas-footer">
-    <button
-      class="btn btn-outline-secondary flex-grow-0 me-2"
-      (click)="closeViewOnlyCategoryDrawer()"
-      data-bs-dismiss="offcanvas"
-      style="font-size: 13px"
-    >
+    <button class="btn btn-outline-secondary flex-grow-0 me-2 fs-13" (click)="closeViewOnlyCategoryDrawer()"
+      data-bs-dismiss="offcanvas">
       Back
     </button>
   </div>
 </div>
-
-<!-- View-Only Services Drawer -->
-<div
-  class="offcanvas offcanvas-end custom-drawer15"
-  id="viewOnlyServiceDrawerFinal"
-  tabindex="-1"
-  data-bs-backdrop="static"
->
+<div class="offcanvas offcanvas-end custom-drawer15" id="viewOnlyServiceDrawerFinal" tabindex="-1"
+  data-bs-backdrop="static">
   <div class="offcanvas-header border-bottom">
     <h5 class="offcanvas-title">{{ viewOnlySelectedCategoryTitle }}</h5>
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="offcanvas"
-      (click)="closeFinalDrawer()"
-    ></button>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" (click)="closeFinalDrawer()"></button>
   </div>
-
   <div class="offcanvas-body">
-    <p style="font-size: 14px; margin-bottom: 1px">
-      <span class="highlight-text r" style="font-size: 14px">
+    <p class="text-size-14-mb-1">
+      <span class="highlight-text r fs-14">
         {{ viewOnlySelectedCategoryTitle }} >
-        <span style="font-weight: bold">
+        <span class="fw-bold">
           {{ selectedDevicename }}
         </span>
       </span>
     </p>
-    <p class="text-muted" style="font-size: 14px">Select a service type</p>
-
-    <!-- Loader -->
+    <p class="text-muted fs-14">Select a service type</p>
     <div *ngIf="cartspinner" class="text-center my-3">
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
     </div>
-
-    <!-- Services List -->
     <div *ngIf="!cartspinner">
       <div *ngFor="let service of viewOnlyServicesList" class="mb-3">
         <ng-container *ngIf="service.IS_PARENT == 0; else parentBlock">
-          <div
-            class="service-card1 p-3 shadow-sm border rounded"
-            style="padding-top: 0px !important; position: relative"
-            (click)="openSuggestionModal()"
-          >
+          <div class="service-card1 p-3 shadow-sm border rounded pt-0-relative" (click)="openSuggestionModal()">
             <div class="service-details d-flex align-items-center">
-              <!-- Image Icon -->
-              <div
-                class="service-icon"
-                style="
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  height: 140px;
-                "
-              >
-                <div
-                  style="
-                    width: 60px;
-                    height: 60px;
-                    border-radius: 50%;
-                    border: 2px solid #ccc;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background-color: white;
-                  "
-                >
-                  <img
-                    [src]="
+              <div class="service-icon flex-center-h-140">
+                <div class="circle-box">
+                  <img [src]="
                       service.SERVICE_IMAGE
                         ? IMAGEuRL + 'Item/' + service.SERVICE_IMAGE
                         : 'assets/img/services/no-image.png'
-                    "
-                    class="item-iconnew"
-                    alt="Service Icon"
-                    style="
-                      width: 40px;
-                      height: 40px;
-                      object-fit: contain;
-                      border: none;
-                    "
-                  />
+                    " class="item-iconnew img-40-contain-no-border" alt="Service Icon" />
                 </div>
               </div>
-
-              <!-- Service Info -->
-              <div class="flex-grow-1 ms-3" style="padding-top: 15px">
-                <h6
-                  class="fw-bold mb-1"
-                  style="
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    max-width: 200px;
-                    font-size: 14px;
-                  "
-                  [attr.title]="service.NAME || 'N/A'"
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="top"
-                >
+              <div class="flex-grow-1 ms-3 pt-15">
+                <h6 class="fw-bold mb-1 ellipsis-text-200" [attr.title]="service.NAME || 'N/A'" data-bs-toggle="tooltip"
+                  data-bs-placement="top">
                   {{
-                    service.NAME?.length > 35
-                      ? (service.NAME | slice : 0 : 35) + "..."
-                      : service.NAME || "-"
+                  service.NAME?.length > 35
+                  ? (service.NAME | slice : 0 : 35) + "..."
+                  : service.NAME || "-"
                   }}
                 </h6>
-
-                <!-- Base Price & Time -->
-                <div
-                  *ngIf="customertype !== 'B'"
-                  class="d-flex justify-content-between"
-                >
-                  <p style="font-size: 13px" class="text-muted mb-1">
+                <div *ngIf="customertype !== 'B'" class="d-flex justify-content-between">
+                  <p class="text-muted mb-1 fs-13">
                     {{ "home.service_card.base_price" | translate }}
                   </p>
-                  <p
-                    style="font-size: 13px"
-                    *ngIf="customertype !== 'B'"
-                    class="fw-bold mb-1"
-                  >
+                  <p *ngIf="customertype !== 'B'" class="fw-bold mb-1 fs-13">
                     ₹
                     {{
-                      service?.B2C_PRICE ? (service.B2C_PRICE | number) : "0"
+                    service?.B2C_PRICE ? (service.B2C_PRICE | number) : "0"
                     }}
                   </p>
                 </div>
-
                 <div class="d-flex justify-content-between">
-                  <p style="font-size: 13px" class="text-muted mb-1">
+                  <p class="text-muted mb-1 fs-13">
                     {{
-                      customertype === "B"
-                        ? "Estimated Duration"
-                        : ("home.service_card.estimate_time" | translate)
+                    customertype === "B"
+                    ? "Estimated Duration"
+                    : ("home.service_card.estimate_time" | translate)
                     }}
                   </p>
-                  <p style="font-size: 13px" class="fw-bold mb-1">
+                  <p class="fw-bold mb-1 fs-13">
                     {{
-                      (service?.DURARTION_HOUR || 0) * 60 +
-                        (service?.DURARTION_MIN || 0)
+                    (service?.DURARTION_HOUR || 0) * 60 +
+                    (service?.DURARTION_MIN || 0)
                     }}
                     min
                   </p>
                 </div>
-
-                <!-- Ratings -->
-                <div
-                  class="d-flex justify-content-between align-items-center mt-2"
-                >
-                  <p style="font-size: 13px" class="text-muted mb-1">Qty</p>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                  <p class="text-muted mb-1 fs-13">Qty</p>
                   <div>
-                    <ng-container
-                      *ngIf="!service.QUANTITY || service.QUANTITY === 0"
-                    >
-                      <!-- <button
-                    class="btn toggle-cart-btn rounded-pill px-3 py-2 fw-bold"
-
-                    [disabled]="isLoading"
-                  >
-                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
-                    <i
-                      *ngIf="!isLoading"
-                      class="bi"
-                      [ngClass]="{
-                        'bi-cart-check-fill': isInCart,
-                        'bi-cart-plus': !isInCart
-                      }"
-                    ></i>
-                    <span    (click)=" openSuggestionModal()" class="ms-2">Add to Cart</span>
-                  </button> -->
+                    <ng-container *ngIf="!service.QUANTITY || service.QUANTITY === 0">
                     </ng-container>
                   </div>
                 </div>
-
                 <div class="d-flex justify-content-between">
                   <span class="text-muted small">
-                    <ng-container
-                      *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
-                    >
-                      <i
-                        style="margin-right: 5px"
-                        class="fa"
-                        [ngClass]="
+                    <ng-container *ngFor="let star of [1, 2, 3, 4, 5]; let i = index">
+                      <i class="fa mr-5" [ngClass]="
                           +service.AVG_RATINGS >= i + 1
                             ? 'fa fa-star text-warning'
                             : 'fa fa-star-o text-secondary'
-                        "
-                      ></i>
+                        "></i>
                     </ng-container>
                   </span>
-
-                  <a
-                    *ngIf="service.AVG_RATINGS > 0"
-                    style="cursor: pointer; font-size: 13px"
-                    class="text-primary small mt-2 d-block"
-                    (click)="openReviews(service, $event)"
-                  >
+                  <a *ngIf="service.AVG_RATINGS > 0" class="text-primary small mt-2 d-block cursor-pointer-fs-13"
+                    (click)="openReviews(service, $event)">
                     View reviews
                   </a>
                 </div>
               </div>
-
-              <!-- Arrow Button -->
-              <!-- <span
-            class="arrow-icon ms-2"
-             (click)=" openSuggestionModal()"
-          >
-            <i class="bi bi-chevron-right"></i>
-          </span> -->
             </div>
-
-            <!-- Top-Right Express Badge -->
-            <div
-              style="position: absolute; top: 0; right: 0"
-              class="d-flex align-items-center"
-            >
-              <span
-                *ngIf="service.IS_EXPRESS == 1"
-                class="badge d-flex align-items-center"
-                style="
-                  border-top-left-radius: 8px;
-                  border-bottom-left-radius: 8px;
-                  background-color: #27358f;
-                  color: #fff;
-                  padding: 5px 10px;
-                  font-size: 14px;
-                "
-              >
+            <div class="d-flex align-items-center position-absolute-top-right">
+              <span *ngIf="service.IS_EXPRESS == 1" class="badge d-flex align-items-center left-rounded-blue-label">
                 <i class="bi bi-lightning me-1 full-text"></i>
                 <span class="full-text">Express service</span>
-                <span class="short-text"
-                  ><i class="bi bi-lightning me-1"></i
-                ></span>
+                <span class="short-text"><i class="bi bi-lightning me-1"></i></span>
               </span>
             </div>
-
-            <!-- Bottom Action Buttons -->
             <div class="d-flex mt-2">
               <button
                 class="btn btn-light border rounded-3 w-50 me-2 px-4 py-2 d-flex justify-content-center align-items-center shadow-sm"
                 (click)="
                   openDescriptionModal(service); $event.stopPropagation()
-                "
-              >
+                ">
                 <span class="full-text">Service Description</span>
                 <span class="short-text">Description</span>
               </button>
-
               <button
                 class="btn btn-primary rounded-3 w-50 px-4 py-2 d-flex justify-content-center align-items-center shadow-sm"
-                (click)="openSuggestionModal()"
-              >
+                (click)="openSuggestionModal()">
                 <span>Next</span>
                 <i class="bi bi-arrow-right ms-2"></i>
               </button>
             </div>
           </div>
         </ng-container>
-
-        <!-- IS_PARENT == 1 block -->
-        <!-- {{service.IS_PARENT }} -->
         <ng-template #parentBlock>
           <ul class="list-group">
-            <li
-              class="list-group-item list-group-item-action d-flex align-items-center"
-              (click)="openActionDrawerViewOnly(service, 'parrent1')"
-            >
-              <img
-                [src]="
+            <li class="list-group-item list-group-item-action d-flex align-items-center"
+              (click)="openActionDrawerViewOnly(service, 'parrent1')">
+              <img [src]="
                   service.SERVICE_IMAGE
                     ? IMAGEuRL + 'Item/' + service.SERVICE_IMAGE
                     : 'assets/img/services/no-image.png'
-                "
-                class="item-icon rounded-circle"
-                style="padding: 2px !important"
-                alt="Service Image"
-              />
+                " class="item-icon rounded-circle p-2" alt="Service Image" />
               <span class="ms-3 flex-grow-1">{{ service.NAME }}</span>
               <i class="bi bi-chevron-right"></i>
             </li>
@@ -2664,41 +1226,18 @@
       </div>
     </div>
   </div>
-
-  <!-- Footer -->
   <div class="offcanvas-footer">
-    <button
-      class="btn btn-outline-secondary"
-      (click)="closeFinalDrawer()"
-      data-bs-dismiss="offcanvas"
-    >
+    <button class="btn btn-outline-secondary" (click)="closeFinalDrawer()" data-bs-dismiss="offcanvas">
       Back
     </button>
   </div>
 </div>
-
-<div
-  class="modal fade"
-  id="suggestionModal"
-  tabindex="-1"
-  aria-labelledby="suggestionModalLabel"
-  aria-hidden="true"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
->
+<div class="modal fade" id="suggestionModal" tabindex="-1" aria-labelledby="suggestionModalLabel" aria-hidden="true"
+  data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-dialog-centered">
-    <div
-      class="modal-content text-center p-4 position-relative suggestion-modal-content"
-    >
-      <!-- Custom Close Icon Button -->
-      <button
-        type="button"
-        class="btn-close position-absolute"
-        style="top: 10px; right: 10px"
-        (click)="closeSuggestionModal()"
-        aria-label="Close"
-      ></button>
-
+    <div class="modal-content text-center p-4 position-relative suggestion-modal-content">
+      <button type="button" class="btn-close position-absolute top-right-10" (click)="closeSuggestionModal()"
+        aria-label="Close"></button>
       <div class="modal-body mt-2 suggestion-modal-body">
         <h5 class="modal-title mb-3" id="suggestionModalLabel">
           Service Not Available in Your Areas
@@ -2711,93 +1250,51 @@
     </div>
   </div>
 </div>
-
-<div
-  class="modal fade"
-  id="reviewsModal"
-  tabindex="-1"
-  aria-labelledby="reviewsModalLabel"
-  aria-hidden="true"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
->
+<div class="modal fade" id="reviewsModal" tabindex="-1" aria-labelledby="reviewsModalLabel" aria-hidden="true"
+  data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog">
     <div class="modal-content p-1">
-      <!-- Reduced padding -->
       <div class="modal-header border-bottom py-2">
-        <!-- Reduced vertical padding -->
         <h5 class="modal-title fw-bold">
           {{ "home.reviews.title" | translate }}
         </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body p-2">
-        <!-- Reduced padding -->
-        <!-- Loader -->
         <div *ngIf="loadingReviews" class="text-center p-2">
           <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>
           <p class="text-muted mt-2 mb-0">Fetching reviews...</p>
         </div>
-
-        <!-- Reviews List -->
         <div *ngIf="!loadingReviews">
-          <div
-            *ngFor="let review of selectedServiceReviews"
-            class="review-card mb-2 pb-2 border-bottom"
-          >
+          <div *ngFor="let review of selectedServiceReviews" class="review-card mb-2 pb-2 border-bottom">
             <div class="d-flex align-items-center mb-1">
-              <img
-                [src]="
+              <img [src]="
                   review.PROFILE_PHOTO
                     ? IMAGEuRL + 'CustomerProfile/' + review.PROFILE_PHOTO
                     : 'assets/img/userimage.jpg'
-                "
-                class="rounded-circle me-2"
-                width="36"
-                height="36"
-              />
+                " class="rounded-circle me-2" width="36" height="36" />
               <div>
                 <strong class="d-block small">{{
                   review.CUSTOMER_NAME
-                }}</strong>
+                  }}</strong>
               </div>
             </div>
-
-            <!-- Star Ratings with Bootstrap Icons -->
             <div class="rating mb-1">
               <ng-container *ngFor="let star of [1, 2, 3, 4, 5]; let i = index">
-                <i
-                  class="bi"
-                  [ngClass]="
+                <i class="bi" [ngClass]="
                     +review.RATING >= i + 1
                       ? 'bi-star-fill text-warning'
                       : 'bi-star text-secondary'
-                  "
-                ></i>
+                  "></i>
               </ng-container>
             </div>
-
-            <p
-              class="mt-1 mb-0 text-muted fst-italic small"
-              style="white-space: pre-line"
-              *ngIf="review != undefined && review.COMMENTS"
-            >
+            <p class="mt-1 mb-0 text-muted fst-italic small ws-pre-line" *ngIf="review != undefined && review.COMMENTS">
               "{{ review.COMMENTS }}"
             </p>
           </div>
-
-          <!-- No reviews message -->
-          <p
-            *ngIf="selectedServiceReviews.length === 0"
-            class="text-center text-muted small mb-0"
-          >
+          <p *ngIf="selectedServiceReviews.length === 0" class="text-center text-muted small mb-0">
             No reviews available.
           </p>
         </div>
@@ -2805,527 +1302,189 @@
     </div>
   </div>
 </div>
-
-<!-- <div
-  class="offcanvas offcanvas-end custom-drawer12"
-  data-bs-backdrop="static"
-  id="addressmodalSubCatClick"
-  tabindex="-1"
->
-  <div class="offcanvas-header border-bottom">
-    <h5 class="offcanvas-title">{{ viewOnlySelectedCategoryTitle }}111111</h5>
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="offcanvas"
-      (click)="closeViewOnlyCategoryDrawer()"
-    ></button>
-  </div>
-
-  <div class="offcanvas-body"> -->
-<div
-  class="modal fade"
-  id="addressmodalSubCatClick"
-  tabindex="-1"
-  aria-labelledby="addressmodalSubCatClickLabel"
-  aria-hidden="true"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
->
+<div class="modal fade" id="addressmodalSubCatClick" tabindex="-1" aria-labelledby="addressmodalSubCatClickLabel"
+  aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog">
-    <div
-      class="modal-content p-1"
-      style="background-color: transparent !important; border: none !important"
-    >
-      <!-- <div class="modal-header border-bottom py-2">
-        <h5 class="modal-title fw-bold">
-          {{ "home.reviews.title" | translate }}
-        </h5>
-        <button
-          type="button"
-          class="btn-close" style="display: none;" id="closemodaladd"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-
-        ></button>
-      </div> -->
-
+    <div class="modal-content p-1 transparent-bg-no-border">
       <div class="modal-body p-2">
         <div *ngIf="modalVisible">
-          <!-- <div class="backdrop"></div> -->
-
           <div class="map-container">
-            <div
-              class="map-header"
-              style="
-                background-color: #007bff;
-                padding: 12px 16px;
-                color: #fff;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                border-radius: 6px;
-              "
-            >
-              <div
-                style="
-                  display: flex;
-                  align-items: center;
-                  /* justify-content: center; */
-                  /* flex-direction: column; */
-                  justify-content: space-between;
-                  width: 100%;
-                "
-              >
+            <div class="map-header primary-flex-header">
+              <div class="flex-align-space-between-full">
                 <div>
-                  <p
-                    class="mb-0"
-                    style="
-                      margin: 0;
-                      font-weight: bold;
-                      font-size: 16px;
-                      color: white !important;
-                    "
-                  >
+                  <p class="mb-0 heading-white-bold-16">
                     User Location (Place the marker at your order location)
                   </p>
                 </div>
                 <div>
-                  <button
-                    type="button"
-                    style="
-                      color: white !important;
-                      border: none !important;
-                      background: transparent !important;
-                    "
-                    data-bs-dismiss="modal"
-                    (click)="closeaddressmodalSubCatClick()"
-                    aria-label="Close"
-                  >
-                    <i
-                      class="bi bi-x"
-                      style="font-size: 26px; padding: 0px !important"
-                    ></i>
+                  <button type="button" class="white-text-transparent-btn" data-bs-dismiss="modal"
+                    (click)="closeaddressmodalSubCatClick()" aria-label="Close">
+                    <i class="bi bi-x icon-size-26-no-padding"></i>
                   </button>
                 </div>
               </div>
-              <div
-                style="text-align: end; padding: 6px"
-                *ngIf="gettruecondition()"
-              >
+              <div class="text-end-p-6" *ngIf="gettruecondition()">
                 <button class="close-menu-btn" (click)="closeMap()">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                   </svg>
                 </button>
               </div>
             </div>
-
-            <!-- Map Container -->
             <div id="map"></div>
-
-            <!-- <div class="location-details">
-              <p style="margin-left:650px">{{ locationAddress || "Fetching address..." }}</p>
-            </div> -->
-             <div class="location-details  text-center">
+            <div class="location-details  text-center">
               <p class="address-text">{{ locationAddress || "Fetching address..." }}</p>
             </div>
-
             <div class="map-footer">
-              <button
-                [disabled]="!locationAddress"
-                style="
-                  padding: 10px 20px;
-                  font-size: 14px;
-                  background-color: #007bff;
-                  color: #fff;
-                  border: none;
-                  border-radius: 6px;
-                  cursor: pointer;
-                  transition: background-color 0.3s;
-                "
-                (click)="confirmLocation()"
-              >
+              <button [disabled]="!locationAddress" class="btn-primary1" (click)="confirmLocation()">
                 Confirm Location
               </button>
             </div>
           </div>
         </div>
-
         <div *ngIf="showAddressDetailsForm" class="address-form-container">
-          <div class="card shadow-sm address-form-card" style="border: none">
-            <!-- <div
-              class="d-flex justify-content-center align-items-center card-header"
-              style="height: 80px; border-bottom: none"
-            > -->
+          <div class="card shadow-sm address-form-card no-border">
             <div
-                    class="card-header position-relative d-flex align-items-center justify-content-center"
-                style="height: 80px; border-bottom: none"
-            >
+              class="card-header position-relative d-flex align-items-center justify-content-center height-80-no-bottom-border">
               <div class="icon-wrapper text-center">
-                <svg
-                  width="66"
-                  height="67"
-                  viewBox="0 0 66 67"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle
-                    cx="33"
-                    cy="33.5"
-                    r="32.7988"
-                    stroke="#FFDFBE"
-                    stroke-width="0.402439"
-                  />
-                  <circle
-                    cx="33.0004"
-                    cy="33.5"
-                    r="26.3598"
-                    stroke="#FFDFBE"
-                    stroke-width="0.402439"
-                  />
+                <svg width="66" height="67" viewBox="0 0 66 67" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="33" cy="33.5" r="32.7988" stroke="#FFDFBE" stroke-width="0.402439" />
+                  <circle cx="33.0004" cy="33.5" r="26.3598" stroke="#FFDFBE" stroke-width="0.402439" />
                   <path
                     d="M20.6299 39.7112C16.1906 33.6198 16.8468 25.2031 22.1766 19.8733C28.154 13.8959 37.8454 13.8959 43.8228 19.8733C49.1526 25.2031 49.8088 33.6198 45.3695 39.7112L36.0195 52.541C34.5271 54.5888 31.4723 54.5888 29.9799 52.541L20.6299 39.7112Z"
-                    fill="#2A3B8F"
-                  />
-                  <circle
-                    cx="33.0137"
-                    cy="31.5595"
-                    r="5.97857"
-                    fill="#FDEEE9"
-                  />
+                    fill="#2A3B8F" />
+                  <circle cx="33.0137" cy="31.5595" r="5.97857" fill="#FDEEE9" />
                 </svg>
               </div>
               <div>
-                <button
-                  type="button"
-                  class="close-btn"
-
-                  data-bs-dismiss="modal"
-                  (click)="closeaddressmodalSubCatClick()"
-                  aria-label="Close"
-                >
-                  <i
-                    class="bi bi-x"
-                    style="font-size: 26px; padding: 0px !important"
-                  ></i>
+                <button type="button" class="close-btn" data-bs-dismiss="modal" (click)="closeaddressmodalSubCatClick()"
+                  aria-label="Close">
+                  <i class="bi bi-x icon-size-26-no-padding"></i>
                 </button>
               </div>
             </div>
-
-            <form
-              #addressSubmit="ngForm"
-              (ngSubmit)="saveAddressAdd(addressSubmit)"
-              class="p-3"
-            >
-              <div
-                style="
-                  background-color: #f4f7f9;
-                  padding: 15px;
-                  height: 70vh;
-                  overflow-y: scroll;
-                "
-              >
-                <h2
-                  class="form-title mb-0 ms-3"
-                  style="
-                    padding: 0px 0px 15px;
-                    margin-left: 0px !important;
-                    font-size: 17px;
-                  "
-                >
+            <form #addressSubmit="ngForm" (ngSubmit)="saveAddressAdd(addressSubmit)" class="p-3">
+              <div class="scrollable-container">
+                <h2 class="form-title mb-0 ms-3 padding-bottom-15-font-17">
                   Enter address details
                 </h2>
-                <div
-                  class="mb-3"
-                  style="border-radius: 8px; padding: 12px; background: #fdfdfd"
-                >
-                  <label
-                    class="form-label text-muted small"
-                    style="display: flex"
-                    >Save address as *</label
-                  >
+                <div class="mb-3 rounded-padded-bg">
+                  <label class="form-label text-muted small flex-display">Save address as *</label>
                   <div class="btn-group custom-btn-group">
-                    <button
-                      type="button"
-                      class="btn"
-                      style="margin-right: 10px !important"
-                      [ngClass]="{
+                    <button type="button" class="btn mr-10-important" [ngClass]="{
                         'btn-outline-primary': addressForm.TYPE !== 'H',
                         'btn-primary': addressForm.TYPE === 'H',
                         colorcodes: addressForm.TYPE === 'H'
-                      }"
-                      (click)="addressForm.TYPE = 'H'"
-                    >
+                      }" (click)="addressForm.TYPE = 'H'">
                       Home
                     </button>
-                    <button
-                      type="button"
-                      class="btn"
-                      style="margin-right: 10px !important"
-                      [ngClass]="{
+                    <button type="button" class="btn mr-10-important" [ngClass]="{
                         'btn-outline-primary': addressForm.TYPE !== 'F',
                         'btn-primary': addressForm.TYPE === 'F',
                         colorcodes: addressForm.TYPE === 'F'
-                      }"
-                      (click)="addressForm.TYPE = 'F'"
-                    >
+                      }" (click)="addressForm.TYPE = 'F'">
                       Work
                     </button>
-                    <button
-                      style="margin-left: 10px"
-                      style="margin-right: 10px !important"
-                      type="button"
-                      class="btn"
-                      [ngClass]="{
+                    <button type="button" class="btn mr-10-important ml-10" [ngClass]="{
                         'btn-outline-primary': addressForm.TYPE !== 'O',
                         'btn-primary': addressForm.TYPE === 'O',
                         colorcodes: addressForm.TYPE === 'O'
-                      }"
-                      (click)="addressForm.TYPE = 'O'"
-                    >
+                      }" (click)="addressForm.TYPE = 'O'">
                       Other
                     </button>
                   </div>
                 </div>
-
                 <div class="mb-3 contact-details" *ngIf="!asGuest">
-                  <label class="form-label" style="font-size: 13px"
-                    >Contact Person Details</label
-                  >
-                  <div style="font-size: 13px">
+                  <label class="form-label fs-13">Contact Person Details</label>
+                  <div class="fs-13">
                     {{ data.CUSTOMER_NAME }}
                     <b>{{ data.CUSTOMER_MOBILE_NO }}</b>
                   </div>
                 </div>
-                <div
-                  style="border-radius: 8px; padding: 12px; background: #fdfdfd"
-                >
-                  <div
-                    class="form-group position-relative"
-                    style="padding: 10px"
-                  >
-                    <!-- <input
-              type="text"
-              class="form-control"
-              [value]="locationCode || 'WJHV+GV5'"
-              readonly
-              autocomplete="off"
-            /> -->
-                    <button
-                      type="button"
-                      style="font-size: 13px"
-                      class="btn btn-link position-absolute end-0 top-50 translate-middle-y"
-                      (click)="onshowMap()"
-                    >
+                <div class="rounded-padded-bg">
+                  <div class="form-group position-relative service-card">
+                    <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y fs-13"
+                      (click)="onshowMap()">
                       Change Location
                     </button>
                   </div>
-
                   <div class="row mt-2">
-                    <!-- Address Line 1 -->
                     <div class="col-md-6">
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="House number/flat no/floor no"
-                        [(ngModel)]="addressForm.ADDRESS_LINE_1"
-                        name="addressLine1"
-                        required
-                        #addressLine1="ngModel"
-                        autocomplete="off"
-                        maxlength="256"
-                      />
-                      <div
-                        *ngIf="(addressLine1.errors?.['required'] && (addressLine1.touched || addressSubmitted))"
-                        class="error-message"
-                      >
+                      <input type="text" class="form-control" placeholder="House number/flat no/floor no"
+                        [(ngModel)]="addressForm.ADDRESS_LINE_1" name="addressLine1" required #addressLine1="ngModel"
+                        autocomplete="off" maxlength="256" />
+                      <div *ngIf="(addressLine1.errors?.['required'] && (addressLine1.touched || addressSubmitted))"
+                        class="error-message">
                         Please enter house number/flat no/floor no.
                       </div>
                     </div>
-
-                    <!-- Address Line 2 -->
                     <div class="col-md-6">
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Area/street/village"
-                        [(ngModel)]="addressForm.ADDRESS_LINE_2"
-                        name="addressLine2"
-                        autocomplete="off"
-                        required
-                        #addressLine2="ngModel"
-                        maxlength="256"
-                      />
-                      <div
-                        *ngIf="(addressLine2.errors?.['required'] && (addressLine2.touched || addressSubmitted))"
-                        class="error-message"
-                      >
+                      <input type="text" class="form-control" placeholder="Area/street/village"
+                        [(ngModel)]="addressForm.ADDRESS_LINE_2" name="addressLine2" autocomplete="off" required
+                        #addressLine2="ngModel" maxlength="256" />
+                      <div *ngIf="(addressLine2.errors?.['required'] && (addressLine2.touched || addressSubmitted))"
+                        class="error-message">
                         Please enter Area/street/village.
                       </div>
                     </div>
                   </div>
-
                   <div class="row mt-2">
-                    <!-- Landmark -->
                     <div class="col-md-6">
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Landmark (optional)"
-                        [(ngModel)]="addressForm.LANDMARK"
-                        name="landmark"
-                        autocomplete="off"
-                        maxlength="128"
-                      />
+                      <input type="text" class="form-control" placeholder="Landmark (optional)"
+                        [(ngModel)]="addressForm.LANDMARK" name="landmark" autocomplete="off" maxlength="128" />
                     </div>
-
-                    <!-- Pincode Dropdown -->
                     <div class="col-md-6">
                       <div class="position-relative">
-                        <!-- (click)="togglePincodeDropdown(); $event.stopPropagation()" -->
                         <div class="dropdown-wrapper">
-                          <input
-                            type="text"
-                            class="form-control"
-                            [(ngModel)]="selectedPincode"
-                            placeholder="Select pincode"
-                            name="pincode"
-                            #pincode="ngModel"
-                            required
-                            maxlength="64"
-                            readonly
-                            autocomplete="off"
-                          />
-                          <div
-                            *ngIf="isPincodeLoading"
-                             class="loading-container1 spinner-inside"
-                          >
-                            <div
-                              style="text-align: center"
-                              class="spinner-border"
-                              role="status"
-                            >
+                          <input type="text" class="form-control" [(ngModel)]="selectedPincode"
+                            placeholder="Select pincode" name="pincode" #pincode="ngModel" required maxlength="64"
+                            readonly autocomplete="off" />
+                          <div *ngIf="isPincodeLoading" class="loading-container1 spinner-inside">
+                            <div class="spinner-border text-center" role="status">
                               <span class="visually-hidden">Loading...</span>
                             </div>
                           </div>
-                          <!-- <span class="dropdown-icon"></span> -->
                         </div>
-                        <!-- <div
-                  *ngIf="(pincode.errors?.['required'] && (pincode.touched || addressSubmitted))"
-                  class="error-message"
-                >
-                  Please Select Pin Code.
-                </div> -->
-                        <!-- <div *ngIf="showPincodeDropdown" class="dropdown-menu show">
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Search pincode..."
-                    [(ngModel)]="searchPincode"
-                    name="pincodeSearch"
-                    (input)="filterPincodes($event)"
-                    (click)="$event.stopPropagation()"
-                    autocomplete="off"
-                  />
-                  <div
-                    class="dropdown-item"
-                    *ngFor="let pincode of filteredPincodes"
-                    (click)="selectPincode(pincode)"
-                  >
-                    {{ pincode.PINCODE_NUMBER }}
-                  </div>
-                </div> -->
-                        <div
-                          style="font-size: 12px"
-                          *ngIf="
+                        <div *ngIf="
                             pincode.invalid &&
                             (pincode.touched || addressSubmitted)
-                          "
-                          class="text-danger mt-1"
-                        >
+                          " class="text-danger mt-1 fs-12">
                           <div *ngIf="pincode.errors?.['required']">
                             Please select pincode.
                           </div>
                           <div *ngIf="pincode.errors?.['maxlength']">
                             Max length exceeded.
                           </div>
-                          <!-- Add more conditions if needed -->
                         </div>
                       </div>
                     </div>
                   </div>
-
                   <div class="row mt-2">
-                    <!-- City -->
                     <div class="col-md-6">
-                      <input
-                        type="text"
-                        class="form-control"
-                        [(ngModel)]="addressForm.CITY_NAME"
-                        [placeholder]="'Enter City'"
-                        name="CITY_NAME"
-                        autocomplete="off"
-                        maxlength="128"
-                        required
-                        #CITY_NAME="ngModel"
-                      />
-                      <div
-                        *ngIf="(CITY_NAME.errors?.['required'] && (CITY_NAME.touched || addressSubmitted))"
-                        class="error-message"
-                      >
+                      <input type="text" class="form-control" [(ngModel)]="addressForm.CITY_NAME"
+                        [placeholder]="'Enter City'" name="CITY_NAME" autocomplete="off" maxlength="128" required
+                        #CITY_NAME="ngModel" />
+                      <div *ngIf="(CITY_NAME.errors?.['required'] && (CITY_NAME.touched || addressSubmitted))"
+                        class="error-message">
                         Please enter City.
                       </div>
                     </div>
-
-                    <!-- State Dropdown -->
                     <div class="col-md-6">
                       <div class="position-relative">
-                        <div
-                          class="dropdown-wrapper"
-                          (click)="
+                        <div class="dropdown-wrapper" (click)="
                             toggleStatesDropdown(); $event.stopPropagation()
-                          "
-                        >
-                          <input
-                            type="text"
-                            class="form-control"
-                            [value]="selectedState || 'Select State...'"
-                            readonly
-                            autocomplete="off"
-                          />
+                          ">
+                          <input type="text" class="form-control" [value]="selectedState || 'Select State...'" readonly
+                            autocomplete="off" />
                           <span class="dropdown-icon"></span>
                         </div>
-                        <div
-                          *ngIf="showStateDropdown"
-                          class="dropdown-menu show"
-                        >
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Search State..."
-                            [(ngModel)]="searchState"
-                            name="stateSearch"
-                            (input)="filterStates($event)"
-                            (click)="$event.stopPropagation()"
-                            autocomplete="off"
-                          />
-                          <div
-                            class="dropdown-item"
-                            *ngFor="let state of filteredStates"
-                            (click)="selectState(state)"
-                          >
+                        <div *ngIf="showStateDropdown" class="dropdown-menu show">
+                          <input type="text" class="form-control" placeholder="Search State..."
+                            [(ngModel)]="searchState" name="stateSearch" (input)="filterStates($event)"
+                            (click)="$event.stopPropagation()" autocomplete="off" />
+                          <div class="dropdown-item" *ngFor="let state of filteredStates" (click)="selectState(state)">
                             {{ state.NAME }}
                           </div>
                         </div>
@@ -3333,17 +1492,9 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="d-flex justify-content-center mt-3">
-                  <button
-                    [disabled]="isAddrssSaving"
-                    type="submit"
-                    class="btn btn-primary w-100"
-                  >
-                    <span
-                      *ngIf="isAddrssSaving"
-                      class="spinner-border spinner-border-sm me-2"
-                    ></span>
+                  <button [disabled]="isAddrssSaving" type="submit" class="btn btn-primary w-100">
+                    <span *ngIf="isAddrssSaving" class="spinner-border spinner-border-sm me-2"></span>
                     Confirm
                   </button>
                 </div>
@@ -3355,113 +1506,130 @@
     </div>
   </div>
 </div>
-<!-- </div> -->
-
-<div
-  *ngIf="guestuser"
-  class="modal fade show"
-  id="guestModal"
-  tabindex="-1"
-  aria-labelledby="guestModalLabel"
-  aria-hidden="false"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
-  style="
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6);
-    z-index: 1055;
-    overflow-y: auto;
-  "
->
-  <div
-    class="modal-dialog modal-dialog-centered"
-    style="
-      max-width: 400px;
-      margin: auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-    "
-  >
-    <div
-      class="modal-content"
-      style="
-        border-radius: 16px;
-        background: #fff;
-        color: #000;
-        text-align: center;
-        border: none;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-        width: 100%;
-        padding: 20px;
-        animation: fadeInUp 0.3s ease-in-out;
-      "
-    >
+<div *ngIf="guestuser" class="modal fade show fullscreen-overlay" id="guestModal" tabindex="-1"
+  aria-labelledby="guestModalLabel" aria-hidden="false" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered centered-flex-container">
+    <div class="modal-content card-fadein">
       <div class="modal-header border-0">
-        <h5 class="fw-bold m-auto" style="color: #333; font-size: 20px">
+        <h5 class="fw-bold m-auto text-333-fs-20">
           <i class="bi bi-person-circle"></i> You are a Guest
         </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-          (click)="closeloginmodal()"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          (click)="closeloginmodal()"></button>
       </div>
-
       <div class="modal-body">
-        <p style="font-size: 15px; color: #555; line-height: 1.5">
+        <p class="fs-15-color-555-line-15">
           Please <strong>login</strong> to add an item to your cart and enjoy
           seamless service.
         </p>
       </div>
-
       <div class="modal-footer border-0 d-flex justify-content-center">
-        <button
-          type="button"
-          class="btn btn-outline-dark px-4 py-2 rounded-pill border-black"
-          style="transition: 0.3s; font-weight: 500"
-          data-bs-dismiss="modal"
-          (click)="closeloginmodal()"
-        >
+        <button type="button" class="btn btn-outline-dark px-4 py-2 rounded-pill border-black transition-fw-500"
+          data-bs-dismiss="modal" (click)="closeloginmodal()">
           <i class="bi bi-x-circle"></i> Cancel
         </button>
-
-        <button
-          type="button"
-          class="btn btn-primary px-4 py-2 rounded-pill"
-          style="
-            background-color: #0052cc;
-            border-color: #0052cc;
-            color: #fff;
-            font-weight: 500;
-            transition: 0.3s;
-          "
-          (click)="redirectToLogin()"
-        >
+        <button type="button" class="btn btn-primary px-4 py-2 rounded-pill btn-blue-500" (click)="redirectToLogin()">
           <i class="bi bi-box-arrow-in-right"></i> Login
         </button>
       </div>
     </div>
   </div>
 </div>
-
 <style>
   @keyframes fadeInUp {
     from {
       opacity: 0;
       transform: translateY(40px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
     }
   }
 </style>
+<div #feedbackModal class="modal fade" id="feedbackModal" tabindex="-1" data-bs-backdrop="static"
+  data-bs-keyboard="false" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content feedback-modal-content">
+      <div class="modal-header feedback-modal-header">
+        <h6 class="modal-title fw-semibold d-flex align-items-center">
+          <i class="bi bi-record-circle-fill me-1 text-blue-dark"></i>
+          Rate Us
+        </h6>
+        <button type="button" class="btn-close" (click)="closeFeedbackModal()"></button>
+      </div>
+      <div class="modal-body feedback-modal-body">
+        <form #feedbackForm="ngForm" class="feedback-form" (ngSubmit)="submitFeedback()">
+          <p class="fw-medium text-dark mb-1 font-13">
+            How would you rate the experience and service?
+          </p>
+          <div class="d-flex gap-1 justify-content-left mb-2">
+            <i class="bi font-14-pointer" [ngClass]="
+                  rating >= star
+                    ? 'bi-star-fill text-warning'
+                    : 'bi-star text-muted'
+                " *ngFor="let star of [1, 2, 3, 4, 5]" (click)="setRating(star, 'service')"></i>
+          </div>
+          <textarea class="form-control bg-light rounded-2 border-0 p-2 text-12-full-width" name="comment"
+            [(ngModel)]="feedback.comment" placeholder="Tell us on how we can improve" rows="2"
+            maxlength="256"></textarea>
+          <p class="fw-medium text-dark mt-2 mb-1 font-13">
+            How would you rate the technician assigned for this service?
+          </p>
+          <div class="d-flex gap-1 justify-content-left mb-2">
+            <i class="bi font-14-pointer" [ngClass]="
+                  techRating >= star
+                    ? 'bi-star-fill text-warning'
+                    : 'bi-star text-muted'
+                " *ngFor="let star of [1, 2, 3, 4, 5]" (click)="setRating(star, 'technician')"></i>
+          </div>
+          <textarea class="form-control bg-light rounded-2 border-0 p-2 text-12-full-width" name="comment1"
+            [(ngModel)]="feedback.comment1" placeholder="Share your experience with our technician" rows="2"
+            maxlength="256"></textarea>
+          <div class="modal-footer border-0 pt-3 py-10">
+            <button type="submit" class="btn w-100 py-2 rounded-2 fw-medium text-white-bg-blue"
+              [disabled]="rating === 0 || techRating === 0">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="rate-overlay" *ngIf="showRatePopup">
+  <div class="rate-popup-bottom" [class.slide-in]="!isClosing" [class.slide-out]="isClosing">
+    <div class="popup-content">
+      <div class="popup-icon">
+        <i class="bi bi-check-circle-fill"></i>
+      </div>
+      <div class="popup-text">
+        <h4>{{ data?.SERVICE_NAME }} Completed</h4>
+        <p>Your service has been completed successfully.</p>
+      </div>
+      <div class="popup-actions">
+        <button class="btn-submit" (click)="openFeedbackModal()">
+          Rate Service
+        </button>
+        <button class="btn-later" (click)="closePopup()">
+          Later
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="rate-overlay" *ngIf="showSuccessPopup">
+  <div class="rate-popup-bottom success-popup" [class.slide-in]="!isClosingSuccess"
+    [class.slide-out]="isClosingSuccess">
+    <div class="popup-content center-content">
+      <div class="popup-icon success-icon">
+        ⭐
+      </div>
+      <div class="popup-text text-center">
+        <h4>Feedback submitted successfully!</h4>
+        <p>Thanks for letting us know</p>
+      </div>
+    </div>
+  </div>
+</div>

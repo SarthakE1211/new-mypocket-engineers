@@ -1,11 +1,8 @@
 <div *ngIf="!loadepage">
-  <div class="offcanvas-body" style="padding: 0px !important;">
-    <!-- Express Service -->
-    <!-- {{selectedService | json }} {{isExpressOn}}  -->
+  <div class="offcanvas-body p-0-important" >
     <div
       *ngIf="isExpressOn"
-      class="border rounded p-3 bg-light"
-      style=" font-size: 13px;    margin-bottom: 10px;background-color: white !important;"
+      class="border rounded p-3 bg-light text-13-mb-10-bg-white"
     >
       <div class="d-flex align-items-center">
         <input
@@ -16,27 +13,21 @@
           class="me-2"
           checked
         />
-        <label for="expressService" class="fw-bold" style="font-size: 14px">
+        <label for="expressService" class="fw-bold font-14">
           <i>Express Service</i>
         </label>
       </div>
-
-      <p class="text-muted" style="font-size: 12px">
+      <p class="text-muted font-12" >
         Same day service with our express checkout option with an additional
         charge
-        <!-- <label for="">{{drawerData.PREPARATION_HOURS}} </label> -->
-
-        <!-- of 
-        <b>{{ selectedService?.EXPRESS_COST ? selectedService.EXPRESS_COST + " INR" : "N/A" }}</b>. -->
       </p>
       <div *ngIf="isExpressOn" class="d-flex justify-content-center mt-2">
         <button
-          class="btn"
+          class="btn w-50-font-13"
           [ngClass]="{
             'btn-outline-primary': !IS_EXPRESS_Update,
             'btn-outline-danger': IS_EXPRESS_Update
           }"
-          style="width: 50%; font-size: 13px"
           (click)="toggleExpressService()"
         >
           {{
@@ -45,46 +36,38 @@
         </button>
       </div>
     </div>
-
-    <!-- <p *ngIf="selectedService?.IS_EXPRESS === 1" class="text-center mt-3" style="font-size: 13px">Or</p> -->
-    <p class="text-center mt-3" style="font-size: 13px;margin-top: 0px !important;text-align: left !important;">
+    <p class="text-center mt-3 font-13-mt0-left">
       Please select a date and time for the technician's visit
     </p>
-
     <div
-      class="border date-time-container"
-      style=" font-size: 13px;background-color: white !important;"
+      class="border date-time-container font-13-bg-white"
     >
-      <!-- Date Selection -->
       <div class="date-picker-container">
-        <label class="form-label" style="font-size: 13px">Select a date</label>
-        <p class="selected-date" style="font-size: 12px">
+        <label class="form-label font-13" >Select a date</label>
+        <p class="selected-date font-12" >
           {{ selectedDate }}
         </p>
         <div class="date-scroll">
           <button
             *ngFor="let date of dates"
-            class="date-button"
+            class="date-button font-12"
             [ngClass]="{
               selected: selectedDate.trim() === date.fullDate.trim()
             }"
             (click)="selectDate(date.fullDate)"
-            style="font-size: 12px"
           >
             <span class="day">{{ date.display.split(" ")[0] }}</span>
             <span class="date">{{ date.display.split(" ")[1] }}</span>
           </button>
         </div>
       </div>
-
-      <!-- Time Slot Selection -->
       <div class="time-slot-container">
-        <label class="form-label fw-bold" style="font-size: 13px">
+        <label class="form-label fw-bold font-13" >
           Select a time slot
         </label>
         <div class="time-slot-wrapper">
           <div *ngFor="let period of timeSlots" class="time-slot">
-            <p style="text-align: left; font-size: 13px" class="slot-title">
+            <p class="slot-title text-left-font-13">
               {{ period.period }}
             </p>
             <button
@@ -109,52 +92,37 @@
         </div>
       </div>
       <p *ngIf="isAllSlotsDisabled()" 
-      class="no-slots-message" 
-      style="color: red; font-size: 14px;     margin-top: 11px;">
+      class="no-slots-message text-red-font-14-mt-11" 
+      >
       No time slots are available for the selected date. 
               </p>
     </div>
-
-    <!-- Remarks -->
     <div
-      class="border p-3 mt-3"
-      style="
-        border-radius: 8px;
-        font-size: 13px;
-      "
+      class="border p-3 mt-3 rounded-8-font-13"
     >
-      <label class="form-label fw-bold" style="font-size: 13px">Remarks</label>
-    
-          <input type="text" class="form-control" [(ngModel)]="remark"
-    [placeholder]="'home.remarks_placeholder' | translate" style="font-size: 12px" maxlength="256"
+      <label class="form-label fw-bold font-13" >Remarks</label>
+          <input type="text" class="form-control font-12" [(ngModel)]="remark"
+    [placeholder]="'home.remarks_placeholder' | translate"  maxlength="256"
     (focus)="isFocused = 'REMARK'" (blur)="isFocused = ''" />
-  <h6 *ngIf="isFocused === 'REMARK'" style="color: red; font-size: 10px;margin-top:4px">
+  <h6 *ngIf="isFocused === 'REMARK'" class="text-red-font-10-mt-4">
     {{ remark?.length || 0 }}/256
   </h6>
     </div>
   </div>
-
-  <!-- Footer -->
   <div class="offcanvas-footer border-top p-3 d-flex align-items-center">
     <button
-      class="btn btn-outline-secondary flex-grow-0 me-2"
+      class="btn btn-outline-secondary flex-grow-0 me-2 font-13"
       (click)="closeData()"
-      style="font-size: 13px"
     >
       Back
     </button>
-
     <button class="btn btn-light flex-grow-0 me-2">
-      <!-- <i class="bi bi-cart"></i> -->
-      <!-- Bootstrap Cart Icon -->
     </button>
     <button
-      class="btn btn-dark flex-grow-1 text-white"
+      class="btn btn-dark flex-grow-1 text-white font-14"
       (click)="bookNow()"
-      style="font-size: 14px"
     >
       Confirm
     </button>
   </div>
-  <!-- </div> -->
 </div>

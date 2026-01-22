@@ -5,12 +5,10 @@
   justify-content: center;
   background-color: #ffffff;
 }
-
 :host ::ng-deep .animated-logo {
   width: 150px;
   animation: pulse 1.5s ease-in-out infinite;
 }
-
 @keyframes pulse {
   0% {
     transform: scale(1);

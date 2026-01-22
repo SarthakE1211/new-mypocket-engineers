@@ -30,13 +30,8 @@ class Ticketgroup {
 export class ManageTickitsComponent {
   @Input() drawerClose!: Function;
   @Input() DrawerVisible: boolean = false;
-  // @Input() data: any;
-
   gotoHelpSupport() {
-    // this.showContent = 'HelpandSupportTab'
-    // this.getuserList();
   }
-
   manageTickets() {
     this.getTickitDAta();
   }
@@ -47,16 +42,13 @@ export class ManageTickitsComponent {
   getTickitDAta() {
     this.isSpinning = true;
     this.index = 0;
-    // var filterQuery = " AND PARENT_ID=0 AND TYPE='Q'";
     var filterQuery = " AND PARENT_ID=0 AND TYPE='Q'";
-
     this.apiservice
       .getAllTicketGroups(0, 0, 'id', 'ASC', filterQuery)
       .subscribe(
         (response: HttpResponse<any>) => {
           const ticketGroups = response.status;
           this.isSpinning = true;
-
           if (response.status == 200) {
             if (response.body.data[0]?.length == 0) {
               this.ticketQuestion = {};
@@ -65,13 +57,10 @@ export class ManageTickitsComponent {
             } else {
               this.ticketQuestion = response.body.data[0];
               this.isSpinning = false;
-
-              // var filterQuery2 = " AND PARENT_ID=" + response.body.data[0]['ID'] + " AND TYPE='O'";
               var filterQuery2 =
                 ' AND PARENT_ID=' +
                 response.body.data[0]['ID'] +
                 " AND TYPE='O' AND TICKET_TYPE = 'C'";
-
               this.apiservice
                 .getAllTicketGroups(
                   0,
@@ -82,14 +71,11 @@ export class ManageTickitsComponent {
                 )
                 .subscribe((ticketGroups) => {
                   this.ticketGroups = ticketGroups.body.data;
-                  
-
                   this.isSpinning = false;
                 });
             }
           }
         },
-
         (err: HttpErrorResponse) => {
           this.isSpinning = false;
           if (err.status === 0) {
@@ -99,16 +85,11 @@ export class ManageTickitsComponent {
             );
             this.isSpinning = false;
           } else {
-            // this.message.error(
-            //   `HTTP Error: ${err.status}. Something Went Wrong.`,
-            //   ''
-            // );
             this.isSpinning = false;
           }
         }
       );
   }
-
   parentId: any = 0;
   item: any = {};
   isLast = false;
@@ -118,7 +99,6 @@ export class ManageTickitsComponent {
   nodata = false;
   nextData(item: any) {
     this.item = item;
-
     if (item.IS_LAST == 0) {
       this.index++;
       this.parentId = item.ID;
@@ -139,13 +119,9 @@ export class ManageTickitsComponent {
   loadingRecordsFaqs = false;
   getMappedFaq() {
     this.loadingRecordsFaqs = true;
-
-    // Get Ticket Details
     this.myTicketCount = 0;
     this.myTicketLoading = true;
-    // this.isSpinning = true;
     this.ticketGroups = [];
-
     this.apiservice
       .getAllTickets(
         0,
@@ -161,7 +137,6 @@ export class ManageTickitsComponent {
         (data) => {
           if (data['status'] == 200) {
             this.myTicketLoading = false;
-
             this.myTicketCount = data['count'];
           } else {
             this.myTicketLoading = false;
@@ -169,17 +144,13 @@ export class ManageTickitsComponent {
         },
         (err) => {
           this.myTicketLoading = false;
-
           if (err['ok'] == false) this.message.error('Server Not Found', '');
         }
       );
-
     this.apiservice.getMappingFaqs2(this.item['ID']).subscribe(
       (data) => {
-        
         if (data['status'] == '200') {
           this.faqs = data['body']['data'];
-          // this.faqs = [...this.faqs , ...this.faqs ,  ...this.faqs]
           this.isLast = true;
         } else {
           this.loadingRecordsFaqs = false;
@@ -191,11 +162,9 @@ export class ManageTickitsComponent {
     );
   }
   faqs: any = [];
-
   getQuestions() {
     this.isSpinning = true;
     this.ticketGroups = [];
-
     this.apiservice
       .getAllTicketGroups(
         0,
@@ -207,26 +176,21 @@ export class ManageTickitsComponent {
       .subscribe(
         (response: HttpResponse<any>) => {
           const ticketGroups = response.status;
-
           if (response.status == 200) {
             if (response.body.data.length == 0) {
               this.ticketQuestion = {};
               this.isSpinning = false;
             } else {
               this.ticketQuestion = response.body.data[0];
-
               if (this.backPressed)
                 this.parentId = response.body.data[0].PARENT_ID;
-
               this.getGroups(response.body.data[0].ID);
               this.isSpinning = false;
-
             }
           } else {
             this.isSpinning = false;
           }
         },
-
         (err: HttpErrorResponse) => {
           this.isSpinning = false;
           if (err.status === 0) {
@@ -235,10 +199,6 @@ export class ManageTickitsComponent {
               ''
             );
           } else {
-            // this.message.error(
-            //   `HTTP Error: ${err.status}. Something Went Wrong.`,
-            //   ''
-            // );
           }
         }
       );
@@ -253,39 +213,30 @@ export class ManageTickitsComponent {
     this.index--;
     this.nodata = false;
     this.isLast = false;
-
-    // this.filterQuery = " AND PARENT_ID=(select PARENT_ID from TICKET_GROUP_MASTER where ID=((select PARENT_ID from TICKET_GROUP_MASTER where ID=" + this.parentId + "))) AND TYPE='Q' ";
     this.getQuestions1();
   }
-
   getQuestions1() {
     this.isSpinning = true;
     this.ticketGroups = [];
-
-    // this.api.getAllTicketGroupsprevious(this.parentId)
     this.apiservice
       .getAllTicketGroupsprevious(0, 0, 'SEQ_NO', 'ASC', '', 3)
       .subscribe(
         (response: HttpResponse<any>) => {
           const ticketGroups = response.status;
-
           if (response.status == 200) {
             if (response.body.data.length == 0) {
               this.ticketQuestion = {};
               this.isSpinning = false;
             } else {
               this.ticketQuestion = response.body.data[0];
-
               if (this.backPressed)
                 this.parentId = response.body.data[0].PARENT_ID;
-
               this.getGroups(response.body.data[0].ID);
             }
           } else {
             this.isSpinning = false;
           }
         },
-
         (err: HttpErrorResponse) => {
           this.isSpinning = false;
           if (err.status === 0) {
@@ -294,18 +245,12 @@ export class ManageTickitsComponent {
               ''
             );
           } else {
-            // this.message.error(
-            //   `HTTP Error: ${err.status}. Something Went Wrong.`,
-            //   ''
-            // );
           }
         }
       );
   }
-
   getGroups(id: any) {
     this.filterQuery = ' AND PARENT_ID=' + id + "  AND TYPE='O' AND TICKET_TYPE = 'C'";
-
     this.apiservice
       .getAllTicketGroups(
         0,
@@ -317,16 +262,13 @@ export class ManageTickitsComponent {
       .subscribe(
         (response: HttpResponse<any>) => {
           const ticketGroups = response.status;
-
           if (response.status == 200) {
             this.ticketGroups = response.body.data;
-
             this.isSpinning = false;
           } else {
             this.isSpinning = false;
           }
         },
-
         (err: HttpErrorResponse) => {
           this.isSpinning = false;
           if (err.status === 0) {
@@ -335,10 +277,6 @@ export class ManageTickitsComponent {
               ''
             );
           } else {
-            // this.message.error(
-            //   `HTTP Error: ${err.status}. Something Went Wrong.`,
-            //   ''
-            // );
           }
         }
       );
@@ -347,28 +285,22 @@ export class ManageTickitsComponent {
   backToPrevious() {
     this.isAddTicket = false;
     this.isLast = false;
-    // this.getQuestions1();
     var filterQuery = " AND PARENT_ID=0 AND TYPE='Q'";
-
     this.apiservice
       .getAllTicketGroups(0, 0, 'id', 'ASC', filterQuery)
       .subscribe(
         (response: HttpResponse<any>) => {
           const ticketGroups = response.status;
-
           if (response.status == 200) {
             if (response.body.data[0]?.length == 0) {
               this.ticketQuestion = {};
               this.ticketGroups = [];
             } else {
               this.ticketQuestion = response.body.data[0];
-
-              // var filterQuery2 = " AND PARENT_ID=" + response.body.data[0]['ID'] + " AND TYPE='O'";
               var filterQuery2 =
                 ' AND PARENT_ID=' +
                 response.body.data[0]['ID'] +
                 " AND TYPE='O' AND TICKET_TYPE = 'C'";
-
               this.apiservice
                 .getAllTicketGroups(
                   0,
@@ -383,7 +315,6 @@ export class ManageTickitsComponent {
             }
           }
         },
-
         (err: HttpErrorResponse) => {
           this.loadingRecords = false;
           if (err.status === 0) {
@@ -392,44 +323,33 @@ export class ManageTickitsComponent {
               ''
             );
           } else {
-            // this.message.error(
-            //   `HTTP Error: ${err.status}. Something Went Wrong.`,
-            //   ''
-            // );
           }
         }
       );
   }
-
   openTicketWindow() {
     this.isAddTicket = false;
   }
   DESCRIPTION: any;
   fileDataLOGO_URL: File | null = null;
-
   viewFile() {
     if (this.fileDataLOGO_URL) {
       const fileURL = URL.createObjectURL(this.fileDataLOGO_URL);
       window.open(fileURL, '_blank');
     }
   }
-
   clearImg() {
     this.fileDataLOGO_URL = null;
   }
-
   onFileSelectedLOGO_URL(event: any) {
     const file = event.target.files[0];
-
     if (file) {
-      const maxFileSize = 1 * 1024 * 1024; // 1 MB
+      const maxFileSize = 1 * 1024 * 1024; 
       const allowedTypes = [
         'image/jpeg',
         'image/jpg',
         'image/png',
-        
       ];
-
       if (!allowedTypes.includes(file.type)) {
         this.message.error(
           'Please select a valid image (PNG, JPG, JPEG).',
@@ -437,17 +357,13 @@ export class ManageTickitsComponent {
         );
         return;
       }
-      
-
       if (file.size > maxFileSize) {
         this.message.error('File size should not exceed 1MB.', '');
         return;
       }
-
       this.fileDataLOGO_URL = file;
     }
   }
-
   cancel() {
     this.drawerClose();
     this.isAddTicket = false;
@@ -463,7 +379,6 @@ export class ManageTickitsComponent {
     let hours = ('0' + date_ob.getHours()).slice(-2);
     let minutes = ('0' + date_ob.getMinutes()).slice(-2);
     let seconds = ('0' + date_ob.getSeconds()).slice(-2);
-
     return (
       year.toString().slice(2, 4) + month + date + hours + minutes + seconds
     );
@@ -480,17 +395,12 @@ export class ManageTickitsComponent {
       ' AND CUSTOMER_ID=' + this.userID + ' AND STATUS = 1'
     ).subscribe({
       next: (data1: any) => {
-        // Handle your subscription data here
         this.addressData = data1.data;
-     
         const defaultAddress = this.addressData.find(
           (addr: any) => addr.IS_DEFAULT === 1
         );
-     
-        // Assign territory ID to a new variable
         var NEW_TERRITORY_ID = defaultAddress?.TERRITORY_ID;
         this.territoryid = defaultAddress?.TERRITORY_ID; 
-        
         if(this.territoryid){
 this.send1();
         }
@@ -500,15 +410,11 @@ this.send1();
     });
   }
   send1() {
-    
-    
     var d = this.getFormatedDate();
     var random = Math.floor(Math.random() * 10000) + 1;
     var LOGO_URL = '';
-
     if (this.DESCRIPTION != undefined && this.DESCRIPTION.trim() != '') {
       this.isSpinning = true;
-
       if (this.fileDataLOGO_URL) {
         var number = Math.floor(100000 + Math.random() * 900000);
         var fileExt = this.fileDataLOGO_URL.name.split('.').pop();
@@ -518,7 +424,6 @@ this.send1();
           'yyyyMMddHHmmss'
         );
         var url = formatedDate + number + '.' + fileExt;
-
         this.apiservice
           .onUpload2(this.folderName, this.fileDataLOGO_URL, url)
           .subscribe((successCode: any) => {
@@ -527,7 +432,6 @@ this.send1();
               this.fileDataLOGO_URL = null;
               this.message.success('Image uploaded successfully.', '');
               let USERTYPE: string = '';
-
               if (this.decreptedroleId == 9) {
                 USERTYPE = 'V';
               } else if (
@@ -540,12 +444,10 @@ this.send1();
               } else {
                 USERTYPE = 'U';
               }
-
               var data = {
                 URL: LOGO_URL,
                 TICKET_GROUP_ID: this.item['ID'],
                 TICKET_NO: d + '' + random,
-                // USER_ID: this.userId,
                 USER_ID: this.userID,
                 SUBJECT: this.ticketQuestion['VALUE'],
                 MOBILE_NO: this.userMobile,
@@ -560,21 +462,13 @@ this.send1();
                 CREATER_NAME: this.userNAME,
                 TERRITORY_ID :this.territoryid
               };
-
-            
-
-
               this.apiservice
                 .createTicket(data)
                 .subscribe((response: HttpResponse<any>) => {
                   const statusCode = response.status;
                   const responseBody = response.body;
-                  
-
                   if (statusCode === 200) {
-                    // this.message.success('Information Saved Successfully', '');
                     this.drawerClose();
-                    // this.drawerClose();
                     this.isSpinning = false;
                     this.isAddTicket = false;
                     this.isLast = false;
@@ -582,7 +476,6 @@ this.send1();
                     this.fileDataLOGO_URL = null;
                     this.DESCRIPTION = '';
                     this.message.success('Support ticket created successfully', '');
-
                     this.isSpinning = false;
                   } else {
                     this.message.error('Information Not Saved...', '');
@@ -596,7 +489,6 @@ this.send1();
           });
       } else {
         let USERTYPE: string = '';
-
         if (this.decreptedroleId == 9) {
           USERTYPE = 'V';
         } else if (
@@ -609,12 +501,10 @@ this.send1();
         } else {
           USERTYPE = 'U';
         }
-
         var data = {
           URL: '',
           TICKET_GROUP_ID: this.item['ID'],
           TICKET_NO: d + '' + random,
-          // USER_ID: this.userId,
           USER_ID: this.userID,
           SUBJECT: this.ticketQuestion['VALUE'],
           MOBILE_NO: this.userMobile,
@@ -627,10 +517,8 @@ this.send1();
           DEPARTMENT_NAME: this.item['DEPARTMENT_NAME'],
           USER_TYPE: USERTYPE,
           CREATER_NAME: this.userNAME,
-
           TERRITORY_ID:this.territoryid
         };
-
         this.apiservice.createTicket(data).subscribe((successCode) => {
           if (successCode['status'] == '200') {
             this.drawerClose();
@@ -651,7 +539,6 @@ this.send1();
       this.message.error('Please mention your problem', '');
     }
   }
-
   constructor(
     private cookie: CookieService,
     private modalservice: ModalService,
@@ -661,22 +548,13 @@ this.send1();
     private message: ToastrService,
     private apiservice: ApiServiceService,
     private toastr: ToastrService,
-    private loaderService: LoaderService // private toastr: ToastrService
+    private loaderService: LoaderService 
   ) {}
-
   userID: any = this.apiservice.getUserId();
   userNAME: any = this.apiservice.getUserName();
   userAddress: any = this.apiservice.getUserAddress();
   userMobile: any = this.apiservice.getUsermobileNumber();
   userEMAIL: any = this.apiservice.getEmail();
-
-  /*************  ✨ Codeium Command ⭐  *************/
-  /**
-   * This is the default method called when component is loaded.
-   * This method is used to get the ticket data and store it in the local variables.
-   * The variables are user id, user name, user address, user mobile number and user email.
-
-/******  32b66105-a2eb-42aa-a4e7-409edf3a40fb  *******/
   ngOnInit(): void {
     this.getTickitDAta();
     this.userID = this.apiservice.getUserId();
@@ -684,26 +562,12 @@ this.send1();
     this.userAddress = this.apiservice.getUserAddress();
     this.userMobile = this.apiservice.getUsermobileNumber();
     this.userEMAIL = this.apiservice.getEmail();
-
-    // this.updateScreenSize();
   }
-  // @HostListener('window:resize', [])
-  // isLargeScreen = true;
-  // showMobileSearch = false;
-  // updateScreenSize() {
-  //   this.isLargeScreen = window.innerWidth >= 768;
-  //   if (this.isLargeScreen) {
-  //     this.showMobileSearch = false; // Close mobile search if switching to large screen
-  //   }
-  // }
   close() {
     this.drawerClose();
     this.getTickitDAta();
   }
-  // isDrawerVisible = false;
-
   showDrawer() {
     this.DrawerVisible = true;
-    
   }
 }

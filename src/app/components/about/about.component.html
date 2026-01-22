@@ -1,7 +1,6 @@
 <div class="about-container">
   <div
-    class="mobile-menu-header d-flex align-items-center"
-    style="justify-content: flex-start"
+    class="mobile-menu-header d-flex align-items-center custom-justify-flex-start"
   >
     <button class="close-menu-btn" (click)="close()" aria-label="Back">
       <svg
@@ -17,15 +16,12 @@
         <polyline points="15 18 9 12 15 6"></polyline>
       </svg>
     </button>
-    About
+   <span class="About-title">About</span>
   </div>
-
   <div
-    class="accordion"
+    class="accordion custom-margin-top-20-lr-20"
     id="aboutAccordion"
-    style="margin-top: 20px; margin-left: 20px; margin-right: 20px"
   >
-    <!-- Terms of Service -->
    <div class="accordion-item">
   <h2 class="accordion-header" id="heading0">
     <button
@@ -53,19 +49,7 @@
     data-bs-parent="#aboutAccordion"
   >
     <div class="accordion-body">
-
-
-         <div class="terms-container py-4" style="padding-top: 0px !important;padding-bottom: 0px !important;">
-  <!-- <h1 class="page-title text-center" style="margin-bottom: 10px;">
-    Terms and Conditions
-  </h1>
-  <h3 style="text-align: center;
-    font-size: 16px;">POCKIT TECHNOLOGIES PRIVATE LIMITED</h3>
-  <h5 style="text-align: center;
-    font-size: 13px;
-    margin-bottom: 20px;">Regd. office at B 901 Kapil Abhijat, Dahanukar Colony Kothrud Pune 411038</h5> -->
-
-
+         <div class="terms-container py-4 custom-padding-top-bottom-zero">
   <div class="terms-section">
     <div class="section-header headtitleclass">Introduction</div>
     <p>
@@ -79,7 +63,6 @@
       in their entirety. If the User does not agree to these Terms, the User is advised to refrain from accessing or
       utilizing the Services.</p>
   </div>
-
   <div class="terms-section">
     <div class="section-header headtitleclass">Scope of Services </div>
     <p>
@@ -101,7 +84,6 @@
     <p>
       To access certain features, you may be required to create an account. You agree to: </p>
     <ol class="custom-numbered-list">
-      <!-- <span class="info-icon">2</span> -->
       <li> Furnish accurate, current, and complete information when creating an account or placing an order through our
         website or Apps.</li>
       <li> Maintain the confidentiality and security of your account login credentials.</li>
@@ -154,7 +136,6 @@
       	Products: Hardware products purchased via the app or website are governed by the respective manufacturer warranties, which are covered by manufacturer warranties, the terms of which should be governed. Users are advised to refer to the respective warranty documentation provided by the manufacturer.
     </p>
     </div>
-
      <div class="terms-section">
     <div class="section-header headtitleclass">		Limitation of Liability</div>
     <p>To the maximum extent permitted by law, the Company shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising out of or related to the use of its Services/Platform/App or products. The Company’s aggregate liability for any claims shall in no event exceed the amount paid by the User for the specific product or service giving rise to such a claim.</p>
@@ -165,20 +146,17 @@
       All intellectual property, including but not limited to text, graphics, trademarks, logos, and software on the Company’s website and associated platforms/app, are the exclusive property of PockIT Engineers or its licensors. Any unauthorized use, reproduction, or distribution is strictly prohibited and may invite legal consequences.
       </p>
       </div>
-
  <div class="terms-section">
     <div class="section-header headtitleclass">		Privacy Policy</div>
     <p>
       The Company is committed to protecting the privacy of its Users. Please refer to the Company’s Privacy Policy for details on how personal data is collected, used, and safeguarded, including through cookies and analytics tools on digital platforms.
       </p>
       </div>
-
  <div class="terms-section">
     <div class="section-header headtitleclass">Mobile App-Specific Terms </div>
     <p>
       When using the PockIT Engineers mobile app, you may be required to grant permissions, including: </p>
     <ol class="custom-numbered-list">
-      <!-- <span class="info-icon">2</span> -->
       <li> 	Location Access – for assigning local technicians</li>
       <li>Camera Access – for uploading device issues or product condition</li>
       <li> 	Storage Access – for saving invoices or warranty documents</li>
@@ -192,194 +170,24 @@
       These Terms shall be governed by and construed in accordance with the laws of India. All disputes arising in connection with these Terms or the Services shall be subject to the exclusive jurisdiction of the competent courts at Pune, Maharashtra, India.
      </p>
   </div>
-
-
    <div class="terms-section">
     <div class="section-header headtitleclass">	Privacy consent (for Website/App compliance) </div>
     <p>
      We use cookies and collect certain data to enhance your experience and provide tailored services.</p>
      <p>By using our website or mobile app, you consent to our use of cookies and agree to our Terms and Conditions</p>
   </div>
-
    <div class="terms-section">
     <div class="section-header headtitleclass">Downloadable legal format (PDF version) </div>
     <p>
     We can generate a PDF version of the Terms and Conditions for integration or download from the footer of your app/website. We can also prepare:</p>
     <ol class="custom-numbered-list">
-      <!-- <span class="info-icon">2</span> -->
       <li> 	HTML version for your website’s Terms and Conditions pages.</li>
       <li>	Markdown version if you're using a CMS or app framework that supports it.</li>
     </ol> 
            <p>These permissions are optional but may affect functionality. You may manage them through your device settings.</p>
-
   </div>
-
-  <!-- <div class="terms-section">
-    <div class="section-header headtitleclass">Services Offered</div>
-    <p>
-      PockIT Engineers provides a range of IT services, including but not
-      limited to:
-    </p>
-    <ol class="custom-numbered-list">
-      <li>IT hardware repair and maintenance.</li>
-      <li>Network setup and support.</li>
-      <li>Software installation and troubleshooting.</li>
-      <li>IT consulting services.</li>
-    </ol>
-    <p>
-      Additionally, we offer IT hardware products for sale, such as computers,
-      peripherals, and related accessories.
-    </p>
-  </div> -->
-
-  <!-- <div class="terms-section">
-    <div class="section-header headtitleclass">User Responsibilities</div>
-    <p>By using our Services, you agree to:</p>
-    <ol class="custom-numbered-list">
-      <li>
-        Provide accurate and complete information when creating an account or
-        placing an order.
-      </li>
-      <li>Maintain the confidentiality of your account credentials.</li>
-      <li>Notify us immediately of any unauthorized use of your account.</li>
-      <li>
-        Use our Services only for lawful purposes and in accordance with these
-        Terms.
-      </li>
-    </ol>
-  </div> -->
-
-  <!-- <div class="terms-section">
-    <div class="section-header headtitleclass">Orders and Payments</div>
-
-    <ol class="custom-numbered-list">
-      <li>
-        <b>Order Acceptance:</b> All orders for products or services are subject
-        to acceptance by Pockit Engineers. We reserve the right to refuse or
-        cancel any order for any reason.
-      </li>
-      <li>
-        <b>Pricing: </b>Prices for our products and services are subject to
-        change without notice. We strive to display accurate pricing; however,
-        errors may occur, and we reserve the right to correct them.
-      </li>
-      <li>
-        <b>Payment Terms:</b>Payment is due at the time of order placement
-        unless otherwise agreed upon. We accept various payment methods as
-        indicated on our website.
-      </li>
-    </ol>
-  </div>
-
-  <div class="terms-section">
-    <div class="section-header headtitleclass">Shipping and Delivery</div>
-
-    <ol class="custom-numbered-list">
-      <li>
-        <b>Shipping:</b> We offer shipping of hardware products under specified regions. Shipping costs and delivery
-        times will be provided at the time of purchase.
-      </li>
-      <li>
-        <b>Delivery: </b>Delivery dates are estimates between 5 to 7 days depending on location. We are not liable for
-        delays beyond our control.
-      </li>
-    </ol>
-  </div> -->
-
-  <!-- <div class="terms-section">
-    <div class="section-header headtitleclass">Returns and Refunds</div>
-
-    <ol class="custom-numbered-list">
-      <li>
-        <b>Hardware Products:</b> Returns are accepted within 5 to 7 days of purchase, provided the product is in its
-        original condition and packaging. Refunds will be processed after inspection and will be completed within 7 days
-        of the inspection.
-      </li>
-      <li>
-        <b>Services: </b>If you are dissatisfied with our services, please contact us at itsupport@pockitengineers.com
-        Refunds for services are evaluated on a case-by-case basis.
-      </li>
-    </ol>
-  </div> -->
-
-  <!-- <div class="terms-section">
-    <div class="section-header headtitleclass">Warranty</div>
-
-    <ol class="custom-numbered-list">
-      <li>
-        <b>Services:</b> We provide a 180-day warranty on all repairs. If the
-        same issue recurs within this period, we will address it at no
-        additional cost.
-      </li>
-      <li>
-        <b>Products: </b>Hardware products come with manufacturer warranties.
-        Please refer to the specific product warranty for details.
-      </li>
-    </ol>
-  </div>
-
-  <div class="terms-section">
-    <div class="section-header headtitleclass">Limitation of Liability</div>
-
-    <p>
-      PockIT Engineers is not liable for any indirect, incidental, or
-      consequential damages arising from the use of our Services or products.
-      Our total liability is limited to the amount paid by you for the specific
-      service or product in question.
-    </p>
-  </div>
-
-  <div class="terms-section">
-    <div class="section-header headtitleclass">Intellectual Property</div>
-
-    <p>
-      All content, trademarks, and data on our website and related platforms are
-      the property of PockIT Engineers or its licensors. Unauthorized use is
-      prohibited.
-    </p>
-  </div>
-
-  <div class="terms-section">
-    <div class="section-header headtitleclass">Privacy Policy</div>
-
-    <p>
-      Your privacy is important to us. Please review our Privacy Policy to
-      understand how we collect, use, and protect your information.
-    </p>
-  </div>
-
-  <div class="terms-section">
-    <div class="section-header headtitleclass">Governing Law</div>
-
-    <p>
-      These Terms are governed by and construed in accordance with the laws of
-      India. Any disputes arising from these Terms or our Services shall be
-      subject to the exclusive jurisdiction of the courts in Pune, India.
-    </p>
-  </div>
-
-  <div class="terms-section">
-    <div class="section-header headtitleclass">Location Data</div>
-
-    <p>
-      To provide timely and accurate service, the app collects and uses the technician's <b>precise location data in
-        real time</b> , including when the app is running in the background and the technician is marked as
-      <b>active</b>.
-    </p>
-    <p><b>Purpose of Collection: </b>Location data is used for job assignment, route optimization, and service
-      verification to ensure efficient service delivery.</p>
-    <p><b>How It's Collected:</b> Location is collected through GPS and network-based methods while the technician is
-      using the app and remains active.</p>
-    <p><b>Data Usage & Storage:</b> Your location data is securely stored and used only within the scope of service
-      operations. We do not share this data with third parties except as necessary to fulfill service-related functions.
-    </p>
-    <p><b>User Control:</b> You can disable location tracking through your device settings. However, this may limit your
-      ability to receive job assignments or complete service tasks.</p>
-  </div> -->
-
   <div class="terms-section">
     <div class="section-header headtitleclass">Account Deactivation and Deletion</div>
-
     <p>
       When a user requests account deletion, the account is deactivated — not permanently deleted..
     </p>
@@ -389,7 +197,6 @@
     <p>If you prefer not to reactivate, you may register again using a different mobile number.</p>
     <p><b>Note: Some user activity or shared content may remain visible or retained for audit or compliance
         purposes.</b></p>
-
     <p>For assistance, please contact our support team at <a href="mailto:itsupport@pockitengineers.com">itsupport@pockitengineers.com</a>.</p>
   </div>
    <div class="terms-section">
@@ -397,27 +204,10 @@
     <p>
       For queries, complaints, or further information regarding these Terms or the Services, you may contact us at: </p>
        <ol class="custom-numbered-list">
-      <!-- <span class="info-icon">2</span> -->
       <li> <b>Email:</b>	 <a href="mailto:itsupport@pockitengineers.com">itsupport@pockitengineers.com</a></li>
       <li> <b>Address:</b>	 PockIT Engineers, Pune, India</li>
     </ol>
   </div>
-  <!-- <div class="terms-section">
-    <div class="section-header headtitleclass">Contact Information</div>
-
-    <p>
-      For any questions or concerns regarding these Terms or our Services,
-      please contact us at:
-    </p>
-    <ol class="custom-numbered-list">
-      <li><b>Email:</b>itsupport@pockitengineers.com</li>
-      <li><b>Address:</b>PockIT Engineers, Pune, India</li>
-    </ol>
-    <p>
-      By using our Services, you acknowledge that you have read, understood, and
-      agree to be bound by these Terms and Conditions.
-    </p>
-  </div> -->
   <div class="terms-section">
     <p>
       <b>Last updated on : 07-07-2025</b>
@@ -427,8 +217,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Privacy Policy -->
     <div class="accordion-item">
       <h2 class="accordion-header" id="heading0">
         <button
@@ -456,32 +244,18 @@
         data-bs-parent="#aboutAccordion"
       >
         <div class="accordion-body">
-    <div class="terms-container py-4" style="padding-top: 0px !important;padding-bottom: 0px !important;">
- 
-
-   <!-- <h1 class="page-title text-center" style="margin-bottom: 10px;">
-     Privacy Policy
-  </h1>
-  <h3 style="text-align: center;
-    font-size: 16px;">POCKIT TECHNOLOGIES PRIVATE LIMITED</h3>
-  <h5 style="text-align: center;
-    font-size: 13px;
-    margin-bottom: 20px;">Regd. office at B 901 Kapil Abhijat, Dahanukar Colony Kothrud Pune 411038</h5>
- -->
-
+    <div class="terms-container py-4 custom-padding-top-bottom-zero" >
   <div class="terms-section">
     <div class="section-header headtitleclass">Introduction</div>
     <p>
      <b>PockIT Technologies Private Limited</b> , a company incorporated under the Companies Act, 2013 operating under the brand name, “<b>PockIT Engineers</b>” (“PockIT”, “<b>Company</b>”, “we”, “our”, or “us”) values the privacy of its customers and is committed to maintaining the highest standards of data protection and transparency. This Privacy Policy describes how the Company collects, uses, processes, discloses, and protects personal information of our clients, website visitors, service users, other stakeholders (“you” or “your”) in India and the United Arab Emirates (UAE). This data privacy policy (“<b>Privacy Policy</b>”) outlines how we collect, use, store, disclose, and protect your information in compliance with applicable data protection laws, including but not limited to:
     </p>
     <ol class="custom-numbered-list">
-      <!-- <span class="info-icon">2</span> -->
       <li> The Digital Personal Data Protection Act, 2023 ("DPDP Act") (India)</li>
       <li> UAE Federal Decree Law No. 45 of 2021 on the Protection of Personal Data (UAE Data Protection Law); and </li>
       <li> Any other applicable information security and privacy regulations.</li>
     </ol>
   </div>
-
   <div class="terms-section">
     <div class="section-header headtitleclass">	Scope</div>
     <p>
@@ -498,7 +272,6 @@
     <p>
       The Company may collect and process the following categories of personal and technical information: </p>
     <ol class="custom-numbered-list">
-      <!-- <span class="info-icon">2</span> -->
       <li> <b>Personal identification information:</b>	 including but not limited to full name, postal address, telephone number, and email address.</li>
       <li> <b>Device & Technical Data:</b>  When you use our website or mobile app, we may collect such as Internet Protocol (IP) address, browser type and version, operating system, device identifiers, and timestamps of access.</li>
       <li> <b>Business Data:</b>  Information shared in connection with project execution, client onboarding, or contractual obligations.</li>
@@ -513,7 +286,6 @@
     <p>
       The Company processes personal data for the following purposes, on the lawful basis of contract performance, legitimate interest, consent, and/or compliance with legal obligations: </p>
     <ol class="custom-numbered-list">
-     
       <li>
         <b>Legal basis for processing:</b>	 The Company process information based on legal requirements: consent, performance of a contract, compliance with legal obligations and legitimate interests such as security, service improvement, and business operations through our website and app.
       </li>
@@ -531,13 +303,11 @@
       </li>
       </ol>
       </div>
-
   <div class="terms-section">
     <div class="section-header headtitleclass"> 	Disclosure of information </div>
     <p>
       Personal data may be disclosed to third parties in the following circumstances:</p>
       <ol class="custom-numbered-list">
-     
       <li>
         <b>Service providers and subcontractors/vendors:</b>	 Who are bound by confidentiality and data protection obligations, who assist us in delivering our Services, including payment processors, IT system administrators, and analytics providers, subject to contractual confidentiality obligations through our website and app.
         </li>
@@ -553,7 +323,6 @@
         <li>
           <b>If personal data is transferred outside India or the UAE:</b>	 We ensure such transfers comply with applicable laws and appropriate safeguards (e.g., standard contractual clauses or equivalent protections).
         </li>
-
         </ol>
   </div>
   <div class="terms-section">
@@ -561,7 +330,6 @@
     <p>
       The Company employs industry-standard technical and organizational measures to safeguard personal data on both website and mobile app such as SSL encryption, role-based access, and data masking. against unauthorized access, alteration, disclosure, or destruction to protect your personal data on both the website and mobile app, such as SSL encryption, role-based access, and data masking. However, we disclaim liability for breaches beyond our control (e.g., cyberattacks). Notwithstanding such measures, the Company disclaims liability for any data breach that occurs due to circumstances beyond its reasonable control, including but not limited to cyberattacks and acts of God.</p>
     <ol class="custom-numbered-list">
-     
       <li>
         <b>Right of Access-</b>	to request access to the personal data we hold about you through the app or website.
         </li>
@@ -586,7 +354,6 @@
         <li>
           	Requests to exercise these rights may be submitted via email to <a href="mailto:itsupport@pockitengineers.com">itsupport@pockitengineers.com</a> The Company reserves the right to verify your identity before processing such requests.
         </li>
-
         </ol>
   </div>
   <div class="terms-section">
@@ -594,7 +361,6 @@
     <p>
       	We retain personal data only for as long as necessary for the purposes stated above, or as required by applicable law or contractual obligations. </p>
     <ol class="custom-numbered-list">
-     
       <li>
       <b>App user profiles</b>, logs, and preferences are retained until account deletion or inactivity for a defined period.
         </li>
@@ -605,9 +371,7 @@
     <div class="section-header headtitleclass">	Cookies and tracking technologies</div>
     <p>
       	Our website/ mobile app use cookies and similar technologies to enhance user experience, analyze traffic, and support certain features. Users may configure browser settings to manage or disable cookies. However, doing so may affect the availability or functionality of certain Services. </p>
-  
     </div>
-
      <div class="terms-section">
     <div class="section-header headtitleclass">	On our mobile app</div>
     <p>We may use tools for crash reporting, user behaviour, and engagement metrics.</p>
@@ -618,14 +382,11 @@
     <p>
     Our website and mobile app may include hyperlinks to websites operated by third parties. The Company assumes no responsibility or liability for the privacy practices, data collection, or content of such third-party websites.  </p>
       </div>
-
  <div class="terms-section">
     <div class="section-header headtitleclass">		Changes to this Policy</div>
     <p>
     This Privacy Policy will be posted on the website and/or sent via in=app notification.is subject to revision from time to time. Any material changes shall be notified by updating the “Last Updated” date and publishing the revised version on our website or mobile app. Continued use of the website and mobile app following such revisions shall constitute your acceptance of the updated policy. </p>
       </div>
-
-
    <div class="terms-section">
     <div class="section-header headtitleclass">	Privacy consent (for Website/App compliance) </div>
     <p>
@@ -637,12 +398,10 @@
     <p>
    We can generate a PDF version of the Privacy Policy for integration or download from the footer of your app/website. We can also prepare:</p>
     <ol class="custom-numbered-list">
-      <!-- <span class="info-icon">2</span> -->
       <li> 		HTML version for your website’s Privacy Policy pages</li>
       <li>		Markdown version if you're using a CMS or app framework that supports it.</li>
     </ol> 
            <p>Please confirm the preferred format(s) or if you’d like me to create and send you the documents now.</p>
-
   </div>
  <div class="terms-section">
     <div class="section-header headtitleclass">	Contact Information</div>
@@ -651,8 +410,6 @@
     <b>Email: </b><a href="mailto:itsupport@pockitengineers.com">itsupport@pockitengineers.com</a></p>
     <p>
     <b>Address:</b>  PockIT Engineers, Pune, Maharashtra, India</p>
-
-   
   </div>
   <div class="terms-section">
     <p>
@@ -663,40 +420,5 @@
         </div>
       </div>
     </div>
-
-    <!-- Licenses -->
-    <!-- <div class="accordion-item">
-      <h2 class="accordion-header" id="heading2">
-        <button
-          class="accordion-button d-flex justify-content-between align-items-center"
-          type="button"
-          (click)="toggleAccordion(2)"
-          [attr.aria-expanded]="activeIndex === 2"
-          aria-controls="collapse2"
-        >
-        Licenses          <i
-            class="ms-auto"
-            [ngClass]="{
-              'bi bi-chevron-down': activeIndex !== 2,
-              'bi bi-chevron-up': activeIndex === 2
-            }"
-          ></i>
-        </button>
-      </h2>
-      <div
-        id="collapse2"
-        class="accordion-collapse collapse"
-        aria-labelledby="heading2"
-        [class.show]="activeIndex === 2"
-        data-bs-parent="#aboutAccordion"
-      >
-        <div class="accordion-body">
-          Lorem ipsum dolor sit amet consectetur. A diam sed urna sed augue mi
-          pellentesque eget. Odio mi facilisis tincidunt mi nisi sociis. Vel
-          blandit neque quis non facilisi tempor et nibh. Massa amet quis risus
-          auctor tellus ullamcorper vulputate tincidunt nisl.
-        </div>
-      </div>
-    </div> -->
   </div>
 </div>

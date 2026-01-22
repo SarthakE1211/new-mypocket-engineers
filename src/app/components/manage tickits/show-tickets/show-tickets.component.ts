@@ -20,14 +20,10 @@ export class ShowTicketsComponent {
   isLoading: boolean = false
   @Input() drawerClose!: Function;
   @Input() isDrawerVisible: boolean = false;
-  // @Input() data: any;
   close() {
-
     this.drawerClose();
-    // this.fetchTicketData();
   }
   constructor(
-
     private cookie: CookieService,
     private modalservice: ModalService,
     private modal: NgbModal,
@@ -37,9 +33,6 @@ export class ShowTicketsComponent {
     private apiservice: ApiServiceService,
     private toastr: ToastrService,
     private loaderService: LoaderService
-
-    // private toastr: ToastrService
-
   ) { }
   ngOnInit(): void {
     this.fetchTicketData();
@@ -48,8 +41,6 @@ export class ShowTicketsComponent {
     this.userAddress = this.apiservice.getUserAddress();
     this.userMobile = this.apiservice.getUsermobileNumber();
     this.userEMAIL = this.apiservice.getEmail();
-
-
   }
   userID: any = this.apiservice.getUserId();
   userNAME: any = this.apiservice.getUserName();
@@ -59,9 +50,7 @@ export class ShowTicketsComponent {
   statusCondition: any
   totalRecords = 1;
   fetchTicketData() {
-    // " AND USER_ID='20' AND STATUS = 'Pending'"
     const statusCondition = this.selectedFilterValue ? " AND STATUS = '" + this.selectedFilterValue + "'" : "";
-
     this.isLoading = true
     this.apiservice
       .getAllTickets(
@@ -73,39 +62,30 @@ export class ShowTicketsComponent {
       )
       .subscribe({
         next: (data: any) => {
-
           this.ticketData = data.body.data;
           this.totalRecords = data.body.count
           this.filteredTickets = this.ticketData
-
-
-
-          this.isLoading = false; // Hide loading state
+          this.isLoading = false; 
         },
         error: (error: any) => {
-          
-          this.ticketData = []; // Clear data on error
-          this.isLoading = false; // Hide loading state
+          this.ticketData = []; 
+          this.isLoading = false; 
         },
       });
-
   }
   pageIndex = 1
   pageSize = 6
   sortKey: string = "id";
   sortValue: string = "desc";
   loadMore(reset: boolean = false) {
-    // const statusCondition = this.selectedFilter ? " AND STATUS = '" + this.selectedFilter + "'" : "";
     if (reset) {
       this.pageIndex = 1;
       this.sortKey = "id";
       this.sortValue = "desc";
     }
-
-
     if (this.filteredTickets.length < this.totalRecords) {
       this.isLoading = true;
-      this.pageSize += 5; // Increase by 5
+      this.pageSize += 5; 
       let queryCondition = ` AND USER_ID='${this.userID}'`;
       if (this.statusCondition) {
         queryCondition += this.statusCondition;
@@ -120,14 +100,12 @@ export class ShowTicketsComponent {
         )
         .subscribe({
           next: (data: any) => {
-
             this.ticketData = data.body.data;
             this.filteredTickets = [...this.ticketData];
             this.totalRecords = data.body.count;
             this.isLoading = false;
           },
           error: (error: any) => {
-            
             this.isLoading = false;
           },
         });
@@ -155,15 +133,9 @@ export class ShowTicketsComponent {
     { label: "All", value: "" },
     { label: "Pending", value: "P" },
     { label: "Assigned", value: "S" },
-    // { label: "Reopen", value: "O" },
-    // { label: "Answered", value: "R" },
-    // { label: "Onhold", value: "H" },
     { label: "Resolved", value: "R" },
     { label: "Closed", value: "C" },
-    // { label: "Banned", value: "B" }
   ];
-  // filterOptions: string[] = [ 'Pending','Assigned', 'Re-Open','On Hold','Resolved', 'Closed','Banned'];
-
   keyup2() {
     if (this.searchTerm.trim().length >= 3 || this.searchTerm.length === 0) {
       this.filterTickets();
@@ -171,9 +143,6 @@ export class ShowTicketsComponent {
   }
   onEnterKey1(event: Event) {
     document.getElementById('search')?.focus();
-    // event.preventDefault()
-
-    // this.search(true);
   }
   filterTickets(): void {
     if (!this.searchTerm.trim()) {
@@ -189,21 +158,6 @@ export class ShowTicketsComponent {
     this.totalRecords = this.filteredTickets.length;
   }
   emitted = false;
-  // onScroll() {
-  //   const activityItem = document.getElementById("activityItem");
-  //   if (activityItem) {
-  //     const scrollTop = activityItem.scrollTop;
-  //     const offsetHeight = activityItem.offsetHeight;
-  //     const scrollHeight = activityItem.scrollHeight;
-  //     if (scrollTop + offsetHeight + 1 >= scrollHeight && !this.emitted) {
-  //       this.emitted = true;
-  //       this.onScrollingFinished();
-  //     } else if (scrollTop + offsetHeight + 1 < scrollHeight) {
-  //       this.emitted = false;
-  //     }
-  //   }
-  // }
-
   onScrollingFinished() {
     this.loadMoreP();
   }
@@ -215,48 +169,22 @@ export class ShowTicketsComponent {
     }
   }
   getNextItems(): boolean {
-
-
     if (this.filteredTickets?.length >= this.totalRecords) {
-
-
       return false;
     }
-
     this.pageIndex = this.pageIndex + 1;
     this.loadMore(false);
     return true;
   }
   selectedFilter1: any
-  selectedFilterValue: string = ""; // Actual filter value to send
-
+  selectedFilterValue: string = ""; 
   applyFilter(label: string, status: string): void {
     this.selectedFilter = label;
-    // if (status === "Pending") {
-    //   this.selectedFilterValue = "P"; 
-    // } else if (status === "Assigned"){
-    //   this.selectedFilterValue = "A"; 
-    // } else if (status === "Re-Open"){
-    //   this.selectedFilterValue = "O"; 
-    // } else if (status === "Closed"){
-    //   this.selectedFilterValue = "C"; 
-    // } else if (status === "On Hold"){
-    //   this.selectedFilterValue = "H"; 
-    // } else if (status === "Banned"){
-    //   this.selectedFilterValue = "B"; 
-    // } else if (status === "Resolved"){
-    //   this.selectedFilterValue = "R"; 
-    // }
-
     this.selectedFilterValue = status;
-
     this.statusCondition = this.selectedFilterValue
       ? " AND STATUS = '" + this.selectedFilterValue + "'"
       : "";
-
     this.isDropdownOpen = false;
-
-    // Fetch filtered data
     this.isLoading = true
     this.apiservice
       .getAllTickets(
@@ -268,50 +196,27 @@ export class ShowTicketsComponent {
       )
       .subscribe({
         next: (data: any) => {
-
           this.ticketData = data.body.data;
           this.filteredTickets = this.ticketData
-
-
-
-          this.isLoading = false; // Hide loading state
+          this.isLoading = false; 
         },
         error: (error: any) => {
-          
-          this.ticketData = []; // Clear data on error
-          this.isLoading = false; // Hide loading state
+          this.ticketData = []; 
+          this.isLoading = false; 
         },
       });
   }
-
-
   formatDate(date: string): string {
     return moment(date).isSame(moment(), 'day')
       ? moment(date).fromNow()
       : moment(date).format('DD MMM YYYY hh:mm A');
   }
-
   formatTimeAgo(date: string): string {
     return moment(date).fromNow();
   }
   gotoProfile(): void {
-    // this.router.navigate(['/profile'], {
-    //   queryParams: {
-    //     manage_ticket: true,
-    //     content: 'HelpandSupportTab'
-    //   }
-    // });
   }
-  // isDrawerVisible = false;
-
-  // showDrawer() {
-  //   this.createTickitVisible = true;
-
-  // }
   createTickitVisible: boolean = false
-  // createTickets() {
-  //   this.createTickitVisible = true;
-  // }
   openDrawer: any
   createTickets() {
     this.createTickitVisible = true;
@@ -326,13 +231,9 @@ export class ShowTicketsComponent {
       }
     }, 100);
   }
-
   drawerClose1() {
     this.createTickitVisible = false;
     this.fetchTicketData();
-
-
-
     setTimeout(() => {
       const serviceDrawer = document.getElementById('showtickets');
       if (serviceDrawer) {
@@ -346,38 +247,13 @@ export class ShowTicketsComponent {
         backdrop.remove();
       }
     }, 300);
-
-
   }
-
   get closeCallback() {
     return this.drawerClose1.bind(this);
   }
-
   chatVisible: boolean = false
   drawerData: any = [];
-  // openChat(data: any) {
-  //   this.drawerData = data
-  //   this.chatVisible = true;
-  // }
-  // chatdrawerClose() {
-  //   this.chatVisible = false;
-  //   setTimeout(() => {
-  //     const serviceDrawer = document.getElementById('offcanvasRight11');
-  //     if (serviceDrawer) {
-  //       const offcanvasInstance =
-  //         bootstrap.Offcanvas.getInstance(serviceDrawer);
-  //       if (offcanvasInstance) {
-  //         offcanvasInstance.hide();
-  //       }
-  //     }
-  //   }, 300);
-  // }
-
-
   openChat(data: any) {
-
-
     setTimeout(() => {
       const chatDrawer = document.getElementById('offcanvasChat');
       if (chatDrawer) {
@@ -386,14 +262,10 @@ export class ShowTicketsComponent {
       }
       this.drawerData = data;
       this.chatVisible = true;
-
-
     }, 100);
   }
-
   chatdrawerClose() {
     this.chatVisible = false;
-
     setTimeout(() => {
       const chatDrawer = document.getElementById('offcanvasChat');
       if (chatDrawer) {
@@ -408,7 +280,6 @@ export class ShowTicketsComponent {
       }
     }, 300);
   }
-
   get chatCallback() {
     return this.chatdrawerClose.bind(this);
   }
@@ -422,5 +293,4 @@ export class ShowTicketsComponent {
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
-
 }

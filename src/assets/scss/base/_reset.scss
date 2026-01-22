@@ -14,7 +14,6 @@
 label {
   margin-bottom: 0.5rem;
 }
-
 /*====== Padding css starts ======*/
 $i: 0;
 @while $i<=50 {
@@ -24,7 +23,6 @@ $i: 0;
   $i: $i + 5;
 }
 /*====== Padding css ends ======*/
-
 /*====== Padding-left css starts ======*/
 $i: 0;
 @while $i<=50 {
@@ -34,7 +32,6 @@ $i: 0;
   $i: $i + 5;
 }
 /*====== Padding-left css ends ======*/
-
 /*====== Padding-top css starts ======*/
 $i: 0;
 @while $i<=50 {
@@ -44,7 +41,6 @@ $i: 0;
   $i: $i + 5;
 }
 /*====== Padding-top css ends ======*/
-
 /*====== Padding-bottom css starts ======*/
 $i: 0;
 @while $i<=50 {
@@ -54,7 +50,6 @@ $i: 0;
   $i: $i + 5;
 }
 /*====== Padding-bottom css ends ======*/
-
 /*====== Padding-right css starts ======*/
 $i: 0;
 @while $i<=50 {
@@ -64,7 +59,6 @@ $i: 0;
   $i: $i + 5;
 }
 /*====== Padding-right css ends ======*/
-
 /*====== Margin css starts ======*/
 $i: 0;
 @while $i<=50 {
@@ -74,7 +68,6 @@ $i: 0;
   $i: $i + 5;
 }
 /*====== Margin css ends ======*/
-
 /*====== Margin-top css starts ======*/
 $i: 0;
 @while $i<=50 {
@@ -84,7 +77,6 @@ $i: 0;
   $i: $i + 5;
 }
 /*====== Margin-top css ends ======*/
-
 /*====== Margin-Bottom css starts ======*/
 $i: 0;
 @while $i<=50 {
@@ -94,7 +86,6 @@ $i: 0;
   $i: $i + 5;
 }
 /*====== Margin-Bottom css ends ======*/
-
 /*====== Margin-left css starts ======*/
 $i: 0;
 @while $i<=50 {
@@ -104,7 +95,6 @@ $i: 0;
   $i: $i + 5;
 }
 /*====== Margin-left css ends ======*/
-
 /*====== Margin-right css starts ======*/
 $i: 0;
 @while $i<=50 {
@@ -114,7 +104,6 @@ $i: 0;
   $i: $i + 5;
 }
 /*====== Margin-right css ends ======*/
-
 /*====== Image-sizes css starts ======*/
 $i: 10;
 @while $i<=100 {
@@ -124,7 +113,6 @@ $i: 10;
   $i: $i + 10;
 }
 /*====== Image-sizes css ends ======*/
-
 /*====== font family css starts ======*/
 .font-roboto {
   font-family: $font_1, $font_3;
@@ -133,7 +121,6 @@ $i: 10;
   font-family: $font_2, $font_3;
 }
 /*====== font family css end ======*/
-
 /*====== image ratio css starts ======*/
 .ratio_36 {
   .bg-size {
@@ -288,47 +275,21 @@ $i: 10;
     }
   }
 }
-// .property-box {
-//   .property-image {
-//     .property-slider {
-//       .bg-size {
-//         height: 235px;
-//       }
-//     }
-//   }
-// }
-
 .bg-size {
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
   display: inline-block;
   width: 100%;
-
   .bg-img{
     display: none;
-
     &.bg-img-size{
       width: 100%;
       display: block !important
     }
   }
 }
-
-// .dz-message {
-//   position: relative !important;
-//   display: inline-block !important;
-//   min-width: calc(100% - 16px) !important;
-//   min-height: 130px !important;
-//   max-width: calc(100% - 16px) !important;
-//   max-height: 100% !important;
-//   margin: 0px !important;
-//   border: 2px dashed #aaa !important;
-//   background-color: #eee !important;
-// }
-
 /*====== image ratio css ends ======*/
-
 /**=====================
      Reset css end
 ==========================**/

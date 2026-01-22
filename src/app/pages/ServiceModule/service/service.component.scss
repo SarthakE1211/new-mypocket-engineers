@@ -4,43 +4,31 @@
   .container-md,
   .container-sm,
   .container-xl {
-    max-width: 1260px; /* Adjust based on your layout preference */
+    max-width: 1260px;
   }
 }
-
 .responsive-text {
-  font-size: 15px !important; /* Default size for small screens */
+  font-size: 15px !important;
 }
-
 @media (min-width: 576px) {
-  /* Small devices (sm) */
   .responsive-text {
     font-size: 18px !important;
   }
 }
-
 @media (min-width: 768px) {
-  /* Medium devices (md) */
   .responsive-text {
     font-size: 20px !important;
   }
 }
-
 @media (min-width: 992px) {
-  /* Large devices (lg) */
   .responsive-text {
     font-size: 22px !important;
   }
 }
-
-// Service card css
-/* Section padding & background */
 .service-section {
   padding: 10px;
   background-color: #f8f9fa;
 }
-
-/* Container styling */
 .container {
   padding: 10px;
   border-radius: 10px;
@@ -48,54 +36,37 @@
 }
 .btn-custom {
   background-color: #2a3b8f !important;
-  color: white !important; /* Ensure text remains visible */
+  color: white !important;
   border-color: #2a3b8f !important;
 }
-
 .btn-custom:hover {
-  background-color: #1e2c6d !important; /* Slightly darker shade on hover */
+  background-color: #1e2c6d !important;
   border-color: #1e2c6d !important;
 }
-
-/* Updated Service Card Styling */
 .service-card {
   border-radius: 12px;
-  // padding: 10px;
-  // box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05); /* Softer shadow */
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   height: 90%;
-  // border: 1px solid #E5E7EB; /* Subtle border */
   border: 0px;
 }
-
-// .service-card:hover {
-//     transform: scale(1.03);
-//     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-// }
-
-/* Service Card Image */
 .service-card img {
-  width: 260px; /* Standardize icon size */
+  width: 260px;
   height: 165px;
   object-fit: contain;
-  border-radius: 0; /* Remove unnecessary border radius */
+  border-radius: 0;
   padding: 5px;
 }
-
-/* Service Name */
 .service-card p {
   font-size: 14px;
   font-weight: 500;
-  color: #1f2937; /* Darker gray */
+  color: #1f2937;
   margin-top: 8px;
   margin-bottom: 8px;
 }
-
-/* Responsive Adjustments */
 @media (max-width: 768px) {
   .service-card {
     padding: 8px;
@@ -108,13 +79,10 @@
     font-size: 13px;
   }
 }
-
-/* Responsive Adjustments */
 @media (max-width: 768px) {
   .service-card {
     padding: 5px;
   }
-
   .service-card p {
     font-size: 13px;
   }
@@ -126,67 +94,47 @@
     max-width: 847px;
   }
 }
-
 @media (max-width: 576px) {
   .service-card {
     padding: 3px;
   }
-
   .service-card p {
     font-size: 12px;
   }
 }
-
-/* Service Card Container with Scroll */
 .service-card-container {
   max-height: 500px;
   overflow-y: auto;
-  // padding-right: 10px;
   overflow-x: hidden;
 }
-
-/* Scrollbar Styling */
 .service-card-container::-webkit-scrollbar {
   width: 6px;
 }
-
 .service-card-container::-webkit-scrollbar-thumb {
   background-color: #888;
   border-radius: 4px;
 }
-
 .service-card-container::-webkit-scrollbar-track {
   background-color: #f1f1f1;
 }
-
-/* Modal Body */
 .modal-body {
   position: relative;
   flex: 1 1 auto;
   padding: 15px !important;
 }
-
-/* Container Width for Large Screens */
 @media (min-width: 1200px) {
   .container {
     max-width: 1254px;
   }
 }
-
-// other css
-/* Button Group for responsiveness */
 .btn-group {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
 }
-
-/* Button styling */
 .btn-group .btn {
   border-radius: 5px;
 }
-
-/* Adjusting global container styles (previously inside :host ::ng-deep) */
 :host ::ng-deep {
   @media (min-width: 1200px) {
     .container,
@@ -198,23 +146,10 @@
     }
   }
 }
-// .loading-overlay {
-//     position: fixed;
-//     top: 0;
-//     left: 0;
-//     width: 100%;
-//     height: 100%;
-//     background: rgba(255, 255, 255, 0.8);
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     z-index: 1050;
-//   }
 .no-data-container {
   margin-top: 20px;
   text-align: center;
 }
-
 .no-data-img {
   max-width: 250px;
   opacity: 0.6;
@@ -222,7 +157,6 @@
 .hover-effect {
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   padding: 12px;
-
   @media (min-width: 768px) {
     &:hover {
       transform: translateY(-5px);
@@ -230,7 +164,6 @@
     }
   }
 }
-
 .back-button {
   width: 25px;
   height: 25px;
@@ -239,29 +172,25 @@
   text-decoration: none;
   display: flex;
 }
-
 .back-button i {
   font-size: 16px;
 }
-
 ::ng-deep .progress,
 ::ng-deep .progress-stacked {
   --bs-progress-height: 5px;
 }
 .service-name {
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* Ensures two-line limit */
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal;
-  max-width: 100%; /* Adjust as needed */
+  max-width: 100%;
   position: relative;
 }
-
-/* Show tooltip only when text overflows */
 .service-name:hover::after {
-  content: attr(title); /* Display full text */
+  content: attr(title);
   position: absolute;
   background: rgba(0, 0, 0, 0.8);
   color: #fff;
@@ -271,20 +200,17 @@
   max-width: 300px;
   overflow: hidden;
   text-overflow: ellipsis;
-  bottom: 100%; /* Position above */
+  bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
   visibility: visible;
   opacity: 1;
   transition: opacity 0.3s ease-in-out;
 }
-
-/* Hide tooltip if text is fully visible */
 .service-name:not(:hover)::after {
   visibility: hidden;
   opacity: 0;
 }
-
 @media (min-width: 992px) {
   .col-lg-2-3 {
     flex: 0 0 auto;
@@ -299,25 +225,18 @@
     max-width: 20%;
   }
 }
-
 .about-container {
   max-width: 100%;
   margin: auto;
-  //   padding: 20px;
-
   .accordion-button::after {
-    display: none !important; /* Hides Bootstrap's default arrow icon */
+    display: none !important;
   }
-  
-
-  // Accordion styling
   .accordion-item {
     border-radius: 5px;
     overflow: hidden;
     margin-bottom: 12px;
     border: none;
     box-shadow: none;
-
     .accordion-button {
       font-size: 14px;
       font-weight: 500;
@@ -329,11 +248,9 @@
       align-items: center;
       width: 100%;
     }
-
     .accordion-button:not(.collapsed) {
       background-color: #e9ecef;
     }
-
     .accordion-body {
       font-size: 14px;
       padding: 9px 15px;
@@ -341,4 +258,118 @@
     }
   }
 }
-
+.mt-0-important {
+  margin-top: 0px !important;
+}
+.pt-15 {
+  padding-top: 15px
+}
+.cursor-pointer-padding-5 {
+  cursor: pointer;
+  padding: 5px !important;
+}
+.fullwidth-card {
+  width: 100%;
+  /* height: 200px; */
+  padding: 10px;
+  /* min-height: 200px; */
+  /* max-height: 200px; */
+  border-radius: 8px;
+  border: none;
+  background-color: rgb(245, 248, 253);
+}
+.ellipsis-text-200 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  height: 55px;
+  margin-bottom: 0px !important;
+}
+.flex-start-padding-custom {
+  justify-content: flex-start !important;
+  padding: 5px 0px 0px 10px;
+}
+.m-0-font-13 {
+  margin: 0px !important;
+  font-size: 13px;
+}
+.pt-0-important {
+  padding-top: 0px !important;
+}
+.height-200-rounded-8 {
+  height: 200px;
+  border-radius: 8px;
+  overflow: hidden
+}
+.img-200-contain-rounded {
+  height: 200px;
+  width: 200px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+.text-ellipsis-16 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
+  margin-bottom: 0px;
+  font-weight: 500;
+  font-size: 16px;
+}
+.font-14 {
+  font-size: 14px;
+}
+.mt-10 {
+  margin-top: 10px;
+}
+.text-gray-444 {
+  color: #444444;
+}
+.scrollable-200 {
+  height: 200px;
+  overflow-y: scroll;
+}
+.w-100 {
+  width: 100%;
+}
+.card-style-white {
+  border-radius: 12px;
+  background: #fff;
+  color: #000;
+  text-align: center;
+  border: none;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  padding: 20px;
+}
+.text-dark-20 {
+  color: #333;
+  font-size: 20px
+}
+.font-15-gray-line15 {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.5
+}
+.transition-03-weight-500 {
+  transition: 0.3s;
+  font-weight: 500
+}
+.btn-primary-blue {
+  background-color: #0052cc;
+  border-color: #0052cc;
+  color: #fff;
+  font-weight: 500;
+  transition: 0.3s;
+}
+.w-500 {
+  width: 500px
+}
+.font-14 {
+  font-size: 14px
+}
+.bg-orange-f36631 {
+  background-color: #f36631 !important
+}

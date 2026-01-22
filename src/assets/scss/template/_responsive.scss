@@ -416,15 +416,6 @@
     flex: 0 0 60%;
     max-width: 60%;
   }
-  // header.header-4 {
-  //   .main-navbar {
-  //     .nav-menu {
-  //       > li {
-  //         padding: 20px 8px;
-  //       }
-  //     }
-  //   }
-  // }
   // footer css
   .footer-custom-col {
     .row {
@@ -553,7 +544,6 @@
       }
     }
   }
-
   h2 {
     line-height: 1.08;
   }
@@ -998,7 +988,6 @@
       }
     }
   }
-
   .testimonial-client {
     .title-3 {
       &.text-start {
@@ -1816,7 +1805,6 @@
       }
     }
   }
-
   // user dashboard css
   .user-dashboard {
     .sidebar-user {
@@ -1938,7 +1926,6 @@
       }
     }
   }
-
   .modern-client {
     .comment-right {
       .slick-arrow {
@@ -2060,13 +2047,6 @@
         }
       }
     }
-    // .main-navbar {
-    //   .nav-menu {
-    //     > li {
-    //       padding: 20px 3px;
-    //     }
-    //   }
-    // }
   }
   .property-wrapper-grid {
     .property-box {
@@ -2290,7 +2270,6 @@
     }
   }
   // testimonial css
-
   .modern-client {
     .comment-right {
       left: -130px;
@@ -2661,7 +2640,6 @@
       min-height: auto;
     }
   }
-
   .portfolio-details {
     .portfolio-section {
       margin-top: 30px;
@@ -3238,7 +3216,6 @@
       padding: 10px 15px;
     }
   }
-
   // title css
   .title-1 {
     padding-bottom: 40px;
@@ -3507,7 +3484,6 @@
       top: 30px;
     }
   }
-
   .testimonial-3 {
     .slick-list {
       margin: -40px -20px;
@@ -4638,7 +4614,6 @@
       }
     }
   }
-
   .logout-modal {
     .modal-body {
       p {
@@ -4646,7 +4621,6 @@
       }
     }
   }
-
   .my-profile {
     .profile-info {
       .information-detail {
@@ -4665,7 +4639,6 @@
       }
     }
   }
-
   .card-payment {
     > div:nth-child(n + 3) {
       .payment-card {
@@ -4673,7 +4646,6 @@
       }
     }
   }
-
   .about-testimonial {
     .title-2 {
       h2 {
@@ -4681,7 +4653,6 @@
       }
     }
   }
-
   .why-choose,
   .blog-inner {
     .title-2 {
@@ -4690,7 +4661,6 @@
       }
     }
   }
-
   .blog-2 {
     margin-bottom: -35px;
     &.slick-initialized {
@@ -4699,7 +4669,6 @@
       }
     }
   }
-
   .about-people {
     .title-2 {
       h2 {
@@ -4707,7 +4676,6 @@
       }
     }
   }
-
   .property-map {
     .filter-panel {
       .top-panel {
@@ -4720,7 +4688,6 @@
       z-index: 3;
     }
   }
-
   .property-section {
     .filter-panel {
       .top-panel {
@@ -4730,7 +4697,6 @@
       }
     }
   }
-
   .terms-section {
     h2 {
       margin-bottom: 20px;
@@ -4756,7 +4722,6 @@
   .terms-bottom-content {
     display: none;
   }
-
   // portfolio details css
   .portfolio-creative {
     .content-sec {
@@ -5903,7 +5868,6 @@
       margin-bottom: 30px;
     }
   }
-
   // testimonial css
   .client-slider {
     margin-top: 54px;
@@ -6702,7 +6666,6 @@
   .box.text-affect .role {
     margin-bottom: 20px;
   }
-
   .property-2 {
     &.list-view {
       &.no-sidebar {
@@ -8217,7 +8180,6 @@
       }
     }
   }
-
   .testimonial-style-2 {
     .title-3 {
       margin-bottom: 27px;
@@ -9464,7 +9426,6 @@
       }
     }
   }
-
   .pricing-inner {
     .title-2 {
       p {
@@ -9970,7 +9931,6 @@
       margin-top: -4px;
     }
   }
-
   // contact us
   .get-in-touch {
     .contact-img {
@@ -10160,9 +10120,7 @@
       text-align: left;
     }
   }
-
   // map modal css
-
   .with-modal-btn {
     .d-lg-none {
       margin-top: 10px;
@@ -10878,7 +10836,6 @@
       }
     }
   }
-
   .testimonial-3 {
     .slick-list {
       margin: -30px -12px;
@@ -11933,7 +11890,6 @@
   .layout-home4 .sync-slider .home-slider-4 img.img-icon {
     display: none;
   }
-
   .property-section {
     .property-box {
       .property-image {
@@ -13363,7 +13319,6 @@
   .feature-section .feature-1 .feature-wrapper .property-details ul li img {
     display: none;
   }
-
   li .parallax-home.video-layout {
     height: 280px;
   }

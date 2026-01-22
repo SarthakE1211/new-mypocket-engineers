@@ -7,10 +7,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-// import { Gallery } from "ng-gallery";
 import { Router, RouterModule } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-// import { Lightbox } from "ng-gallery/lightbox";
 import { CookieService } from 'ngx-cookie-service';
 import {
   FormBuilder,
@@ -25,7 +23,6 @@ import { ModalService } from 'src/app/Service/modal.service';
 import { ApiServiceService } from 'src/app/Service/api-service.service';
 import { CommonFunctionService } from 'src/app/Service/CommonFunctionService';
 import { LoaderService } from 'src/app/Service/loader.service';
-
 export class registerdata {
   CUSTOMER_NAME: string = '';
   TYPE: any;
@@ -52,7 +49,6 @@ export class registerdata {
   CONTACT_PERSON_NAME: any;
   PASSWORD: any;
 }
-
 interface AddressForm {
   CUSTOMER_ID: number;
   CUSTOMER_TYPE: number;
@@ -78,12 +74,10 @@ interface AddressForm {
   LANDMARK: '';
   PINCODE_FOR: '';
 }
-
 interface LocationOption {
   id: number;
   name: string;
 }
-
 interface User {
   ID: number;
   EMAIL_ID?: string;
@@ -100,12 +94,9 @@ export class LoginComponent implements OnInit {
     private modalService1: ModalService,
     private api: ApiServiceService,
     private toastr: ToastrService,
-    // public gallery: Gallery,
-    // public lightbox: Lightbox,
     private router: Router,
     private fb: FormBuilder,
     private loaderService: LoaderService
-
   ) {
     const customerType = localStorage.getItem('customerType');
     if (customerType === 'I') {
@@ -116,7 +107,6 @@ export class LoginComponent implements OnInit {
     }
   }
   confirmPassword: string = '';
-
   handleImageError(event: Event): void {
     const target = event.target as HTMLImageElement;
     target.src = '../../../../../assets/images/profile.png';
@@ -132,11 +122,9 @@ export class LoginComponent implements OnInit {
   PASSWORDLOGIN: any;
   userModal: boolean;
   isAutoVerifying = false;
-
   @ViewChild('content') content!: TemplateRef<any>;
   openVerticallyCentered(content: TemplateRef<any>) {
     this.mobileNumberorEmail = '';
-    // this.modalService.open(content, { centered: true });
     this.modalService.open(content, {
       backdrop: 'static',
       keyboard: false,
@@ -144,25 +132,18 @@ export class LoginComponent implements OnInit {
     });
   }
   public commonFunction = new CommonFunctionService();
-
-  // Chat, Call and login model logic
   showCallAndChatButtons(data: any): void {
-
     if (data.WHO_WILL_SHOW) {
-      // If user is logged in, show chat and call buttons
       this.isUserLoggedIn = true;
     } else {
-      // If user is not logged in, show the login modal
       this.showLoginModal = true;
       this.openVerticallyCentered(this.content);
     }
   }
-
   @ViewChild('loginwithpass') loginwithpass!: TemplateRef<any>;
   showloginwithpass(currentModal: any) {
     this.modalService1.closeModal();
     this.PASSWORDLOGIN = '';
-    // this.modalService.open(this.loginwithpass, { centered: true })
     this.modalService.open(this.loginwithpass, {
       backdrop: 'static',
       keyboard: false,
@@ -171,11 +152,9 @@ export class LoginComponent implements OnInit {
   }
   isLoading: boolean = false;
   issignUpLoading: boolean = false;
-
   otpSent: boolean = false;
   remainingTime: number = 60;
   timerSubscription: any;
-  // Resend OTP action after 30 seconds
   resendOtp() {
     this.otp = ['', '', '', ''];
     this.otp[0] = '';
@@ -187,33 +166,25 @@ export class LoginComponent implements OnInit {
         `Please wait ${this.remainingTime} seconds before resending OTP.`,
         ''
       );
-      return; // stop execution if timer is running
+      return; 
     }
-
-    // this.otpSent = false;
-    // this.remainingTime = 30; // reset timer
-    // this.startTimer();
     if (this.whichOTP == 'login') {
       this.loginotpverification();
     } else if (this.whichOTP == 'register') {
       this.save();
     }
   }
-
   resendforgotOtp(content: any) {
-    this.otpSent = false; // Resend OTP action
-    this.remainingTime = 60; // Reset timer
+    this.otpSent = false; 
+    this.remainingTime = 60; 
     this.startTimer();
   }
-
   startTimer(): void {
     if (this.timerSubscription) {
       return;
     }
-
-    const maxDuration = 30; // 30 seconds max
+    const maxDuration = 30; 
     this.remainingTime = Math.min(this.remainingTime, maxDuration);
-
     this.timerSubscription = interval(1000)
       .pipe(takeWhile(() => this.remainingTime > 0))
       .subscribe({
@@ -221,18 +192,14 @@ export class LoginComponent implements OnInit {
         complete: () => (this.timerSubscription = null),
       });
   }
-
   ngOnDestroy() {
-    // Unsubscribe from the timer when the component is destroyed
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();
     }
   }
-
   @ViewChild('forgotpass') forgotpass!: TemplateRef<any>;
   showforgotPass(currentModal: any) {
     this.modalService.dismissAll(currentModal);
-    // this.modalService.open(this.forgotpass, { centered: true })
     this.modalService.open(this.forgotpass, {
       backdrop: 'static',
       keyboard: false,
@@ -251,13 +218,10 @@ export class LoginComponent implements OnInit {
     this.modalVisible = false;
     this.openRegister = true;
   }
-
   showConfirmPasswordError: boolean = false;
-
   modalVisible: boolean = false;
   form!: FormGroup;
-  showPasswordError: boolean = false; // ✅ Declare variable
-  // @ViewChild("showlogin") showlogin!: TemplateRef<any>;
+  showPasswordError: boolean = false; 
   @ViewChild('showlogin', { static: true }) showlogin!: TemplateRef<any>;
   private messaging: any;
   isLocalhost: boolean = false;
@@ -266,11 +230,7 @@ export class LoginComponent implements OnInit {
     this.isLocalhost = this.api.isLocalhost;
     this.modalService1.modalState$.subscribe((state: any) => {
       this.modalVisible = state;
-
-      // for loading map
-
       this.data = new registerdata();
-      // this.modalService.open(state, { centered: true });
     });
     this.form = this.fb.group({
       password: [
@@ -291,13 +251,11 @@ export class LoginComponent implements OnInit {
       }
     });
   }
-
   closeModal() {
     this.modalService1.closeModal();
     this.modalService.dismissAll();
     this.mobileNumberorEmail = '';
   }
-
   closeregister() {
     this.modalService.dismissAll();
     this.mobileNumberorEmail = '';
@@ -309,7 +267,6 @@ export class LoginComponent implements OnInit {
   testmobilenumber(number: any) {
     return /^[6-9]\d{9}$/.test(number);
   }
-
   @ViewChild('loginotpverficationModal')
   loginotpverficationModal!: TemplateRef<any>;
   isloginSendOTP: boolean = false;
@@ -321,119 +278,21 @@ export class LoginComponent implements OnInit {
   openVerify: boolean = false;
   conflictdata: any = []
   isloadingconflict: boolean = false;
-  // loginotpverification(form?: NgForm): void {
-  //   this.loginSubmitted = true;
-
-  //   if (form && form.invalid) {
-  //     return;
-  //   }
-
-  //   // Determine type based on input value
-  //   this.type = this.isEmail(this.mobileNumberorEmail) ? 'E' : 'M';
-  //   this.isloginSendOTP = true;
-  //   this.statusCode = '';
-  //   this.modalVisible = false;
-  //   this.whichOTP = 'login';
-  //   this.loadData();
-  //   this.api
-  //     .sendOTP(this.selectedCountryCode, this.mobileNumberorEmail, this.type)
-  //     .subscribe({
-  //       next: (successCode: any) => {
-  //         if (successCode.code == '200') {
-  //           if (successCode.CUSTOMER_TYPE) {
-  //             sessionStorage.setItem(
-  //               'customertype',
-  //               this.commonFunction.encryptdata(successCode.CUSTOMER_TYPE)
-  //             );
-  //             localStorage.setItem(
-  //               'customertype',
-  //               this.commonFunction.encryptdata(successCode.CUSTOMER_TYPE)
-  //             );
-  //           } else {
-  //             sessionStorage.setItem(
-  //               'customertype',
-  //               this.commonFunction.encryptdata('I')
-  //             );
-  //             localStorage.setItem(
-  //               'customertype',
-  //               this.commonFunction.encryptdata('I')
-  //             );
-  //           }
-
-  //           this.isloginSendOTP = false;
-  //           this.modalService1.closeModal();
-  //           this.otpSent = true;
-  //           this.showOtpModal = true;
-  //           this.USER_ID = successCode.USER_ID;
-  //           this.USER_NAME = successCode.USER_NAME;
-  //           this.modalVisible = true;
-  //           this.remainingTime = 60;
-  //           this.startTimer();
-  //           this.toastr.success('OTP Sent Successfully...', '');
-  //           this.modalVisible = false;
-  //           this.openRegister = false;
-  //           this.openVerify = true;
-  //           this.stopLoader();
-  //         } else if (successCode.code == '400') {
-  //           this.modalVisible = true;
-  //           this.isloginSendOTP = false;
-  //           this.statusCode =
-  //             'The user is not registered or has been deactivated';
-  //           this.stopLoader();
-  //         } else {
-  //           this.modalVisible = true;
-  //           this.isloginSendOTP = false;
-  //           this.toastr.error('OTP Validation Failed...', '');
-  //           this.stopLoader();
-  //         }
-  //       },
-  //       error: (error) => {
-  //         this.modalVisible = true;
-  //         // Handle error if login fails
-  //         if (error.status === 400) {
-  //           this.statusCode =
-  //             'The user is not registered or has been deactivated';
-  //           this.toastr.info(
-  //             'The user is not registered or has been deactivated',
-  //             ''
-  //           );
-  //         } else {
-  //           this.modalVisible = true;
-  //           this.toastr.error('Error sending OTP', '');
-  //         }
-  //         this.isloginSendOTP = false;
-  //         this.modalVisible = true;
-  //         this.stopLoader();
-  //       },
-  //     });
-  // }
   loginotpverification(form?: NgForm): void {
     this.statusCode = '';
     this.isloadingconflict = true;
     if (form && form.invalid) {
       return;
     }
-    // Call API with CUSTOMER_TYPE
     this.api.checkconflictsMob(this.mobileNumberorEmail).subscribe({
       next: (successCode: any) => {
         if (successCode.code == '200') {
           if (successCode.data.length == 1) {
             this.isloadingconflict = false;
             this.loginSubmitted = true;
-            // Determine type based on input value
             this.type = this.isEmail(this.mobileNumberorEmail) ? 'E' : 'M';
-
-            // Determine if showing dropdown (for mobile input)
-            const showDropdown = this.type === 'M'; // true if mobile, false if email
-
-            // Get customer type from user selection or session
-            // let customerType = this.userType === 'business' ? 'B' : 'I';
+            const showDropdown = this.type === 'M'; 
             let customerType = '';
-
-            // Or if you're getting it from session/local storage:
-            // const storedCustomerType = sessionStorage.getItem('customertype');
-            // let customerType = storedCustomerType ? this.commonFunction.decryptdata(storedCustomerType) : 'I';
-
             this.isloginSendOTP = true;
             this.statusCode = '';
             this.modalVisible = false;
@@ -442,10 +301,10 @@ export class LoginComponent implements OnInit {
             customerType = successCode.data[0].CUSTOMER_TYPE;
             this.api
               .sendOTP(
-                this.selectedCountryCode,  // COUNTRY_CODE: selectedCountry.value
-                this.mobileNumberorEmail,   // TYPE_VALUE: mobile.value
-                this.type,                  // TYPE: showDropdown ? 'M' : 'E'
-                customerType                // CUSTOMER_TYPE: type
+                this.selectedCountryCode,  
+                this.mobileNumberorEmail,   
+                this.type,                  
+                customerType                
               )
               .subscribe({
                 next: (successCode: any) => {
@@ -469,7 +328,6 @@ export class LoginComponent implements OnInit {
                         this.commonFunction.encryptdata('I')
                       );
                     }
-
                     this.isloginSendOTP = false;
                     this.modalService1.closeModal();
                     this.otpSent = true;
@@ -499,7 +357,6 @@ export class LoginComponent implements OnInit {
                 },
                 error: (error) => {
                   this.modalVisible = true;
-                  // Handle error if login fails
                   if (error.status === 400) {
                     this.statusCode =
                       'The user is not registered or has been deactivated';
@@ -522,7 +379,6 @@ export class LoginComponent implements OnInit {
             this.isloginSendOTP = false;
             this.conflictdata = successCode.data;
             this.stopLoader();
-
           }
         }
         else if (successCode.code == '400') {
@@ -544,7 +400,6 @@ export class LoginComponent implements OnInit {
       error: (error) => {
         this.isloadingconflict = false;
         this.modalVisible = true;
-        // Handle error if login fails
         if (error.status === 400) {
           this.statusCode =
             'The user is not registered or has been deactivated';
@@ -560,212 +415,63 @@ export class LoginComponent implements OnInit {
         this.stopLoader();
       },
     })
-
-
   }
-
   whichOTP = '';
   registrationSubmitted = false;
-  // save(form?: NgForm) {
-
-  //     if (this.issignUpLoading) {
-  //   return; // Prevent repeated calls while loading
-  // }
-
-  //   this.data.COUNTRY_CODE = this.selectedCountryCode;
-  //   this.registrationSubmitted = true;
-
-  //   if (form && form.invalid) {
-  //     return;
-  //   }
-  //   // if (this.isOk) {
-  //   this.issignUpLoading = true;
-  //   // this.data.STATUS = 1;
-  //   this.data.TYPE = 'M';
-  //   // this.data.COUNTRY_CODE = this.searchQuery;
-  //   this.data.CUSTOMER_CATEGORY_ID = 1;
-  //   this.data.EMAIL_ID = this.data.EMAIL_ID;
-  //   this.data.MOBILE_NO = this.data.CUSTOMER_MOBILE_NO;
-  //   this.data.CUSTOMER_TYPE = 'I';
-  //   this.data.TYPE_VALUE = this.data.CUSTOMER_MOBILE_NO;
-  //   this.whichOTP = 'register';
-
-  //   const registerData = this.data;
-  //   this.loadData();
-  //   this.api.userRegistrationOTP(this.data).subscribe(
-  //     (successCode: any) => {
-  //       if (successCode.body.code === 200) {
-  //         this.issignUpLoading = false;
-  //         this.isOk = false;
-  //         this.toastr.success('OTP has been sent successfully.', '');
-  //         // this.modalService.dismissAll();
-
-  //         // sessionStorage.setItem("token", successCode.body.token);
-  //         // this.cookie.set("token", successCode.body.token, 365, "", "", false, "Strict");
-
-  //         // const user = successCode.body.UserData[0]; // This is the user object
-  //         //
-  //         //
-  //         //
-  //         // sessionStorage.setItem('userId', this.commonFunction.encryptdata(user.USER_ID));
-  //         // sessionStorage.setItem('userName', this.commonFunction.encryptdata(user.USER_NAME));
-  //         // sessionStorage.setItem('mobileNumber', this.commonFunction.encryptdata(user.MOBILE_NUMBER));
-  //         this.isloginSendOTP = false;
-  //         this.modalService1.closeModal();
-  //         this.otpSent = true;
-  //         this.showOtpModal = true;
-  //         this.USER_ID = successCode.USER_ID;
-  //         this.USER_NAME = successCode.USER_NAME;
-
-  //         this.remainingTime = 60;
-  //         this.startTimer();
-  //         // this.toastr.success("OTP Sent Successfully...", "");
-  //         this.modalVisible = false;
-  //         this.openRegister = false;
-  //         this.openVerify = true;
-  //         // this.modalService.dismissAll();
-  //         // this.modalService.open(this.loginotpverficationModal, {
-  //         //   backdrop: "static",
-  //         //   keyboard: false,
-  //         //   centered: true,
-  //         // });
-  //         // this.isverifyOTP = false;
-  //         this.statusCode = '';
-  //         this.data = registerData;
-
-  //         this.stopLoader();
-  //       } else if (successCode.body.code === 300) {
-  //         //
-  //         this.stopLoader();
-  //         this.issignUpLoading = false;
-  //         this.statusCode = 'Email ID or mobile number already exists.';
-  //       } else if (successCode.body.code === 301) {
-  //         //
-  //         this.stopLoader();
-  //         this.issignUpLoading = false;
-  //         this.statusCode =
-  //           'Oops! It looks like your account is currently deactivated. Please contact to support itsupport@pockitengineers.com';
-  //       }
-  //       // else if (
-  //       //   successCode.body.code === 300 &&
-  //       //   successCode.body.message === 'email ID already exists.'
-  //       // ) {
-  //       //
-  //       //   this.stopLoader();
-  //       //   this.issignUpLoading = false;
-  //       //   this.statusCode = 'email ID already exists.';
-  //       // }
-
-  //       this.mobileNumberorEmail = this.data.CUSTOMER_MOBILE_NO;
-  //     },
-  //     (error) => {
-  //       this.issignUpLoading = false;
-  //       // Handle error if login fails
-  //       if (error.status === 300) {
-  //         this.issignUpLoading = false;
-  //         // Handle specific HTTP error (e.g., invalid credentials)
-  //         this.toastr.error('Email-ID is already exists', '');
-  //       } else if (error.status === 500) {
-  //         // Handle server-side error
-  //         this.toastr.error(
-  //           'An unexpected error occurred. Please try again later.',
-  //           ''
-  //         );
-  //       } else {
-  //         this.issignUpLoading = false;
-  //         // Generic error handling
-  //         this.toastr.error(
-  //           'An unknown error occurred. Please try again later.',
-  //           ''
-  //         );
-  //       }
-  //       this.stopLoader();
-  //     }
-  //   );
-  //   // }
-  // }
   save(form?: NgForm) {
-    // Prevent repeated calls while loading
     if (this.issignUpLoading) {
       return;
     }
-
-    // Set country code
     this.data.COUNTRY_CODE = this.selectedCountryCode;
     this.registrationSubmitted = true;
-
-    // Validate form
     if (form && form.invalid) {
       return;
     }
-
-    // Check if user agreed to terms and conditions
     if (!this.agreeConsent) {
       this.toastr.error('Please agree to the Terms and Conditions', '');
       return;
     }
-
     this.issignUpLoading = true;
-
-    // Set common fields
     this.data.TYPE = 'M';
     this.data.CUSTOMER_CATEGORY_ID = 1;
     this.data.EMAIL_ID = this.data.EMAIL_ID;
     this.data.MOBILE_NO = this.data.CUSTOMER_MOBILE_NO;
     this.data.TYPE_VALUE = this.data.CUSTOMER_MOBILE_NO;
     this.whichOTP = 'register';
-
-    // Set user-type specific fields
     if (this.userType === 'business') {
-      // Business User
-      this.data.CUSTOMER_TYPE = 'B'; // B for Business
-      // For business user, use contact person name as customer name
+      this.data.CUSTOMER_TYPE = 'B'; 
       this.data.CUSTOMER_NAME = this.data.CUSTOMER_NAME;
       this.data.TYPE = "E"
-      // Ensure business-specific fields are included
-      // SHORT_CODE, PAN_NUMBER, GST_NUMBER are already in this.data
       this.data.SHORT_CODE = this.generateShortCodeFromName(this.data.CUSTOMER_NAME);
       this.data.TYPE_VALUE = this.data.EMAIL_ID;
-
     } else {
-      // Home User
-      this.data.CUSTOMER_TYPE = 'I'; // I for Individual/Home User
-      // CUSTOMER_NAME is already set from the form
-
-      // Clear business-specific fields for home user to avoid sending them
+      this.data.CUSTOMER_TYPE = 'I'; 
       this.data.SHORT_CODE = null;
       this.data.PAN_NUMBER = null;
       this.data.GST_NUMBER = null;
       this.data.CONTACT_PERSON_NAME = null;
     }
-
     const registerData = this.data;
     this.loadData();
-
-    // Call API
     this.api.userRegistrationOTP(this.data).subscribe(
       (successCode: any) => {
         if (successCode.body.code === 200) {
           this.issignUpLoading = false;
           this.isOk = false;
           this.toastr.success('OTP has been sent successfully.', '');
-
           this.isloginSendOTP = false;
           this.modalService1.closeModal();
           this.otpSent = true;
           this.showOtpModal = true;
           this.USER_ID = successCode.USER_ID;
           this.USER_NAME = successCode.USER_NAME;
-
           this.remainingTime = 60;
           this.startTimer();
           this.modalVisible = false;
           this.openRegister = false;
           this.openVerify = true;
-
           this.statusCode = '';
           this.data = registerData;
-
           this.stopLoader();
         } else if (successCode.body.code === 300) {
           this.stopLoader();
@@ -780,14 +486,11 @@ export class LoginComponent implements OnInit {
           this.stopLoader();
           this.issignUpLoading = false;
           this.statusCode = 'Parent domain not found';
-
         }
-
         this.mobileNumberorEmail = this.userType === 'business' ? this.data.EMAIL_ID : this.data.CUSTOMER_MOBILE_NO;
       },
       (error) => {
         this.issignUpLoading = false;
-        // Handle error if registration fails
         if (error.status === 300) {
           this.issignUpLoading = false;
           this.toastr.error('Email-ID is already exists', '');
@@ -809,40 +512,34 @@ export class LoginComponent implements OnInit {
   }
   generateShortCodeFromName = (orgName) => {
     const cleanName = orgName.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
-
     let shortCode = cleanName.substring(0, 4);
-
     while (shortCode.length < 4) {
       shortCode += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.charAt(
         Math.floor(Math.random() * 36)
       );
     }
-
     for (let i = 0; i < 4; i++) {
       shortCode += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.charAt(
         Math.floor(Math.random() * 36)
       );
     }
-
     return shortCode
   };
   statusCode: any = '';
   showMap: boolean = false;
   VerifyOTP() {
     if (this.isverifyOTP) {
-      return; // Block if already in progress
+      return; 
     }
     if (this.otp.join('').length < 4) {
       this.toastr.error('Please Enter OTP...', '');
       return;
     }
-    this.isverifyOTP = true; // Set true before API call
+    this.isverifyOTP = true; 
     const otp1 = this.otp.join('');
-    // this.isverifyOTP = true; // Set true before API call
     this.loadData();
     if (this.whichOTP == 'login') {
       let CLOUD_ID = this.cookie.get('CLOUD_ID');
-
       this.api
         .verifyOTP(
           this.type,
@@ -873,15 +570,11 @@ export class LoginComponent implements OnInit {
                 true,
                 'None'
               );
-
               sessionStorage.setItem('token', successCode.body.token);
-
               const token = successCode.body.token;
               sessionStorage.setItem('token', token);
               localStorage.setItem('token', token);
-
-              const user = successCode.body.UserData[0]; // This is the user object
-
+              const user = successCode.body.UserData[0]; 
               sessionStorage.setItem(
                 'userId',
                 this.commonFunction.encryptdata(user.USER_ID)
@@ -898,20 +591,7 @@ export class LoginComponent implements OnInit {
                 'emailId',
                 this.commonFunction.encryptdata(user.EMAIL_ID)
               );
-
               localStorage.setItem('token', successCode.body.token);
-              // this.cookie.set(
-              //   'token',
-              //   successCode.body.token,
-              //   365,
-              //   '/',
-              //   '',
-              //   false,
-              //   'Strict'
-              // );
-
-              // let user: any = successCode.body.UserData[0]; // This is the user object
-
               localStorage.setItem(
                 'userId',
                 this.commonFunction.encryptdata(user.USER_ID)
@@ -924,47 +604,12 @@ export class LoginComponent implements OnInit {
                 'mobileNumber',
                 this.commonFunction.encryptdata(user.MOBILE_NUMBER)
               );
-
-              // localStorage.setItem(
-              //   'subscribedChannels',
-              //   this.commonFunction.encryptdata(
-              //     JSON.stringify(successCode.body.SUBSCRIBED_CHANNELS)
-              //   )
-              // );
-
-              // var channelNames = successCode.body.SUBSCRIBED_CHANNELS.map(
-              //   (channel: any) => channel.CHANNEL_NAME
-              // );
-              // if (successCode.body.SUBSCRIBED_CHANNELS.length > 0) {
-              //   this.api
-              //     .subscribeToMultipleTopics(channelNames)
-              //     .subscribe((data) => {
-              //       if (data['code'] == '200') {
-              //       }
-              //     });
-              // }
-              // const channels = successCode.body?.SUBSCRIBED_CHANNELS ?? [];
-
-              // if (channels.length > 0) {
-              //   const encrypted = this.commonFunction.encryptdata(JSON.stringify(channels));
-              //   localStorage.setItem('subscribedChannels', encrypted);
-
-              //   const channelNames = channels.map((c: any) => c.CHANNEL_NAME);
-
-              //   this.api.subscribeToMultipleTopics(channelNames).subscribe((data) => {
-              //     if (data?.code === '200') {
-              //       // Maybe show success message or silently continue
-              //     }
-              //   });
-              // }
-
               localStorage.setItem(
                 'subscribedChannels',
                 this.commonFunction.encryptdata(
                   JSON.stringify(user.SUBSCRIBED_CHANNELS)
                 )
               );
-
               var channelNames = user.SUBSCRIBED_CHANNELS.map(
                 (channel: any) => channel.CHANNEL_NAME
               );
@@ -976,29 +621,18 @@ export class LoginComponent implements OnInit {
                     }
                   });
               }
-
-              // Store login status
               localStorage.setItem('isLogged', 'true');
-
               this.otp = ['', '', '', ''];
-
-              // Set user type in localStorage
-
               localStorage.setItem('customerType', this.data.CUSTOMER_TYPE);
-
-              // Handle user type specific flow
               if (user.CUSTOMER_TYPE == 'I' || !user.CUSTOMER_TYPE) {
-                // Home user: set flags and default address, then redirect to service
                 localStorage.setItem('customerType', 'I');
                 localStorage.setItem('skipLocationCheck', 'true');
                 localStorage.setItem('locationSet', 'true');
                 this.confirmLocation();
                 this.showMap = false;
                 this.modalVisible = false;
-
                 this.api.setDefaultPincodeForHomeUser().subscribe({
                   next: () => {
-                    // Force close all modals and forms
                     this.modalService.dismissAll();
                     this.isverifyOTP = false;
                     this.isAutoVerifying = false;
@@ -1009,7 +643,6 @@ export class LoginComponent implements OnInit {
                     window.location.href = '/service';
                   },
                   error: () => {
-                    // Even if setting address fails, still redirect to service
                     this.modalService.dismissAll();
                     this.isverifyOTP = false;
                     this.isAutoVerifying = false;
@@ -1021,16 +654,12 @@ export class LoginComponent implements OnInit {
                   }
                 });
               } else {
-                // For Business Users, load territories directly (don't open map)
                 this.isverifyOTP = false;
                 this.isAutoVerifying = false;
                 this.modalVisible = false;
                 this.openVerify = false;
-                this.showMap = false; // ensure map UI hidden
-
-                // Determine pincode to fetch territories for
+                this.showMap = false; 
                 const userPincode = localStorage.getItem('userPincode') || (this.addressForm && this.addressForm.PINCODE) || '110001';
-
                 this.api.getTerritoriesByPincode(userPincode).subscribe({
                   next: (resp: any) => {
                     const territories = resp?.body?.data || resp?.body || [];
@@ -1040,47 +669,34 @@ export class LoginComponent implements OnInit {
                       this.addressForm.TERRITORY_ID = t.TERRITORY_ID || t.id || t.TERRITORY_ID;
                       localStorage.setItem('selectedTerritory', String(this.addressForm.TERRITORY_ID));
                     }
-                    // Hide address/map and continue to service page
                     this.showAddressDetailsForm = false;
                     setTimeout(() => (window.location.href = '/service'), 200);
                   },
                   error: (err: any) => {
-                    // On error, fallback to service page without showing map
                     console.error('Failed to load territories:', err);
                     this.showAddressDetailsForm = false;
                     setTimeout(() => (window.location.href = '/service'), 200);
                   }
                 });
               }
-
               this.statusCode = '';
             }
-
-            // this.stopLoader();
           },
           error: (errorResponse) => {
-
             if (errorResponse.error.code === 300) {
               this.toastr.error(
                 'Invalid request. Please check the entered details.'
               );
-              //
               this.statusCode = 'Invalid OTP';
               this.stopLoader();
             } else if (errorResponse.error.code === 301) {
               this.toastr.info('No Address Found');
-              //
-              // this.statusCode =
-              // "You don't have a default address. Please contact the admin to set up your delivery address";
               this.stopLoader();
             } else {
-              //
               this.toastr.error('Something went wrong. Please try again.');
               this.statusCode = '';
               this.stopLoader();
             }
-            //
-
             this.isverifyOTP = false;
             this.isAutoVerifying = false;
             this.stopLoader();
@@ -1097,13 +713,11 @@ export class LoginComponent implements OnInit {
       this.data.CUSTOMER_NAME = this.data.CUSTOMER_NAME;
       this.data.IS_SPECIAL_CATALOGUE = false;
       this.data.ACCOUNT_STATUS = true;
-
       this.data.CUSTOMER_MOBILE_NO = this.data.CUSTOMER_MOBILE_NO;
       this.data.CUSTOMER_TYPE = this.userType === 'business' ? 'B' : 'I';
       this.data.TYPE_VALUE = this.userType === 'business' ? this.data.EMAIL_ID : this.data.CUSTOMER_MOBILE_NO;;
       this.data.CLOUD_ID = CLOUD_ID;
       const registerData = this.data;
-
       const COMPANY_NAME = this.data.COMPANY_NAME;
       this.loadData();
       this.api.userRegistration(this.data).subscribe({
@@ -1112,16 +726,12 @@ export class LoginComponent implements OnInit {
             this.toastr.success('OTP verified successfully...', '');
             this.showMap = false;
             this.modalVisible = false;
-
             this.confirmLocation();
-
             this.modalService.dismissAll();
             this.isOk = false;
             this.data = registerData;
-            //
             sessionStorage.setItem('token', successCode.body.token);
             localStorage.setItem('token', successCode.body.token);
-
             this.cookie.set(
               'token',
               successCode.body.token,
@@ -1131,27 +741,18 @@ export class LoginComponent implements OnInit {
               false,
               'Strict'
             );
-
             this.confirmLocation();
-
-
-
-            const user = successCode.body.UserData[0]; // This is the user object
+            const user = successCode.body.UserData[0]; 
             this.USER_ID = user.USER_ID;
-            //
-            //
-
             var custype = this.userType == "business" ? "B" : "I";
             sessionStorage.setItem(
               'customertype',
               this.commonFunction.encryptdata(custype)
             );
-
             localStorage.setItem(
               'customertype',
               this.commonFunction.encryptdata(custype)
             );
-            //
             sessionStorage.setItem(
               'userId',
               this.commonFunction.encryptdata(user.USER_ID)
@@ -1175,7 +776,6 @@ export class LoginComponent implements OnInit {
             if (user.organizationName) {
               localStorage.setItem('organizationName', user.organizationName);
             };
-
             localStorage.setItem(
               'userName',
               this.commonFunction.encryptdata(user.USER_NAME)
@@ -1194,7 +794,6 @@ export class LoginComponent implements OnInit {
                 JSON.stringify(user.SUBSCRIBED_CHANNELS)
               )
             );
-
             var channelNames = user.SUBSCRIBED_CHANNELS.map(
               (channel: any) => channel.CHANNEL_NAME
             );
@@ -1206,19 +805,15 @@ export class LoginComponent implements OnInit {
                   }
                 });
             }
-
             localStorage.setItem('isLogged', 'true');
             this.otp = ['', '', '', ''];
             this.isverifyOTP = false;
             this.isAutoVerifying = false;
             this.statusCode = '';
-
             if (this.userType === 'business') {
-              // For Business Users, load territories directly (don't open map)
               this.openVerify = false;
               this.stopLoader();
               this.showMap = false;
-
               const userPincode = localStorage.getItem('userPincode') || (this.addressForm && this.addressForm.PINCODE) || '110001';
               this.api.getTerritoriesByPincode(userPincode).subscribe({
                 next: (resp: any) => {
@@ -1238,7 +833,6 @@ export class LoginComponent implements OnInit {
                 }
               });
             } else {
-              // For Home Users, set default address and redirect
               this.api.setDefaultPincodeForHomeUser().subscribe({
                 next: () => {
                   this.isverifyOTP = false;
@@ -1251,7 +845,6 @@ export class LoginComponent implements OnInit {
                   window.location.href = '/service';
                 },
                 error: () => {
-                  // Even if setting address fails, redirect to service
                   this.isverifyOTP = false;
                   this.isAutoVerifying = false;
                   this.showMap = false;
@@ -1264,41 +857,27 @@ export class LoginComponent implements OnInit {
               });
             }
           }
-
           this.stopLoader();
         },
         error: (errorResponse) => {
-
           if (errorResponse.error.code === 300) {
             this.toastr.error(
               'Invalid request. Please check the entered details.'
             );
-
             this.statusCode = 'Invalid OTP';
           } else {
             this.toastr.error('Something went wrong. Please try again.');
             this.statusCode = '';
           }
-
           this.stopLoader();
           this.isverifyOTP = false;
           this.isAutoVerifying = false;
         },
       });
     }
-
-    // this.isverifyOTP = false;
-
-
-    // this.confirmLocation();
-
-
-
   }
   @ViewChild('openMap') openMap!: TemplateRef<any>;
-  // @ViewChild('openMap', { static: true }) openMap!: TemplateRef<any>;
   @ViewChild('loginforgotModal') loginforgotModal!: TemplateRef<any>;
-
   isSendOpt: boolean = false;
   loginforgot(currentModal: any) {
     this.otpSent = true;
@@ -1310,22 +889,12 @@ export class LoginComponent implements OnInit {
       this.toastr.error('Please enter a valid 10-digit mobile number.');
     }
   }
-  // Default OTP for validation
   forgotdefaultOTP = '654321';
-  otp: string[] = ['', '', '', '', '', '']; // Array to store OTP input
-  showError = false; // Flag to control error message visibility
-
+  otp: string[] = ['', '', '', '', '', '']; 
+  showError = false; 
   @ViewChild('otpInputs') otpInputs: ElementRef | undefined;
-
-  // Method to move to the next input field
-  // Method to move to the next input field
-  //   @ViewChild('otpInputs') otpInputs: ElementRef | undefined;
-  // otp: string[] = ['', '', '', '', '', ''];  // OTP Array to store individual digits
-
-  // Method to move to the next input field
   moveToNext_original(event: KeyboardEvent, index: number) {
     if (event.key === 'Backspace' && !this.otp[index] && index > 0) {
-      // If backspace is pressed on empty input, move to previous input
       const prevInput = document.getElementsByClassName('otp-input')[
         index - 1
       ] as HTMLInputElement;
@@ -1334,7 +903,6 @@ export class LoginComponent implements OnInit {
       }
     }
   }
-
   moveToNext(event: KeyboardEvent, index: number) {
   if (event.key === 'Backspace' && !this.otp[index] && index > 0) {
     const prevInput = document.getElementsByClassName('otp-input')[
@@ -1343,11 +911,8 @@ export class LoginComponent implements OnInit {
     prevInput?.focus();
   }
 }
-
   onChange_original(value: string, index: number) {
-    // Ensure the input is a number
     if (/^\d*$/.test(value)) {
-      // If a value is entered and there's a next input, move to it
       if (value && index < 3) {
         const nextInput = document.getElementsByClassName('otp-input')[
           index + 1
@@ -1357,64 +922,49 @@ export class LoginComponent implements OnInit {
         }
       }
     } else {
-      // If not a number, clear the input
       this.otp[index] = '';
     }
   }
   onChange(value: string, index: number) {
-    // Allow only numbers
     if (!/^\d*$/.test(value)) {
       this.otp[index] = '';
       return;
     }
-
     this.otp[index] = value;
-
-    // Move focus to next input
     if (value && index < 3) {
       const nextInput = document.getElementsByClassName('otp-input')[
         index + 1
       ] as HTMLInputElement;
       nextInput?.focus();
     }
-
-    // 🔥 AUTO VERIFY when all 4 digits entered
     const otpValue = this.otp.join('');
     if (otpValue.length === 4 && !this.isAutoVerifying) {
       this.isAutoVerifying = true;
       this.VerifyOTP();
     }
   }
-
-  // Handle focus event to select the input value when clicked
   onFocus(index: number) {
     const input = this.otpInputs?.nativeElement.querySelectorAll('input')[
       index
     ] as HTMLInputElement;
-    input?.select(); // Select the value when clicked for easier editing
+    input?.select(); 
   }
-
-  // Method to clear OTP fields
   forgotclearOTPFields() {
     this.otp = ['', '', '', '', '', ''];
   }
   handleEnterKey(content: any) {
     if (this.isSendOpt) {
     } else {
-      // Otherwise, call the existing function for the second button
       this.loginforgot(content);
     }
   }
   handleLoginEnterKey(content: any) {
     if (this.isloginSendOTP) {
     } else {
-      // Otherwise, call the existing function for the second button
       this.loginotpverification(content);
     }
   }
-  // Method to handle OTP verification
   isverifyOTP: boolean = false;
-
   @ViewChild('loginforgetwithpass') loginforgetwithpass!: TemplateRef<any>;
   isverifyForgotOTP: boolean = false;
   VerifyforgotOTP(content: any) {
@@ -1422,38 +972,30 @@ export class LoginComponent implements OnInit {
     const FIREBASE_REG_TOKEN = 'bacdefghi';
     this.isverifyForgotOTP = true;
   }
-
-  passwordVisible: boolean = false; // Initially password is hidden
-  passwordFieldType: string = 'password'; // Set default input type to 'password'
-
-  confpasswordVisible: boolean = false; // Initially password is hidden
-  passconfwordFieldType: string = 'password'; // Set default input type to 'password'
-
-  // Toggle password visibility
+  passwordVisible: boolean = false; 
+  passwordFieldType: string = 'password'; 
+  confpasswordVisible: boolean = false; 
+  passconfwordFieldType: string = 'password'; 
   togglePasswordVisibility() {
     this.passwordVisible = !this.passwordVisible;
-    this.passwordFieldType = this.passwordVisible ? 'text' : 'password'; // Toggle input type
+    this.passwordFieldType = this.passwordVisible ? 'text' : 'password'; 
   }
   toggleconfPasswordVisibility() {
     this.confpasswordVisible = !this.confpasswordVisible;
-    this.passconfwordFieldType = this.confpasswordVisible ? 'text' : 'password'; // Toggle input type
+    this.passconfwordFieldType = this.confpasswordVisible ? 'text' : 'password'; 
   }
-
   data: registerdata = new registerdata();
   isOk = true;
-
   allowOnlyNumbers(event: KeyboardEvent) {
     const charCode = event.which ? event.which : event.keyCode;
     if (charCode < 48 || charCode > 57) {
       event.preventDefault();
     }
   }
-
   handlePaste_orginal(event: ClipboardEvent) {
     event.preventDefault();
     const pastedData = event.clipboardData?.getData('text');
     if (pastedData && /^\d{4}$/.test(pastedData)) {
-      // If pasted data is 4 digits, distribute across inputs
       for (let i = 0; i < 4; i++) {
         this.otp[i] = pastedData[i];
       }
@@ -1462,38 +1004,30 @@ export class LoginComponent implements OnInit {
   handlePaste(event: ClipboardEvent) {
   event.preventDefault();
   const pastedData = event.clipboardData?.getData('text');
-
   if (pastedData && /^\d{4}$/.test(pastedData)) {
     for (let i = 0; i < 4; i++) {
       this.otp[i] = pastedData[i];
     }
-
-    // 🔥 AUTO VERIFY AFTER PASTE
     if (!this.isAutoVerifying) {
       this.isAutoVerifying = true;
       this.VerifyOTP();
     }
   }
 }
-
   openmodal123(currentModal: any) {
     this.modalService.dismissAll(currentModal);
     this.modalService1.openModal();
     this.forgotclearOTPFields();
-    // this.mobileNumberorEmail = "";
     this.loginSubmitted = false;
     this.statusCode = '';
   }
-
   private isEmail(value: string): boolean {
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailPattern.test(value);
   }
-
   inputType: 'initial' | 'mobile' | 'email' = 'initial';
   selectedCountryCode: string = '+91';
   countryCodeVisible: boolean = false;
-
   onIdentifierInput(event: any) {
     const value = event.target.value;
     this.statusCode = '';
@@ -1501,23 +1035,18 @@ export class LoginComponent implements OnInit {
       this.inputType = 'initial';
       return;
     }
-
-    // Check if input contains letters
     if (/[a-zA-Z]/.test(value)) {
       this.inputType = 'email';
     } else {
       this.inputType = 'mobile';
     }
   }
-
   validateMobileNumber(number: string): boolean {
     return /^[6-9]\d{9}$/.test(number);
   }
-
   validateEmail(email: string): boolean {
     return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
   }
-
   countryCodes = [
     { label: '+91 (India)', value: '+91' },
     { label: '+92 (Pakistan)', value: '+92' },
@@ -1756,27 +1285,22 @@ export class LoginComponent implements OnInit {
     { label: 'Kyrgyzstan (+996)', value: '+996' },
     { label: 'Uzbekistan (+998)', value: '+998' },
   ];
-
   showCountryDropdown: boolean = false;
   searchQuery: string = '';
   filteredCountryCodes: any[] = [];
-
   toggleCountryDropdown() {
     this.showCountryDropdown = !this.showCountryDropdown;
-
     if (this.showCountryDropdown) {
-      this.filteredCountryCodes = [...this.countryCodes]; // Create a new array copy
+      this.filteredCountryCodes = [...this.countryCodes]; 
       this.searchQuery = '';
     }
   }
-
   selectCountry(country: any) {
     this.selectedCountryCode = country.value;
     this.data.COUNTRY_CODE = this.selectedCountryCode;
     this.showCountryDropdown = false;
     this.searchQuery = '';
   }
-
   filterCountries(event: any) {
     const query = event.target.value.toLowerCase().trim();
     this.searchQuery = query;
@@ -1790,32 +1314,23 @@ export class LoginComponent implements OnInit {
   searchPincode: string = '';
   filteredPincodes: any[] = [];
   selectedPincode: string = '';
-
   togglePincodeDropdown() {
     this.showPincodeDropdown = !this.showPincodeDropdown;
     if (this.showPincodeDropdown) {
       this.filteredPincodes = this.pincodeData;
     }
   }
-
   selectPincode(pincode: any) {
-
-
     this.selectedPincode = pincode.PINCODE_NUMBER;
     this.addressForm.PINCODE = pincode.PINCODE;
     this.addressForm.PINCODE_ID = pincode.ID;
     this.addressForm.PINCODE_FOR = pincode.PINCODE_FOR;
-
-
-
     this.showPincodeDropdown = false;
-
     this.getTerritory();
     setTimeout(() => {
       this.addressForm.PINCODE = pincode.PINCODE;
     }, 500);
   }
-
   terrotaryData: any = [];
   getTerritory() {
     this.api
@@ -1829,22 +1344,16 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: (data: any) => {
           this.terrotaryData = data.data;
-          // this.addressForm.TERRITORY_ID = this.terrotaryData[0].TERRITORY_ID;
           const territory = this.terrotaryData[0];
           this.addressForm.TERRITORY_ID = territory.TERRITORY_ID;
-
-          // this.getStateData();
-
-          this.pincodeloading = false; // Hide loading state
+          this.pincodeloading = false; 
         },
         error: (error: any) => {
-
-          this.terrotaryData = []; // Clear data on error
-          this.pincodeloading = false; // Hide loading state
+          this.terrotaryData = []; 
+          this.pincodeloading = false; 
         },
       });
   }
-
   filterPincodes(event: any) {
     const query = event.target.value.toLowerCase();
     this.filteredPincodes = this.pincodeData.filter(
@@ -1853,8 +1362,6 @@ export class LoginComponent implements OnInit {
         item.PINCODE_NUMBER.toLowerCase().includes(query)
     );
   }
-
-  // Close dropdown when clicking outside
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: any) {
     const dropdown = document.querySelector('.country-dropdown');
@@ -1869,10 +1376,8 @@ export class LoginComponent implements OnInit {
       }
     }
   }
-
   openLoginModal() {
-    // Close the register modal (assuming `this.register` is the reference to the register modal)
-    this.modalService1.closeModal(); // This closes the register modal
+    this.modalService1.closeModal(); 
     this.userType = '';
     this.otp = ['', '', '', ''];
     this.otp[0] = '';
@@ -1889,16 +1394,7 @@ export class LoginComponent implements OnInit {
     this.statusCode = '';
     this.initializeMapWithLocation;
     this.modalVisible = true;
-    // if (this.modalVisible) {
-    //   this.modalService.dismissAll();
-    //   this.modalService.open(this.showlogin, {
-    //     backdrop: "static",
-    //     keyboard: false,
-    //     centered: true,
-    //   });
-    // }
   }
-
   address: any = {
     houseNo: '',
     landmark: '',
@@ -1909,19 +1405,12 @@ export class LoginComponent implements OnInit {
   map2: any;
   longitude: any;
   latitude: any;
-
   locationCode: string = '';
   locationAddress: string = '';
   pincodeData: any = [];
   pincodeloading: boolean = false;
   selectedLocation: any;
   currentMarker: any;
-
-  // ngAfterViewInit() {
-  //   this.initializeMapWithLocation();
-  // }
-
-  // 1. Initialize Map with Current Location or Default Location
   initializeMapWithLocation() {
     const customerType = localStorage.getItem('customerType');
     if (customerType === 'I' || localStorage.getItem('skipLocationCheck') === 'true') {
@@ -1931,27 +1420,22 @@ export class LoginComponent implements OnInit {
       return;
     }
     const userType = this.userType || localStorage.getItem('customertype');
-
-    // For Home Users and Guests, use default territories
     if (userType === 'home' || this.asGuest) {
-      // Call API to get default territories
       this.api.getDefaultTerritories().subscribe(
         (response: any) => {
           if (response && response.body && response.body.defaultLocation) {
             const { latitude, longitude } = response.body.defaultLocation;
             this.loadMap(latitude, longitude);
           } else {
-            // Fallback to Delhi if no default territory
             this.loadMap(28.6139, 77.209);
           }
         },
         (error) => {
           console.error('Error fetching default territories:', error);
-          this.loadMap(28.6139, 77.209); // Fallback to Delhi
+          this.loadMap(28.6139, 77.209); 
         }
       );
     } else {
-      // For Business Users, use current location
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
@@ -1960,39 +1444,31 @@ export class LoginComponent implements OnInit {
             this.loadMap(this.latitude, this.longitude);
           },
           () => {
-            this.loadMap(28.6139, 77.209); // Default to Delhi if denied
+            this.loadMap(28.6139, 77.209); 
           }
         );
       } else {
-        this.loadMap(28.6139, 77.209); // Default to Delhi if geolocation not supported
+        this.loadMap(28.6139, 77.209); 
       }
     }
   }
-
-  // 2. Load Map and Place Marker
   loadMap(lat: number, lng: number) {
     const mapElement = document.getElementById('map');
-
     if (!mapElement) {
-
       return;
     }
-
     this.map2 = new google.maps.Map(mapElement, {
       center: { lat, lng },
       zoom: 15,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
     });
-
     this.currentMarker = new google.maps.Marker({
       position: { lat, lng },
       map: this.map2,
       draggable: true,
     });
-
     const geocoder = new google.maps.Geocoder();
     this.fetchAddressFromCoords(lat, lng, geocoder);
-
     google.maps.event.addListener(
       this.currentMarker,
       'dragend',
@@ -2002,28 +1478,18 @@ export class LoginComponent implements OnInit {
         this.fetchAddressFromCoords(this.latitude, this.longitude, geocoder);
       }
     );
-
-    // 🟢 Point select: Add click event on map
     google.maps.event.addListener(this.map2, 'click', (event: any) => {
       const clickedLat = event.latLng.lat();
       const clickedLng = event.latLng.lng();
-
-      // Move marker to clicked location
       this.currentMarker.setPosition({ lat: clickedLat, lng: clickedLng });
-
-      // Update stored coordinates
       this.latitude = clickedLat;
       this.longitude = clickedLng;
-
-      // Fetch address of clicked location
       this.fetchAddressFromCoords(clickedLat, clickedLng, geocoder);
     });
-
     this.setupSearchBox(geocoder);
   }
   setupSearchBox(geocoder: any) {
     setTimeout(() => {
-      // Create a container div for positioning
       const searchBoxContainer = document.createElement('div');
       searchBoxContainer.style.cssText = `
             position: absolute;
@@ -2031,8 +1497,6 @@ export class LoginComponent implements OnInit {
             left: 10%;
             z-index: 5;
         `;
-
-      // Create search box input dynamically
       const searchInput = document.createElement('input');
       searchInput.type = 'text';
       searchInput.id = 'searchBox';
@@ -2046,114 +1510,60 @@ export class LoginComponent implements OnInit {
             background-color: white;
             box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
         `;
-
-      // Append input to the container
       searchBoxContainer.appendChild(searchInput);
-
-      // Add container as a custom control on the map
       this.map2.controls[google.maps.ControlPosition.LEFT].push(
         searchBoxContainer
       );
-
-      // Initialize Google Places SearchBox
       const searchBox = new google.maps.places.SearchBox(searchInput);
-
       searchBox.addListener('places_changed', () => {
         const places = searchBox.getPlaces();
         if (!places || places.length === 0) return;
-
         const place = places[0];
         if (!place.geometry) return;
-
         const location = place.geometry.location;
         this.latitude = location.lat();
         this.longitude = location.lng();
-
-        // Center map and move marker
         this.map2.setCenter(location);
         this.currentMarker.setPosition(location);
-
-        // Fetch address for selected location
         this.fetchAddressFromCoords(this.latitude, this.longitude, geocoder);
       });
     }, 500);
   }
-  // 3. Setup Search Box for Address Search
-  // setupSearchBox(geocoder: any) {
-  //   setTimeout(() => {
-  //     const searchInput = document.getElementById(
-  //       'searchBox'
-  //     ) as HTMLInputElement;
-  //     if (!searchInput) return;
-
-  //     const searchBox = new google.maps.places.SearchBox(searchInput);
-
-  //     searchBox.addListener('places_changed', () => {
-  //       const places = searchBox.getPlaces();
-  //       if (!places || places.length === 0) return;
-
-  //       const place = places[0];
-  //       if (!place.geometry) return;
-
-  //       const location = place.geometry.location;
-  //       this.latitude = location.lat();
-  //       this.longitude = location.lng();
-
-  //       this.map2.setCenter(location);
-  //       this.currentMarker.setPosition(location);
-
-  //       this.fetchAddressFromCoords(this.latitude, this.longitude, geocoder);
-  //     });
-  //   }, 500);
-  // }
-
-  // 4. Fetch Address and Pincode from Coordinates (Reverse Geocode)
   fetchAddressFromCoords(lat: number, lng: number, geocoder: any) {
     const latLng = new google.maps.LatLng(lat, lng);
-
     geocoder.geocode({ location: latLng }, (results: any, status: any) => {
       if (status === 'OK' && results[0]) {
         const addressComponents = results[0].address_components;
-
-        // Filter out unwanted address components
         const filteredAddress = addressComponents
           .filter(
             (comp: any) =>
-              comp.types.includes('route') || // Street name
-              comp.types.includes('sublocality_level_1') || // Area/Locality
+              comp.types.includes('route') || 
+              comp.types.includes('sublocality_level_1') || 
               comp.types.includes('sublocality') ||
-              comp.types.includes('neighborhood') // Neighborhood
+              comp.types.includes('neighborhood') 
           )
           .map((comp: any) => comp.long_name)
           .join(', ');
-
         this.locationAddress = filteredAddress || '';
         this.addressForm.ADDRESS_LINE_2 = this.locationAddress;
-
         const postalCode =
           addressComponents.find((comp: any) =>
             comp.types.includes('postal_code')
-          )?.long_name || '416310'; // Fallback Pincode if not found
-
+          )?.long_name || '416310'; 
         if (results[0].plus_code && results[0].plus_code.global_code) {
           this.locationCode = results[0].plus_code.global_code.split(' ').pop();
         }
       } else {
-
       }
     });
   }
-
   getAddressComponent(components: any[], type: string): string {
     const component = components.find((comp) => comp.types.includes(type));
     return component ? component.long_name : '';
   }
-
   getpincode(pincodeeeee: any) {
-    let pincode: string = this.addressForm.PINCODE || ''; // Use existing PINCODE if available
-
+    let pincode: string = this.addressForm.PINCODE || ''; 
     if (pincode || pincodeeeee) {
-      // If PINCODE is already available, use it directly
       if (pincode != null && pincode != null && pincode != '') {
         this.fetchPincodeData(pincode);
       } else if (
@@ -2164,37 +1574,29 @@ export class LoginComponent implements OnInit {
         this.fetchPincodeData(pincodeeeee);
       }
     } else {
-      // Get current location's PINCODE if not available
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
-
           try {
             const response = await fetch(
               `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
             );
             const data = await response.json();
-
             pincode = data.address.postcode || '';
-
-            this.fetchPincodeData(pincode); // Fetch data with detected pincode
+            this.fetchPincodeData(pincode); 
           } catch (error: any) {
-
-            this.pincodeData = []; // Clear data on error
-            this.pincodeloading = false; // Hide loading state
+            this.pincodeData = []; 
+            this.pincodeloading = false; 
           }
         },
         (error) => {
-
-          this.pincodeData = []; // Clear data on error
-          this.pincodeloading = false; // Hide loading state
+          this.pincodeData = []; 
+          this.pincodeloading = false; 
         }
       );
     }
   }
-
-  // Common method to fetch pincode data
   fetchPincodeData(pincode: string) {
     this.isLoading = true;
     if (pincode) {
@@ -2210,41 +1612,31 @@ export class LoginComponent implements OnInit {
           next: (data: any) => {
             this.pincodeData = data.data;
             this.selectPincode(this.pincodeData[0]);
-            // this.searchPincode = pincode;
-            // if (!this.addressForm.PINCODE_ID) {
-            //   this.addressForm.PINCODE_ID = this.pincodeData[0].ID;
-            // }
             this.addressForm.PINCODE = '';
             this.addressForm.COUNTRY_ID = this.pincodeData[0].COUNTRY_ID;
             this.addressForm.STATE_ID = this.pincodeData[0].STATE;
             this.addressForm.DISTRICT_ID = this.pincodeData[0].DISTRICT;
             this.addressForm.DISTRICT_NAME = this.pincodeData[0].DISTRICT_NAME;
-            // this.addressForm.TERRITORY_ID = this.pincodeData[0].TERRITORY_ID;
             if (
               this.addressForm.PINCODE !== '' &&
               this.addressForm.PINCODE !== undefined &&
               this.addressForm.PINCODE !== null
             ) {
-              // this.selectPincode(this.addressForm.PINCODE)
               this.getTerritory();
             } else {
             }
-            // alert(this.addressForm.TERRITORY_ID)
             this.getStateData();
-
-            this.pincodeloading = false; // Hide loading state
+            this.pincodeloading = false; 
             this.isLoading = false;
           },
           error: (error: any) => {
-
-            this.pincodeData = []; // Clear data on error
-            this.pincodeloading = false; // Hide loading state
+            this.pincodeData = []; 
+            this.pincodeloading = false; 
             this.isLoading = false;
           },
         });
     }
   }
-
   stateData: any = [];
   getStateData() {
     this.api
@@ -2258,37 +1650,31 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: (data: any) => {
           this.stateData = data.data;
-
-          this.pincodeloading = false; // Hide loading state
+          this.pincodeloading = false; 
         },
         error: (error: any) => {
-
-          this.stateData = []; // Clear data on error
-          this.pincodeloading = false; // Hide loading state
+          this.stateData = []; 
+          this.pincodeloading = false; 
         },
       });
   }
   selectState(state: any) {
     this.selectedState = state.NAME;
     this.addressForm.STATE_ID = state.ID;
-
     this.showStateDropdown = false;
   }
   showAddressDetailsForm = false;
   user: User | null = null;
   confirmLocation(): void {
     const customerType = localStorage.getItem('customerType');
-
     if (customerType == 'I') {
-
       this.showMap = false;
       this.showAddressDetailsForm = false;
       window.location.href = '/service';
       return;
     }
-    // Define a default static location (e.g., New Delhi)
-    const defaultLatitude = 28.6139; // Example: New Delhi latitude
-    const defaultLongitude = 77.209; // Example: New Delhi longitude
+    const defaultLatitude = 28.6139; 
+    const defaultLongitude = 77.209; 
     this.addressForm.PINCODE = '';
     if (this.currentMarker) {
       const position = this.currentMarker.getPosition();
@@ -2296,30 +1682,20 @@ export class LoginComponent implements OnInit {
         this.latitude = position.lat();
         this.longitude = position.lng();
       } else {
-        // Fallback to default location if marker position is not available
         this.latitude = defaultLatitude;
         this.longitude = defaultLongitude;
       }
     } else {
-      // If no marker is present, set to default location directly
       this.latitude = defaultLatitude;
       this.longitude = defaultLongitude;
     }
     const registerData = this.data;
-    // Fetch address based on coordinates
-
     this.getAddress(this.latitude, this.longitude);
-
-    // Hide the map
     this.showMap = false;
     this.closeregister();
-
-    // Show the address form and initialize with location data
     this.showAddressDetailsForm = true;
     this.addressForm.GEO_LOCATION = `${this.latitude},${this.longitude}`;
     this.data = registerData;
-
-    // Pre-fill user data if available
     if (this.user && this.user.ID) {
       this.addressForm.CUSTOMER_ID = this.user.ID;
       if (this.user.EMAIL_ID) {
@@ -2327,19 +1703,13 @@ export class LoginComponent implements OnInit {
       }
     }
   }
-
   getAddress(latitude: number, longitude: number): void {
     const geocoder = new google.maps.Geocoder();
-
     geocoder.geocode(
       { location: { lat: latitude, lng: longitude } },
       (results: any, status: any) => {
         if (status === google.maps.GeocoderStatus.OK && results[0]) {
           const addressComponents = results[0].address_components;
-
-          // Extract relevant address details
-          // this.addressForm.ADDRESS_LINE_1 = results[0].formatted_address;
-
           const city = addressComponents.find((comp: any) =>
             comp.types.includes('locality')
           );
@@ -2349,24 +1719,16 @@ export class LoginComponent implements OnInit {
           const country = addressComponents.find((comp: any) =>
             comp.types.includes('country')
           );
-          // const postalCode = addressComponents.find((comp: any) =>
-          //   comp.types.includes('postal_code')
-          // );
-
           const postalCode = addressComponents.find((comp: any) =>
             comp.types.includes('postal_code')
-          )?.long_name; // Fallback Pincode if not found
+          )?.long_name; 
           this.selectedPincode = '';
           this.addressForm.PINCODE = '';
-
           this.addressForm.PINCODE_ID = '';
           this.addressForm.CITY_NAME = city ? city.long_name : '';
           this.selectedState = state ? state.long_name : '';
-          // this.addressForm.COUNTRY_ID = country ? country.long_name : '';
-          // this.addressForm.PINCODE = postalCode ? postalCode.long_name : '';
           this.getpincode(postalCode);
         } else {
-
           this.addressForm.ADDRESS_LINE_1 = 'Unknown Area';
           this.addressForm.ADDRESS_LINE_2 = 'Unknown City';
           this.addressForm.CITY_ID = 0;
@@ -2377,7 +1739,6 @@ export class LoginComponent implements OnInit {
       }
     );
   }
-
   addressForm: AddressForm = {
     CUSTOMER_ID: 0,
     CUSTOMER_TYPE: 1,
@@ -2403,17 +1764,12 @@ export class LoginComponent implements OnInit {
     CLIENT_ID: 1,
     PINCODE_FOR: '',
   };
-
-  // Mock data for dropdowns - replace with actual API calls
   countries: LocationOption[] = [{ id: 1, name: 'India' }];
-
   states: LocationOption[] = [{ id: 1, name: 'Maharashtra' }];
-
   cities: LocationOption[] = [
     { id: 1, name: 'Mumbai' },
     { id: 2, name: 'Pune' },
   ];
-
   districts: LocationOption[] = [
     { id: 1, name: 'Mumbai City' },
     { id: 2, name: 'Mumbai Suburban' },
@@ -2421,7 +1777,6 @@ export class LoginComponent implements OnInit {
   isConfirmLoading = false;
   addressSubmitted: boolean = false;
   isAddrssSaving: boolean = false;
-
   saveAddress(form: NgForm): void {
     this.addressSubmitted = true;
     if (form.invalid) {
@@ -2430,19 +1785,13 @@ export class LoginComponent implements OnInit {
     if (this.latitude && this.longitude) {
       this.addressForm.GEO_LOCATION = `${this.latitude},${this.longitude}`;
     }
-
-    // Add validation here
-
     this.isAddrssSaving = true;
-    // this.data.STATUS = 1;
     this.addressForm.CUSTOMER_TYPE = 1;
     this.addressForm.CUSTOMER_ID = this.USER_ID;
     this.addressForm.CONTACT_PERSON_NAME = this.data.CUSTOMER_NAME;
     this.addressForm.MOBILE_NO = this.data.CUSTOMER_MOBILE_NO;
     this.addressForm.EMAIL_ID = this.data.EMAIL_ID;
     this.addressForm.ADDRESS_LINE_1 = this.addressForm.ADDRESS_LINE_1;
-    // this.addressForm.CONTACT_PERSON_NAME =  this.use
-
     this.data.CUSTOMER_TYPE = 1;
     if (this.addressForm.TYPE == 'Home') {
       this.addressForm.TYPE = 'H';
@@ -2451,13 +1800,9 @@ export class LoginComponent implements OnInit {
     } else if (this.addressForm.TYPE == 'Other') {
       this.addressForm.TYPE = 'O';
     }
-
     this.addressForm.IS_DEFAULT = true;
-
     const registerData = this.data;
-
     this.isConfirmLoading = true;
-
     if (!this.asGuest) {
       this.loadData();
       this.api.RegistrationCustomerAddress(this.addressForm).subscribe(
@@ -2467,41 +1812,33 @@ export class LoginComponent implements OnInit {
             this.isAddrssSaving = false;
             this.isOk = false;
             this.toastr.success('Address has been saved successfully.', '');
-
             sessionStorage.setItem(
               'userAddress',
               this.commonFunction.encryptdata(this.addressForm.ADDRESS_LINE_2)
             );
             this.isloginSendOTP = false;
             this.modalService1.closeModal();
-            // this.otpSent = true;
-            // this.showOtpModal = true;
             this.USER_ID = successCode.USER_ID;
             this.USER_NAME = successCode.USER_NAME;
             this.showAddressDetailsForm = false;
             this.statusCode = '';
             this.data = registerData;
-
             this.isConfirmLoading = false;
-
             if (successCode.body?.SUBSCRIBED_CHANNELS.length > 0) {
               const channelNames = successCode.body.SUBSCRIBED_CHANNELS.map(
                 (channel: any) => channel.CHANNEL_NAME
               );
-
               this.api.subscribeToMultipleTopics(channelNames).subscribe(
                 (successCode: any) => { },
                 (error) => {
                   if (error.status === 300) {
                   } else if (error.status === 500) {
-                    // Handle server-side error
                     this.toastr.error(
                       'An unexpected error occurred. Please try again later.',
                       ''
                     );
                   } else {
                     this.isConfirmLoading = false;
-                    // Generic error handling
                     this.toastr.error(
                       'An unknown error occurred. Please try again later.',
                       ''
@@ -2521,7 +1858,6 @@ export class LoginComponent implements OnInit {
             this.isConfirmLoading = false;
             this.stopLoader();
           }
-
           this.isConfirmLoading = false;
           this.stopLoader();
         },
@@ -2529,20 +1865,16 @@ export class LoginComponent implements OnInit {
           this.isConfirmLoading = false;
           this.isAddrssSaving = false;
           this.stopLoader();
-          // Handle error if login fails
           if (error.status === 300) {
             this.isAddrssSaving = false;
-            // Handle specific HTTP error (e.g., invalid credentials)
             this.toastr.error('Email-ID is already exists', '');
           } else if (error.status === 500) {
-            // Handle server-side error
             this.toastr.error(
               'An unexpected error occurred. Please try again later.',
               ''
             );
           } else {
             this.isAddrssSaving = false;
-            // Generic error handling
             this.toastr.error(
               'An unknown error occurred. Please try again later.',
               ''
@@ -2551,12 +1883,11 @@ export class LoginComponent implements OnInit {
         }
       );
     } else {
-      const addressFormString = JSON.stringify(this.addressForm); // Convert object to string
+      const addressFormString = JSON.stringify(this.addressForm); 
       const encryptedAddress =
-        this.commonFunction.encryptdata(addressFormString); // Encrypt string
+        this.commonFunction.encryptdata(addressFormString); 
       sessionStorage.setItem('userAddress', encryptedAddress);
       localStorage.setItem('userAddress', encryptedAddress);
-      // sessionStorage.setItem('userAddress', this.commonFunction.encryptdata(this.addressForm));
       var abc = 0;
       sessionStorage.setItem(
         'userId',
@@ -2566,9 +1897,7 @@ export class LoginComponent implements OnInit {
         'userId',
         this.commonFunction.encryptdata(abc.toString())
       );
-
       sessionStorage.getItem('userId');
-
       sessionStorage.setItem(
         'customertype',
         this.commonFunction.encryptdata('I')
@@ -2583,14 +1912,9 @@ export class LoginComponent implements OnInit {
       this.statusCode = '';
       window.location.href = '/service';
     }
-
-    // Call your API to save the address
-    // Reset form and hide after successful save
   }
-
   cancelAddressForm(): void {
     this.showAddressDetailsForm = false;
-    // Reset form data
     this.addressForm = {
       CUSTOMER_ID: 0,
       CUSTOMER_TYPE: 1,
@@ -2621,8 +1945,6 @@ export class LoginComponent implements OnInit {
   onshowMap() {
     this.asGuest = true;
     localStorage.setItem('isLogged', 'true');
-
-    // Set default address for guest users
     this.api.setDefaultPincodeForHomeUser().subscribe({
       next: () => {
         this.showMap = false;
@@ -2632,7 +1954,6 @@ export class LoginComponent implements OnInit {
         window.location.href = '/service';
       },
       error: () => {
-        // Even if setting address fails, redirect to service
         this.showMap = false;
         this.modalVisible = false;
         this.openVerify = false;
@@ -2641,7 +1962,6 @@ export class LoginComponent implements OnInit {
       }
     });
   }
-
   showStateDropdown: boolean = false;
   searchState: string = '';
   filteredStates: any[] = [];
@@ -2654,7 +1974,6 @@ export class LoginComponent implements OnInit {
   }
   filterStates(event: any) {
     const query = event.target.value.toLowerCase();
-
     this.filteredStates = this.stateData.filter(
       (item: any) =>
         item.NAME.toLowerCase().includes(query) ||
@@ -2667,7 +1986,6 @@ export class LoginComponent implements OnInit {
     this.showPincodeDropdown = false;
     this.showCountryDropdown = false;
   }
-
   loadData() {
     this.loaderService.showLoader();
   }
@@ -2676,7 +1994,6 @@ export class LoginComponent implements OnInit {
     this.dataLoaded = true;
     this.loaderService.hideLoader();
   }
-
   getPlaceholder() {
     return this.inputType === 'email'
       ? 'Enter email address'
@@ -2684,7 +2001,6 @@ export class LoginComponent implements OnInit {
         ? 'Enter mobile number'
         : 'Enter email ID / mobile number';
   }
-
   alphaOnly(event: any) {
     event = event ? event : window.event;
     var charCode = event.which ? event.which : event.keyCode;
@@ -2697,10 +2013,8 @@ export class LoginComponent implements OnInit {
     }
     return true;
   }
-
   backtologin() {
-    // Close the register modal (assuming `this.register` is the reference to the register modal)
-    this.modalService1.closeModal(); // This closes the register modal
+    this.modalService1.closeModal(); 
     this.mobileNumberorEmail = '';
     this.registrationSubmitted = false;
     this.statusCode = '';
@@ -2717,18 +2031,8 @@ export class LoginComponent implements OnInit {
     localStorage.clear();
     this.cookie.deleteAll();
     window.location.reload();
-    // if (this.modalVisible) {
-    //   this.modalService.dismissAll();
-    //   this.modalService.open(this.showlogin, {
-    //     backdrop: "static",
-    //     keyboard: false,
-    //     centered: true,
-    //   });
-    // }
   }
-
   agreeConsent: boolean = false;
-
   openTerms() {
     window.open(this.api.weburl + 'terms-conditions', '_blank');
   }
@@ -2738,15 +2042,8 @@ export class LoginComponent implements OnInit {
   onUserTypeChange() {
     this.setInputTypeByUserType();
     this.statusCode = '';
-    // Clear business-specific fields when switching to home user
     if (this.userType === 'home') {
-      // this.data.ORGANIZATION_NAME = '';
-      // this.data.SHORT_CODE = '';
-      // this.data.CONTACT_PERSON_NAME = '';
-      // this.data.PAN_NUMBER = '';
-      // this.data.GST_NUMBER = '';
     } else if (this.userType === 'business') {
-      // Clear personal name when switching to business user
       this.data.CUSTOMER_NAME = '';
     }
   }
@@ -2754,22 +2051,13 @@ export class LoginComponent implements OnInit {
     event.target.value = event.target.value.toUpperCase();
     this.data.PAN_NUMBER = event.target.value;
   }
-
-  // Method to format GST input to uppercase
   onGstInput(event: any) {
     event.target.value = event.target.value.toUpperCase();
     this.data.GST_NUMBER = event.target.value;
   }
-
-
   setInputTypeByUserType() {
-    // if (this.userType === 'business') {
-    //   this.inputType = 'email';
-    //   this.mobileNumberorEmail = '';
-    // } else {
     this.inputType = 'initial';
     this.mobileNumberorEmail = '';
-    // }
   }
   PUBLIC_EMAIL_DOMAINS = [
     "gmail.com", "googlemail.com", "yahoo.com", "ymail.com", "rocketmail.com",
@@ -2785,35 +2073,18 @@ export class LoginComponent implements OnInit {
     "asia.com", "india.com", "email.com", "consultant.com", "post.com",
     "dr.com", "techie.com", "engineer.com"
   ];
-
-
   isPublicBusinessEmail(email: string): boolean {
     if (!email || this.userType !== 'business') return false;
-
     let domain = email.split('@')[1]?.toLowerCase();
     return this.PUBLIC_EMAIL_DOMAINS.includes(domain);
   }
-
   selectedconflicttype(customerTypeFromUI: 'B' | 'I') {
     this.userType = customerTypeFromUI;
     this.isloadingconflict = false;
     this.loginSubmitted = true;
-
-
-    // Determine type based on input value
     this.type = this.isEmail(this.mobileNumberorEmail) ? 'E' : 'M';
-
-    // Determine if showing dropdown (for mobile input)
-    const showDropdown = this.type === 'M'; // true if mobile, false if email
-
-    // Get customer type from user selection or session
-    // let customerType = this.userType === 'business' ? 'B' : 'I';
+    const showDropdown = this.type === 'M'; 
     let customerType = '';
-
-    // Or if you're getting it from session/local storage:
-    // const storedCustomerType = sessionStorage.getItem('customertype');
-    // let customerType = storedCustomerType ? this.commonFunction.decryptdata(storedCustomerType) : 'I';
-
     this.isloginSendOTP = true;
     this.statusCode = '';
     this.modalVisible = false;
@@ -2822,10 +2093,10 @@ export class LoginComponent implements OnInit {
     customerType = customerTypeFromUI;
     this.api
       .sendOTP(
-        this.selectedCountryCode,  // COUNTRY_CODE: selectedCountry.value
-        this.mobileNumberorEmail,   // TYPE_VALUE: mobile.value
-        this.type,                  // TYPE: showDropdown ? 'M' : 'E'
-        customerType                // CUSTOMER_TYPE: type
+        this.selectedCountryCode,  
+        this.mobileNumberorEmail,   
+        this.type,                  
+        customerType                
       )
       .subscribe({
         next: (successCode: any) => {
@@ -2849,7 +2120,6 @@ export class LoginComponent implements OnInit {
                 this.commonFunction.encryptdata('I')
               );
             }
-
             this.isloginSendOTP = false;
             this.modalService1.closeModal();
             this.otpSent = true;
@@ -2879,7 +2149,6 @@ export class LoginComponent implements OnInit {
         },
         error: (error) => {
           this.modalVisible = true;
-          // Handle error if login fails
           if (error.status === 400) {
             this.statusCode =
               'The user is not registered or has been deactivated';
@@ -2897,5 +2166,4 @@ export class LoginComponent implements OnInit {
         },
       });
   }
-
 }

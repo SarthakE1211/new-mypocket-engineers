@@ -104,7 +104,6 @@
     transform: rotate(1turn);
   }
 }
-
 @keyframes bubble {
   0% {
   }
@@ -112,7 +111,6 @@
     transform: scale(1);
   }
 }
-
 @keyframes heartbit {
   0% {
     transform: scale(0);
@@ -135,7 +133,6 @@
     opacity: 0;
   }
 }
-
 @keyframes search-bg-1 {
   0% {
     right: -20px;
@@ -147,7 +144,6 @@
     right: -11px;
   }
 }
-
 @keyframes search-bg-2 {
   0% {
     right: -10px;
@@ -159,7 +155,6 @@
     right: 0;
   }
 }
-
 @keyframes search-bg-3 {
   0% {
     right: 0;
@@ -171,7 +166,6 @@
     right: 10px;
   }
 }
-
 @keyframes animation-x {
   0% {
     background-position-x: 0;
@@ -180,7 +174,6 @@
     background-position-x: 1920px;
   }
 }
-
 @keyframes bounce-1 {
   0% {
     transform: translateY(0);
@@ -192,19 +185,16 @@
     transform: translateY(0);
   }
 }
-
 @keyframes smoothScroll {
   0% {
     -webkit-transform: translateY(-40px);
     transform: translateY(-40px);
   }
-
   100% {
     -webkit-transform: translateY(0px);
     transform: translateY(0px);
   }
 }
-
 @keyframes sway {
   0% {
     transform: rotate(8deg);
@@ -216,7 +206,6 @@
     transform: rotate(8deg);
   }
 }
-
 // captcha
 @keyframes fadein {
 	0% {opacity:0;}
@@ -268,7 +257,6 @@
 		border-color:transparent;
 	}
 }
-
 // for rtl layout
 @keyframes search-bg-4 {
   0% {
@@ -281,7 +269,6 @@
     left: -11px;
   }
 }
-
 @keyframes search-bg-5 {
   0% {
     left: -10px;
@@ -293,7 +280,6 @@
     left: 0;
   }
 }
-
 @keyframes search-bg-6 {
   0% {
     left: 0;

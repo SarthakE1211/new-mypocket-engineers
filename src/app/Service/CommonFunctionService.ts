@@ -1,105 +1,33 @@
-// import { differenceInCalendarDays } from 'date-fns';
 import * as CryptoJS from 'crypto-js';
-
 export class CommonFunctionService {
-
   constructor() { }
-
-  // public commonFunction = new CommonFunctionService(); ......declare this in your ts file
-
-  //// Email Pattern
-  // [pattern]="commonFunction.emailpattern"
-  // emailpattern =
-  //   // /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  //   /^(?!.*\.\.)[a-zA-Z0-9](?!.*_$)[a-zA-Z0-9._%+-]*[a-zA-Z0-9]@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,63}$/;
   emailpattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/;
-  //// Name Pattern
-
-  // [pattern]="commonFunction.namepatt"
   namepatt = /[a-zA-Z][a-zA-Z ]+/;
   panPattern = /[A-Z]{5}[0-9]{4}[A-Z]{1}/
-  //// Mobile Number Pattern
-  // [pattern]="commonFunction.mobpattern"
   panpattern = /[A-Z]{5}[0-9]{4}[A-Z]{1}/
   aadharpattern = /^\d{12}$/
   mobpattern = /^[6-9]\d{9}$/;
   passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,15}$/;
-  //// Pincode Pattern
-  // pinpatt = /^-?(0|[1-9]\d*)?$/;
-  // [pattern]="commonFunction.pinpatt"
   pinpatt = /([1-9]{1}[0-9]{5}|[1-9]{1}[0-9]{3}\\s[0-9]{3})/;
-
-  //// Only Number Pattern
-  // [pattern]="commonFunction.onlynumber"
   onlynumber = /^[0-9]*$/;
-
-  ////  Date Format 09/12/2023
-  // [nzFormat]="commonFunction.dateFormat"
   dateFormat = 'dd/MM/yyyy';
-
-  ////  Date Format 09/DEC/2023
-  // [nzFormat]="commonFunction.dateFormatMMM"
   dateFormatMMM = 'dd/MM/yyyy';
-
-  ////  Month Format DEC
-  // [nzFormat]="commonFunction.onlyMonthFormatMMM"
   onlyMonthFormatMMM = 'MMM';
-  ////  Month DEC/2023
-  // [nzFormat]="commonFunction.FormatMMMYYYY"
   FormatMMMYYYY = 'MMM/yyyy';
-
-  ////  Month Format 12
-  // [nzFormat]="commonFunction.onlyMonthFormatMM"
   onlyMonthFormatMM = 'MM';
-
-  ////  Date & Time Format 09/12/2023 06:22:10
-  // [nzFormat]="commonFunction.dateMMTimeSecFormat"
   dateMMTimeSecFormat = 'dd/MM/yyyy HH:mm:ss';
-
-  ////  Date & Time Format 09/DEC/2023 06:22:10
-  // [nzFormat]="commonFunction.dateMMMTimeSecFormat"
   dateMMMTimeSecFormat = 'dd/MMM/yyyy HH:mm:ss';
-
-  ////  Date & Time Format 09/12/2023 06:22
-  // [nzFormat]="commonFunction.dateMMTimeFormat"
   dateMMTimeFormat = 'dd/MM/yyyy HH:mm';
-
-  ////  Date & Time Format 09/DEC/2023 06:22
-  // [nzFormat]="commonFunction.dateMMMTimeFormat"
   dateMMMTimeFormat = 'dd/MMM/yyyy HH:mm';
-
-  ////  Time Format 06:22:10
   timeFormatSec = 'HH:mm:ss';
-
-  ////  Time Format 06:22
   timeFormat = 'HH:mm';
-
-  //// Account Number Pattern
-  // [pattern]="commonFunction.Accountpatt"
   Accountpatt = /^\d{9,18}$/;
-
-  //// IFSC Code Pattern
-  // [pattern]="commonFunction.IFSCpatt"
   IFSCpatt = /^[A-Z]{4}0[A-Z0-9]{6}$/;
-
-  //// Pincode Pattern
-  // [pattern]="commonFunction.PincodePatt"
   PincodePatt = /^[1-9][0-9]{5}$/;
-
-  //// GST Pattern
-  // [pattern]="commonFunction.GSTpattern"
   GSTpattern: RegExp =
     /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
-
-  //// Pan Card Number Pattern
-  // [pattern]="commonFunction.PanPattern"
   PanPattern: RegExp = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
-
-
-  // Pattern For Vehical Number
-  // [pattern]="commonFunction.vehicleNumberPattern"
   vehicleNumberPattern = /^[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}$/;
-  //// Only number
   omit(event: any) {
     const charCode = event.which ? event.which : event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -107,55 +35,42 @@ export class CommonFunctionService {
     }
     return true;
   }
-
   allowOnlyaplhaandnum(event: any) {
     event = event ? event : window.event;
     const charCode = event.which ? event.which : event.keyCode;
-
-    // Check if the character is a letter (A-Z, a-z) or a number (0-9)
     if (
-      !(charCode >= 65 && charCode <= 90) && // Uppercase letters (A-Z)
-      !(charCode >= 97 && charCode <= 122) && // Lowercase letters (a-z)
-      !(charCode >= 48 && charCode <= 57) // Numbers (0-9)
+      !(charCode >= 65 && charCode <= 90) && 
+      !(charCode >= 97 && charCode <= 122) && 
+      !(charCode >= 48 && charCode <= 57) 
     ) {
-      return false; // Block the key press
+      return false; 
     }
-    return true; // Allow the key press
+    return true;
   }
   passPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[@!#$%^&*])[A-Za-z\d@!#$%^&*]{8,20}$/
   email = /^(?!.*\.\.)[a-zA-Z0-9](?:[a-zA-Z0-9._%+-]*[a-zA-Z0-9])?@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z]{2,})+$/;
-
   forCostFunction(event: KeyboardEvent) {
     const input = event.target as HTMLInputElement;
     const charCode = event.which ? event.which : event.keyCode;
     const char = String.fromCharCode(charCode);
-
-    // Allow numbers (0-9), dot (.), and control keys (e.g., backspace)
     if (
-      (charCode >= 48 && charCode <= 57) || // Numbers 0-9
-      charCode === 46 || // Dot (.)
-      charCode === 8 || // Backspace
-      charCode === 37 || // Left arrow
-      charCode === 39 // Right arrow
+      (charCode >= 48 && charCode <= 57) || 
+      charCode === 46 ||
+      charCode === 8 || 
+      charCode === 37 || 
+      charCode === 39 
     ) {
-      // Prevent leading dots
       if (char === "." && (!input.value || input.value.includes("."))) {
         return false;
       }
-
-      // Allow only two digits after the dot
       const [integerPart, decimalPart] = input.value.split(".");
       if (decimalPart && decimalPart.length >= 2 && input.selectionStart! > input.value.indexOf(".")) {
         return false;
       }
-
       return true;
     }
-
-    // Block any other character
     return false;
   }
-  ///Allow only characters
   alphaOnly(event: any) {
     event = event ? event : window.event;
     var charCode = event.which ? event.which : event.keyCode;
@@ -168,122 +83,84 @@ export class CommonFunctionService {
     }
     return true;
   }
-
   decimalpattern = /^\d{0,7}(\.\d{0,2})?$/;
-
-
-
   allowOnly1(event: any) {
     event = event ? event : window.event;
     const charCode = event.which ? event.which : event.keyCode;
-
-    // Check if the character is a letter (A-Z, a-z) or allowed special characters
     if (
-      !(charCode >= 65 && charCode <= 90) && // Uppercase letters (A-Z)
-      !(charCode >= 97 && charCode <= 122) && // Lowercase letters (a-z)
+      !(charCode >= 65 && charCode <= 90) && 
+      !(charCode >= 97 && charCode <= 122) && 
       !['/', '-', '(', ')', '_', '&'].includes(String.fromCharCode(charCode))
     ) {
-      return false; // Block the key press
+      return false; 
     }
-    return true; // Allow the key press
+    return true; 
   }
   allowOnly2(event: any) {
     event = event ? event : window.event;
     const charCode = event.which ? event.which : event.keyCode;
-
-    // Check if the character is a letter (A-Z, a-z) or allowed special characters
     if (
-      !(charCode >= 65 && charCode <= 90) && // Uppercase letters (A-Z)
-      !(charCode >= 97 && charCode <= 122) && // Lowercase letters (a-z)
+      !(charCode >= 65 && charCode <= 90) && 
+      !(charCode >= 97 && charCode <= 122) && 
       !['/', '(', ')', '_', '&'].includes(String.fromCharCode(charCode))
     ) {
-      return false; // Block the key press
+      return false; 
     }
-    return true; // Allow the key press
+    return true;
   }
   allowOnly(event: any) {
     event = event ? event : window.event;
     const charCode = event.which ? event.which : event.keyCode;
-
-    // Convert the charCode to its corresponding character
     const char = String.fromCharCode(charCode);
-
-    // Check if the character is a letter (A-Z, a-z), a number (0-9), a space, or an allowed special character
     if (
-      !(charCode >= 65 && charCode <= 90) && // Uppercase letters (A-Z)
-      !(charCode >= 97 && charCode <= 122) && // Lowercase letters (a-z)
-      !(charCode >= 48 && charCode <= 57) && // Numbers (0-9)
-      charCode !== 32 && // Space
-      !['/', '-', '(', ')', '_', '&', '.', ','].includes(char) // Allowed special characters
+      !(charCode >= 65 && charCode <= 90) && 
+      !(charCode >= 97 && charCode <= 122) && 
+      !(charCode >= 48 && charCode <= 57) && 
+      charCode !== 32 &&
+      !['/', '-', '(', ')', '_', '&', '.', ','].includes(char) 
     ) {
-      return false; // Block the key press
+      return false; 
     }
-    return true; // Allow the key press
+    return true; 
   }
-
-  //   onlyas(event: any) {
-  //     event = event ? event : window.event;
-  //     var charCode = event.which ? event.which : event.keyCode;
-  //     if (
-  //       (charCode >= 65 && charCode <= 90) || // A-Z
-  //       (charCode >= 97 && charCode <= 122) || // a-z
-  //       (charCode >= 32 && charCode <= 47) || // Special characters between space and '/'
-  //       (charCode >= 58 && charCode <= 64) || // Special characters between ':' and '@'
-  //       (charCode >= 91 && charCode <= 96) || // Special characters between '[' and '`'
-  //       (charCode >= 123 && charCode <= 126) // Special characters between '{' and '~'
-  //     ) {
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  // }
-
   address1pattern = /^[a-zA-Z0-9/\-(),:. _&]*$/
   address1Chars(event: KeyboardEvent): void {
-    const allowedChars = /^[a-zA-Z0-9/\-(),:. _&]*$/;  // Regex to match allowed characters
+    const allowedChars = /^[a-zA-Z0-9/\-(),:. _&]*$/; 
     const char = String.fromCharCode(event.charCode);
-
-    // If the character is not allowed, prevent the default action (input)
     if (!allowedChars.test(char)) {
       event.preventDefault();
     }
   }
   validateInput(event: KeyboardEvent): void {
-    const allowedPattern = /^[a-zA-Z\s\/\(\)_\-]*$/; // Updated pattern
+    const allowedPattern = /^[a-zA-Z\s\/\(\)_\-]*$/; 
     const char = String.fromCharCode(event.keyCode || event.which);
-
     if (!allowedPattern.test(char)) {
-      event.preventDefault(); // Prevent invalid characters
+      event.preventDefault(); 
     }
   }
   allowBusinessNameChars(event: KeyboardEvent): void {
-    const allowedChars = /^[A-Za-z0-9\-_. ()&]+$/;  // Regex to match allowed characters
+    const allowedChars = /^[A-Za-z0-9\-_. ()&]+$/;  
     const char = String.fromCharCode(event.charCode);
-
-    // If the character is not allowed, prevent the default action (input)
     if (!allowedChars.test(char)) {
       event.preventDefault();
     }
   }
-
   onlyalpha(event: any) {
     event = event ? event : window.event;
     var charCode = event.which ? event.which : event.keyCode;
     if (
-      (charCode >= 65 && charCode <= 90) || // A-Z
-      (charCode >= 97 && charCode <= 122) || // a-z
-      (charCode >= 32 && charCode <= 47) || // Special characters between space and '/'
-      (charCode >= 58 && charCode <= 64) || // Special characters between ':' and '@'
-      (charCode >= 91 && charCode <= 96) || // Special characters between '[' and '`'
-      (charCode >= 123 && charCode <= 126) // Special characters between '{' and '~'
+      (charCode >= 65 && charCode <= 90) || 
+      (charCode >= 97 && charCode <= 122) || 
+      (charCode >= 32 && charCode <= 47) ||
+      (charCode >= 58 && charCode <= 64) || 
+      (charCode >= 91 && charCode <= 96) ||
+      (charCode >= 123 && charCode <= 126) 
     ) {
       return true;
     } else {
       return false;
     }
   }
-
-
   onlyas(event: any) {
     event = event ? event : window.event;
     var charCode = event.which ? event.which : event.keyCode;
@@ -296,11 +173,8 @@ export class CommonFunctionService {
         return true;
       }
     }
-    return false; // Disallowing other characters
+    return false; 
   }
-
-
-  ///// Allow only number and character
   numchar(event: any) {
     const charCode = event.which ? event.which : event.keyCode;
     if (charCode == 32) return true;
@@ -309,11 +183,9 @@ export class CommonFunctionService {
     if (97 <= charCode && charCode <= 122) return true;
     return false;
   }
-
-  ///// Allow only number and character
   omit_special_char(event: any) {
     var k;
-    k = event.charCode; //         k = event.keyCode;  (Both can be used)
+    k = event.charCode;
     return (
       (k > 64 && k < 91) ||
       (k > 96 && k < 123) ||
@@ -322,87 +194,62 @@ export class CommonFunctionService {
       (k >= 48 && k <= 57)
     );
   }
-
-  ///// Amount function
   onlynumdotAmount(event: any) {
     event = event ? event : window.event;
     var charCode = event.which ? event.which : event.keyCode;
     var input = event.target.value || '';
-
-    // Allowing digits (0-9)
     if (charCode >= 48 && charCode <= 57) {
-      // Prevent input starting with "0" unless followed by a dot (e.g., "0.1")
       if (input === '0') return false;
-
-      // Allow digits after conditions are met
       var dotIndex = input.indexOf('.');
       if (dotIndex !== -1 && input.length - dotIndex > 2) {
-        return false; // Allow only two digits after a dot
+        return false;
       }
       return true;
     }
-
-    // Allowing only one dot, not as the first character
     if (charCode === 46) {
       if (input === '' || input.indexOf('.') !== -1) {
-        return false; // Disallow dot as the first character or multiple dots
+        return false; 
       }
       return true;
     }
-
-    return false; // Disallow other characters
+    return false; 
   }
-
   onlynumdot(event: any) {
     event = event ? event : window.event;
     var charCode = event.which ? event.which : event.keyCode;
-
-    // Allowing digits (0-9)
     if (charCode >= 48 && charCode <= 57) {
       return true;
     }
-
-    // Allowing only one dot
     if (charCode === 46) {
       var input = event.target.value || '';
       if (input.indexOf('.') === -1) {
         return true;
       }
     }
-
-    return false; // Disallowing other characters
+    return false; 
   }
-
   onlynum(event: any) {
     event = event ? event : window.event;
     var charCode = event.which ? event.which : event.keyCode;
-    // Allowing digits (0-9)
     if (charCode >= 48 && charCode <= 57) {
       return true;
     }
-    return false; // Disallowing other characters
+    return false; 
   }
   onlynumdott(event: any) {
     event = event ? event : window.event;
     var charCode = event.which ? event.which : event.keyCode;
-
-    // Allowing digits (0-9)
     if ((charCode >= 48 && charCode <= 57) || charCode === 45) {
       return true;
     }
-
-    // Allowing only one dot
     if (charCode === 46) {
       var input = event.target.value || '';
       if (input.indexOf('.') === -1) {
         return true;
       }
     }
-
-    return false; // Disallowing other characters
+    return false; 
   }
-
-  //allow number with -
   omitwithminus(event: any) {
     const charCode = event.which ? event.which : event.keyCode;
     if (charCode !== 45 && (charCode < 48 || charCode > 57)) {
@@ -410,42 +257,34 @@ export class CommonFunctionService {
     }
     return true;
   }
-
-  // Number with decimal format
   numberWithDecimal(event: any) {
     const charCode = event.which ? event.which : event.keyCode;
-
     if (
-      charCode === 46 && // Decimal point character code
+      charCode === 46 &&
       event.target.value.includes('.')
     ) {
       return false;
     } else if (
-      charCode !== 46 && // Decimal point character code
+      charCode !== 46 && 
       charCode > 31 &&
       (charCode < 48 || charCode > 57)
     ) {
       return false;
     }
-
     return true;
   }
-
-  //  Number with decimal & Minus (-) format
   numberWithDecimalWithMinus(event: any) {
     const charCode = event.which ? event.which : event.keyCode;
     const inputValue = event.target.value;
-
     if (
       (charCode === 46 && inputValue.includes('.')) ||
       (charCode === 45 && inputValue.includes('-'))
     ) {
       return false;
     }
-
     if (
-      charCode !== 46 && // Decimal point character code
-      charCode !== 45 && // Minus sign character code
+      charCode !== 46 &&
+      charCode !== 45 &&
       charCode > 31 &&
       (charCode < 48 || charCode > 57)
     ) {
@@ -453,51 +292,19 @@ export class CommonFunctionService {
     }
     return true;
   }
-
-  // secretKey = 'Sangli Properties@321';
-  // secretKey = 'PockIT@321';
   secretKey = 'SAN@321';
-
-  // decryptdata(encrypteddata: string): string {
-  //   const bytes = CryptoJS.AES.decrypt(encrypteddata, this.secretKey);
-  //   return bytes.toString(CryptoJS.enc.Utf8);
-  // }
-
-  // encryptdata(data: string): string {
-  //   return CryptoJS.AES.encrypt(data, this.secretKey);
-  // }
-
   decryptdata(encrypteddata: string): string {
     const bytes = CryptoJS.AES.decrypt(encrypteddata, this.secretKey);
     return bytes.toString(CryptoJS.enc.Utf8);
   }
-
-  // //////////Disable After Dates
-  // disabledAfterDate = (current: Date): boolean =>
-  //   differenceInCalendarDays(current, new Date()) > 0;
-
-  // //////////Disable Before Dates
-  // disabledBeforeDate = (current: Date): boolean =>
-  //   differenceInCalendarDays(current, new Date()) > 0;
-
-  // disabledBeforeDatebefore = (current: Date): boolean =>
-  //   differenceInCalendarDays(current, new Date()) < 0;
-
-
   onlynumForHours(event: any) {
     event = event ? event : window.event;
     var charCode = event.which ? event.which : event.keyCode;
-    // Allowing digits (0-9)
     if (charCode >= 48 && charCode <= 57) {
       return true;
     }
-    return false; // Disallowing other characters
+    return false; 
   }
-
-  // encryptdata(data: string): string {
-  //   return CryptoJS.AES.encrypt(data, this.secretKey);
-  // }
-  
   encryptdata(data: any): string {
     const stringData = String(data);
     return CryptoJS.AES.encrypt(stringData, this.secretKey).toString();
@@ -745,5 +552,4 @@ export class CommonFunctionService {
     { label: 'Kyrgyzstan (+996)', value: '+996' },
     { label: 'Uzbekistan (+998)', value: '+998' },
   ];
-
 }

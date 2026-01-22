@@ -5,15 +5,12 @@ import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from 'src/app/Service/api-service.service';
 import { CartService } from 'src/app/Service/cart.service';
 import { Meta, Title } from '@angular/platform-browser';
-
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss'],
 })
-
 export class CartComponent {
-
   constructor(
     private apiservice: ApiServiceService,
     private message: ToastrService,
@@ -24,9 +21,6 @@ export class CartComponent {
     this.updateSEO();
   }
   customertype: any = this.apiservice.getCustomerType();
-
-
-
   CART_ID: any;
   loadService: boolean = false;
   IMAGEuRL: any;
@@ -34,7 +28,6 @@ export class CartComponent {
   DemoCartDetails: any = [];
   CartInfo: any = [];
   updateSEO() {
-    // alert('ddd')
     this.titleService.setTitle('Your Shopping Cart - PockIT Web');
     this.metaService.updateTag({
       name: 'description',
@@ -46,13 +39,10 @@ export class CartComponent {
       content:
         'shopping cart, buy laptop parts, computer accessories, checkout, secure payment, order summary, online shopping',
     });
-
-    // Open Graph (For Facebook, LinkedIn)
     this.metaService.updateTag({
       property: 'og:title',
       content: 'Your Shopping Cart - PockIT Web',
     });
-
     this.metaService.updateTag({
       property: 'og:description',
       content:
@@ -62,23 +52,19 @@ export class CartComponent {
       property: 'og:url',
       content: 'https://my.pockitengineers.com/shop/cart',
     });
-    // Twitter Card
     this.metaService.updateTag({
       name: 'twitter:title',
       content: 'Your Shopping Cart - PockIT Web',
     });
-
     this.metaService.updateTag({
       name: 'twitter:description',
       content:
         'Manage your shopping cart and proceed to checkout. Buy laptop parts and computer accessories securely online at PockIT Web.',
     });
-
     this.metaService.updateTag({
       name: 'twitter:card',
       content: 'summary_large_image',
     });
-
     let link: HTMLLinkElement =
       document.querySelector("link[rel='canonical']") ||
       document.createElement('link');
@@ -86,37 +72,26 @@ export class CartComponent {
     link.setAttribute('href', window.location.href);
     document.head.appendChild(link);
   }
-
   ngOnInit() {
     this.CART_ID = sessionStorage.getItem('CART_ID_FOR_CART');
-    // this.details();
     this.getServiceCartDetails();
-
-    
-    
     this.IMAGEuRL = this.apiservice.retriveimgUrl2();
-    // this.apiservice.clearCart();
     this.Address();
     setTimeout(() => {
       if (document.documentElement.scrollHeight <= window.innerHeight) {
-        document.body.style.overflowY = 'auto'; // Force scrollbar if missing
+        document.body.style.overflowY = 'auto'; 
       } else {
-        document.body.style.overflowY = ''; // Keep default behavior
+        document.body.style.overflowY = ''; 
       }
-    }, 300); // Delay to allow content to load
+    }, 300); 
   }
-
   handleImageError(event: any) {
-    event.target.src = 'assets/img/services/no-image.png'; // Set default image
+    event.target.src = 'assets/img/services/no-image.png'; 
   }
-
   userID: any = this.apiservice.getUserId();
   cartItems: any[] = [];
-  isLoading: boolean = false; // For loading state
+  isLoading: boolean = false; 
   removeItem1(id: any) {
-    // const cartItem = this.cartItems.find(item => item.ID === id);
-    // if (!cartItem) return;
-    // this.cartItems = this.cartItems.filter((item) => item.ID !== id);
     const formatteddataremove = {
       CUSTOMER_ID: this.userID,
       SERVICE_ID: id.SERVICE_ID,
@@ -124,13 +99,12 @@ export class CartComponent {
       CART_ITEM_ID: id.ID,
       TYPE: 'S',
     };
-    //
     this.isLoading = true;
     this.apiservice.RemoveFromCart(formatteddataremove).subscribe(
       (res) => {
         this.isLoading = false;
         if (res.code == 200) {
-          this.cartService.fetchAndUpdateCartDetails(this.userID); // ⭐️ Common Call
+          this.cartService.fetchAndUpdateCartDetails(this.userID); 
           this.getServiceCartDetails();
           this.message.success('Item removed from cart successfully.');
         } else {
@@ -139,25 +113,18 @@ export class CartComponent {
       },
       (error) => {
         this.isLoading = false;
-        
         this.message.error('Error removing item from cart.');
       }
     );
   }
   checkout() {
     if (this.cartItems.length !== 0) {
-      // alert('Your cart is empty.');
-      // return;
       this.router.navigate(['/order-review', this.cartItems[0]['CART_ID']]);
     }
-    // alert('Proceeding to checkout...');
-    // Add navigation or API call logic here
   }
   isDrawerVisible: boolean = false;
   drawerData: any = [];
   originalBackdropOpacity: string = '';
-  // isDrawerVisible: boolean = false;
-  // drawerData: any = [];
   DefaultAddressArray: any = [];
   defaultAddress: any;
   loadepage: boolean = false;
@@ -165,26 +132,20 @@ export class CartComponent {
   CartID: any;
   updatedselectedService: any;
   isExpressOn: any;
-
   openNextDrawer(data: any) {
-    this.isDrawerVisible = false; // Hide initially
-    this.loadepage = true; // Start loading spinner
-    // Set the data first
+    this.isDrawerVisible = false; 
+    this.loadepage = true; 
     this.drawerData = data;
     this.updatedselectedService = data;
     this.CartID = data[0]['CART_ID'];
-    // Set express flag
     if (this.drawerData && Array.isArray(this.drawerData)) {
       this.isExpressOn = this.drawerData.some(
         (item: any) => item.IS_EXPRESS === 1
       );
     }
-
-    // Spinner + drawer open delay
-
     setTimeout(() => {
-      this.isDrawerVisible = true; // Show drawer
-      this.loadepage = false; // Stop spinner after 5 sec
+      this.isDrawerVisible = true; 
+      this.loadepage = false; 
       const serviceDrawer = document.getElementById('offcanvasRightMultiple');
       if (serviceDrawer) {
         let offcanvasInstance = bootstrap.Offcanvas.getInstance(serviceDrawer);
@@ -193,9 +154,8 @@ export class CartComponent {
         }
         offcanvasInstance.show();
       }
-    }, 3000); // 5 seconds delay
+    }, 3000); 
   }
-
   drawerClose() {
     this.isDrawerVisible = false;
     setTimeout(() => {
@@ -212,7 +172,6 @@ export class CartComponent {
   get closeCallback() {
     return this.drawerClose.bind(this);
   }
-
   getServiceCartDetails() {
     this.cartItems = [];
     this.DemoCartDetails = [];
@@ -221,43 +180,30 @@ export class CartComponent {
       (cartRes: any) => {
         this.isLoading = false;
         if (cartRes?.code === 200 && cartRes.data.CART_DETAILS.length > 0) {
-          // this.cartService.fetchAndUpdateCartDetails(this.userID); // ⭐️ Common Call
           this.CartDetails = cartRes?.data?.CART_DETAILS;
-
-          
-
           this.CART_IDI = cartRes?.data?.CART_DETAILS[0].CART_ID;
           this.loadService = false;
           this.CartInfo = cartRes.data.CART_INFO;
           this.DemoCartDetails = cartRes.data.CART_DETAILS[0]['ITEM_TYPE'];
-
-          
-          
           this.cartItems = cartRes.data.CART_DETAILS.map((item: any) => ({
             ...item,
             START_TIME: this.formatTime(item.START_TIME),
             END_TIME: this.formatTime(item.END_TIME),
             CREATED_MODIFIED_DATE: new Date(item.CREATED_MODIFIED_DATE),
           }));
-
         } else {
           this.DemoCartDetails = [];
           this.cartItems = [];
           this.CartDetails = [];
           this.loadService = false;
-          // this.message.warning('Cart is empty', 'Warning'); // Toaster notification for empty cart
-
         }
       },
       (error) => {
-        
         this.isLoading = false;
-        this.message.error('Failed to fetch cart details', 'Error'); // Error toaster
+        this.message.error('Failed to fetch cart details', 'Error'); 
       }
     );
   }
-
-  // Function to format time (HH:mm:ss → hh:mm a)
   formatTime(timeString: string): string {
     if (!timeString) return 'N/A';
     const [hours, minutes, seconds] = timeString.split(':').map(Number);
@@ -269,56 +215,32 @@ export class CartComponent {
       hour12: true,
     }).format(date);
   }
-
   CART_IDI: any;
   inventory_id: any
-
-  // loadServiceforinventory:boolean=false;
-
   details() {
-    // this.loadServiceforinventory = true;
-    
     this.loadService = true;
     this.apiservice.getCartDetails(this.userID).subscribe((data: any) => {
       if (data['code'] == 200) {
         this.CartDetails = data?.data?.CART_DETAILS;
-        // Extract and log all INVENTORY_ID values
-        // this.loadServiceforinventory = false;
-
         this.CartDetails.forEach((item: any) => {
-          
           this.inventory_id = item.INVENTORY_ID
-          
         });
-        
         this.CART_IDI = this.CartDetails[0]?.CART_ID;
-        this.cartService.fetchAndUpdateCartDetails(this.userID); // ⭐️ Common Call
+        this.cartService.fetchAndUpdateCartDetails(this.userID); 
         this.loadService = false;
         this.CartInfo = data.data.CART_INFO;
-        
-        
       } else {
         this.CartDetails = [];
-        // this.loadServiceforinventory = false;
         this.loadService = false;
       }
     });
-
   }
-
   quantity: number = 1;
   price: number = 39530;
   totalPrice: number = this.price;
   updateTotal() {
     this.totalPrice = this.quantity * this.price;
   }
-
-  
-
-
-  // ....................................shop code start........................
-  // Address get
-
   Addressdata: any = []
   STATE_ID: any;
   ADDRESS_ID: any;
@@ -329,11 +251,10 @@ export class CartComponent {
     this.apiservice.getAddress(0, 0, 'IS_DEFAULT', 'desc', ' AND IS_DEFAULT = 1 AND CUSTOMER_ID =' + this.CUSTOMER_ID).subscribe((data) => {
       if (data['code'] == 200) {
         this.Addressdata = data.data;
-        if (this.Addressdata.length > 0) { // Ensure array has at least one entry
+        if (this.Addressdata.length > 0) { 
           this.STATE_ID = this.Addressdata[0].STATE_ID;
-          this.ADDRESS_ID = this.Addressdata[0].ID; // Use "ID" instead of "ADDRESS_ID" as per JSON
-          this.teritory_id = this.Addressdata[0].TERRITORY_ID; // Correct key name
-          
+          this.ADDRESS_ID = this.Addressdata[0].ID; 
+          this.teritory_id = this.Addressdata[0].TERRITORY_ID; 
           this.PincodeFor = this.Addressdata[0].PINCODE_FOR;
         }
       } else {
@@ -341,7 +262,6 @@ export class CartComponent {
       }
     });
   }
-
   removeItemdata: any = [];
   TYPE: any = 'P';
   CART_id: any;
@@ -363,7 +283,7 @@ export class CartComponent {
     ).subscribe((data) => {
       if (data['code'] == 200) {
         this.message.success('Cart Remove successfully.', '');
-        this.cartService.fetchAndUpdateCartDetails(this.userID); // ⭐️ Common Call
+        this.cartService.fetchAndUpdateCartDetails(this.userID); 
         this.getServiceCartDetails();
         this.removeItemdata = data?.data?.CART_DETAILS;
         this.loadService = false;
@@ -373,25 +293,17 @@ export class CartComponent {
       }
     });
   }
-
-
   increaseQuantity(data: any) {
-    
-  
     if (data.CURRENT_STOCK === 0) {
       this.message.warning('Current stock is not available.', '');
       return;
     }
-  
-    // Check if QUANTITY is less than both CURRENT_STOCK and UNIT_STOCK
     if (data.QUANTITY < data.CURRENT_STOCK && data.QUANTITY < data.UNIT_STOCK) {
-      data.QUANTITY++; // Increase the quantity only if within limits
+      data.QUANTITY++; 
       this.CART_id = data.CART_ID;
       this.CART_ITEM_ID = data.ID;
       this.INVENTORY_ID = data.INVENTORY_ID;
       this.QUANTITY = data.QUANTITY;
-  
-      // API call to update the cart count
       this.apiservice
         .CartCountUpdate(
           this.TYPE,
@@ -406,23 +318,19 @@ export class CartComponent {
             this.message.success('1 Quantity Added Successfully', '');
             this.details();
           } else {
-            
           }
         });
     } else {
       this.message.warning('No more stock is available', '');
     }
   }
-  
-
   decreaseQuantity(data: any) {
     if (data.QUANTITY > 1) {
-      data.QUANTITY--; // Decrease the quantity only if greater than 1
+      data.QUANTITY--; 
       this.CART_id = data.CART_ID;
       this.CART_ITEM_ID = data.ID;
       this.INVENTORY_ID = data.INVENTORY_ID;
       this.QUANTITY = data.QUANTITY;
-      // API call to update the cart count
       this.apiservice
         .CartCountUpdate(
           this.TYPE,
@@ -437,13 +345,10 @@ export class CartComponent {
             this.message.success('1 quantity removed successfully', '');
             this.details();
           } else {
-            
           }
         })
     }
   }
-
-
   quantityy: number = 1;
   IS_TEMP_CART = 1
   TYPEs = 'P'
@@ -451,102 +356,48 @@ export class CartComponent {
   cartdata: any = []
   CartDetailsCartInfoData: any = []
   CartDetailsID: any
-
   buyNow(product: any) {
-    
-    
     if (this.QUANTITY == undefined || this.QUANTITY == null) {
       this.QUANTITY = 1;
     }
-  
-    
-  
     this.ID = product.INVENTORY_ID;
     this.unit_id = product.UNIT_ID;
     this.quentity_per_unit = product.QUANTITY_PER_UNIT;
     this.unit_name = product.UNIT_NAME;
     this.QUANTITY = product.QUANTITY;
-  
-    
-    
-    
-    
-  
     let Cart: any = 2;
-  
     this.apiservice.CartGet(this.customer_id, this.ID, this.QUANTITY, this.IS_TEMP_CART, this.STATE_ID, this.teritory_id, this.ADDRESS_ID, this.TYPE, this.unit_id, this.quentity_per_unit, this.unit_name).subscribe((data) => {
       if (data['code'] == 200) {
         this.cartdata.CART_ID = data.data.CART_ID;
-        
         sessionStorage.setItem("CART_ID", this.cartdata.CART_ID.toString());
         sessionStorage.setItem('Cart', Cart);
         this.DEMO = data.data.CART_ID;
-        
         this.router.navigate(['/shop/check-out', this.DEMO, 'C']);
-        // this.cartService.fetchAndUpdateCartDetails(this.userID);
       } else {
         this.cartdata = [];
       }
     });
   }
-  
   checkoutHandler(data:any) {
     if (this.CartDetails.length === 1) {
-      this.buyNowforcommonbutton(data); // Apply this when only one card exists
+      this.buyNowforcommonbutton(data); 
     } else {
-      // this.CartDetails.filter((product : any) => {
-      //   if(product.CART_ID == data.CART_ID){
           this.buyNow(data); 
-      //   }else{
-      //     return
-      //   }
-      //   // Apply this when multiple cards exist
-      // });
     }
   }
-
-
-
   ID: any
   unit_id: any
   quentity_per_unit: any
   unit_name: any
   loadalldata: boolean = false
-
   buyNowforcommonbutton(data:any) {
     this.loadalldata = true;
-
         this.CartDetailsID = data.CART_ID;
         this.router.navigate(['/shop/check-out', this.CartDetailsID, 'C']);
-        // this.cartService.fetchAndUpdateCartDetails(this.userID); // ⭐️ Common Call
-
-   
   }
   buyNowforcommonbutton123(data:any) {
     this.loadalldata = true;
     this.CartDetailsID = data[0].CART_ID;
     this.router.navigate(['/shop/check-out', this.CartDetailsID, 'C']);  
   }
-  // buyNowforcommonbutton123() {
-  //   this.loadalldata = true;
-  //   this.apiservice.getAddressDetails(0, 0, 'id', 'desc', '', this.CART_ID).subscribe((data) => {
-  //     if (data['code'] == 200) {
-  //       this.CartDetailsCartInfoData = data.data;
-  //       this.CartDetailsID = data.data.CART_DETAILS[0].CART_ID;
-  //       this.CartInfo = data.data.CART_INFO;
-  //       this.router.navigate(['/shop/check-out', this.CartDetailsID, 'C']);
-  //       // this.cartService.fetchAndUpdateCartDetails(this.userID); // ⭐️ Common Call
-
-  //     } else {
-  //       this.CartDetails = [];
-  //     }
-  //     this.loadalldata = false;
-  //   }, () => {
-  //     this.loadalldata = false; // Ensure loader stops on error
-  //   });
-  // }
-
-
-
 }
-

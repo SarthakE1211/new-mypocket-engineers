@@ -1,14 +1,8 @@
-<!-- <button (click)=openmapModal2() class="btn btn-outline-primary">Back</button> -->
-<!-- <div #mapContainer class="map-container"></div> -->
-<!-- {{currentterritory}} -->
-
 <div class="container mt-4" *ngIf="orderDetails">
-  <!-- <div class="card p-4 shadow" style="border: none;box-shadow: none !important;"> -->
-  <div class="card p-2 p-md-4 shadow" style="border: none; box-shadow: none !important">
+  <div class="card p-2 p-md-4 shadow no-border-no-shadow">
     <div class="row">
-      <!-- Left Section -->
       <div class="col-md-6 mb-2 mb-md-0">
-        <h2 style="font-size: 20px !important; font-weight: 700 !important" class="mb-3">
+        <h2 class="mb-3 font-20-bold">
           {{ "order_details.title" | translate }}
         </h2>
         <div *ngIf="
@@ -23,8 +17,7 @@
             <button class="btn btn-light newclass" ngbDropdownToggle>
               <i class="bi bi-three-dots-vertical"></i>
             </button>
-
-            <ul style="padding: 2px;" ngbDropdownMenu class="dropdown-menu-end">
+            <ul ngbDropdownMenu class="dropdown-menu-end padding-2">
               <li *ngIf="
                   isShowReschedule() &&
                   currentterritory !== undefined &&
@@ -33,8 +26,8 @@
                   currentterritory !== '' &&
                   currentterritory !== 'undefined'
                 ">
-                <a style="cursor: pointer; font-size: 13px;" class="dropdown-item" (click)="openDrawer('reschedule')">
-                  <i class="bi bi-arrow-clockwise me-2" style="color: #2a3b8f !important"></i>
+                <a  class="dropdown-item cursor-pointer-font-13" (click)="openDrawer('reschedule')">
+                  <i class="bi bi-arrow-clockwise me-2 text-blue-2a3b8f" ></i>
                   &nbsp;{{ "order_details.reschedule" | translate }}
                 </a>
               </li>
@@ -46,65 +39,42 @@
                   currentterritory !== '' &&
                   currentterritory !== 'undefined'
                 ">
-                <a style="cursor: pointer; font-size: 13px;" class="dropdown-item" (click)="openDrawer('cancel')">
+                <a  class="dropdown-item cursor-pointer-font-13" (click)="openDrawer('cancel')">
                   <i class="bi bi-x-circle me-2"></i>{{ "order_details.cancel" | translate }}
                 </a>
               </li>
               <li *ngIf="isShowDownload()">
-                <a style="cursor: pointer; font-size: 13px;" class="dropdown-item" (click)="onDownloadInvoice()"
+                <a  class="dropdown-item cursor-pointer-font-13" (click)="onDownloadInvoice()"
                   [class.disabled]="isDownloading">
-                  <i class="bi bi-file-earmark-arrow-down me-2" style="color: #2a3b8f"></i>
+                  <i class="bi bi-file-earmark-arrow-down me-2 text-blue" ></i>
                   {{ "order_details.download_invoice" | translate }}
-                  <span *ngIf="isDownloading" style="font-weight: bold"
-                    class="spinner-border spinner-border-sm ms-2"></span>
+                  <span *ngIf="isDownloading"
+                    class="spinner-border spinner-border-sm ms-2 font-bold"></span>
                 </a>
               </li>
-
-              <!-- <li>
-                <a
-                  style="cursor: pointer"
-                  class="dropdown-item"
-                  (click)="openticketdrawer()"
-                >
-                  <i
-                    class="bi bi-ticket-detailed me-2"
-                    style="color: #2a3b8f"
-                  ></i>
-                  {{ "Raise Ticket" }}
-                </a>
-              </li> -->
             </ul>
           </div>
         </div>
-
-        <!-- cancelDrawer -->
-
         <div class="offcanvas offcanvas-end" tabindex="-1" id="cancelDrawer" aria-labelledby="cancelDrawerLabel"
           data-bs-backdrop="static">
-          <!-- Header -->
           <div class="offcanvas-header border-bottom">
-            <h5 class="fw-bold mb-0" id="cancelDrawerLabel" style="font-size: 14px">
+            <h5 class="fw-bold mb-0 font-14" id="cancelDrawerLabel" >
               {{ "order_details.cancel_order" | translate }}
             </h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
           </div>
-
-          <!-- Body: Flex column, grow content -->
-          <div class="offcanvas-body d-flex flex-column" style="background-color: #f5f8ff">
-            <!-- Spinner while loading -->
-            <div *ngIf="reasonsisLoading" class="d-flex justify-content-center align-items-center"
-              style="height: 200px">
+          <div class="offcanvas-body d-flex flex-column bg-light-blue" >
+            <div *ngIf="reasonsisLoading" class="d-flex justify-content-center align-items-center h-200"
+              >
               <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden"> Loading...</span>
               </div>
             </div>
-
-            <!-- Content when loaded -->
             <div *ngIf="!reasonsisLoading" class="flex-grow-1">
-              <label class="form-label fw-semibold mb-3" style="font-size: 14px;">{{
+              <label class="form-label fw-semibold mb-3 font-14" >{{
                 "order_details.select_cancellation_reason" | translate
                 }}</label>
-              <div class="border rounded-3 p-3 bg-white shadow-sm" style="font-size: 13px">
+              <div class="border rounded-3 p-3 bg-white shadow-sm font-13" >
                 <div class="responsive-scroll">
                   <div *ngFor="let reason of cancelReasons; let i = index" class="form-check mb-2">
                     <input class="form-check-input" type="checkbox" [id]="'reason' + i" [value]="reason"
@@ -114,16 +84,12 @@
                     </label>
                   </div>
                 </div>
-
-                <!-- Textarea -->
-                <div class="form-group mt-2" style="font-size: 13px !important">
-                  <textarea style="width: 100% ; font-size: 13px !important" class="form-control rounded-3" rows="3"
+                <div class="form-group mt-2 font-13-important" >
+                  <textarea  class="form-control rounded-3 w-100-font-13" rows="3"
                     [placeholder]="'order_details.describe_problem' | translate" [(ngModel)]="comment"></textarea>
                 </div>
               </div>
             </div>
-
-            <!-- Sticky Footer -->
             <div *ngIf="!isLoading" class="drawer-footer mt-auto d-flex justify-content-between border-top pt-3">
               <button class="btn btn-primary w-100 rounded-3 d-flex align-items-center justify-content-center"
                 [disabled]="loading" (click)="openConfirmModal()">
@@ -131,8 +97,6 @@
                 {{ "order_details.cancel_order" | translate }}
               </button>
             </div>
-
-            <!-- Confirmation Modal -->
             <div class="modal fade" id="confirmCancelModal" tabindex="-1" data-bs-backdrop="static"
               data-bs-keyboard="false" aria-labelledby="confirmCancelLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered">
@@ -159,34 +123,26 @@
             </div>
           </div>
         </div>
-        <!-- rescheduleDrawer -->
-
         <div class="offcanvas offcanvas-end" tabindex="-1" id="rescheduleDrawer" aria-labelledby="rescheduleDrawerLabel"
           data-bs-backdrop="static">
-          <!-- Header -->
           <div class="offcanvas-header border-bottom">
-            <h5 class="fw-bold mb-0" id="rescheduleDrawerLabel" style="font-size: 14px">
+            <h5 class="fw-bold mb-0 font-14" id="rescheduleDrawerLabel" >
               {{ "order_details.reschedule_order" | translate }}
             </h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
           </div>
-
-          <!-- Body: Flex column -->
-          <div class="offcanvas-body d-flex flex-column" style="background-color: #f5f8ff">
-            <!-- Spinner -->
-            <div *ngIf="rescheduleLoading" class="d-flex justify-content-center align-items-center"
-              style="height: 200px">
+          <div class="offcanvas-body d-flex flex-column bg-light-blue" >
+            <div *ngIf="rescheduleLoading" class="d-flex justify-content-center align-items-center h-200"
+              >
               <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">Loading...</span>
               </div>
             </div>
-
-            <!-- Content -->
             <div *ngIf="!rescheduleLoading" class="flex-grow-1">
-              <label class="form-label fw-semibold mb-3" style="font-size: 14px;">{{
+              <label class="form-label fw-semibold mb-3 font-14" >{{
                 "order_details.select_reschedule_reason" | translate
                 }}</label>
-              <div class="border rounded-3 p-3 bg-white shadow-sm" style="font-size: 13px">
+              <div class="border rounded-3 p-3 bg-white shadow-sm font-13" >
                 <div class="responsive-scroll">
                   <div *ngFor="let reason of rescheduleReasons; let i = index" class="form-check mb-2">
                     <input class="form-check-input" type="checkbox" [id]="'rescheduleReason' + i" [value]="reason"
@@ -196,17 +152,13 @@
                     </label>
                   </div>
                 </div>
-
-                <!-- Textarea -->
-                <div class="form-group mt-2" style="font-size: 13px !important">
-                  <textarea style="width: 100% ; font-size: 13px !important" class="form-control rounded-3" rows="3"
+                <div class="form-group mt-2 font-13-important" >
+                  <textarea  class="form-control rounded-3 w-100-font-13" rows="3"
                     [placeholder]="'order_details.describe_problem' | translate"
                     [(ngModel)]="rescheduleComment"></textarea>
                 </div>
               </div>
             </div>
-
-            <!-- Sticky Footer -->
             <div class="drawer-footer mt-auto d-flex justify-content-between border-top pt-3">
               <button class="btn btn-primary w-100 rounded-3 d-flex align-items-center justify-content-center"
                 [disabled]="loading" (click)="proceedReschedule(this.orderGetDetails)">
@@ -218,13 +170,10 @@
         </div>
       </div>
     </div>
-
-    <!-- time slot drawer -->
-
-    <div style="width: 700px" class="offcanvas offcanvas-end" data-bs-backdrop="static" tabindex="-1"
+    <div class="offcanvas offcanvas-end w-700" data-bs-backdrop="static" tabindex="-1"
       id="rescheduletimeslotdrawer" aria-labelledby="offcanvasRightLabel" [class.show]="isDrawerVisible">
       <div *ngIf="!loadepage" class="offcanvas-header border-bottom">
-        <h5 class="offcanvas-title fw-bold" style="font-size: 14px">
+        <h5 class="offcanvas-title fw-bold font-14" >
           {{ "order_details.select_date_slot" | translate }}
         </h5>
         <button type="button" class="btn-close" (click)="drawerClose()"></button>
@@ -234,92 +183,40 @@
           [rescheduleComment]="rescheduleComment" [closeDrawerEvent]="closeCallback"></app-reschedule-time-slot-drawer>
       </div>
     </div>
-
     <div class="row">
-      <!-- Left Section -->
       <div class="col-md-6">
-        <!-- Accordion Section -->
         <div class="accordion">
-          <div class="accordion-item mb-2 shadow-sm rounded" style="
-              border-radius: 16px !important;
-              margin-bottom: 17px !important;
-            ">
-            <!-- <h2
-              class="accordion-header"
-              (click)="toggleAccordion('orderStatus')"
-            >
-              <button
-                class="accordion-button fw-bold d-flex align-items-center gap-2"
-                [class.collapsed]="!orderDetailsVisible['orderStatus']"
-              >
-                <i class="bi bi-list-check text-primary"></i> Order Status
-              </button>
-            </h2> -->
-            <div style="border-radius: 16px; border-color: #cbcbcb; border: none" class="card">
+          <div class="accordion-item mb-2 shadow-sm rounded rounded-16-mb-17" >
+            <div class="card rounded-16-border-none">
               <div class="card-body">
-                <!-- Header -->
                 <div class="d-flex justify-content-between align-items-center">
                   <h5 class="fw-bold d-flex align-items-center ml">
-                    <img src="assets/img/Vector.svg" alt="Icon" width="16" height="16"
-                      style="margin-right: 2px" />&nbsp;
+                    <img src="assets/img/Vector.svg" alt="Icon" width="16" height="16" class="mr-2"
+                       />&nbsp;
                     {{ "order_details.order_details" | translate }}
                   </h5>
-                  <!-- <i  #popoverButton class="bi bi-info-circle text-muted"></i> -->
-                  <!-- <i class="bi bi-info-circle text-muted"></i> -->
-
-                  <span style="
-                      font-weight: 600;
-                      padding: 4px;
-                      background-color: #fff;
-                      border-radius: 8px;
-                      color: #2a3b8f;
-                      font-size: 14px !important;
-                    ">
-                    <!-- Services:  -->
+                  <span class="badge-blue-white" >
                     {{ "header.services" | translate }} :
-
                     {{ orderGetDetails.length }}
                   </span>
-                  <!-- main.component.html -->
-                  <!-- <button #popoverButton type="button" class="btn btn-primary">
-  <i class="bi bi-eye"></i> View Status
-</button> -->
                 </div>
-                <hr style="color: #747678" class="my-2" />
-
-                <!-- Show spinner while loading -->
+                <hr class="my-2 text-gray-747678" />
                 <div *ngIf="isLoading" class="d-flex justify-content-center my-3">
                   <div class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Loading...</span>
                   </div>
                 </div>
-
-                <!-- Show Order Details if data is available -->
                 <ng-container *ngIf="!isLoading && orderGetDetails.length > 0">
-                  <p style="
-                      font-size: 14px !important;
-                      margin-bottom: 12px !important;
-                    " class="mb-2 d-flex justify-content-between">
+                  <p class="mb-2 d-flex justify-content-between font-14-mb-12">
                     <strong>{{ "order_details.order_id" | translate }}:</strong>
-                    <span style="font-weight: 500; color: #0e0e0e" class="text-dark">{{ orderGetDetails[0]?.ORDER_NUMBER
+                    <span class="text-dark font-500-text-dark">{{ orderGetDetails[0]?.ORDER_NUMBER
                       }}</span>
                   </p>
-
-                  <!-- Status History Accordion -->
-                  <div class="accordion-item mb-2 shadow-sm rounded" style="
-                      border-radius: 16px !important;
-                      margin-bottom: 17px !important;
-                    ">
-                    <button class="btn w-100 text-start fw-semibold d-flex justify-content-between align-items-center"
-                      type="button" style="
-                        background: #fff;
-                        border-radius: 16px;
-                        padding-bottom: 10px;
-                        padding-top: 11px;
-                      " (click)="toggleAccordionStatus()" [class.collapsed]="!isAccordionOpenStatus">
-                      <!-- Dynamically show Last Status title -->
+                  <div class="accordion-item mb-2 shadow-sm rounded rounded-16-mb-17">
+                    <button class="btn w-100 text-start fw-semibold d-flex justify-content-between align-items-center bg-white-rounded-padding"
+                      type="button" (click)="toggleAccordionStatus()" [class.collapsed]="!isAccordionOpenStatus">
                       <span>
-                        <i class="bi bi-clock-history text-primary" style="color: #2a3b8f !important"></i>
+                        <i class="bi bi-clock-history text-primary text-blue-2a3b8f" ></i>
                         &nbsp; {{ "order_details.order_status" | translate }}:
                         <ng-container *ngIf="
                             orderDetails.statusHistory?.length > 0;
@@ -335,18 +232,14 @@
                           {{ "order_details.no_status_available" | translate }}
                         </ng-template>
                       </span>
-
                       <i class="bi" [ngClass]="{
                           'bi-chevron-down': !isAccordionOpenStatus,
                           'bi-chevron-up': isAccordionOpenStatus
                         }"></i>
                     </button>
-
-                    <!-- Collapsible Content -->
                     <div class="accordion-collapse" [class.show]="isAccordionOpenStatus">
                       <div class="offcanvas-body">
                         <div class="accordion-body p-2">
-                          <!-- Timeline -->
                           <div class="status-container">
                             <ul class="list-unstyled position-relative">
                               <li *ngFor="
@@ -358,26 +251,16 @@
                                       ? 'bi bi-check-circle text-success'
                                       : 'bi bi-circle text-secondary'
                                   " class="status-icon me-2"></i>
-
                                 <div>
                                   <p class="mb-0 fw-semibold" [class.text-dark]="status.completed">
                                     {{ status.title }},
-                                    <span class="text-muted" style="font-size: 10px !important">{{ status.date }}</span>
+                                    <span class="text-muted font-10-important">{{ status.date }}</span>
                                   </p>
-                                  <!-- Optional description -->
-                                  <!--
-                <p *ngIf="status.description" class="small text-muted">
-                  {{ status.description }}
-                </p>
-                -->
                                 </div>
-
                                 <div *ngIf="!last" class="status-line"></div>
                               </li>
                             </ul>
                           </div>
-
-                          <!-- Message if no status -->
                           <div *ngIf="!orderDetails.statusHistory?.length" class="text-center text-muted">
                             {{
                             "order_details.no_status_history_available"
@@ -388,36 +271,23 @@
                       </div>
                     </div>
                   </div>
-
                   <div class="row">
-                    <!-- Left Section -->
                     <div class="col-md-12">
-                      <div style="
-                          border-radius: 16px !important;
-                          padding: 10px !important;
-                          margin-bottom: 10px !important;
-                        " *ngFor="let item of orderGetDetails; let i = index"
-                        class="card border rounded p-3 shadow-sm mb-1" [ngStyle]="{
+                      <div *ngFor="let item of orderGetDetails; let i = index"
+                        class="card border rounded p-3 shadow-sm mb-1 rounded-16-padding-10-mb-10" [ngStyle]="{
                           'background-color':
                             selectedIndex === i ? '#f9e8d657' : 'white'
                         }" (click)="setSelectedCard(i)">
-                        <div class="card-body" style="padding: 2px">
-                          <div class="d-flex align-items-center gap-3 position-relative"
-                            style="justify-content: end !important">
+                        <div class="card-body padding-2">
+                          <div class="d-flex align-items-center gap-3 position-relative justify-end-important"
+                            >
                             <div (click)="orderData?.[0]?.ORDER_STATUS === 'OR' ? showToast() : toggleCollapse(i, item)"
                               class="bottom-0 end-0 text-end show-details-btn">
-                              <span style="margin-right: 8px" class="btn-text">
-                                <!-- Show Details -->
+                              <span class="btn-text mr-8">
                                 {{ "order_details.Show_Details" | translate }}
                               </span>
                               <i class="bi bi-arrow-right-circle-fill"></i>
                             </div>
-                            <!-- {{ item.JOB_STATUS }} {{ item.JOB_COMPLETED_DATETIME }} -->
-                            <!-- <div
-                              *ngIf=" (item.JOB_CARD_ID !== null && item.JOB_CARD_ID !== undefined && item.JOB_CARD_ID !== 0) && (currentterritory!==undefined && currentterritory!==null && currentterritory!==0 && currentterritory!=='' && currentterritory!=='undefined')"
-                              class="bottom-50 end-0 text-end show-details-btn"> -->
-
-                            <!-- {{currentterritory}} -->
                             <div *ngIf="
                                 item.JOB_STATUS === 'CO' &&
                                 item.JOB_CARD_ID !== null &&
@@ -426,14 +296,14 @@
                                 currentterritory !== 0
                               " class="bottom-50 end-0 text-end show-details-btn">
                               <div ngbDropdown class="d-inline-block">
-                                <button class="btn btn-light newclass" ngbDropdownToggle style="padding: 0px 5px"
+                                <button class="btn btn-light newclass padding-x-5" ngbDropdownToggle
                                   (click)="sendjobid(item)">
                                   <i class="bi bi-three-dots-vertical"></i>
                                 </button>
                                 <ul ngbDropdownMenu class="dropdown-menu-end">
                                   <li>
-                                    <a style="cursor: pointer" class="dropdown-item" (click)="openticketdrawer(item)">
-                                      <i class="bi bi-ticket-detailed me-2" style="color: #2a3b8f"></i>
+                                    <a class="dropdown-item cursor-pointer" (click)="openticketdrawer(item)">
+                                      <i class="bi bi-ticket-detailed me-2 text-blue" ></i>
                                       {{ "Raise Support Ticket" }}
                                     </a>
                                   </li>
@@ -441,40 +311,28 @@
                               </div>
                             </div>
                           </div>
-                          <!-- Service Name & Icon -->
                           <div class="d-flex align-items-center gap-3 position-relative">
-                            <!-- Service Icon -->
                             <div
-                              class="service-icon d-flex align-items-center justify-content-center rounded-circle bg-light"
-                              style="width: 40px; height: 40px">
+                              class="service-icon d-flex align-items-center justify-content-center rounded-circle bg-light unique-size-class"
+                              >
                               <img [src]="
                                   item.SERVICE_IMAGE
                                     ? IMAGEuRL + 'Item/' + item.SERVICE_IMAGE
                                     : 'assets/img/services/no-image.png'
-                                " class="rounded-circle" alt="Service Icon" style="width: 40px; height: 40px" />
+                                " class="rounded-circle unique-size-class" alt="Service Icon"  />
                             </div>
-
-                            <!-- Service Name & Order ID -->
                             <div>
                               <h6 class="fw-bold mb-0">
                                 {{ item.SERVICE_NAME }}
                               </h6>
                             </div>
-
-                            <!-- Show Details -->
                           </div>
-
-                          <hr style="border: 1px solid #e7e6e6; margin: 11px" />
-
-                          <!-- Date & Time -->
-                          <div class="cart-bottom" style="padding: 0px">
+                          <hr class="unique-border-margin" />
+                          <div class="cart-bottom no-padding" >
                             <div class="cart-icon">
-                              <i class="bi bi-clock" style="
-                                  color: #2a3b8f !important;
-                                  font-size: 12px !important;
-                                "></i>
+                              <i class="bi bi-clock text-custom-blue"></i>
                             </div>
-                            <span style="font-weight: 500">
+                            <span class="font-medium">
                               <ng-container
                                 *ngIf="orderData?.[0]?.ORDER_DATE_TIME !== 'Not Mentioned'; else notMentioned">
                                 {{
@@ -487,68 +345,45 @@
                                 }}</ng-template>
                             </span>
                           </div>
-
-                          <!-- Collapsible Details -->
                           <div class="mt-2">
-                            <hr style="border: 1px solid #e7e6e6; margin: 0px" />
-
-                            <button class="btn w-100 text-start d-flex justify-content-between align-items-center"
-                              (click)="item.isOpen2 = !item.isOpen2" style="
-                                background: transparent;
-                                border: none;
-                                outline: none;
-                                box-shadow: none;
-                                padding-bottom: 0px !important;
-                              ">
-                              <span class="fw-bold" style="
-                                  font-size: 14px !important;
-                                  font-weight: 600 !important;
-                                ">{{ "order_review.details" | translate }}</span>
-                              <i class="bi" style="color: #2a3b8f !important" [ngClass]="{
+                            <hr class="border-zero-margin"  />
+                            <button class="btn w-100 text-start d-flex justify-content-between align-items-center no-style-input"
+                              (click)="item.isOpen2 = !item.isOpen2" >
+                              <span class="fw-bold text-lg-semibold" >{{ "order_review.details" | translate }}</span>
+                              <i class="bi text-blue-2a3b8f"  [ngClass]="{
                                   'bi-chevron-down': !item.isOpen2,
                                   'bi-chevron-up': item.isOpen2
                                 }" class="text-primary"></i>
                             </button>
-
                             <div *ngIf="item.isOpen2" class="mt-2">
-                              <hr style="color: #f0f5fc" class="my-2" />
-
+                              <hr  class="my-2 text-light-blue" />
                               <div class="myclass p-3">
                                 <div class="d-flex justify-content-between">
-                                  <p class="fw-bold mb-1" style="color: #636363 !important">
+                                  <p class="fw-bold mb-1 text-gray-dark" >
                                     {{ "order_details.device" | translate }}:
                                   </p>
-                                  <p class="mb-1" style="
-                                      color: #0e0e0e !important;
-                                      font-weight: 500 !important;
-                                    ">
+                                  <p class="mb-1 text-dark-medium" >
                                     {{ item.CATEGORY_NAME }}
                                   </p>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                  <p class="fw-bold mb-1" style="color: #636363 !important">
+                                  <p class="fw-bold mb-1 text-gray-dark" >
                                     {{ "order_details.type" | translate }}:
                                   </p>
-                                  <p class="mb-1" style="
-                                      color: #0e0e0e !important;
-                                      font-weight: 500 !important;
-                                    ">
+                                  <p class="mb-1 text-dark-medium" >
                                     {{ item.SUB_CATEGORY_NAME }}
                                   </p>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                  <p class="fw-bold mb-1" style="color: #636363 !important">
+                                  <p class="fw-bold mb-1 text-gray-dark" >
                                     {{ "order_details.service" | translate }}:
                                   </p>
-                                  <p class="mb-1" style="
-                                      color: #0e0e0e !important;
-                                      font-weight: 500 !important;
-                                    ">
+                                  <p class="mb-1 text-dark-medium" >
                                     {{ item.SERVICE_NAME }}
                                   </p>
                                 </div>
                                 <div *ngIf="item.IS_EXPRESS == 1" class="d-flex justify-content-between">
-                                  <p class="fw-bold mb-1" style="color: #636363 !important">
+                                  <p class="fw-bold mb-1 text-gray-dark" >
                                     {{ "order_details.priority" | translate }}:
                                   </p>
                                   <p class="mb-1 text-primary">
@@ -559,17 +394,13 @@
                                   </p>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                  <p class="fw-bold mb-1" style="color: #636363 !important">
+                                  <p class="fw-bold mb-1 text-gray-dark" >
                                     {{
                                     "order_details.technician_visit"
                                     | translate
                                     }}:
                                   </p>
-
-                                  <p class="mb-1" style="
-                                      color: #0e0e0e !important;
-                                      font-weight: 500 !important;
-                                    ">
+                                  <p class="mb-1 text-dark-medium" >
                                     <ng-container *ngIf="
                                         getCombinedDateTime(item) !==
                                           'Not Mentioned';
@@ -586,16 +417,13 @@
                                   </p>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                  <p class="fw-bold mb-1" style="color: #636363 !important">
+                                  <p class="fw-bold mb-1 text-gray-dark" >
                                     {{
                                     "order_details.estimated_service_time"
                                     | translate
                                     }}:
                                   </p>
-                                  <p class="mb-1" style="
-                                      color: #0e0e0e !important;
-                                      font-weight: 500 !important;
-                                    ">
+                                  <p class="mb-1 text-dark-medium" >
                                     {{
                                     item.ESTIMATED_TIME_IN_MIN
                                     ? item.ESTIMATED_TIME_IN_MIN +
@@ -606,35 +434,27 @@
                                     }}
                                   </p>
                                 </div>
-
                                 <div *ngIf="
                                     item.GUARANTEE_ALLOWED == 1 &&
                                     customertype === 'I'
                                   " class="d-flex justify-content-between">
-                                  <p class="fw-bold mb-1" style="color: #636363 !important">
+                                  <p class="fw-bold mb-1 text-gray-dark" >
                                     Guarantee Period
                                   </p>
-                                  <p class="mb-1" style="
-                                      color: #0e0e0e !important;
-                                      font-weight: 500 !important;
-                                    ">
+                                  <p class="mb-1 text-dark-medium" >
                                     {{
                                     formatPeriodCommon(item.GUARANTEE_PERIOD)
                                     }}
                                   </p>
                                 </div>
-
                                 <div *ngIf="
                                     item.WARRANTY_ALLOWED == 1 &&
                                     customertype === 'I'
                                   " class="d-flex justify-content-between">
-                                  <p class="fw-bold mb-1" style="color: #636363 !important">
+                                  <p class="fw-bold mb-1 text-gray-dark" >
                                     Warranty Period
                                   </p>
-                                  <p class="mb-1" style="
-                                      color: #0e0e0e !important;
-                                      font-weight: 500 !important;
-                                    ">
+                                  <p class="mb-1 text-dark-medium" >
                                     {{
                                     formatPeriodCommon(item.WARRANTY_PERIOD)
                                     }}
@@ -643,58 +463,34 @@
                               </div>
                             </div>
                           </div>
-                          <!-- Status Details -->
                           <div class="mt-2">
-                            <hr style="border: 1px solid #e7e6e6; margin: 0px" />
-
-                            <button class="btn w-100 text-start d-flex justify-content-between align-items-center"
-                              (click)="handleClick(i, item)" style="
-                                background: transparent;
-                                border: none;
-                                outline: none;
-                                box-shadow: none;
-                                padding-bottom: 0px !important;
-                              ">
-                              <!-- <span class="fw-bold" style="
-                                    font-size: 16px !important;
-                                    font-weight: 500 !important;
-                                  ">{{ 'order_review.details' | translate }}</span> -->
-                              <span class="fw-bold" style="
-                                  font-size: 14px !important;
-                                  font-weight: 600 !important;
-                                ">
+                            <hr class="border-zero-margin"  />
+                            <button class="btn w-100 text-start d-flex justify-content-between align-items-center no-style-input"
+                              (click)="handleClick(i, item)" >
+                              <span class="fw-bold text-lg-semibold" >
                                 {{ "order_details.status" | translate }}
                               </span>
-
-                              <i class="bi" style="color: #2a3b8f !important" [ngClass]="{
+                              <i class="bi text-blue-2a3b8f"  [ngClass]="{
                                   'bi-chevron-down': !item.isOpen,
                                   'bi-chevron-up': item.isOpen
                                 }" class="text-primary"></i>
                             </button>
-
                             <div *ngIf="item.isOpen" class="mt-2">
-                              <hr style="color: #f0f5fc" class="my-2" />
-
-                              <div *ngIf="selectedJobLogs" style="border: none" class="accordion-item m-2 rounded">
+                              <hr  class="my-2 text-light-blue" />
+                              <div *ngIf="selectedJobLogs" class="accordion-item m-2 rounded no-border">
                                 <button
-                                  class="btn w-100 text-start fw-semibold d-flex justify-content-between align-items-center"
-                                  style="background: #fff; border-radius: 6px" type="button"
+                                  class="btn w-100 text-start fw-semibold d-flex justify-content-between align-items-center bg-white-rounded"
+                                 type="button"
                                   (click)="toggleAccordion2()" [class.collapsed]="!isAccordionOpen2">
                                   <span>{{ getJobStatusTitle() }}</span>
                                 </button>
-
-                                <!-- </h2> -->
-
                                 <div class="accordion-collapse" [class.show]="isAccordionOpen2">
                                   <div class="accordion-body p-3">
-                                    <!-- Show spinner if data is loading -->
                                     <div *ngIf="loadingOrderStatus" class="d-flex justify-content-center">
                                       <div class="spinner-border text-primary" role="status">
                                         <span class="visually-hidden">Loading...</span>
                                       </div>
                                     </div>
-
-                                    <!-- Show data once loaded -->
                                     <div *ngIf="!loadingOrderStatus" class="scrollable-content">
                                       <div class="status-container">
                                         <ng-container *ngIf="
@@ -712,29 +508,19 @@
                                                     : 'bi bi-circle text-secondary'
                                                 " class="status-icon me-2"></i>
                                               <div>
-                                                <p style="
-                                                    color: #2a3b8f;
-                                                    font-weight: 400;
-                                                  " class="mb-0 fw-semibold">
+                                                <p class="mb-0 fw-semibold text-blue-regular">
                                                   {{ status.title }},
-                                                  <span class="text-muted" style="
-                                                      font-size: 10px !important;
-                                                    ">{{ status.date }}</span>
+                                                  <span class="text-muted text-xs">{{ status.date }}</span>
                                                 </p>
                                               </div>
-                                              <div style="
-                                                  background: #2a3b8f;
-                                                  font-weight: 400;
-                                                " *ngIf="!last" class="status-line"></div>
+                                              <div *ngIf="!last" class="status-line bg-blue-regular"></div>
                                             </li>
                                           </ul>
                                         </ng-container>
-
-                                        <!-- No Data Template -->
                                         <ng-template #noDataTemplate>
                                           <div class="text-center p-3">
                                             <img src="assets/img/hand-drawn-no-data-concept.png" alt="No Data Available"
-                                              class="img-fluid" style="max-width: 150px" />
+                                              class="img-fluid max-w-150" />
                                             <p class="text-muted mt-2">
                                               {{
                                               "order_details.no_data_available"
@@ -758,17 +544,9 @@
               </div>
             </div>
           </div>
-
-          <div style="
-              border-radius: 16px !important;
-              margin-bottom: 17px !important;
-            " class="accordion-item mb-2 shadow-sm rounded">
+          <div  class="accordion-item mb-2 shadow-sm rounded rounded-16-mb-17">
             <h2 class="accordion-header" (click)="toggleAccordion('contactDetails')">
-              <button class="accordion-button fw-bold d-flex align-items-center gap-2" style="
-                  justify-content: space-between;
-                  padding-bottom: 13px;
-                  padding-top: 13px;
-                " [class.collapsed]="!orderDetailsVisible['contactDetails']">
+              <button class="accordion-button fw-bold d-flex align-items-center gap-2 flex-space-between-padding"  [class.collapsed]="!orderDetailsVisible['contactDetails']">
                 <span>
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
                     <path
@@ -790,7 +568,7 @@
                     <p class="mb-1 text-muted">
                       {{ "order_details.mobile_number" | translate }}
                     </p>
-                    <p class="mb-1 fw-bold" style="color: black; font-weight: 500 !important">
+                    <p class="mb-1 fw-bold text-black-medium" >
                       {{ orderData[0]?.MOBILE_NO }}
                     </p>
                   </div>
@@ -798,7 +576,7 @@
                     <p class="mb-1 text-muted">
                       {{ "order_details.name" | translate }}
                     </p>
-                    <p class="mb-1 fw-bold" style="color: black; font-weight: 500 !important">
+                    <p class="mb-1 fw-bold text-black-medium" >
                       {{ orderData[0]?.CUSTOMER_NAME }}
                     </p>
                   </div>
@@ -806,33 +584,7 @@
                     <p class="mb-1 text-muted">
                       {{ "order_details.address" | translate }}
                     </p>
-                    <!-- <p class="mb-1 fw-bold" style="color: black;font-weight: 500 !important;">
-                      <span [attr.data-bs-toggle]="
-                          orderData[0]?.ADDRESS_LINE_1?.length > 16
-                            ? 'tooltip'
-                            : null
-                        " data-bs-placement="top" [attr.title]="
-                          orderData[0]?.ADDRESS_LINE_1?.length > 16
-                            ? orderData[0]?.ADDRESS_LINE_1
-                            : null
-                        ">
-                        {{ orderData[0]?.ADDRESS_LINE_1 | slice : 0 : 16 }}
-                        <span *ngIf="orderData[0]?.ADDRESS_LINE_1?.length > 16">...</span> </span>,
-                      <span [attr.data-bs-toggle]="
-                          orderData[0]?.ADDRESS_LINE_2?.length > 16
-                            ? 'tooltip'
-                            : null
-                        " data-bs-placement="top" [attr.title]="
-                          orderData[0]?.ADDRESS_LINE_2?.length > 16
-                            ? orderData[0]?.ADDRESS_LINE_2
-                            : null
-                        ">
-                        {{ orderData[0]?.ADDRESS_LINE_2 | slice : 0 : 16 }}
-                        <span *ngIf="orderData[0]?.ADDRESS_LINE_2?.length > 16">...</span>
-                      </span>
-                    </p> -->
-                    <!-- {{maxCharLength}} -->
-                    <p class="mb-1 fw-bold" style="color: black; font-weight: 500 !important">
+                    <p class="mb-1 fw-bold text-black-medium" >
                       <span [attr.data-bs-toggle]="
                           orderData[0]?.ADDRESS_LINE_1?.length > maxCharLength
                             ? 'tooltip'
@@ -872,25 +624,13 @@
               </div>
             </div>
           </div>
-
-          <div *ngIf="customertype == 'I'" style="
-              border-radius: 16px !important;
-              margin-bottom: 17px !important;
-            " class="accordion-item mb-2 shadow-sm rounded">
+          <div *ngIf="customertype == 'I'"  class="accordion-item mb-2 shadow-sm rounded rounded-16-mb-17">
             <h2 class="accordion-header" (click)="toggleAccordion('reschedulePolicy')">
-              <button class="accordion-button fw-bold d-flex align-items-center gap-2" style="
-                  justify-content: space-between;
-                  padding-bottom: 11px;
-                  padding-top: 10px;
-                " [class.collapsed]="!orderDetailsVisible['reschedulePolicy']">
+              <button class="accordion-button fw-bold d-flex align-items-center gap-2 flex-space-between-padding-sm"[class.collapsed]="!orderDetailsVisible['reschedulePolicy']">
                 <span>
-                  <i class="bi bi-arrow-repeat text-warning" style="
-                      color: #2a3b8f !important;
-                      font-size: 18px !important;
-                    "></i>&nbsp;
+                  <i class="bi bi-arrow-repeat text-warning text-blue-lg"></i>&nbsp;
                   {{ "order_details.reschedule_policy" | translate }}
                 </span>
-
                 <i class="bi" [ngClass]="{
                     'bi-chevron-down': !orderDetailsVisible['reschedulePolicy'],
                     'bi-chevron-up': orderDetailsVisible['reschedulePolicy']
@@ -903,15 +643,10 @@
               </div>
             </div>
           </div>
-
-          <div *ngIf="customertype == 'I'" style="border-radius: 16px !important"
-            class="accordion-item mb-2 shadow-sm rounded">
+          <div *ngIf="customertype == 'I'" 
+            class="accordion-item mb-2 shadow-sm rounded rounded-xl">
             <h2 class="accordion-header" (click)="toggleAccordion('cancelPolicy')">
-              <button class="accordion-button fw-bold d-flex align-items-center gap-2" style="
-                  justify-content: space-between;
-                  padding-bottom: 13px;
-                  padding-top: 13px;
-                " [class.collapsed]="!orderDetailsVisible['cancelPolicy']">
+              <button class="accordion-button fw-bold d-flex align-items-center gap-2 flex-space-between-padding"  [class.collapsed]="!orderDetailsVisible['cancelPolicy']">
                 <span>
                   <svg xmlns="http://www.w3.org/2000/svg" width="15" height="17" viewBox="0 0 15 17" fill="none">
                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -945,54 +680,31 @@
           </div>
         </div>
       </div>
-
-      <!-- Right Section -->
       <div class="col-md-6">
         <div class="accordion">
-          <div class="technician-card shadow-sm rounded p-2" style="
-              overflow-y: auto;
-              border: none;
-              box-shadow: none !important;
-              padding: 0px !important;
-            ">
-            <!-- Order Rejected -->
-            <div *ngIf="orderData?.[0]?.ORDER_STATUS === 'OR'" class="alert shadow-sm mt-1" style="
-                border-radius: 16px;
-                padding-top: 13px;
-                border-color: #cbcbcb;
-              ">
+          <div class="technician-card shadow-sm rounded p-2 scroll-none-style">
+            <div *ngIf="orderData?.[0]?.ORDER_STATUS === 'OR'" class="alert shadow-sm mt-1 rounded-border-padding" >
               <div class="d-flex align-items-center">
                 <i class="bi bi-x-circle-fill text-danger me-2"></i>
                 <strong class="fw-bold d-flex align-items-center ml">{{
                   "order_details.order_rejected" | translate
                   }}</strong>
               </div>
-              <p class="mt-1 text-muted" style="margin-bottom: 0px">
+              <p class="mt-1 text-muted mb-0" >
                 {{ orderData?.[0]?.REMARK || ('order_details.no_remark_provided' | translate) }}
               </p>
             </div>
-
-            <!-- {{orderData?.[0]?.ORDER_STATUS}} -->
-            <!-- Order Accepted with Remark -->
-            <div *ngIf="orderData?.[0]?.ORDER_STATUS === 'OA'" class="alert shadow-sm mt-1" style="
-                border-radius: 16px;
-                padding-top: 13px;
-                border-color: #cbcbcb;
-              ">
+            <div *ngIf="orderData?.[0]?.ORDER_STATUS === 'OA'" class="alert shadow-sm mt-1 rounded-border-padding">
               <div class="d-flex align-items-center">
                 <i class="bi bi-check-circle-fill text-success me-2"></i>
                 <strong class="fw-bold d-flex align-items-center ml">{{
                   "order_details.order_accepted" | translate
                   }}</strong>
               </div>
-              <p *ngIf="orderData?.[0]?.ACCEPTANCE_REMARK" class="mt-1 text-muted" style="margin-bottom: 0px">
+              <p *ngIf="orderData?.[0]?.ACCEPTANCE_REMARK" class="mt-1 text-muted mb-0" >
                 {{ orderData?.[0]?.ACCEPTANCE_REMARK }}
               </p>
             </div>
-
-            <!-- {{orderData?.[0]?.ORDER_STATUS}} -->
-
-            <!-- Order Canceled with Remark -->
             <div *ngIf=" orderData?.[0]?.ORDER_STATUS !== 'OA' &&  orderData?.[0]?.CANCELLATION_REMARK"
               class="alert alert-warning mt-1">
               <div class="d-flex align-items-center">
@@ -1006,42 +718,26 @@
                 translate) }}
               </p>
             </div>
-
             <div *ngIf="orderData?.[0]?.ORDER_STATUS == 'CA'" class="alert alert-success mt-1">
               <div class="d-flex align-items-center">
                 <i class="bi bi-check-circle-fill text-success me-2"></i>
                 <strong> Cancellation Request Accepted </strong>
               </div>
             </div>
-
-            <!-- <h5 class="fw-bold d-flex align-items-center justify-content-between">
-              <Span><i class="bi bi-person-badge text-primary me-2"></i> {{ 'order_details.number_of_jobs' | translate
-                }}:</Span>
-              {{ orderGetDetails.length }}
-            </h5> -->
-
             <div *ngIf="loadjobdetails" class="text-center">
               <div class="spinner-border text-primary" role="status">
                 <span class="sr-only"></span>
               </div>
             </div>
-
             <div *ngIf="
                 !loadjobdetails &&
                 selectedJob?.JOB_CARD_ID &&
                 selectedJob?.JOB_CARD_ID !== 0 &&
-                (jobItem?.JOB_STATUS === 'AS' || jobItem?.JOB_STATUS === 'CO')
-              " class="accordion-item m-2 shadow-sm rounded"
-              style="margin: 0px !important; border-radius: 16px !important">
-              <button class="btn w-100 text-start fw-semibold d-flex justify-content-between align-items-center"
-                type="button" style="
-                  background: #fff;
-                  border-radius: 16px;
-                  box-shadow: none !important;
-                  padding-top: 11px;
-                  width: 50% !important;
-                " (click)="toggleAccordion3()" [class.collapsed]="!isAccordionOpen3">
-                <span style="font-size: 15px !important; font-weight: 700"><svg xmlns="http://www.w3.org/2000/svg"
+                (jobItem?.JOB_STATUS === 'AS' || jobItem?.JOB_STATUS === 'CO')"
+                 class="accordion-item m-2 shadow-sm rounded no-margin-rounded">
+              <button class="btn w-100 text-start fw-semibold d-flex justify-content-between align-items-center card-white-rounded"
+                type="button" (click)="toggleAccordion3()" [class.collapsed]="!isAccordionOpen3">
+                <span class="text-md-bold" ><svg xmlns="http://www.w3.org/2000/svg"
                     width="23" height="26" viewBox="0 0 23 26" fill="none">
                     <g clip-path="url(#clip0_5044_2680)">
                       <mask id="path-2-outside-1_5044_2680" maskUnits="userSpaceOnUse" x="2" y="3" width="19"
@@ -1065,76 +761,32 @@
                   </svg>
                   {{ "order_details.technician_details" | translate }}
                 </span>
-                <!-- <i
-                  class="bi"
-                  [ngClass]="{
-                    'bi-chevron-down': !isAccordionOpen3,
-                    'bi-chevron-up': isAccordionOpen3
-                  }"
-                ></i> -->
               </button>
-              <!-- </h2> -->
-
-
               <div class="accordion-collapse show">
-                <div class="p-3 scrollable-content" style="
-                    padding-top: 6px !important;
-                    padding-bottom: 0px !important;
-                  ">
+                <div class="p-3 scrollable-content pt-6-pb-0">
                   <p class="mb-0 d-flex align-items-center">
-
                     <span *ngIf="selectedJob?.techData?.profile_photo">
                       <img [src]="retriveimgUrl + 'TechnicianProfile/' + selectedJob?.techData?.profile_photo"
-                        alt="Attachment" style="
-                    width: 30px;
-                    height: 30px;
-                    border-radius: 50%;
-                    object-fit: cover;
-                    margin-right:5px; 
-                  " />
+                        alt="Attachment" class="avatar-small"  />
                     </span>
-
                     <span *ngIf="!selectedJob?.techData?.profile_photo">
-
-                      <img [src]="'assets/img/blueEmpImage.png'" alt="Profile Photo" class="profile-photo" style="
-                    width: 30px;
-                    height: 30px;
-                    border-radius: 50%;
-                    object-fit: cover;
-                    margin-right:5px; 
-                  " />
+                      <img [src]="'assets/img/blueEmpImage.png'" alt="Profile Photo" class="profile-photo avatar-small"  />
                     </span>
-
-
-                    <span class="fw-semibold text-dark" style="
-                        font-weight: 400 !important;
-                        font-size: 14px !important;
-                        align-self: center;
-                        align-items: center;
-                        display: flex;
-                      ">
+                    <span class="fw-semibold text-dark flex-center-text">
                       {{ selectedJob?.techData?.name || "N/A" }} &nbsp;
                       <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="none">
                         <path
                           d="M6.19091 1.45129C6.2882 1.15187 6.7118 1.15187 6.80909 1.45129L7.88637 4.76682C7.92988 4.90073 8.05467 4.99139 8.19547 4.99139H11.6816C11.9965 4.99139 12.1274 5.39426 11.8727 5.57932L9.05229 7.62843C8.93838 7.71119 8.89072 7.85788 8.93423 7.99179L10.0115 11.3073C10.1088 11.6067 9.76609 11.8557 9.51139 11.6707L6.69103 9.62157C6.57712 9.53881 6.42288 9.53881 6.30897 9.62157L3.48861 11.6707C3.23391 11.8557 2.8912 11.6067 2.98849 11.3073L4.06577 7.99179C4.10928 7.85788 4.06161 7.71119 3.94771 7.62843L1.12735 5.57932C0.872643 5.39426 1.00354 4.99139 1.31838 4.99139H4.80453C4.94533 4.99139 5.07012 4.90073 5.11363 4.76682L6.19091 1.45129Z"
                           stroke="#FBA042" stroke-width="1.3" />
                       </svg>
-                      <span class="fw-semibold" style="
-                          color: #fba042 !important;
-                          font-size: 12px !important;
-                          font-weight: 400 !important;
-                        ">
+                      <span class="fw-semibold text-orange-sm" >
                         {{ selectedJob?.techData?.rating || "0" }} </span>&nbsp;&nbsp;
                       <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewBox="0 0 15 14" fill="none">
                         <path
                           d="M8.89258 0.400391C9.28826 0.400391 9.66762 0.557216 9.94727 0.836914H9.94824C10.2284 1.11657 10.3857 1.4966 10.3857 1.89258V3.65039H12.6074C13.4318 3.65054 14.0995 4.31825 14.0996 5.14258V6.53613C14.0995 6.93183 13.9419 7.31027 13.6621 7.58984L13.6631 7.59082C13.5218 7.73257 13.3536 7.8409 13.1719 7.91504V12.1074C13.1717 12.9318 12.5031 13.5995 11.6787 13.5996H3.32129C2.4969 13.5995 1.82828 12.9318 1.82812 12.1074V7.91504C1.64642 7.8409 1.47822 7.73257 1.33691 7.59082V7.58984C1.0574 7.31031 0.900501 6.9316 0.900391 6.53613V5.14258C0.900541 4.31825 1.56825 3.65054 2.39258 3.65039H4.61426V1.89258C4.61432 1.54606 4.73433 1.21172 4.95215 0.946289L5.05176 0.836914C5.33145 0.55691 5.71151 0.400391 6.10742 0.400391H8.89258ZM2.95703 12.1074C2.95718 12.3083 3.12039 12.4716 3.32129 12.4717H11.6787C11.8796 12.4716 12.0428 12.3083 12.043 12.1074V8.02832H9.45215C9.40078 8.8063 8.75486 9.42188 7.96387 9.42188H7.03613C6.24514 9.42188 5.59922 8.8063 5.54785 8.02832H2.95703V12.1074ZM7.03613 6.63574C6.83508 6.63574 6.67188 6.79894 6.67188 7V7.92871C6.67195 8.1297 6.83512 8.29297 7.03613 8.29297H7.96387C8.16488 8.29297 8.32805 8.1297 8.32812 7.92871V7C8.32812 6.79894 8.16492 6.63574 7.96387 6.63574H7.03613ZM2.39258 4.77832C2.19174 4.77847 2.02847 4.94174 2.02832 5.14258V6.53613C2.02843 6.63255 2.06677 6.72521 2.13477 6.79297H2.13574L2.19043 6.83887C2.24967 6.87848 2.32008 6.90034 2.39258 6.90039H5.54785C5.59915 6.12235 6.24509 5.50684 7.03613 5.50684H7.96387C8.75491 5.50684 9.40085 6.12235 9.45215 6.90039H12.6074C12.704 6.90032 12.7964 6.86114 12.8643 6.79297H12.8652L12.9102 6.73828C12.9498 6.67905 12.9716 6.60865 12.9717 6.53613V5.14258C12.9715 4.94174 12.8083 4.77847 12.6074 4.77832H2.39258ZM6.10742 1.52832C6.01079 1.52832 5.91748 1.56659 5.84961 1.63477V1.63574C5.78145 1.70355 5.74324 1.79601 5.74316 1.89258V3.65039H9.25684V1.89258C9.25676 1.79601 9.21855 1.70355 9.15039 1.63574V1.63477C9.08252 1.56659 8.98921 1.52832 8.89258 1.52832H6.10742Z"
                           fill="#FBA042" stroke="#FBA042" stroke-width="0.2" />
                       </svg>
-                      <span class="text-muted ms-1" style="
-                          color: #fba042 !important;
-                          font-size: 12px !important;
-                          font-weight: 400 !important;
-                        ">
+                      <span class="text-muted ms-1 text-orange-sm" >
                         {{ selectedJob?.techData?.jobCount || "0" }} Jobs
                       </span>
                     </span>
@@ -1144,38 +796,26 @@
                         ? '300px'
                         : '0px'
                     " #mapContainer class="map-container"></div>
-                  <div *ngIf="selectedJob?.techData?.ID" class="d-flex justify-content-between mt-3" style="
-                      margin-top: 10px !important;
-                      margin-bottom: 15px !important;
-                    ">
+                  <div *ngIf="selectedJob?.techData?.ID" class="d-flex justify-content-between mt-3 mt-10-mb-15">
                     <button *ngIf="jobItem?.JOB_STATUS === 'AS'" (click)="chatwithcustomer(selectedJob)"
                       data-bs-toggle="offcanvas" data-bs-target="#offcanvasRightttttttt"
-                      aria-controls="offcanvasRightttttttt" style="
-                        border: 1px solid #2a3b8f !important;
-                        color: #2a3b8f !important;
-                      " class="btn btn-outline-primary flex-fill me-2 btnhoverclas">
-                      <i class="bi bi-chat-left" style="color: #2a3b8f !important"></i>&nbsp; {{
+                      aria-controls="offcanvasRightttttttt"  class="btn btn-outline-primary flex-fill me-2 btnhoverclas border-blue-text">
+                      <i class="bi bi-chat-left text-blue-2a3b8f" ></i>&nbsp; {{
                       "order_details.send_message" | translate }}
                     </button>
-                    <a *ngIf="jobItem?.JOB_STATUS === 'AS'" style="
-                        border: 1px solid #2a3b8f !important;
-                        color: #2a3b8f !important;
-                      " [href]="
+                    <a *ngIf="jobItem?.JOB_STATUS === 'AS'"  [href]="
                         'tel:' + orderGetDetails[0]['TECHNICIAN_MOBILE_NUMBER']
-                      " class="btn btn-outline-primary flex-fill btnhoverclas">
-                      <i class="bi bi-telephone me-1" style="color: #2a3b8f !important"></i>&nbsp; {{
+                      " class="btn btn-outline-primary flex-fill btnhoverclas border-blue-text">
+                      <i class="bi bi-telephone me-1 text-blue-2a3b8f" ></i>&nbsp; {{
                       "order_details.call" | translate }}
                     </a>
                   </div>
-
                   <p *ngIf="selectedJob?.techData?.trackStatus === 'ST'" class="small text-muted mt-2">
                     {{ "order_details.replies_may_be_delayed" | translate }}
                   </p>
                 </div>
               </div>
             </div>
-
-            <!-- <label for="">{{ selectedJob?.JOB_CARD_ID}} {{loadjobdetails}} {{selectedJob?.techData?.trackStatus}} </label> -->
             <div *ngIf="
                 !loadjobdetails &&
                   selectedJob?.JOB_CARD_ID &&
@@ -1183,22 +823,12 @@
                   selectedJob?.techData?.status !== 'P';
                 else jobData
               ">
-              <!-- <div class="accordion scrollable-content1"> -->
-              <!-- Order Status Accordion -->
-
-              <!-- Part Details -->
-              <!-- <label for="">{{ selectedJob?.isPartAdd }}</label> -->
-              <!-- <div
-                *ngIf="selectedJob?.isPartAdd; else ElseCard"
-                class="accordion-collapse show"
-              > -->
               <div *ngIf="
                   selectedJob?.isPartAdd && customertype == 'I';
                   else ElseCard
                 " class="accordion-collapse show">
-                <div class="accordion-body p-3" style="padding: 15px 0px 0px !important">
-                  <div class="card part-details-card1 shadow-sm rounded border bg-white p-3 mb-3"
-                    style="cursor: pointer; border-radius: 16px !important"
+                <div class="accordion-body p-3 pt-15-pt0-0">
+                  <div class="card part-details-card1 shadow-sm rounded border bg-white p-3 mb-3 cursor-pointer-rounded"
                     (click)="openPartDetailsDrawer(selectedJob, 'PD')">
                     <div class="d-flex align-items-center mb-3">
                       <h6 class="fw-bold mb-0 text-dark">
@@ -1211,85 +841,43 @@
                   </div>
                 </div>
               </div>
-
-              <!-- {{ selectedJob?.partData?.length > 0 }} -->
               <ng-template #ElseCard>
                 <div class="accordion-collapse show" *ngIf="
                     selectedJob?.partData?.length > 0 && customertype == 'I'
                   ">
-                  <div class="accordion-item m-2 shadow-sm rounded" style="
-                      margin: 15px 0px !important;
-                      border-radius: 16px !important;
-                    ">
-                    <button class="btn w-100 text-start fw-semibold d-flex justify-content-between align-items-center"
-                      type="button" style="
-                        background: #fff;
-                        border-radius: 16px;
-                        padding: 11px 12px 12px;
-                      " (click)="toggleAccordionPartData()" [class.collapsed]="!isAccordionOpenPartData">
-                      <span style="font-size: 15px !important; font-weight: 700"><svg xmlns="http://www.w3.org/2000/svg"
+                  <div class="accordion-item m-2 shadow-sm rounded my-15-rounded">
+                    <button class="btn w-100 text-start fw-semibold d-flex justify-content-between align-items-center bg-white-rounded-padding"
+                      type="button" (click)="toggleAccordionPartData()" [class.collapsed]="!isAccordionOpenPartData">
+                      <span class="text-md-bold" ><svg xmlns="http://www.w3.org/2000/svg"
                           width="20" height="20" viewBox="0 0 15 17" fill="none">
                           <path
                             d="M13.5 4.2998L7.49519 1.0498L1 4.2998M13.5 4.2998V11.7998L7.49519 15.5498M13.5 4.2998L7.49519 7.4498M7.49519 15.5498L1 11.7998V4.2998M7.49519 15.5498V7.4498M1 4.2998L7.49519 7.4498"
                             stroke="#2A3B8F" stroke-width="1.3" stroke-linejoin="round" />
                         </svg>&nbsp;
-
                         {{ "order_details.part_details" | translate }}
                       </span>
-
-                      <!-- <i class="bi" [ngClass]="{
-                          'bi-chevron-down': !isAccordionOpenPartData,
-                          'bi-chevron-up': isAccordionOpenPartData
-                        }"></i> -->
                     </button>
-
-                    <!-- Use the same state variable -->
                     <div id="collapsePartDetails" class="accordion-collapse show">
                       <div class="offcanvas-body">
                         <div class="accordion-collapse show">
-                          <div class="accordion-body p-1" style="border-top: 1px solid #dee2e6">
-                            <!-- Show spinner if data is loading -->
+                          <div class="accordion-body p-1 border-top-light">
                             <div *ngIf="loadingParts" class="d-flex justify-content-center my-3">
                               <div class="spinner-border text-primary" role="status">
                                 <span class="visually-hidden">Loading...</span>
                               </div>
                             </div>
-
-                            <!-- <label for="">{{loadingParts}} {{selectedJob | json}}</label> -->
-
-                            <!-- Show data once loaded -->
                             <div *ngIf="
                                 !loadingParts &&
                                 selectedJob?.partData?.length > 0
-                              " style="
-                                max-height: 200px;
-                                overflow-y: auto;
-                                padding-right: 0px;
-                                scrollbar-width: none;
-                              ">
+                              " class="scrollable-container" >
                               <div *ngFor="let part of selectedJob.partData"
-                                class="card part-details-card1 shadow-sm rounded border bg-white p-3 mb-3" style="
-                                  border-radius: 0px !important;
-                                  border: none !important;
-                                  box-shadow: none !important;
-                                  padding: 5px 15px !important;
-                                  margin-bottom: 5px !important;
-                                ">
+                                class="card part-details-card1 shadow-sm rounded border bg-white p-3 mb-3 no-border-shadow-padding">
                                 <div class="details-grid">
-                                  <div class="d-flex justify-content-between" style="gap: 60px !important">
-                                    <span class="fw-bold" style="
-                                        color: #636363;
-                                        font-weight: 500 !important;
-                                        margin-bottom: 5px !important;
-                                      ">{{
+                                  <div class="d-flex justify-content-between gap-60">
+                                    <span class="fw-bold text-gray-medium-mb5" >{{
                                       "order_details.part" | translate
                                       }}</span>
-                                    <span class="text-dark" style="
-                                        font-weight: 500 !important;
-                                        color: black !important;
-                                        margin-bottom: 5px !important;
-                                        text-align: right;
-                                      ">{{
+                                    <span class="text-dark text-black-medium-right-mb5">{{
                                       part?.VARIANT_COMBINATION
                                       ? part?.VARIANT_COMBINATION
                                       : part.ITEM_NAME ||
@@ -1298,126 +886,63 @@
                                     </span>
                                   </div>
                                   <div *ngIf="part.INVENTORY_CATEGORY_NAME" class="d-flex justify-content-between">
-                                    <span class="fw-bold" style="
-                                        color: #636363;
-                                        font-weight: 500 !important;
-                                        margin-bottom: 5px !important;
-                                      ">{{
+                                    <span class="fw-bold text-gray-medium-mb5" >{{
                                       "order_details.type" | translate
                                       }}</span>
-                                    <span class="text-dark" style="
-                                        font-weight: 500 !important;
-                                        color: black !important;
-                                        margin-bottom: 5px !important;
-                                      ">{{
+                                    <span class="text-dark text-black-medium-mb5" >{{
                                       part.INVENTORY_CATEGORY_NAME || "N/A"
                                       }}</span>
                                   </div>
                                   <div class="d-flex justify-content-between">
-                                    <span class="fw-bold" style="
-                                        color: #636363;
-                                        font-weight: 500 !important;
-                                        margin-bottom: 5px !important;
-                                      ">{{
+                                    <span class="fw-bold text-gray-medium-mb5" >{{
                                       "order_details.quantity" | translate
                                       }}</span>
-                                    <span class="text-success" style="
-                                        font-weight: 500 !important;
-                                        color: black !important;
-                                        margin-bottom: 5px !important;
-                                      ">{{ part.QUANTITY || "N/A" }}</span>
+                                    <span class="text-success text-black-medium-mb5" >{{ part.QUANTITY || "N/A" }}</span>
                                   </div>
                                   <div class="d-flex justify-content-between">
-                                    <span class="fw-bold" style="
-                                        color: #636363;
-                                        font-weight: 500 !important;
-                                        margin-bottom: 5px !important;
-                                      ">{{
+                                    <span class="fw-bold text-gray-medium-mb5" >{{
                                       "order_details.price" | translate
                                       }}</span>
-                                    <span class="text-dark" style="
-                                        font-weight: 500 !important;
-                                        color: black !important;
-                                        margin-bottom: 5px !important;
-                                      ">₹
+                                    <span class="text-dark text-black-medium-mb5" >₹
                                       {{
                                       (part.TOTAL_AMOUNT | number) || "0"
                                       }}</span>
                                   </div>
                                   <div class="d-flex justify-content-between">
-                                    <span class="fw-bold" style="
-                                        color: #636363;
-                                        font-weight: 500 !important;
-                                        margin-bottom: 5px !important;
-                                      ">{{
+                                    <span class="fw-bold text-gray-medium-mb5" >{{
                                       "order_details.status" | translate
                                       }}</span>
-                                    <span class="text-dark" style="margin-bottom: 5px !important">
-                                      <!-- Accepted Status -->
+                                    <span class="text-dark mb-5" >
                                       <span *ngIf="
                                           part.STATUS === 'AC' &&
                                           part.IS_RETURNED === 0
-                                        " class="badge text-white" style="
-                                          padding: 5px 8px;
-                                          border-radius: 3px;
-                                          border: 1px solid #adc6ff !important;
-                                          color: #1d39c4 !important;
-                                          background: #f0f5ff;
-                                          font-size: 11px !important;
-                                          border-color: #adc6ff;
-                                        ">
+                                        " class="badge text-white badge-blue">
                                         <i class="bi bi-check-circle me-2"></i>
                                         {{
                                         "order_details.accepted" | translate
                                         }}
                                       </span>
-                                      <span *ngIf="part.IS_RETURNED === 1" style="
-                                          padding: 5px 8px;
-                                          border-radius: 3px;
-                                          border: 1px solid #efa505 !important;
-                                          color: #f6b809 !important;
-                                          font-size: 11px !important;
-                                          background: #ec740d0d;
-                                        " class="badge text-white">
+                                      <span *ngIf="part.IS_RETURNED === 1" class="badge text-white badge-yellow">
                                         Part Returned
                                       </span>
-                                      <!-- Rejected Status -->
-                                      <span *ngIf="part.STATUS === 'R'" style="
-                                          padding: 5px 8px;
-                                          border-radius: 3px;
-                                          border: 1px solid #ff0000 !important;
-                                          color: #ff0000 !important;
-                                          background: #ffbfad;
-                                          font-size: 11px !important;
-                                          border-color: #ffbfad;
-                                        " class="badge text-white">
+                                      <span *ngIf="part.STATUS === 'R'" class="badge text-white badge-red">
                                         <i class="bi bi-x-circle me-2"></i>
                                         {{
                                         "order_details.rejected" | translate
                                         }}
                                       </span>
-                                      <!-- N/A Status -->
                                       <span *ngIf="
                                           part.STATUS !== 'AC' &&
                                           part.STATUS !== 'R'
-                                        " style="
-                                          padding: 5px 8px;
-                                          border-radius: 3px;
-                                          border: 1px solid #ffc107 !important;
-                                          color: #ffcc00 !important;
-                                          font-size: 11px !important;
-                                          background: #ffe7000d;
-                                        " class="badge text-white">
+                                        " class="badge text-white badge-gold">
                                         {{ "order_details.na" | translate }}
                                       </span>
                                     </span>
                                   </div>
                                 </div>
-                                <hr style="margin-bottom: 2px !important" />
+                                <hr class="mb-2" />
                               </div>
                             </div>
-
-                            <!-- Show message if no data is available -->
                             <div *ngIf="
                                 !loadingParts &&
                                 (!selectedJob?.partData ||
@@ -1434,19 +959,11 @@
                   </div>
                 </div>
               </ng-template>
-
-              <div *ngIf="selectedJob?.isPaymentReq" class="accordion-collapse show"
-                style="border-radius: 16px !important">
-                <div class="accordion-body p-3" style="
-                    padding: 0px !important;
-                    margin-bottom: 17px !important;
-                  ">
-                  <div class="card part-details-card1 shadow-sm rounded border bg-white p-3 mb-0" style="
-                      cursor: pointer;
-                      border-radius: 16px !important;
-                      padding-bottom: 11px !important;
-                    " (click)="openPartDetailsDrawer(selectedJob, 'PP')">
-                    <div class="d-flex align-items-center mb-3" style="margin-bottom: 5px !important">
+              <div *ngIf="selectedJob?.isPaymentReq" class="accordion-collapse show rounded-xl"
+                >
+                <div class="accordion-body p-3 p-0-mb-17">
+                  <div class="card part-details-card1 shadow-sm rounded border bg-white p-3 mb-0 clickable-rounded-pb" (click)="openPartDetailsDrawer(selectedJob, 'PP')">
+                    <div class="d-flex align-items-center mb-3 mb-5" >
                       <h6 class="fw-bold mb-0 text-dark">
                         {{ "order_details.part_payment" | translate }}
                       </h6>
@@ -1458,93 +975,63 @@
                   </div>
                 </div>
               </div>
-
-              <!-- Offcanvas Drawer (Part Details) -->
               <div class="offcanvas offcanvas-end" tabindex="-1" id="partDetailsDrawer" data-bs-backdrop="static">
-                <!-- Part Details Section -->
-                <!-- <div *ngIf="selectedJob?.isPartAdd"> -->
                 <div *ngIf="selectedJob?.isPartAdd" class="offcanvas-header border-bottom">
                   <h5 class="offcanvas-title fw-bold text-dark">
                     {{ "order_details.part_details" | translate }}
                   </h5>
                   <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
                 </div>
-                <!-- Add inline CSS for scrollable content -->
                 <div *ngIf="selectedJob?.isPartAdd" class="offcanvas-body d-flex flex-column">
-                  <div class="accordion-collapse show" style="
-                      max-height: 70vh;
-                      overflow-y: auto;
-                      scrollbar-width: none;
-                    ">
+                  <div class="accordion-collapse show scrollable-max70">
                     <div class="accordion-body p-1">
                       <div *ngIf="selectedJob?.isPartAdd && loadingParts" class="d-flex justify-content-center my-3">
                         <div class="spinner-border text-primary" role="status">
                           <span class="visually-hidden">Loading...</span>
                         </div>
                       </div>
-
-                      <!-- Part Details -->
                       <div *ngIf="
                           selectedJob?.isPartAdd &&
                           !loadingParts &&
                           PartDetails.length
                         ">
                         <div *ngFor="let part of PartDetails"
-                          class="card part-details-card1 shadow-sm rounded border bg-white p-3 mb-3" style="
-                            border-radius: 16px !important;
-                            padding: 11px 13px !important;
-                          ">
+                          class="card part-details-card1 shadow-sm rounded border bg-white p-3 mb-3 rounded-padding-lg">
                           <div class="details-grid">
-                            <div class="d-flex justify-content-between" style="gap: 20px !important">
-                              <span class="fw-bold" style="
-                                  font-weight: 600 !important;
-                                  margin-bottom: 10px !important;
-                                ">{{ "order_details.part" | translate }}:</span>
-                              <span class="text-dark" style="margin-bottom: 10px !important">{{
+                            <div class="d-flex justify-content-between gap-20" >
+                              <span class="fw-bold font-semibold-mb10" >{{ "order_details.part" | translate }}:</span>
+                              <span class="text-dark mb-10" >{{
                                 part.ITEM_NAME || part.INVENTORY_NAME
                                 }}</span>
                             </div>
-                            <div *ngIf="part.INVENTORY_CATEGORY_NAME" class="d-flex justify-content-between"
-                              style="gap: 20px !important">
-                              <span class="fw-bold" style="
-                                  font-weight: 600 !important;
-                                  margin-bottom: 10px !important;
-                                ">{{ "order_details.type" | translate }}:</span>
-                              <span class="text-dark" style="margin-bottom: 10px !important">{{
+                            <div *ngIf="part.INVENTORY_CATEGORY_NAME" class="d-flex justify-content-between gap-20"
+                              >
+                              <span class="fw-bold font-semibold-mb10" >{{ "order_details.type" | translate }}:</span>
+                              <span class="text-dark mb-10" >{{
                                 part.INVENTORY_CATEGORY_NAME || "N/A"
                                 }}</span>
                             </div>
-                            <div class="d-flex justify-content-between" style="gap: 20px !important">
-                              <span class="fw-bold" style="
-                                  font-weight: 600 !important;
-                                  margin-bottom: 10px !important;
-                                ">{{
+                            <div class="d-flex justify-content-between gap-20" >
+                              <span class="fw-bold font-semibold-mb10" >{{
                                 "order_details.quantity" | translate
                                 }}:</span>
-                              <span class="text-success" style="margin-bottom: 10px !important">{{ part.QUANTITY ||
+                              <span class="text-success mb-10" >{{ part.QUANTITY ||
                                 "N/A" }}</span>
                             </div>
-                            <div class="d-flex justify-content-between" style="gap: 20px !important">
-                              <span class="fw-bold" style="
-                                  font-weight: 600 !important;
-                                  margin-bottom: 10px !important;
-                                ">{{ "order_details.price" | translate }}:</span>
-                              <span class="text-dark" style="margin-bottom: 10px !important">₹
+                            <div class="d-flex justify-content-between gap-20" >
+                              <span class="fw-bold font-semibold-mb10" >{{ "order_details.price" | translate }}:</span>
+                              <span class="text-dark mb-10" >₹
                                 {{ (part.TOTAL_AMOUNT | number) || "0" }}</span>
                             </div>
                           </div>
                         </div>
                       </div>
-
-                      <!-- No Parts Message -->
                       <div *ngIf="!loadingParts && !PartDetails.length" class="text-center text-muted">
                         {{ "order_details.no_parts_available" | translate }}
                       </div>
                     </div>
                   </div>
                 </div>
-
-                <!-- Footer -->
                 <div *ngIf="selectedJob?.isPartAdd && !loadingParts"
                   class="offcanvas-footer border-top p-3 d-flex align-items-center justify-content-end">
                   <button class="btn btn-primary w-50 me-2" (click)="acceptPartRequest('A')">
@@ -1554,32 +1041,23 @@
                     {{ "order_details.deny" | translate }}
                   </button>
                 </div>
-
-                <!-- Payment Summary Section -->
                 <div *ngIf="selectedJob?.isPaymentReq" class="offcanvas-header border-bottom">
                   <h5 class="offcanvas-title fw-bold text-dark">
                     {{ "order_details.payment_summary" | translate }}
                   </h5>
                   <button type="button" class="btn-close" data-bs-dismiss="offcanvas" (click)="cancel()"></button>
                 </div>
-                <!-- Inline style for scrollable content -->
-                <div *ngIf="selectedJob?.isPaymentReq" class="offcanvas-body d-flex flex-column"
-                  style="max-height: 63vh; overflow-y: auto">
+                <div *ngIf="selectedJob?.isPaymentReq" class="offcanvas-body d-flex flex-column scrollable-max63"
+                  >
                   <div>
-                    <!-- Loading Spinner -->
                     <div *ngIf="loadingParts" class="d-flex justify-content-center my-3">
                       <div class="spinner-border text-primary" role="status">
                         <span class="visually-hidden">Loading...</span>
                       </div>
                     </div>
-
-                    <!-- Part Details -->
                     <div *ngIf="!loadingParts && PartDetails.length">
                       <div *ngFor="let part of PartDetails"
-                        class="card part-details-card1 shadow-sm rounded border bg-white p-3 mb-3" style="
-                          border-radius: 16px !important;
-                          padding: 10px 12px !important;
-                        ">
+                        class="card part-details-card1 shadow-sm rounded border bg-white p-3 mb-3 rounded-padding-md">
                         <div class="details-grid">
                           <div class="d-flex justify-content-between">
                             <span class="fw-bold">{{
@@ -1614,73 +1092,36 @@
                         </div>
                       </div>
                     </div>
-
-                    <!-- No Parts Message -->
                     <div *ngIf="!loadingParts && !PartDetails.length" class="text-center text-muted">
                       {{ "order_details.no_parts_available" | translate }}
                     </div>
                   </div>
                 </div>
-
-                <div *ngIf="selectedJob?.isPaymentReq" style="margin: 0px 16px">
-                  <!-- Grand Total -->
-                  <div class="card part-total-card shadow-sm rounded border bg-white p-2 mb-2" style="
-                      padding: 10px 12px !important;
-                      border-radius: 16px !important;
-                      margin-bottom: 17px !important;
-                    ">
-                    <!-- <h6 class="fw-bold text-dark mb-2">{{ 'order_details.part_total' | translate }}</h6> -->
-                    <!-- 
-                    <div class="d-flex justify-content-between small mb-1">
-                      <span class="fw-semibold">{{ 'order_details.sub_total' | translate }}:</span>
-                      <span class="text-dark">
-                        ₹ {{ selectedJob?.pendingPaymentsData?.TOTAL_RATE || "N/A" }}
-                      </span>
-                    </div>
-
-                    <div class="d-flex justify-content-between small mb-1">
-                      <span class="fw-semibold">{{ 'order_details.tax' | translate }}:</span>
-                      <span class="text-dark">
-                        ₹ {{ selectedJob?.pendingPaymentsData?.TOTAL_TAX_RATE || "N/A" }}
-                      </span>
-                    </div> -->
-
-                    <div class="d-flex justify-content-between small mt-2" style="margin-top: 0px !important">
+                <div *ngIf="selectedJob?.isPaymentReq" class="mx-16">
+                  <div class="card part-total-card shadow-sm rounded border bg-white p-2 mb-2 rounded-16-mb-17 rounded-padding-mb17">
+                    <div class="d-flex justify-content-between small mt-2 mt-0">
                       <span class="fw-bold text-dark">Total Amount</span>
-                      <!-- <span class="fw-bold text-dark">
-                        ₹ {{ selectedJob?.pendingPaymentsData?.TOTAL_AMOUNT || "N/A" }}
-                      </span> -->
-                      <!-- <span class="fw-bold text-dark">
-                        
-  ₹ {{ selectedJob?.pendingPaymentsData?.TOTAL_AMOUNT ? (selectedJob.pendingPaymentsData.TOTAL_AMOUNT | number) : '0' }}
-</span> -->
-
                       <span class="fw-bold text-dark">
                         {{ (getTotalAmount() | number) || "0" }}
                       </span>
                     </div>
                   </div>
-
-                  <h5 style="font-size: 14px !important; font-weight: bold">
+                  <h5 class="text-14-bold">
                     {{ "order_details.select_payment_mode" | translate }}
                   </h5>
-
-                  <!-- Payment Mode Selection -->
                   <div class="form-check">
                     <input class="form-check-input" type="radio" id="online" name="paymentMode"
                       [(ngModel)]="selectedPaymentMethod" value="ONLINE" />
-                    <label style="font-size: 13px" class="form-check-label" for="online">{{
+                    <label  class="form-check-label font-13" for="online">{{
                       "order_details.online_payment" | translate }}</label>
                   </div>
                   <div class="form-check">
                     <input class="form-check-input" type="radio" id="cod" name="paymentMode"
                       [(ngModel)]="selectedPaymentMethod" value="COD" />
-                    <label style="font-size: 13px" class="form-check-label" for="cod">{{
+                    <label  class="form-check-label font-13" for="cod">{{
                       "order_details.cash_on_delivery" | translate }}</label>
                   </div>
                 </div>
-
-                <!-- Footer -->
                 <div *ngIf="!loadingParts && selectedJob?.isPaymentReq"
                   class="offcanvas-footer border-top p-3 d-flex align-items-center justify-content-end mt-auto gap-2">
                   <button class="btn btn-outline-danger flex-grow-1 mb-1" (click)="cancel()">
@@ -1699,65 +1140,27 @@
                       }}</ng-template>
                   </button>
                 </div>
-
-                <!-- <br> -->
-                <!-- </div> -->
               </div>
-
-              <!-- Order Status End -->
-              <!-- </div> -->
-              <!-- dsd -->
-
-              <!-- Technician Details Accordion -->
             </div>
-
             <div *ngIf="
                 !loadjobdetails &&
                 selectedJob?.JOB_CARD_ID &&
                 selectedJob?.JOB_CARD_ID !== 0 &&
                 jobItem?.JOB_STATUS == 'CO'
-              " class="accordion-item m-2 shadow-sm rounde" style="
-                background: #ffffff;
-                border-radius: 16px !important;
-                margin: 17px 0px !important;
-                margin-bottom: 17px !important;
-                box-shadow: 0px 0px 9.8px 0px rgba(0, 0, 0, 0.0784313725) !important;
-                border-top: 1px solid #dee2e6;
-              ">
-              <div class="d-flex justify-content-between align-items-center mb-2"
-                style="padding: 10px; margin-bottom: 0px !important">
-                <h6 class="fw-semibold text-dark" style="
-                    margin-bottom: 0px !important;
-                    font-size: 15px !important;
-                    font-weight: 700 !important;
-                  ">
-                  <i class="bi bi-star" style="margin-left: 4px; color: #2a3b8f; font-size: 17px"></i>&nbsp; Rate Us
+              " class="accordion-item m-2 shadow-sm rounde card-shadow-rounded">
+              <div class="d-flex justify-content-between align-items-center mb-2 p-10-mb-0"
+                >
+                <h6 class="fw-semibold text-dark text-15-bold-mb0" >
+                  <i class="bi bi-star ml-4-text-blue-lg" ></i>&nbsp; Rate Us
                 </h6>
-                <button style="
-                    color: #d48806;
-                    background: #fffbe6;
-                    border-color: #ffe58f;
-                    font-size: 11px !important;
-                  " *ngIf="!selectedJob?.feedbackData?.service_feedback"
-                  class="btn btn-warning fw-semibold px-3 py-1 d-flex align-items-center gap-1 shadow-sm small-btn"
+                <button *ngIf="!selectedJob?.feedbackData?.service_feedback"
+                  class="btn btn-warning fw-semibold px-3 py-1 d-flex align-items-center gap-1 shadow-sm small-btn badge-warning-light"
                   (click)="openFeedbackModal()">
-                  <i class="bi bi-star text-light fs-6" style="
-                      color: #d48806 !important;
-                      font-size: 11px !important;
-                    "></i>
+                  <i class="bi bi-star text-light fs-6 text-warning-xs" ></i>
                   Add Rating
                 </button>
               </div>
-
-              <!-- Display Ratings & Reviews -->
-              <div *ngIf="selectedJob?.feedbackData?.service_feedback" style="
-                  border: none !important;
-                  box-shadow: none !important;
-                  border-bottom-right-radius: 16px !important;
-                  border-bottom-left-radius: 16px !important;
-                  padding: 0px 15px !important;
-                " class="p-3 rounded shadow-sm border bg-white">
-                <!-- Service Rating -->
+              <div *ngIf="selectedJob?.feedbackData?.service_feedback" class="p-3 rounded shadow-sm border bg-white no-border-shadow-rounded-bottom">
                 <div class="mb-2">
                   <p class="mb-1 fw-semibold text-dark">Service Rating</p>
                   <div class="d-flex align-items-center">
@@ -1766,29 +1169,19 @@
                           selectedJob.feedbackData.service_feedback
                         )
                       ">
-                      <i [class]="'bi ' + star" style="margin-right: 5px"></i>
+                      <i [class]="'bi ' + star" class="mr-5" ></i>
                     </ng-container>
-                    <!-- <span class="ms-2 text-muted small">({{ selectedJob.feedbackData.service_feedback }} /
-                      5)</span> -->
                   </div>
                 </div>
-
-                <!-- Service Review -->
                 <div class="mb-3">
-                  <!-- <p class="mb-1 fw-semibold text-dark">
-                    <i class="bi bi-chat-text text-secondary me-1"></i> Review:
-                  </p> -->
                   <p class="bg-light p-2 rounded small text-dark">
                     {{
                     selectedJob.feedbackData.service_comment || "No comments"
                     }}
                   </p>
                 </div>
-
-                <!-- Technician Rating -->
                 <div class="mt-3" *ngIf="selectedJob.feedbackData.technician_feedback !== null">
                   <p class="mb-1 fw-semibold text-dark">
-                    <!-- <i class="bi bi-person-check text-primary me-1"></i> -->
                     Technician Rating
                   </p>
                   <div class="d-flex align-items-center">
@@ -1797,19 +1190,11 @@
                           selectedJob.feedbackData.technician_feedback
                         )
                       ">
-                      <i [class]="'bi ' + star" style="margin-right: 5px"></i>
+                      <i [class]="'bi ' + star" class="mr-5" ></i>
                     </ng-container>
-                    <!-- <span class="ms-2 text-muted small">({{ selectedJob.feedbackData.technician_feedback }} /
-                      5)</span> -->
                   </div>
                 </div>
-
-                <!-- Technician Review -->
                 <div class="mt-3">
-                  <!-- <p class="mb-1 fw-semibold text-dark">
-                    <i class="bi bi-chat-text text-secondary me-1"></i>
-                    Technician Review:
-                  </p> -->
                   <p class="bg-light p-2 rounded small text-dark">
                     {{
                     selectedJob.feedbackData.technician_comment ||
@@ -1819,7 +1204,6 @@
                 </div>
               </div>
             </div>
-
             <ng-template #jobData>
               <div *ngIf="!loadjobdetails" class="text-center p-4">
                 <img src="assets/img/no-data-concept.jpg" alt="No Data Available" class="img-fluid" width="150" />
@@ -1829,18 +1213,10 @@
               </div>
             </ng-template>
           </div>
-          <div class="accordion-item mt-2 shadow-sm rounded"
-            style="border-radius: 16px !important; margin-top: 10px !important" *ngIf="customertype == 'I'">
+          <div class="accordion-item mt-2 shadow-sm rounded rounded-mt-10"
+            *ngIf="customertype == 'I'">
             <h2 class="accordion-header" (click)="toggleAccordion('paymentSummary')">
-              <button style="
-                  background: white;
-                  border: none !important;
-                  font-size: 15px !important;
-                  font-weight: 700 !important;
-                  color: black;
-                  box-shadow: none !important;
-                  padding: 14px 12px;
-                " class="accordion-button fw-bold d-flex align-items-center gap-2"
+              <button class="accordion-button fw-bold d-flex align-items-center gap-2 btn-white-bold"
                 [class.collapsed]="!orderDetailsVisible['paymentSummary']">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 19 22" fill="none">
                   <path
@@ -1851,53 +1227,44 @@
               </button>
             </h2>
             <div class="accordion-collapse show">
-              <div class="accordion-body" style="padding-top: 0px; padding-bottom: 10px !important">
+              <div class="accordion-body pt-0-pb-10">
                 <div class="d-flex justify-content-between">
-                  <p class="mb-1" style="color: #636363; font-weight: 500 !important">
+                  <p class="mb-1 text-gray-medium" >
                     {{ "order_details.base_price" | translate }}
                   </p>
-                  <p class="mb-1" style="font-weight: 500 !important; color: black !important">
+                  <p class="mb-1 text-black-medium" >
                     ₹{{ orderData[0]?.TOTAL_TAXABLE_AMOUNT | number }}
                   </p>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <p class="mb-1" style="color: #636363; font-weight: 500 !important">
+                  <p class="mb-1 text-gray-medium" >
                     {{ "order_details.tax" | translate }}
                   </p>
-                  <p class="mb-1" style="font-weight: 500 !important; color: black !important">
+                  <p class="mb-1 text-black-medium" >
                     ₹{{ orderData[0]?.TAX_AMOUNT | number }}
                   </p>
                 </div>
-
-                <!-- Show Discount if Coupon is Applied -->
                 <ng-container *ngIf="orderData[0]?.DISCOUNT_AMOUNT">
                   <div class="d-flex justify-content-between">
-                    <p class="mb-1" style="color: #636363; font-weight: 500 !important">
+                    <p class="mb-1 text-gray-medium" >
                       {{ "order_details.discount" | translate }}
                     </p>
-                    <p class="mb-1" style="
-                        font-weight: 500 !important;
-                        color: black !important;
-                      ">
+                    <p class="mb-1 text-black-medium">
                       ₹{{ orderData[0]?.DISCOUNT_AMOUNT | number }}
                     </p>
                   </div>
                 </ng-container>
                 <ng-container *ngIf="orderData[0]?.IS_EXPRESS === 1">
                   <div class="d-flex justify-content-between">
-                    <p class="mb-1" style="color: #636363; font-weight: 500 !important">
+                    <p class="mb-1 text-gray-medium" >
                       {{ "order_details.express_service" | translate }}
                     </p>
-                    <p class="mb-1" style="
-                        font-weight: 500 !important;
-                        color: black !important;
-                      ">
+                    <p class="mb-1 text-black-medium" >
                       ₹{{ orderData[0]?.EXPRESS_DELIVERY_CHARGES | number }}
                     </p>
                   </div>
                 </ng-container>
-
-                <hr style="margin-top: 10px" />
+                <hr class="mt-10"/>
                 <div class="d-flex justify-content-between fw-bold">
                   <p class="mb-1">{{ "order_details.total" | translate }}</p>
                   <p class="mb-1">₹{{ orderData[0]?.FINAL_AMOUNT | number }}</p>
@@ -1908,7 +1275,6 @@
         </div>
       </div>
     </div>
-
     <style>
       .custom-shadow {
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
@@ -1916,59 +1282,49 @@
       }
     </style>
   </div>
-
   <div #feedbackModal class="modal fade" id="feedbackModal" tabindex="-1" data-bs-backdrop="static"
     data-bs-keyboard="false" aria-labelledby="feedbackModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content rounded-3 shadow-sm border-0 p-2">
         <div class="modal-header border-0 pb-1">
           <h6 class="modal-title fw-semibold d-flex align-items-center">
-            <i class="bi bi-record-circle-fill me-1" style="color: #334393"></i>
+            <i class="bi bi-record-circle-fill me-1 text-blue-dark"></i>
             Rate Us
           </h6>
           <button type="button" class="btn-close" (click)="closeFeedbackModal()"></button>
         </div>
-
         <div class="modal-body p-2">
           <form #feedbackForm="ngForm" (ngSubmit)="submitFeedback()">
-            <p class="fw-medium text-dark mb-1" style="font-size: 13px">
+            <p class="fw-medium text-dark mb-1 font-13" >
               How would you rate the experience and service?
             </p>
             <div class="d-flex gap-1 justify-content-left mb-2">
-              <i class="bi" [ngClass]="
+              <i class="bi font-14-pointer" [ngClass]="
                   rating >= star
                     ? 'bi-star-fill text-warning'
                     : 'bi-star text-muted'
                 " *ngFor="let star of [1, 2, 3, 4, 5]" (click)="setRating(star, 'service')"
-                style="font-size: 14px; cursor: pointer"></i>
+                ></i>
             </div>
-
-            <textarea class="form-control bg-light rounded-2 border-0 p-2" name="comment" [(ngModel)]="feedback.comment"
+            <textarea class="form-control bg-light rounded-2 border-0 p-2 text-12-full-width" name="comment" [(ngModel)]="feedback.comment"
               placeholder="Tell us on how we can improve" rows="2" maxlength="256"
-              style="font-size: 12px; width: 100%"></textarea>
-
-            <p class="fw-medium text-dark mt-2 mb-1" style="font-size: 13px">
+              ></textarea>
+            <p class="fw-medium text-dark mt-2 mb-1 font-13" >
               How would you rate the technician assigned for this service?
             </p>
             <div class="d-flex gap-1 justify-content-left mb-2">
-              <i class="bi" [ngClass]="
+              <i class="bi font-14-pointer" [ngClass]="
                   techRating >= star
                     ? 'bi-star-fill text-warning'
                     : 'bi-star text-muted'
                 " *ngFor="let star of [1, 2, 3, 4, 5]" (click)="setRating(star, 'technician')"
-                style="font-size: 14px; cursor: pointer"></i>
+                ></i>
             </div>
-
-            <textarea class="form-control bg-light rounded-2 border-0 p-2" name="comment1"
+            <textarea class="form-control bg-light rounded-2 border-0 p-2 text-12-full-width" name="comment1"
               [(ngModel)]="feedback.comment1" placeholder="Share your experience with our technician" rows="2"
-              maxlength="256" style="font-size: 12px; width: 100%"></textarea>
-
-            <div class="modal-footer border-0 pt-3" style="padding: 10px 0px">
-              <button type="submit" class="btn w-100 py-2 rounded-2 fw-medium" style="
-                  color: white !important;
-                  background-color: #334393 !important;
-                  font-size: 13px;
-                " [disabled]="rating === 0 || techRating === 0">
+              maxlength="256" ></textarea>
+            <div class="modal-footer border-0 pt-3 py-10">
+              <button type="submit" class="btn w-100 py-2 rounded-2 fw-medium text-white-bg-blue" [disabled]="rating === 0 || techRating === 0">
                 Submit
               </button>
             </div>
@@ -1977,7 +1333,6 @@
       </div>
     </div>
   </div>
-
   <div class="offcanvas offcanvas-end" data-bs-backdrop="static" tabindex="-1" id="offcanvasRightttttttt"
     aria-labelledby="offcanvasRightLabel">
     <div class="offcanvas-header">
@@ -1985,35 +1340,28 @@
       <button type="button" (click)="closechat()" class="btn-close text-reset" data-bs-dismiss="offcanvas"
         aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body" style="overflow: hidden !important">
+    <div class="offcanvas-body overflow-hidden">
       <div class="d-flex justify-content-center" *ngIf="isSpinning || msgspin">
         <div class="spinner-border" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
       <div class="chat-container" *ngIf="!isSpinning && !msgspin">
-        <!-- <div style="x">
-        <span (click)="getmsgs()"></span>
-      </div> -->
-        <span style="display: none">{{ getmsgssssss() }}</span>
-        <div class="message-box" style="height: 80vh; overflow: auto" id="scrollableDivvvvv" #scrollableDivvvvv>
-          <!-- Customer's message -->
+        <span class="d-none">{{ getmsgssssss() }}</span>
+        <div class="message-box scrollable-80vh" id="scrollableDivvvvv" #scrollableDivvvvv>
           <div *ngIf="groupeddata != undefined && groupeddata != null">
-            <!-- <nz-spin [nzSpinning]="msgspin"> -->
             <div *ngFor="let msgdate of getKeys(groupeddata)">
-              <div style="text-align: center; font-size: 10px; font-weight: 800">
+              <div class="text-center-xs-bold">
                 {{ msgdate | date : "dd/MM/yyyy" }}
               </div>
-
               <div *ngFor="let messageeee of groupeddata[msgdate]">
                 <div class="message customer-message" *ngIf="messageeee['BY_CUSTOMER'] == false">
                   <span class="customer-name">{{
                     messageeee["TECHNICIAN_NAME"]
                     }}</span>
                   <div>
-                    <div class="message-text" style="overflow-wrap: anywhere">
+                    <div class="message-text overflow-wrap-anywhere" >
                       {{ messageeee["MESSAGE"] }}
-
                       <div *ngIf="
                           messageeee['ATTACHMENT_URL'] != null &&
                           messageeee['ATTACHMENT_URL'] != '' &&
@@ -2053,21 +1401,17 @@
                         </video>
                       </div>
                     </div>
-
-                    <div style="text-align: right !important; width: 100%" class="timestamp">
+                    <div class="timestamp text-right-full">
                       {{ messageeee["SEND_DATE"] | date : "dd/MM | hh:mm a" }}
                     </div>
                   </div>
                 </div>
-
-                <!-- Technician's message -->
                 <div class="message technician-message" *ngIf="messageeee['BY_CUSTOMER'] == true">
                   <span class="technician-name">{{
                     messageeee["SENDER_USER_ID_USER"]
                     }}</span>
-                  <div class="message-text" style="overflow-wrap: anywhere">
+                  <div class="message-text overflow-wrap-anywhere" >
                     <div [innerHTML]="transform(messageeee['MESSAGE'])"></div>
-
                     <div *ngIf="
                         messageeee['ATTACHMENT_URL'] != null &&
                         messageeee['ATTACHMENT_URL'] != '' &&
@@ -2099,7 +1443,6 @@
                 </div>
               </div>
             </div>
-            <!-- </nz-spin> -->
           </div>
         </div>
         <div *ngIf="showimagebox">
@@ -2112,69 +1455,28 @@
             <source [src]="urllll + 'OrderChat/' + ICON" type="video/mp4" />
           </video>
         </div>
-        <!-- <nz-spin [nzSpinning]="isSpinning"> -->
         <div class="input-area">
           <button class="paper-clip" *ngIf="!progressBarImageOne">
-            <span (click)="fileInput.click()" style="font-size: 20px !important"><i class="bi bi-upload"></i></span>
+            <span (click)="fileInput.click()" class="text-20"><i class="bi bi-upload"></i></span>
           </button>
-          <!-- <nz-progress [nzPercent]="percentImageOne" [nzWidth]="30" nzType="circle"
-              *ngIf="progressBarImageOne"></nz-progress> -->
           <input accept="image/*,video/*" #fileInput name="albumimage" type="file" (change)="onFileSelected($event)"
-            style="display: none" required />
-          <!-- <button nz-button nzType="default" class="paper-clip" (click)="showemoj()">
-              <span style="font-size: 16px !important" nz-icon nzType="smile" nzTheme="outline"></span>
-            </button> -->
-
-          <!-- <ng-template #popoverTemplate>
-              <div style="padding: 0px !important">
-                <nz-progress
-                  [nzPercent]="percentImageOne"
-                  [nzWidth]="30"
-                  nzType="circle"
-                  *ngIf="progressBarImageOne"
-                ></nz-progress>
-                <span
-                  *ngIf="!progressBarImageOne"
-                  nz-icon
-                  nzType="upload"
-                  nzTheme="outline"
-                  (click)="fileInput.click()"
-                ></span>
-                <input
-                  accept="image/*,video/*"
-                  #fileInput
-                  name="albumimage"
-                  type="file"
-                  (change)="onFileSelected($event)"
-                  style="display: none"
-                  required
-                />
-              </div>
-            </ng-template> -->
+           class="d-none" required />
           <textarea placeholder="Type your message..." rows="1" #textArea id="messages2" [(ngModel)]="BODY_TEXT"
             name="BODY_TEXT" (keydown)="handleEnter($event)"></textarea>
-          <div style="text-align: end">
-            <button type="button" class="whatsapp-send-icon" style="width: 100% !important" (click)="sendmessage()">
+          <div class="text-end">
+            <button type="button" class="whatsapp-send-icon w-100" (click)="sendmessage()">
               <i class="bi bi-send"></i>
-              <!-- <span nz-icon nzType="send" nzTheme="outline"></span> -->
             </button>
           </div>
         </div>
-        <!-- </nz-spin> -->
-        <!-- (emojiSelect)="onEmojiSelect($event)" -->
-        <!-- <emoji-mart *ngIf="showEmojiPicker" (emojiSelect)="onEmojiSelect($event)" [showPreview]="false"></emoji-mart> -->
       </div>
     </div>
   </div>
-
-  <!--  -->
-
   <div *ngIf="isFAQDrawerVisible" id="offcanvasFAQ" class="offcanvas offcanvas-end widthclass" tabindex="-1"
     aria-labelledby="offcanvasFAQLabel">
-    <button style="display: none" id="closefaq" #closefaq type="button" data-bs-dismiss="offcanvas" class="btn-close"
+    <button  id="closefaq" #closefaq type="button" data-bs-dismiss="offcanvas" class="btn-close d-none"
       (click)="FAQdrawerClose()" aria-label="Close"></button>
-
-    <div class="offcanvas-body" style="padding: 0px">
+    <div class="offcanvas-body no-padding" >
       <app-order-show-tickets [drawerClose]="FAQcloseCallback" [isFAQDrawerVisible]="isFAQDrawerVisible"
         [orderid]="orderid" [jobcardid]="jobcardid" [orderdata]="orderdetailsnew" [type]="type">
       </app-order-show-tickets>

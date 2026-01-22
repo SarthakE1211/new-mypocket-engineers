@@ -1,87 +1,58 @@
 .section {
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
-
-
-
 .custom-offcanvas-width {
-    width: 617px !important;
-    /* Set the offcanvas width */
+  width: 617px !important;
 }
-
-/* Product Card Styling */
 .product-card {
-    // border: 1px solid #e1e1e1;
-    border-radius: 5px;
-    overflow: hidden;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-    transition: transform 0.3s;
-    background: #fff;
-    padding: 15px;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  transition: transform 0.3s;
+  background: #fff;
+  padding: 15px;
 }
-
 .product-card:hover {
-    transform: translateY(-5px);
+  transform: translateY(-5px);
 }
-
 .product-title {
-    font-weight: 600;
-    font-size: 1.2rem;
-    color: #333;
-    transition: color 0.3s;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #333;
+  transition: color 0.3s;
 }
-
 .product-title:hover {
-    color: #3170DE;
+  color: #3170DE;
 }
-
-/* Image Styling */
 .product-image img {
-    border-radius: 8px;
-    object-fit: cover;
-    transition: opacity 0.3s;
+  border-radius: 8px;
+  object-fit: cover;
+  transition: opacity 0.3s;
 }
-
 .product-image img:hover {
-    opacity: 0.9;
+  opacity: 0.9;
 }
-
 .laptop-card {
-    transition: all 0.3s ease-in-out !important;
-    border-radius: 5px !important;
-    /* Optional for smooth edges */
+  transition: all 0.3s ease-in-out !important;
+  border-radius: 5px !important;
 }
-
 .laptop-card:hover {
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25) !important;
-    /* Stronger and more spread */
-    transform: translateY(-2px) !important;
-    /* Slightly more lift effect */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25) !important;
+  transform: translateY(-2px) !important;
 }
-
 .btn-buy {
-    background: #3170DE;
-    color: white;
+  background: #3170DE;
+  color: white;
 }
-
-// .btn-buy:hover {
-//   background: #333;
-// }
-
-
-
-
-
 .dropdown-container {
   position: relative;
   display: inline-block;
   width: 200px;
 }
-
 .dropdown-toggle {
   background: #fff;
   border: 1px solid #ccc;
@@ -97,13 +68,11 @@
   color: #666;
   box-shadow: none;
 }
-
 .filter-icon {
-  color: #1d4ed8; /* Blue color */
+  color: #1d4ed8;
   font-weight: bold;
   font-size: 14px;
 }
-
 .dropdown-menu {
   position: absolute;
   top: 100%;
@@ -117,7 +86,6 @@
   z-index: 1000;
   display: block;
 }
-
 .dropdown-item {
   background: transparent;
   border: none;
@@ -129,77 +97,161 @@
   color: #333;
   display: block;
 }
-
 .dropdown-item:hover {
   background: #f0f0f0;
 }
-
 .dropdown-item.active {
   font-weight: bold;
   color: #3170DE;
 }
-
-
-
 ::ng-deep .dropdown-toggle::after {
-  display: none; /* Hide default dropdown arrow */
+  display: none;
 }
-
 ::ng-deep .dropdown-toggle {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
 }
-
 ::ng-deep .dropdown-toggle .bi-funnel {
-  font-size: 16px; /* Adjust size */
-  color: #1d4ed8;  /* Match blue color */
+  font-size: 16px;
+  color: #1d4ed8;
 }
-
-
-
 .responsive-text {
-    font-size: 15px !important;
-    /* Default size for small screens */
+  font-size: 15px !important;
 }
-
 @media (min-width: 576px) {
-
-    /* Small devices (sm) */
-    .responsive-text {
-        font-size: 18px !important;
-    }
+  .responsive-text {
+    font-size: 18px !important;
+  }
 }
-
 @media (min-width: 768px) {
-
-    /* Medium devices (md) */
-    .responsive-text {
-        font-size: 22px !important;
-    }
+  .responsive-text {
+    font-size: 22px !important;
+  }
 }
-
 @media (min-width: 992px) {
-
-    /* Large devices (lg) */
-    .responsive-text {
-        font-size: 24px !important;
-    }
+  .responsive-text {
+    font-size: 24px !important;
+  }
 }
-
-
-/* Responsive modal content */
 @media (max-width: 576px) {
   .suggestion-modal-body h5 {
     font-size: 16px !important;
   }
-
   .suggestion-modal-body p {
     font-size: 14px !important;
   }
-
   .suggestion-modal-content {
     padding: 20px 10px !important;
   }
+}
+.pl-10 {
+  padding-left: 10px
+}
+.vertical-bar-small {
+  height: 24px;
+  width: 4px;
+  background-color: #f26522;
+  display: inline-block;
+}
+.dropdown-absolute-scroll {
+  display: block;
+  max-height: 200px;
+  overflow-y: auto;
+  right: 0;
+  left: auto;
+  position: absolute;
+  z-index: 1050;
+  background-color: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+}
+.bg-white {
+  background-color: white
+}
+.full-width-vw {
+  width: 100vw
+}
+.cursor-pointer {
+  cursor: pointer
+}
+.text-ellipsis-14 {
+  font-size: 14px;
+  padding-top: 7px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
+}
+.text-ellipsis-12 {
+  font-size: 12px;
+  padding-top: 0px;
+  padding-bottom: 5px;
+  color: #4d4d4d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
+}
+.text-gray-12 {
+  color: #9b9d9f;
+  font-size: 12px
+}
+.font-12 {
+  font-size: 12px
+}
+.text-orange-12 {
+  font-size: 12px;
+  color: #f36631
+}
+.mb-7px {
+  margin: 0px 0px 7px 0px
+}
+.font-bold-blue-14 {
+  font-weight: bold;
+  color: #3170de;
+  font-size: 14px
+}
+.text-strike-14 {
+  text-decoration: line-through;
+  font-size: 14px
+}
+.btn-outline-blue {
+  border-radius: 5px;
+  color: #3170de;
+  border: 1.4px solid;
+}
+.btn-white-outline-blue {
+  background-color: white;
+  border-radius: 5px;
+  color: #3170de;
+  border: 1.4px solid;
+}
+.bg-blue-3170de {
+  background: #3170de
+}
+.max-w-350 {
+  max-width: 350px
+}
+.top-right-10 {
+  top: 10px;
+  right: 10px
+}
+.font-16-600 {
+  font-size: 16px;
+  font-weight: 600
+}
+.font-14 {
+  font-size: 14px;
+}
+.width-300-relative {
+  width: 300px;
+  position: relative
+}
+.pt-20 {
+  padding: 0px;
+  padding-top: 20px
 }

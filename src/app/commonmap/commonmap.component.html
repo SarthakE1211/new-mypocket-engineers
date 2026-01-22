@@ -1,67 +1,27 @@
 <div
-  class="modal fade"
+  class="modal fade custom-zindex-11010"
   id="addressmodalSubCatClick"
   tabindex="-1"
   aria-labelledby="addressmodalSubCatClickLabel"
   aria-hidden="true"
   data-bs-backdrop="static"
   data-bs-keyboard="false"
-  style="z-index: 11010"
 >
   <div class="modal-dialog">
     <div
-      class="modal-content p-1"
-      style="background-color: transparent !important; border: none !important"
+      class="modal-content p-1 custom-bg-transparent-no-border"
     >
-      <!-- <div class="modal-header border-bottom py-2">
-        <h5 class="modal-title fw-bold">
-          {{ "home.reviews.title" | translate }}
-        </h5>
-        <button
-          type="button"
-          class="btn-close" style="display: none;" id="closemodaladd"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-
-        ></button>
-      </div> -->
-
       <div class="modal-body p-2">
         <div *ngIf="modalVisible">
-          <!-- <div class="backdrop"></div> -->
-
           <div class="map-container">
             <div
-              class="map-header"
-              style="
-                background-color: #007bff;
-                padding: 12px 16px;
-                color: #fff;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                border-radius: 6px;
-              "
+              class="map-header custom-primary-flex-box "
             >
-              <div
-                style="
-                  display: flex;
-                  align-items: center;
-                  /* justify-content: center; */
-                  /* flex-direction: column; */
-                  justify-content: space-between;
-                  width: 100%;
-                "
+              <div class="custom-flex-space-between-full"
               >
                 <div>
                   <p
-                    class="mb-0"
-                    style="
-                      margin: 0;
-                      font-weight: bold;
-                      font-size: 16px;
-                      color: white !important;
-                    "
+                    class="mb-0 custom-text-white-bold-16"
                   >
                     User Location (Place the marker at your order location)
                   </p>
@@ -69,68 +29,31 @@
                 <div>
                   <button
                     type="button"
-                    style="
-                      color: white !important;
-                      border: none !important;
-                      background: transparent !important;
-                    "
+                    class="custom-white-text-transparent-btn"
                     data-bs-dismiss="modal"
                     (click)="closeaddressmodalSubCatClick()"
                     aria-label="Close"
                   >
                     <i
-                      class="bi bi-x"
-                      style="font-size: 26px; padding: 0px !important"
+                      class="bi bi-x custom-fontsize-26-no-padding"
                     ></i>
                   </button>
                 </div>
               </div>
               <div
-                style="text-align: end; padding: 6px"
+              class="custom-text-end-padding-6"
                 *ngIf="gettruecondition()"
               >
-                <!-- <button class="close-menu-btn" (click)="closeMap()">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                  </svg>
-                </button> -->
               </div>
             </div>
-
-            <!-- Map Container -->
             <div id="map"></div>
-
-            <!-- <div class="location-details">
-              <p style="margin-left:650px">{{ locationAddress || "Fetching address..." }}</p>
-            </div> -->
             <div class="location-details text-center">
               <p  class="address-text">{{ locationAddress || "Fetching address..." }}</p>
             </div>
-
             <div class="map-footer">
               <button
                 [disabled]="!locationAddress"
-                style="
-                  padding: 10px 20px;
-                  font-size: 14px;
-                  background-color: #007bff;
-                  color: #fff;
-                  border: none;
-                  border-radius: 6px;
-                  cursor: pointer;
-                  transition: background-color 0.3s;
-                "
+                class="custom-primary-btn-transition"
                 (click)="confirmLocation()"
               >
                 Confirm Location
@@ -138,12 +61,10 @@
             </div>
           </div>
         </div>
-
         <div *ngIf="showAddressDetailsForm" class="address-form-container">
-          <div class="card shadow-sm address-form-card" style="border: none">
+          <div class="card shadow-sm address-form-card custom-border-none">
             <div
-              class="card-header position-relative d-flex align-items-center justify-content-center"
-              style="height: 80px; border-bottom: none"
+              class="card-header position-relative d-flex align-items-center justify-content-center custom-height-80-no-border-bottom"
             >
               <div class="icon-wrapper">
                 <svg
@@ -188,50 +109,34 @@
                   aria-label="Close"
                 >
                   <i
-                    class="bi bi-x"
-                    style="font-size: 26px; padding: 0px !important"
+                    class="bi bi-x custom-fontsize-26-no-padding"
                   ></i>
                 </button>
               </div>
             </div>
-
             <form
               #addressSubmit="ngForm"
               (ngSubmit)="saveAddressAdd(addressSubmit)"
               class="p-3"
             >
-              <div
-                style="
-                  background-color: #f4f7f9;
-                  padding: 15px;
-                  height: 70vh;
-                  overflow-y: scroll;
-                "
+              <div class="custom-bg-scrollable-70vh"
               >
                 <h2
-                  class="form-title mb-0 ms-3"
-                  style="
-                    padding: 0px 0px 15px;
-                    margin-left: 0px !important;
-                    font-size: 17px;
-                  "
+                  class="form-title mb-0 ms-3 custom-padding-bottom-15-font17"
                 >
                   Enter address details
                 </h2>
                 <div
-                  class="mb-3"
-                  style="border-radius: 8px; padding: 12px; background: #fdfdfd"
+                  class="mb-3 custom-card-radius-padding-bg"
                 >
                   <label
-                    class="form-label text-muted small"
-                    style="display: flex"
+                    class="form-label text-muted small custom-display-flex"
                     >Save address as *</label
                   >
                   <div class="btn-group custom-btn-group">
                     <button
                       type="button"
-                      class="btn"
-                      style="margin-right: 10px !important"
+                      class="btn custom-mr-10-important"
                       [ngClass]="{
                         'btn-outline-primary': addressForm.TYPE !== 'H',
                         'btn-primary': addressForm.TYPE === 'H',
@@ -243,8 +148,7 @@
                     </button>
                     <button
                       type="button"
-                      class="btn"
-                      style="margin-right: 10px !important"
+                      class="btn custom-mr-10-important"
                       [ngClass]="{
                         'btn-outline-primary': addressForm.TYPE !== 'F',
                         'btn-primary': addressForm.TYPE === 'F',
@@ -255,10 +159,8 @@
                       Work
                     </button>
                     <button
-                      style="margin-left: 10px"
-                      style="margin-right: 10px !important"
                       type="button"
-                      class="btn"
+                      class="btn custom-mr-10-important custom-ml-10"
                       [ngClass]="{
                         'btn-outline-primary': addressForm.TYPE !== 'O',
                         'btn-primary': addressForm.TYPE === 'O',
@@ -270,42 +172,29 @@
                     </button>
                   </div>
                 </div>
-
                 <div class="mb-3 contact-details" *ngIf="!asGuest">
-                  <label class="form-label" style="font-size: 13px"
+                  <label class="form-label custom-font-13"
                     >Contact Person Details</label
                   >
-                  <div style="font-size: 13px">
+                  <div class="custom-font-13">
                     {{ data.CUSTOMER_NAME }}
                     <b>{{ data.CUSTOMER_MOBILE_NO }}</b>
                   </div>
                 </div>
-                <div
-                  style="border-radius: 8px; padding: 12px; background: #fdfdfd"
+                <div class="custom-card-radius-padding-bg"
                 >
                   <div
-                    class="form-group position-relative"
-                    style="padding: 10px"
+                    class="form-group position-relative service-card"
                   >
-                    <!-- <input
-              type="text"
-              class="form-control"
-              [value]="locationCode || 'WJHV+GV5'"
-              readonly
-              autocomplete="off"
-            /> -->
                     <button
                       type="button"
-                      style="font-size: 13px"
-                      class="btn btn-link position-absolute end-0 top-50 translate-middle-y"
+                      class="btn btn-link position-absolute end-0 top-50 translate-middle-y custom-font-13"
                       (click)="onshowMap()"
                     >
                       Change Location
                     </button>
                   </div>
-
                   <div class="row mt-2">
-                    <!-- Address Line 1 -->
                     <div class="col-md-6">
                       <input
                         type="text"
@@ -325,8 +214,6 @@
                         Please enter house number/flat no/floor no.
                       </div>
                     </div>
-
-                    <!-- Address Line 2 -->
                     <div class="col-md-6">
                       <input
                         type="text"
@@ -347,9 +234,7 @@
                       </div>
                     </div>
                   </div>
-
                   <div class="row mt-2">
-                    <!-- Landmark -->
                     <div class="col-md-6">
                       <input
                         type="text"
@@ -361,11 +246,8 @@
                         maxlength="128"
                       />
                     </div>
-
-                    <!-- Pincode Dropdown -->
                     <div class="col-md-6">
                       <div class="position-relative">
-                        <!-- (click)="togglePincodeDropdown(); $event.stopPropagation()" -->
                         <div class="dropdown-wrapper">
                           <input
                             type="text"
@@ -384,42 +266,15 @@
                              class="loading-container1 spinner-inside"
                           >
                             <div
-                              style="text-align: center"
-                              class="spinner-border"
+                              class="spinner-border text-center"
                               role="status"
                             >
                               <span class="visually-hidden">Loading...</span>
                             </div>
                           </div>
-                          <!-- <span class="dropdown-icon"></span> -->
                         </div>
-                        <!-- <div
-                  *ngIf="(pincode.errors?.['required'] && (pincode.touched || addressSubmitted))"
-                  class="error-message"
-                >
-                  Please Select Pin Code.
-                </div> -->
-                        <!-- <div *ngIf="showPincodeDropdown" class="dropdown-menu show">
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Search pincode..."
-                    [(ngModel)]="searchPincode"
-                    name="pincodeSearch"
-                    (input)="filterPincodes($event)"
-                    (click)="$event.stopPropagation()"
-                    autocomplete="off"
-                  />
-                  <div
-                    class="dropdown-item"
-                    *ngFor="let pincode of filteredPincodes"
-                    (click)="selectPincode(pincode)"
-                  >
-                    {{ pincode.PINCODE_NUMBER }}
-                  </div>
-                </div> -->
                         <div
-                          style="font-size: 12px"
+                        class="back-btn"
                           *ngIf="
                             pincode.invalid &&
                             (pincode.touched || addressSubmitted)
@@ -432,14 +287,11 @@
                           <div *ngIf="pincode.errors?.['maxlength']">
                             Max length exceeded.
                           </div>
-                          <!-- Add more conditions if needed -->
                         </div>
                       </div>
                     </div>
                   </div>
-
                   <div class="row mt-2">
-                    <!-- City -->
                     <div class="col-md-6">
                       <input
                         type="text"
@@ -459,8 +311,6 @@
                         Please enter City.
                       </div>
                     </div>
-
-                    <!-- State Dropdown -->
                     <div class="col-md-6">
                       <div class="position-relative">
                         <div
@@ -504,7 +354,6 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="d-flex justify-content-center mt-3">
                   <button
                     [disabled]="isAddrssSaving"
@@ -526,4 +375,3 @@
     </div>
   </div>
 </div>
-<!-- </div> -->

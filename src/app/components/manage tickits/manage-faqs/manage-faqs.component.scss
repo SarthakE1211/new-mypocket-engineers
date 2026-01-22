@@ -2,7 +2,6 @@
   margin-top: 20px;
   text-align: center;
 }
-
 .no-data-img {
   max-width: 250px;
   opacity: 0.6;
@@ -10,9 +9,7 @@
 .faq-container {
   padding: 10px;
   padding-top: 0px;
-
   background-color: #ffffff;
-
   .faq-title {
     position: sticky;
     font-size: 18px;
@@ -24,35 +21,27 @@
     color: #2A3B8F;
     ;
     z-index: 1;
-    // border-bottom: 1px solid #ddd;
   }
-
   .accordion-item {
     border: none;
-    // border-bottom: 1px solid #e0e0e0;
-
     .accordion-button {
       font-size: 14px;
       font-weight: 500;
       background-color: #ffffff;
       color: #000;
       box-shadow: none;
-
       &:focus {
         outline: none;
         box-shadow: none;
       }
     }
-
     .accordion-body {
       font-size: 12px;
       color: #555;
     }
   }
-
   .manage-tickets {
     margin-top: 16px;
-
     button {
       background-color: #3170de;
       border-color: #3170de;
@@ -63,8 +52,6 @@
     }
   }
 }
-
-// Media queries for responsive design
 @media (min-width: 768px) {
   .faq-container {
     padding: 10px;
@@ -72,15 +59,12 @@
     .faq-title {
       font-size: 20px;
     }
-
     .accordion-button {
       font-size: 16px;
     }
-
     .accordion-body {
       font-size: 14px;
     }
-
     .manage-tickets button {
       font-size: 16px;
     }
@@ -89,42 +73,28 @@
 .ticket_drawer {
   position: fixed;
   top: 0;
-  right: -1000px; /* Ensures content is completely off-screen by default */
-  width: 780px; /* Drawer width */
+  right: -1000px;
+  width: 780px;
   height: 100%;
   background-color: #fff;
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
-  transition: right 0.3s ease-in-out; /* Smooth animation */
-  z-index: 1050; /* Ensures it's on top */
-
+  transition: right 0.3s ease-in-out;
+  z-index: 1050;
   &.open {
-    right: 0; /* Slide-in effect when active */
+    right: 0;
   }
-
   .drawer-content {
     position: relative;
     height: 100%;
     overflow-y: auto;
-    visibility: hidden; /* Ensures no content shows before the drawer opens */
+    visibility: hidden;
   }
-
   &.open .drawer-content {
-    visibility: visible; /* Only show content when the drawer is active */
+    visibility: visible;
   }
-
   .full-width-content {
-    width: 800px; /* Ensures content inside has a larger width */
+    width: 800px;
   }
-
-  // .drawer-overlay {
-  //   position: fixed;
-  //   top: 0;
-  //   left: 0;
-  //   width: calc(100% - 600px); /* Matches drawer width */
-  //   height: 100%;
-  //   background-color: rgba(0, 0, 0, 0.5);
-  //   z-index: 1049;
-  // }
 }
 .close-menu-btn {
   border: none;
@@ -133,32 +103,24 @@
   display: flex;
   align-items: center;
 }
-
-@media (max-width:700px)
-{
+@media (max-width:700px) {
   .custom-faq-accordion {
     min-height: 68vh;
+  }
 }
-}
-
 .custom-faq {
   min-height: 68vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 .custom-faq-accordion {
   min-height: 100vh;
-  // padding-bottom: 80px;
   overflow: auto;
   .custom-accordion-item {
-    // border: 1px solid #e0e0e0;
     border-radius: 8px;
     margin-bottom: 10px;
-
     box-shadow: 0 2px 1px rgba(0, 0, 0, 0.1);
-
     .custom-accordion-button {
       width: 100%;
       text-align: left;
@@ -172,7 +134,6 @@
       outline: none;
       position: relative;
       transition: background 0.3s ease;
-
       &::after {
         content: "\25BC";
         position: absolute;
@@ -181,16 +142,13 @@
         transform: translateY(-50%);
         transition: transform 0.3s ease;
       }
-
       &.active {
         background-color: white;
-
         &::after {
           transform: translateY(-50%) rotate(180deg);
         }
       }
     }
-
     .custom-accordion-body {
       background-color: #ffffff;
       padding: 12px 16px;
@@ -200,16 +158,14 @@
     }
   }
 }
-
 .footer {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   width: 100%;
-  // max-width: 780px; // Keeps it aligned properly on large screens
   max-width: 60vw;
-  margin: 0px; // Centers the footer
+  margin: 0px;
   border-top: 1px solid rgb(232, 232, 232);
   padding: 10px 16px;
   background: #fff;
@@ -217,37 +173,28 @@
   display: flex;
   justify-content: center;
   text-align: center;
-
   @media (max-width: 992px) {
-    max-width: 100%; // Full width on tablets
+    max-width: 100%;
     padding: 8px;
   }
-
   @media (max-width: 768px) {
-    position: static; // Prevents overlapping on small screens
+    position: static;
     box-shadow: none;
     padding: 10px;
   }
-
   @media (max-width: 576px) {
-    flex-direction: column; // Stacks content on small screens
+    flex-direction: column;
     text-align: center;
   }
 }
-
-
-
-.widthclass{
-
+.widthclass {
   width: 60vw;
 }
-
 @media screen and (max-width: 767px) {
   .widthclass {
     width: 100vw;
   }
 }
-/* Mobile-specific adjustments */
 @media (max-width: 768px) {
   .footer {
     width: 100%;
@@ -255,14 +202,11 @@
     right: 0;
     padding: 12px;
   }
-
   .footer button {
     width: 100%;
     max-width: 100%;
   }
 }
-
-
 .mobile-menu-header {
   display: flex;
   justify-content: flex-end;
@@ -270,57 +214,48 @@
   background-color: #f5f5f5;
   border-bottom: 1px solid #eaeaea;
 }
-
 .loading-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100px;
-
   .spinner-border {
     width: 2rem;
     height: 2rem;
     border-width: 0.25rem;
-    color: #3170de; // This sets the color to your desired color
+    color: #3170de;
   }
 }
 .faq-container {
   padding: 0px;
   background-color: transparent;
- 
   .faq-title {
     font-size: 22px;
     font-weight: 700;
     color: #1a1a1a;
     margin-bottom: 16px;
   }
- 
   .faq-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
   }
- 
   .faq-item {
     background: white;
     border-radius: 8px;
     padding: 10px;
-    // box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06);
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
     transition: all 0.3s ease;
     cursor: pointer;
     margin-bottom: 5px;
- 
     &:hover {
       box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.08);
     }
- 
     &.open {
-      border: 1px solid #dee2e6; // Apply border when open
-      padding: 14px; // Reduce padding slightly so border doesn't expand too much
+      border: 1px solid #dee2e6;
+      padding: 14px;
     }
   }
- 
   .faq-question {
     background: none;
     border: none;
@@ -334,33 +269,27 @@
     align-items: center;
     cursor: pointer;
     padding: 0;
- 
     svg {
       transition: transform 0.3s ease;
-      stroke: #2a3b8f; // Blue color
+      stroke: #2a3b8f;
     }
- 
     .rotate {
       transform: rotate(180deg);
     }
   }
- 
   .faq-answer {
     margin-top: 10px;
     font-size: 14px;
     color: #555;
     animation: fadeIn 0.3s ease-in;
   }
- 
   .no-data-container {
     text-align: center;
     margin-top: 20px;
- 
     .no-data-img {
       max-width: 200px;
       opacity: 0.7;
     }
- 
     .no-data-text {
       font-size: 14px;
       color: #999;
@@ -368,8 +297,6 @@
     }
   }
 }
- 
-// Animation
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -380,4 +307,34 @@
     transform: translateY(0);
   }
 }
- 
+.justify-between {
+  justify-content: space-between
+}
+.pl-8-semibold {
+  padding-left: 8px;
+  font-weight: 600
+}
+.scroll-y-80 {
+  overflow-y: auto;
+  max-height: 80vh
+}
+.mb-50 {
+  margin-bottom: 50px
+}
+.text-center {
+  text-align: center
+}
+.text-14-medium {
+  font-weight: 500;
+  font-size: 14px;
+}
+.min-h-10 {
+  min-height: 10px !important
+}
+.max-w-100-auto-h {
+  max-width: 100px !important;
+  height: auto !important
+}
+.p-0 {
+  padding: 0px
+}

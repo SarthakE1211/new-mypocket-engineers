@@ -6,7 +6,6 @@ Description: This is Real Estate website
 Author: Pixelstrap
 Author URI: https://themeforest.net/user/pixelstrap
 -----------------------------------------------------------------------------------
-
 1. Template css
 	1.1 Reset CSS
 	1.2 Typography CSS
@@ -34,20 +33,16 @@ Author URI: https://themeforest.net/user/pixelstrap
 	1.24 Text affect CSS
 	1.25 Inner pages CSS
 	1.26 Core Template CSS
-
 2. Dark mode CSS
 3. RTL CSS
 4. Responsive CSS
 */
-
 // utils
 @import "utils/variables";
 @import "utils/mixins";
-
 // base
 @import "base/typography";
 @import "base/reset";
-
 // components
 @import "components/keyframes";
 @import "components/breadcrumb";
@@ -68,17 +63,14 @@ Author URI: https://themeforest.net/user/pixelstrap
 @import "components/coming_soon";
 @import "components/loader";
 @import "components/customizer";
-
 // layout
 @import "layout/header";
 @import "layout/footer";
 @import "layout/dark";
 @import "layout/rtl";
-
 // pages
 @import "pages/inner-pages";
 @import "pages/text-affect";
-
 // Template
 @import "template/template";
 @import "template/responsive";

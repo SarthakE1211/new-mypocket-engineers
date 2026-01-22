@@ -5,39 +5,27 @@
     }}</span>
   </div>
 </div>
-
 <div class="container mt-4" *ngIf="OrderReviewDetails && loadFullPage == false">
   <div
-    class="card p-3 shadow"
-    style="border: none; box-shadow: none !important"
+    class="card p-3 shadow no-border-no-shadow"
   >
     <div
-      class="d-flex align-items-center mt-3 justify-content-between p-2 p-lg-3"
-      style="
-        margin-top: 0px !important;
-        padding-top: 0px !important;
-        padding-left: 0px !important;
-      "
+      class="d-flex align-items-center mt-3 justify-content-between p-2 p-lg-3 no-margin-top-no-padding-left"
     >
       <div class="d-flex align-items-center">
         <a
           [routerLink]="'/service'"
           class="back-button d-flex align-items-center justify-content-center"
         >
-          <i class="bi bi-arrow-left text-white" style="font-size: 14px"></i>
-          <!-- <span style="font-weight: bold;color: white;"><</span> -->
+          <i class="bi bi-arrow-left text-white font-size-14"></i>
         </a>
-        <h2
-          style="margin-bottom: 0px; font-size: 18px !important"
-          class="fs-4 fs-lg-3 fw-bold order-title"
+        <h2 class="fs-4 fs-lg-3 fw-bold order-title mb-0-font-18"
         >
           &nbsp;&nbsp; {{ "order_review.title" | translate }}
         </h2>
       </div>
       <div></div>
     </div>
-
-    <!-- Custom Media Query for Larger Screens -->
     <style>
       @media (min-width: 992px) {
         /* Large screens */
@@ -46,57 +34,25 @@
         }
       }
     </style>
-
     <div class="row">
-      <!-- Left Section -->
       <div class="col-md-6">
         <div
-          style="border-radius: 16px !important; padding: 10px !important"
           *ngFor="let item of OrderReviewDetails?.CART_DETAILS"
-          class="card border rounded p-3 mb-3 shadow-sm"
+          class="card border rounded p-3 mb-3 shadow-sm rounded-16-padding-10"
         >
-          <div class="card-body" style="padding: 2px">
-            <!-- Service Name & Icon -->
-
+          <div class="card-body padding-2">
             <div
               *ngIf="item.IS_EXPRESS == 1"
-              class="express-badge"
-              style="
-                position: absolute;
-                top: 25px;
-                right: 0;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                padding: 6px 12px;
-                border-top-left-radius: 8px;
-                border-bottom-left-radius: 8px;
-                background-color: #2a3b8f;
-                color: white;
-                font-size: 14px;
-                z-index: 1;
-              "
+              class="express-badge absolute-right-action-badge"
             >
               <i class="bi bi-lightning me-1"></i>
               <span class="full-text">Express service</span>
             </div>
             <div
-              class="d-flex align-items-center gap-3"
-              style="position: relative"
+              class="d-flex align-items-center gap-3 position-relative"
             >
-              <!-- Service Icon -->
-              <!-- <div class="service-icon d-flex align-items-center justify-content-center rounded-circle bg-light"
-                style="width: 40px; height: 40px">
-                <img [src]="
-                    item.SERVICE_IMAGE
-                      ? IMAGEuRL + 'Item/' + item.SERVICE_IMAGE
-                      : 'assets/img/services/no-image.png'
-                  " class="rounded-circle" alt="Service Icon" style="width: 40px; height: 40px" />
-              </div> -->
-
               <div
-                class="service-icon d-flex align-items-center justify-content-center rounded-circle bg-light"
-                style="width: 50px; height: 50px"
+                class="service-icon d-flex align-items-center justify-content-center rounded-circle bg-light size-50"
               >
                 <img
                   [src]="
@@ -104,69 +60,42 @@
                       ? IMAGEuRL + 'Item/' + item.SERVICE_IMAGE
                       : 'assets/img/services/no-image.png'
                   "
-                  alt="Service Icon"
-                  style="width: 36px; height: 36px; object-fit: contain"
+                  alt="Service Icon" class="size-36-contain"
                 />
               </div>
-
-              <!-- Service Name & Order ID -->
               <div>
                 <h6
-                  class="fw-bold mb-0"
+                  class="fw-bold mb-0 font-16-weight-600"
                   [title]="item.SERVICE_NAME"
                   [attr.title]="item.SERVICE_NAME"
                   data-bs-toggle="tooltip"
                   data-bs-placement="top"
-                  style="
-                    font-size: 16px !important;
-                    font-weight: 600 !important;
-                  "
                 >
                   {{ item.SERVICE_NAME }}
                 </h6>
-                <!-- <p *ngIf="item.ORDER_ID" class="text-muted small mb-0">
-                  {{ 'order_review.order_id' | translate }}: {{ item.ORDER_ID }}
-                </p> -->
               </div>
             </div>
-
-            <hr style="border: 1px solid #e7e6e6; margin: 11px" />
-
-            <!-- Date & Time -->
-            <div class="cart-bottom" style="padding: 0px">
+            <hr class="border-light-margin-11"  />
+            <div class="cart-bottom padding-0">
               <div class="cart-icon">
                 <i
-                  class="bi bi-clock"
-                  style="color: #2a3b8f !important; font-size: 12px !important"
+                  class="bi bi-clock text-blue-12"
                 ></i>
               </div>
-              <span style="font-weight: 500">
+              <span class="font-weight-500">
                 {{ item.CREATED_MODIFIED_DATE | date : "EEE, MMM d" }} |
                 {{ formatTime(item.START_TIME) }} -
                 {{ formatTime(item.END_TIME) }}
               </span>
             </div>
-
-            <!-- Collapsible Details -->
             <div class="mt-3">
-              <hr style="border: 1px solid #e7e6e6; margin: 11px" />
-
+              <hr class="border-light-margin-11"  />
               <button
-                class="btn w-100 text-start d-flex justify-content-between align-items-center"
+                class="btn w-100 text-start d-flex justify-content-between align-items-center transparent-btn-reset"
                 (click)="item.isOpen = !item.isOpen"
-                style="
-                  background: transparent;
-                  border: none;
-                  outline: none;
-                  box-shadow: none;
-                "
               >
                 <span
-                  class="fw-bold"
-                  style="
-                    font-size: 15px !important;
-                    font-weight: 600 !important;
-                  "
+                  class="fw-bold font-15-weight-600"
                   >{{ "order_review.details" | translate }}</span
                 >
                 <i
@@ -175,100 +104,63 @@
                     'bi-chevron-down': !item.isOpen,
                     'bi-chevron-up': item.isOpen
                   }"
-                  class="text-primary"
-                  style="color: #212529 !important; font-size: 18px"
+                  class="text-primary text-dark-18"
                 ></i>
               </button>
-
               <div *ngIf="item.isOpen" class="mt-2">
                 <hr class="my-2" />
-
-                <!-- <div class="d-flex justify-content-between">
-                  <p class="mb-1 text-muted" style="color: #636363 !important;">{{ customertype === 'B' ?
-                    ('order_review.sla' | translate) :
-                    ('order_review.estimate_time' | translate) }}</p>
-                  <p class="mb-1 fw-bold" style="color: #0E0E0E !important;font-weight: 500 !important;">
-                    {{ item.TOTAL_DURARTION_MIN }} mins
-                  </p>
-                </div> -->
                 <div class="d-flex justify-content-between">
-                  <p class="mb-1 text-muted" style="color: #636363 !important">
+                  <p class="mb-1 text-muted text-gray-636" >
                     {{ "order_review.device" | translate }}
                   </p>
                   <p
-                    class="mb-1 fw-bold"
-                    style="
-                      color: #0e0e0e !important;
-                      font-weight: 500 !important;
-                    "
+                    class="mb-1 fw-bold text-black-500"
                   >
-                    <!-- {{item.CATEGORY_NAME }} -->
                     {{ item.CATEGORY_NAME | slice : 0 : maxCharData }}
                   </p>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <p class="mb-1 text-muted" style="color: #636363 !important">
+                  <p class="mb-1 text-muted text-gray-636" >
                     {{ "order_review.service" | translate }}
                   </p>
                   <p
-                    class="mb-1 fw-bold"
-                    style="
-                      color: #0e0e0e !important;
-                      font-weight: 500 !important;
-                    "
+                    class="mb-1 fw-bold text-black-500"
                   >
-                    <!-- {{
-                    item.SUB_CATEGORY_NAME }} -->
                     {{ item.SUB_CATEGORY_NAME | slice : 0 : maxCharData }}
                   </p>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <p class="mb-0 text-muted" style="color: #636363 !important">
+                  <p class="mb-0 text-muted text-gray-636" >
                     {{ "order_review.quantity" | translate }}
                   </p>
                   <p
-                    class="mb-0 fw-bold"
-                    style="
-                      color: #0e0e0e !important;
-                      font-weight: 500 !important;
-                    "
+                    class="mb-0 fw-bold text-black-500"
                   >
                     {{ item.QUANTITY }}
                   </p>
                 </div>
-
                 <div
                   *ngIf="item.GUARANTEE_ALLOWED == 1 && customertype === 'I'"
-                  class="d-flex justify-content-between"
-                  style="margin-top: 4px; margin-bottom: 4px"
+                  class="d-flex justify-content-between my-4"
                 >
-                  <p class="mb-0 text-muted" style="color: #636363 !important">
+                  <p class="mb-0 text-muted text-gray-636" >
                     Guarantee Period
                   </p>
                   <p
-                    class="mb-0 fw-bold"
-                    style="
-                      color: #0e0e0e !important;
-                      font-weight: 500 !important;
-                    "
+                    class="mb-0 fw-bold text-black-500"
                   >
                     {{ formatPeriodCommon(item.GUARANTEE_PERIOD) }}
                   </p>
                 </div>
-
                 <div
                   *ngIf="item.WARRANTY_ALLOWED == 1 && customertype === 'I'"
                   class="d-flex justify-content-between"
                 >
-                  <p class="mb-0 text-muted" style="color: #636363 !important">
+                  <p class="mb-0 text-muted text-gray-636" >
                     Warranty Period
                   </p>
                   <p
-                    class="mb-0 fw-bold"
-                    style="
-                      color: #0e0e0e !important;
-                      font-weight: 500 !important;
-                    "
+                    class="mb-0 fw-bold text-black-500"
                   >
                     {{ formatPeriodCommon(item.WARRANTY_PERIOD) }}
                   </p>
@@ -277,8 +169,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Accordion Section -->
         <div class="accordion">
           <div class="accordion-item mb-3 shadow-sm rounded">
             <h2
@@ -316,11 +206,7 @@
                     }}
                   </p>
                   <p
-                    class="mb-1 fw-bold"
-                    style="
-                      color: #0e0e0e !important;
-                      font-weight: 500 !important;
-                    "
+                    class="mb-1 fw-bold text-black-500"
                   >
                     {{ OrderReviewDetails?.CART_INFO[0]?.MOBILE_NO }}
                   </p>
@@ -330,11 +216,7 @@
                     {{ "order_review.contact_details.name" | translate }}
                   </p>
                   <p
-                    class="mb-1 fw-bold"
-                    style="
-                      color: #0e0e0e !important;
-                      font-weight: 500 !important;
-                    "
+                    class="mb-1 fw-bold text-black-500"
                   >
                     {{
                       customertype === "B"
@@ -348,12 +230,7 @@
                     {{ "order_review.contact_details.address" | translate }}
                   </p>
                   <p
-                    style="cursor: pointer"
-                    class="mb-1 fw-bold"
-                    style="
-                      color: #0e0e0e !important;
-                      font-weight: 500 !important;
-                    "
+                    class="mb-1 fw-bold text-black-500 cursor-pointer"
                   >
                     <span
                       [attr.data-bs-toggle]="
@@ -414,7 +291,6 @@
               </div>
             </div>
           </div>
-
           <div
             class="accordion-item mb-3 shadow-sm rounded"
             *ngIf="customertype == 'I'"
@@ -466,7 +342,6 @@
                 {{ "shop.CouponsandOffers" | translate }}
               </button>
             </h2>
-
             <div
               class="accordion-collapse"
               [class.show]="orderDetailsVisible['reschedulePolicy']"
@@ -479,47 +354,32 @@
                   "
                 >
                   <div
-                    class="coupon-box align-items-center p-3 border rounded shadow-sm bg-light"
-                    style="
-                      padding: 10px 0px 10px 10px !important;
-                      background-color: white !important;
-                    "
+                    class="coupon-box align-items-center p-3 border rounded shadow-sm bg-light padding-bg-white"
                   >
-                    <div class="row" style="width: 100% !important">
-                      <!-- <div style="display: flex;justify-content: space-between;"> -->
+                    <div class="row w-100" >
                       <div
                         class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 m-0"
                       >
-                        <strong
-                          style="
-                            font-weight: 600;
-                            font-size: 16px;
-                            color: black !important;
-                          "
+                        <strong class="font-16-weight-600-black"
                           >{{
                             OrderReviewDetails?.CART_INFO[0]?.COUPON_NAME
                           }}</strong
                         >
                       </div>
                       <div
-                        class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 m-0 text-muted textaligns"
-                        style="margin-top: 0px !important; font-size: 12px"
+                        class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 m-0 text-muted textaligns mt-0-font-12"
                       >
                         {{ "shop.CouponApplied" | translate }}:
                         <strong>{{
                           OrderReviewDetails?.CART_INFO[0]?.COUPON_CODE
                         }}</strong>
                       </div>
-                      <!-- </div> -->
                     </div>
                     <div
-                      class="row"
-                      style="width: 100% !important; margin-top: 7px"
+                      class="row w-100-mt-7"
                     >
-                      <!-- <div style="display: flex;justify-content: space-between;"> -->
                       <div
-                        class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 m-0 text-muted"
-                        style="margin-top: 0px !important; font-size: 12px"
+                        class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 m-0 text-muted mt-0-font-1"
                       >
                         {{ "shop.Discount" | translate }}: ₹{{
                           OrderReviewDetails?.CART_INFO[0]?.COUPON_AMOUNT
@@ -534,27 +394,13 @@
                             deleteCoupon(OrderReviewDetails?.CART_INFO[0])
                           "
                           *ngIf="!LoadRemove"
-                          class="btn btn-sm text-danger"
-                          style="
-                            border: 1px Solid;
-                            color: #0863e8 !important;
-                            font-weight: 500;
-                            font-size: 9px !important;
-                            margin-top: 0px;
-                          "
+                          class="btn btn-sm text-danger border-blue-9"
                         >
                           {{ "shop.Remove" | translate }}
                         </button>
                         <button
                           *ngIf="LoadRemove"
-                          class="btn btn-sm text-danger"
-                          style="
-                            border: 1px Solid;
-                            color: #0863e8 !important;
-                            font-weight: 500;
-                            font-size: 9px !important;
-                            margin-top: 0px;
-                          "
+                          class="btn btn-sm text-danger border-blue-9"
                         >
                           {{ "shop.Remove" | translate }}&nbsp;<span
                             class="spinner-border spinner-border-sm"
@@ -563,59 +409,21 @@
                           ></span>
                         </button>
                       </div>
-                      <!-- </div> -->
                     </div>
-                    <!-- <div>
-                      <h6 class="m-0 text-success fw-bold" style="font-size: 14px">
-                        {{ 'order_review.coupons.applied' | translate }}:
-                        <strong>{{
-                          OrderReviewDetails?.CART_INFO[0]?.COUPON_CODE
-                          }}</strong>
-                      </h6>
-                      <p class="m-0 text-muted" style="font-size: 13px">
-                        {{ 'order_review.coupons.discount' | translate }}: ₹{{
-                        OrderReviewDetails?.CART_INFO[0]?.COUPON_AMOUNT
-                        }}
-                      </p>
-                    </div> -->
-                    <!-- <button (click)="deleteCoupon(OrderReviewDetails?.CART_INFO[0])"
-                      class="btn btn-sm text-danger border-0 d-flex align-items-center gap-1" style="
-                        font-size: 13px;
-                        background: transparent;
-                        transition: 0.3s;
-                      ">
-                      <i class="bi bi-trash3"></i> {{ 'order_review.coupons.remove' | translate }}
-                      <span *ngIf="loadbutton" class="spinner-border spinner-border-sm" role="status"></span>
-                    </button> -->
                   </div>
                 </ng-container>
-
                 <ng-template #noCoupon>
-                  <div class="text-center" style="margin-top: 0px !important">
+                  <div class="text-center mt-0-important">
                     <button
                       class="btn btn-link text-primary d-flex align-items-center gap-2"
                       (click)="
                         openCouponModal(OrderReviewDetails?.CART_INFO[0])
                       "
-                      [disabled]="isLoading"
-                      style="
-                        font-size: 15px !important;
-                        color: #2a3b8f !important;
-                        text-decoration: none !important;
-                        font-weight: 600;
-                        padding: 0px !important;
-                      "
+                      [disabled]="isLoading" class="font-15-blue-bold"
                     >
-                      <div
-                        style="
-                          display: flex;
-                          justify-content: space-between;
-                          width: 100% !important;
-                          align-self: baseline !important;
-                          align-items: center !important;
-                        "
+                      <div class="flex-between-center"
                       >
-                        <span style="font-size: 12px">{{
+                        <span class="font-12">{{
                           "shop.Clickheretoviewallcoupons" | translate
                         }}</span
                         >&nbsp;
@@ -624,15 +432,12 @@
                           class="spinner-border spinner-border-sm"
                         ></span>
                       </div>
-
-                      <!-- <span *ngIf="!isLoading">{{ 'order_review.coupons.view_all' | translate }}</span> -->
                     </button>
                   </div>
                 </ng-template>
               </div>
             </div>
           </div>
-
           <div
             class="accordion-item mb-3 shadow-sm rounded"
             *ngIf="customertype == 'I'"
@@ -699,8 +504,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Right Section -->
       <div class="col-md-6">
         <div class="accordion" *ngIf="customertype == 'I'">
           <div class="accordion-item mb-3">
@@ -709,8 +512,7 @@
               (click)="toggleAccordion('paymentSummary')"
             >
               <button
-                class="accordion-button fw-bold d-flex align-items-center gap-2"
-                style="padding: 14px 11px"
+                class="accordion-button fw-bold d-flex align-items-center gap-2 padding-14-11"
                 [class.collapsed]="!orderDetailsVisible['paymentSummary']"
               >
                 <svg
@@ -775,8 +577,6 @@
                     </p>
                   </div>
                 </ng-container>
-
-                <!-- Show Discount if Coupon is Applied -->
                 <ng-container
                   *ngIf="OrderReviewDetails?.CART_INFO[0]?.COUPON_ID"
                 >
@@ -791,7 +591,6 @@
                     </p>
                   </div>
                 </ng-container>
-
                 <hr />
                 <div class="d-flex justify-content-between fw-bold">
                   <p class="mb-1">
@@ -807,11 +606,9 @@
             </div>
           </div>
         </div>
-        <!-- mt-3 -->
-        <div class="card shadow-sm p-3" style="border-radius: 16px !important">
+        <div class="card shadow-sm p-3 rounded-16">
           <h5
-            *ngIf="customertype !== 'B'"
-            style="font-size: 14px !important; font-weight: bold"
+            *ngIf="customertype !== 'B'" class="font-14-bold"
           >
             {{ "order_review.payment_mode.title" | translate }}
           </h5>
@@ -825,15 +622,13 @@
               value="ONLINE"
             />
             <label
-              style="font-size: 13px"
-              class="form-check-label"
+              class="form-check-label font-13"
               for="online"
               >{{
                 "order_review.payment_mode.online_payment" | translate
               }}</label
             >
           </div>
-          <!-- Payment Mode Selection -->
           <div *ngIf="customertype !== 'B'" class="form-check">
             <input
               class="form-check-input"
@@ -843,15 +638,12 @@
               [(ngModel)]="selectedPaymentMethod"
               value="COD"
             />
-            <label style="font-size: 13px" class="form-check-label" for="cod">{{
+            <label  class="form-check-label font-13" for="cod">{{
               "order_review.payment_mode.cash_on_delivery" | translate
             }}</label>
           </div>
-
-          <!-- Proceed to Pay Button -->
           <button
-            style="background-color: #3170de; border-radius: 8px"
-            class="btn w-100 mt-3"
+            class="btn w-100 mt-3 bg-blue-rounded-8"
             (click)="proceedToPay()"
           >
             <span class="proceed-to-pay-btn" *ngIf="customertype === 'B'">{{
@@ -888,62 +680,45 @@
 >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content p-2">
-      <!-- Modal Header -->
-      <!-- Modal Header -->
       <div
-        class="modal-header border-0 py-2 px-3 flex-column align-items-stretch"
+        class="modal-header border-0 py-2 px-3 flex-column align-items-stretch bg-light-rounded-6"
         *ngIf="!newcoupons"
-        style="background-color: #f8f9fa; border-radius: 6px"
       >
-        <!-- Top Row: Back + Close -->
         <div class="d-flex justify-content-between align-items-center mb-2">
-          <!-- Back Button -->
           <button
             type="button"
             class="btn-close"
             data-bs-dismiss="modal"
             aria-label="Close"
           ></button>
-
-          <!-- Close Button -->
         </div>
-
-        <!-- Bottom Row: Search Input -->
         <div class="d-flex align-items-center">
           <input
             type="text"
-            class="form-control form-control-sm"
+            class="form-control form-control-sm font-13-flex-1"
             *ngIf="couponcount > 0"
             [placeholder]="
               'order_review.coupon_modal.search_placeholder' | translate
             "
             [(ngModel)]="searchQuery"
-            style="font-size: 13px; flex: 1"
           />
         </div>
       </div>
-
       <div
-        class="border-0 p-3"
+        class="border-0 p-3 bg-light-rounded-6"
         *ngIf="newcoupons"
-        style="background-color: #f8f9fa; border-radius: 6px"
       >
-        <!-- Header Row -->
         <div
-          class="d-flex align-items-center justify-content-between mb-2"
-          style="border-bottom: 1px solid #eaeaea; padding-bottom: 4px"
+          class="d-flex align-items-center justify-content-between mb-2 border-bottom-light-padding-4"
         >
-          <!-- Back Button -->
           <button
             type="button"
-            class="btn btn-sm d-flex align-items-center"
+            class="btn btn-sm d-flex align-items-center font-13"
             (click)="goBackFromCoupon()"
-            style="font-size: 13px"
           >
             ←
           </button>
-          <span style="margin-left: 10px">Coupon Code</span>
-          <!-- Close Button -->
+          <span class="ml-10">Coupon Code</span>
           <button
             type="button"
             class="btn-close"
@@ -952,42 +727,34 @@
             aria-label="Close"
           ></button>
         </div>
-
-        <!-- Input Row -->
         <div class="d-flex align-items-center justify-content-between">
           <input
             type="text"
-            class="form-control form-control-sm me-2"
+            class="form-control form-control-sm me-2 font-13-w-70"
             placeholder="Enter your coupon code"
             [(ngModel)]="searchQuery"
             name="couponCode"
             pattern="^[A-Za-z0-9]+$"
             #couponCode="ngModel"
             required
-            style="font-size: 13px; width: 70%"
           />
-
           <button
             *ngIf="couponcount > 0 && !newcoupons"
-            class="btn btn-sm btn-primary"
+            class="btn btn-sm btn-primary font-13-minw-60"
             (click)="applySelectedCoupon()"
-            style="font-size: 13px; min-width: 60px"
             [disabled]="!couponCode.valid"
           >
             Apply
           </button>
           <button
             *ngIf="newcoupons"
-            class="btn btn-sm btn-primary"
+            class="btn btn-sm btn-primary font-13-minw-60"
             (click)="newcouponadd(couponCode.value)"
-            style="font-size: 13px; min-width: 60px"
             [disabled]="!couponCode.valid"
           >
             Apply
           </button>
         </div>
-
-        <!-- Optional small validation message -->
         <small
           class="text-danger mt-1 d-block"
           *ngIf="couponCode.invalid && couponCode.dirty"
@@ -995,99 +762,58 @@
           Only letters and numbers are allowed.
         </small>
       </div>
-
       <span *ngIf="!newcoupons">
-        <a
-          style="
-            margin-left: 20px;
-            cursor: pointer;
-            font-size: 13px;
-            color: #034a95;
-          "
+        <a class="ml-20-pointer-blue-13"
           (click)="addCoupon()"
         >
           Have a coupon code?
         </a></span
       >
-
-      <!-- Modal Body -->
       <div
-        style="cursor: pointer; padding: 8px 8px 0px !important"
-        class="modal-body text-center p-3"
+        class="modal-body text-center p-3 cursor-pointer-padding-8"
       >
         <ng-container
           *ngIf="filteredCoupons.length > 0 && !newcoupons; else noCoupons"
         >
           <div
             *ngFor="let coupon of filteredCoupons"
-            class="coupon-item d-flex justify-content-between align-items-center p-2 border-bottom small"
+            class="coupon-item d-flex justify-content-between align-items-center p-2 border-bottom small card-style"
             (click)="selectCoupon(coupon)"
             [class.selected]="selectedCoupon?.COUPON_ID === coupon.COUPON_ID"
-            style="
-              border-radius: 10px;
-              margin-bottom: 12px;
-              background-color: #f8f9fa;
-              border: 0.5px solid #cbcbcb;
-              transition: transform 0.3s ease-in-out;
-            "
             onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.15)';"
             onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';"
           >
-            <div class="p-3" style="padding: 3px !important">
-              <!-- Coupon Details -->
-              <div class="text-start" style="line-height: 25px">
+            <div class="p-3 padding-3">
+              <div class="text-start line-height-25">
                 <h6
-                  class="m-0 fw-bold text-dark"
-                  style="
-                    font-weight: 600;
-                    font-size: 14px;
-                    color: black !important;
-                  "
+                  class="m-0 fw-bold text-dark font-14-weight-600-black"
                 >
                   {{
                     coupon?.COUPON_NAME ? coupon?.COUPON_NAME : "Coupon Applied"
                   }}
                 </h6>
                 <span
-                  class="m-0 text-muted"
-                  style="margin-top: 0px !important; font-size: 12px"
+                  class="m-0 text-muted mt-0-font-1"
                   >Code : {{ coupon.COUPON_CODE }}</span
                 >
                 &nbsp; &nbsp;
                 <span
-                  *ngIf="coupon.COUPON_VALUE_TYPE == 'P'"
-                  style="
-                    background-color: #ebd1d1;
-                    border-radius: 5px;
-                    padding: 4px;
-                    font-size: 10px !important;
-                    border: 1px solid #d3a5a5;
-                  "
+                  *ngIf="coupon.COUPON_VALUE_TYPE == 'P'" class="badge-red-style"
                 >
                   {{ coupon.COUPON_VALUE }}%
                   {{ "order_review.coupons.discount" | translate }}
                 </span>
                 <span
-                  *ngIf="coupon.COUPON_VALUE_TYPE == 'A'"
-                  style="
-                    background-color: #ebd1d1;
-                    border-radius: 5px;
-                    padding: 4px;
-                    border: 1px solid #d3a5a5;
-                    font-size: 10px !important;
-                  "
+                  *ngIf="coupon.COUPON_VALUE_TYPE == 'A'" class="badge-red-style"
                 >
                   &#8377;{{ coupon.COUPON_VALUE | number }}
                   {{ "order_review.coupons.discount" | translate }}
                 </span>
               </div>
             </div>
-
             <div
-              style="cursor: pointer"
-              class="d-flex align-items-center gap-2"
+              class="d-flex align-items-center gap-2 cursor-pointer"
             >
-              <!-- Selection Indicator -->
               <i
                 class="bi"
                 [ngClass]="
@@ -1096,29 +822,15 @@
                     : 'bi-circle'
                 "
               ></i>
-
-              <!-- Delete Icon -->
-              <!-- <button class="btn btn-sm text-danger" (click)="removeCoupon($event, coupon)">
-                <i class="bi bi-trash"></i>
-              </button> -->
             </div>
           </div>
         </ng-container>
-
-        <!-- No Coupons Available -->
         <ng-template #noCoupons>
           <div class="no-coupons text-center" *ngIf="!newcoupons">
-            <!-- <img
-              src="assets/img/hand-drawn-no-data-concept.png"
-              style="width: 60px; height: 40px"
-              alt="No Coupons"
-              class="no-coupon-img mb-3"
-            /> -->
             <img
               src="assets/img/hand-drawn-no-data-concept.png"
-              style="width: 60px; height: 40px"
               alt="No Coupons"
-              class="no-coupon-img mb-3"
+              class="no-coupon-img mb-3 size-60-40"
             />
             <h6 class="fw-bold">
               {{ "order_review.coupon_modal.no_coupons" | translate }}
@@ -1129,14 +841,11 @@
           </div>
         </ng-template>
       </div>
-
-      <!-- Modal Footer with Apply Button for Available Coupons -->
       <div class="modal-footer border-0 p-3" *ngIf="filteredCoupons.length > 0 && !newcoupons">
         <button
-          class="btn btn-primary w-100"
+          class="btn btn-primary w-100 padding-10-font-14-bold"
           (click)="applySelectedCoupon()"
           [disabled]="!selectedCoupon"
-          style="padding: 10px; font-size: 14px; font-weight: 600"
         >
           {{ "order_review.coupon_modal.apply" | translate }}
         </button>
@@ -1144,7 +853,6 @@
     </div>
   </div>
 </div>
-
 <style>
   .custom-shadow {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);

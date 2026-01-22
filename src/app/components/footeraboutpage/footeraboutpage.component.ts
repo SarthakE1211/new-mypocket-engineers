@@ -1,5 +1,4 @@
 import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
-
 @Component({
   selector: 'app-footeraboutpage',
   templateUrl: './footeraboutpage.component.html',
@@ -7,7 +6,6 @@ import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
 })
 export class FooteraboutpageComponent {
   openedIndex: number = 0;
-
   accordionItems = [
     {
       id: 'collapseOne',
@@ -30,18 +28,10 @@ export class FooteraboutpageComponent {
       content: 'Focus on expanding your business while we manage your IT requirements seamlessly. Our solutions are designed to scale as you grow, providing reliable support every step of the way.'
     }
   ];
-  // openedIndex: number = 0;
-
   toggle(index: number): void {
     this.openedIndex = this.openedIndex === index ? -1 : index;
-    
   }
-  
-
   istrue = false
- 
-
-
   clientLogos = [
     { imageUrl: 'assets/img/partnerslogo/client-logo-1.png' },
     { imageUrl: 'assets/img/partnerslogo/client-logo-2.png' },
@@ -64,8 +54,6 @@ export class FooteraboutpageComponent {
     { imageUrl: 'assets/img/partnerslogo/client-logo-4.png' },
     { imageUrl: 'assets/img/partnerslogo/client-logo-5.png' }
   ];
-  
-  
   logoCarouselOptions = {
     loop: true,
     margin: 10,
@@ -85,15 +73,12 @@ export class FooteraboutpageComponent {
       }
     }
   };
-
   @ViewChildren('countEl') countEls!: QueryList<ElementRef>;
-
 ngAfterViewInit(): void {
   this.countEls.forEach((el) => {
     const target = +el.nativeElement.getAttribute('data-count');
     let count = 0;
     const speed = 100;
-
     const updateCount = () => {
       const increment = Math.ceil(target / speed);
       if (count < target) {
@@ -105,9 +90,7 @@ ngAfterViewInit(): void {
         el.nativeElement.innerText = target;
       }
     };
-
     updateCount();
   });
 }
-
 }

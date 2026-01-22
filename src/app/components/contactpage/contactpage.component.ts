@@ -5,9 +5,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./contactpage.component.scss']
 })
 export class ContactpageComponent {
-  // constructor(
-  //   private toastr: ToastrService,
-  //   private apiservice: ApiServiceService,
-  // ) {}
-  // ngOnInit() {}
 }

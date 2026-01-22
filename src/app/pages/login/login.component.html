@@ -1,45 +1,22 @@
-<!-- <ng-template #showlogin let-modal> -->
-<!-- <div *ngIf="modalVisible"> -->
-
 <div class="auth-card-container" *ngIf="modalVisible">
   <div class="auth-wrapper">
-    <div class="auth-card" style="padding: 50px 30px 20px 30px; margin-bottom: 17px !important; margin-top: 20px;">
-
-      <div class="logo-container" style="margin-bottom: 0px">
+    <div class="auth-card auth-card-padding-margin">
+      <div class="logo-container logo-container-no-margin">
         <img src="assets/img/PockITLogoF.png" alt="Logo" class="auth-logo" />
       </div>
-
       <div class="auth-logos">
         <img src="assets/img/welcome-logo.jpg" alt="Logo" class="auth-logo" />
       </div>
-
       <div class="logo-header">
         <h2 class="welcome-text">Welcome to PockIT!</h2>
         <h3 class="login-text">Login</h3>
       </div>
-
       <form id="loginForm" class="auth-form" #loginSubmit="ngForm" (ngSubmit)="loginotpverification(loginSubmit)">
-
-        <div style="color: red; margin-bottom: 15px; z-index: 1">
+        <div class="auth-status-message">
           {{ statusCode }}
         </div>
-
-        <!-- USER TYPE SELECTION -->
-        <!-- <div class="user-type">
-          <label class="radio-label">
-            <input type="radio" name="userType" value="home" [(ngModel)]="userType" (change)="onUserTypeChange()" />
-            <span class="custom-radio"></span> Home User
-          </label>
-
-          <label class="radio-label">
-            <input type="radio" name="userType" value="business" [(ngModel)]="userType" (change)="onUserTypeChange()" />
-            <span class="custom-radio"></span> Business User
-          </label>
-        </div> -->
-
-        <!-- INPUT FIELD START -->
         <div class="form-group">
-          <label *ngIf="mobileNumberorEmail" style="text-align: left">
+          <label *ngIf="mobileNumberorEmail" class="auth-label-left">
             {{
             inputType === 'initial'
             ? 'Email or Mobile Number'
@@ -48,27 +25,21 @@
             : 'Email'
             }}
           </label>
-
           <div class="input-field">
             <div class="unique-country-selector-wrapper">
-
-              <!-- COUNTRY SELECTOR - HIDE IF BUSINESS -->
-              <div *ngIf="inputType === 'mobile' " class="unique-country-code-selector"
-                style="border: 1px solid #cbcbcb; padding: 9px 6px"
+              <div *ngIf="inputType === 'mobile' " class="unique-country-code-selector unique-country-border-padding"
                 (click)="userModal ? null : toggleCountryDropdown(); $event.stopPropagation()">
                 <span>{{ selectedCountryCode }}</span>
                 <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
                   <path d="M1 1L5 5L9 1" stroke="#666" stroke-width="1.5" />
                 </svg>
-
                 <div class="unique-country-dropdown-container" *ngIf="showCountryDropdown && inputType === 'mobile'">
                   <div class="unique-country-dropdown">
-                    <div class="unique-search-box" style="border-bottom: 1px solid #cbcbcb">
+                    <div class="unique-search-box unique-search-border-bottom">
                       <input type="text" placeholder="Search country..." name="countrySearch" [(ngModel)]="searchQuery"
-                        style="border: 1px solid #cbcbcb; padding: 10px 6px" (input)="filterCountries($event)"
+                       class="unique-search-input" (input)="filterCountries($event)"
                         (click)="$event.stopPropagation()" autocomplete="off" />
                     </div>
-
                     <div class="unique-country-list">
                       <div class="unique-country-item" *ngFor="let country of filteredCountryCodes"
                         (click)="selectCountry(country); $event.stopPropagation()">
@@ -78,9 +49,7 @@
                   </div>
                 </div>
               </div>
-
-              <!-- MAIN INPUT BOX -->
-              <input [type]="inputType === 'email' ? 'email' : 'text'" class="form-control"
+              <input [type]="inputType === 'email' ? 'email' : 'text'" class="form-control auth-input-field"
                 placeholder="{{ getPlaceholder() }}" [(ngModel)]="mobileNumberorEmail" name="identifier"
                 #identifier="ngModel" (input)="onIdentifierInput($event)" [pattern]="
                   inputType === 'mobile'
@@ -94,12 +63,8 @@
                     ? commonFunction.onlynum($event)
                     : null
                 " autocomplete="off" required
-                style="border: 1px solid #cbcbcb; padding: 10px 6px; font-size: 13px; z-index: 1;"
                 [disabled]="userModal" />
-
             </div>
-
-            <!-- ERROR: REQUIRED -->
             <div *ngIf="identifier.errors?.['required'] && (identifier.touched || loginSubmitted)"
               class="error-message">
               Please enter {{
@@ -110,8 +75,6 @@
               : 'email or mobile number'
               }}.
             </div>
-
-            <!-- ERROR: PATTERN INVALID -->
             <div *ngIf="identifier.errors?.['pattern'] && (identifier.touched || loginSubmitted)" class="error-message">
               Please enter a valid {{
               userType === 'business' || inputType === 'email'
@@ -119,21 +82,10 @@
               : 'mobile number'
               }}.
             </div>
-
           </div>
         </div>
-        <!-- INPUT FIELD END -->
-
-        <!-- OTP Instruction -->
-        <p style="margin-top: 10px; position: relative" *ngIf="mobileNumberorEmail && inputType !== 'initial'">
-          <a style="font-weight: 400; font-size: 12px !important">
-            <!-- {{
-            userType === 'business'
-            ? "You will receive an OTP on the above email address for verification"
-            : inputType === 'email'
-            ? "You will receive an OTP on above email address for verification"
-            : "You will receive an OTP on above WhatsApp number for verification"
-            }}. -->
+        <p class="auth-otp-info" *ngIf="mobileNumberorEmail && inputType !== 'initial'">
+          <a class="auth-otp-text">
             {{
             inputType === 'email'
             ? "You will receive an OTP on above email address for verification"
@@ -141,41 +93,28 @@
             }}.
           </a>
         </p>
-        <!-- <button type="submit" style="background-color: #3170de; z-index: unset" class="btn btn-primary btn-block"
-          [disabled]="isloginSendOTP" [disabled]="userModal" [nzLoading] ="isloadingconflict" >
-          <span *ngIf="isloginSendOTP" class="spinner-border spinner-border-sm me-2" role="status"
-            aria-hidden="true"></span>
-          {{ isloginSendOTP ? "Sending OTP..." : "Login" }}
-        </button> -->
-        <button type="submit" style="background-color: #3170de; z-index: unset" class="btn btn-primary btn-block"
+        <button type="submit" class="btn btn-primary btn-block auth-login-button"
           [disabled]="isloginSendOTP || userModal">
           <span *ngIf="isloadingconflict" class="spinner-border spinner-border-sm me-2" role="status"
             aria-hidden="true">
           </span>
-
           {{ isloginSendOTP ? "Sending OTP..." : "Login" }}
         </button>
-
-
         <div class="auth-links">
           <p>
             Don't have an account?
-            <a (click)="showRegisterModal()" style="color: #3170de; font-weight: 500">Register now</a>
+            <a (click)="showRegisterModal()" class="auth-register-link">Register now</a>
           </p>
-          <p style="margin-top: 10px; position: relative">
-            <a (click)="onshowMap()" style="font-weight: 500">Continue as guest</a>
+          <p class="auth-guest-link-wrapper">
+            <a (click)="onshowMap()" class="auth-guest-link">Continue as guest</a>
           </p>
         </div>
-
       </form>
     </div>
   </div>
-
-  <!-- USER MODAL OVERLAY - MOVED OUTSIDE THE FORM -->
   <div class="modal-overlay-custom" *ngIf="userModal" (click)="userModal = false">
     <div class="modal-container-custom" (click)="$event.stopPropagation()">
       <div class="modal-title">Please select your account type</div>
-
       <div class="account-card" *ngFor="let d of conflictdata" [class.active]="d.isSelected"
         [class.active]="userType === (d.CUSTOMER_TYPE === 'B' ? 'business' : 'home')"
         (click)="selectedconflicttype(d.CUSTOMER_TYPE)">
@@ -210,7 +149,6 @@
                   </g>
                 </g>
               </g>
-
             </svg>
           </span>
           <span *ngIf="d.CUSTOMER_TYPE === 'I'" value="home" [(ngModel)]="userType">
@@ -233,10 +171,8 @@
                   d="M14 9.5C14 10.6046 13.1046 11.5 12 11.5C10.8954 11.5 10 10.6046 10 9.5C10 8.39543 10.8954 7.5 12 7.5C13.1046 7.5 14 8.39543 14 9.5Z"
                   stroke="#3170de" stroke-width="1.5" />
               </g>
-
             </svg></span>
         </div>
-
         <div class="text">
           <div class="heading">
             {{ d.CUSTOMER_TYPE === 'B' ? 'Business User' : 'Home User' }}
@@ -246,266 +182,132 @@
       </div>
     </div>
   </div>
-
 </div>
-
-
 <div class="auth-card-container" *ngIf="openRegister">
   <div class="auth-wrapper">
-    <div class="auth-card" style="
-        padding: 50px 30px 20px 30px;
-        margin-bottom: 17px !important;
-        margin-top: 20px;
-      ">
-      <div class="logo-container" style="margin-bottom: 0px">
+    <div class="auth-card auth-register-card-spacing" >
+      <div class="logo-container logo-container-no-margin">
         <img src="assets/img/PockITLogoF.png" alt="Logo" class="auth-logo" />
       </div>
       <div class="auth-logos">
         <img src="assets/img/welcome-logo.jpg" alt="Logo" class="auth-logo" />
-        <!-- <img
-          src="assets/img/pockitEngineers.png"
-          alt="Logo"
-          class="auth-logo"
-        /> -->
       </div>
-      <div style="padding: 30px">
+      <div class="auth-register-header">
         <h2 class="welcome-text">Welcome to PockIT!</h2>
-        <h3 class="login-text" style="margin-bottom: 0px">Register</h3>
+        <h3 class="login-text logo-container-no-margin">Register</h3>
       </div>
-      <div style="
-          color: red;
-          margin-bottom: 15px;
-          text-align: center;
-          z-index: 5;
-          font-size: 11px;
-        ">
+      <div class="auth-register-status" >
         {{ statusCode }}
       </div>
       <form class="register-form" #registrationForm="ngForm" (ngSubmit)="save(registrationForm)">
-        <!-- User Type Selection -->
-        <div class="user-type">
+        <!-- <div class="user-type">
           <label class="radio-label">
             <input type="radio" name="userType" value="home" [(ngModel)]="userType" (change)="onUserTypeChange()" />
             <span class="custom-radio"></span> Home User
           </label>
-
           <label class="radio-label">
             <input type="radio" name="userType" value="business" [(ngModel)]="userType" (change)="onUserTypeChange()" />
             <span class="custom-radio"></span> Business User
           </label>
-        </div>
-
-        <!-- Business-specific fields (Organization Name, Short Code, Contact Person) -->
+        </div> -->
         <div *ngIf="userType === 'business'" class="business-fields">
-          <!-- Organization Name -->
-          <!-- <div class="form-field">
-            <label *ngIf="data.COMPANY_NAME" style="text-align: left">
-              Organization Name*
-            </label>
-            <input
-              type="text"
-              placeholder="Enter Organization Name"
-              required
-              name="organizationName"
-              [(ngModel)]="data.COMPANY_NAME"
-              #organizationName="ngModel"
-              minlength="2"
-              maxlength="128"
-              autocomplete="off"
-              style="
-                border: 1px solid #cbcbcb;
-                padding: 10px 6px;
-                font-size: 13px;
-              "
-            />
-            <div
-              *ngIf="organizationName.errors?.['required'] && (organizationName.touched || registrationSubmitted)"
-              class="error-message"
-            >
-              Please enter organization name.
-            </div>
-          </div> -->
           <div class="form-field">
-            <label *ngIf="data.CUSTOMER_NAME" style="text-align: left">
+            <label *ngIf="data.CUSTOMER_NAME" class="auth-label-left">
               Customer Name*
             </label>
             <input type="text" placeholder="Enter Customer Name" required (keypress)="alphaOnly($event)"
               name="customerName" [(ngModel)]="data.CUSTOMER_NAME" #customerName="ngModel" minlength="2" maxlength="128"
-              autocomplete="off" style="
-                border: 1px solid #cbcbcb;
-                padding: 10px 6px;
-                font-size: 13px;
-              " />
+              autocomplete="off" class="auth-input-common"/>
             <div *ngIf="customerName.errors?.['required'] && (customerName.touched || registrationSubmitted)"
               class="error-message">
               Please enter customer name.
             </div>
           </div>
-          <!-- Short Code -->
-          <!-- <div class="form-field">
-            <label *ngIf="data.SHORT_CODE" style="text-align: left">
-              Short Code*
-            </label>
-            <input type="text" placeholder="Enter short code" required name="shortCode" [(ngModel)]="data.SHORT_CODE"
-              #shortCode="ngModel" minlength="2" maxlength="8" pattern="^[a-zA-Z0-9]+$" autocomplete="off" style="
-                border: 1px solid #cbcbcb;
-                padding: 10px 6px;
-                font-size: 13px;
-              " />
-
-            <div *ngIf="shortCode.errors?.['required'] && (shortCode.touched || registrationSubmitted)"
-              class="error-message">
-              Please enter short code.
-            </div>
-            <div *ngIf="shortCode.errors?.['pattern'] && (shortCode.touched || registrationSubmitted)"
-              class="error-message">
-              short code only contains number and letters.
-            </div>
-          </div> -->
-          <!-- Password -->
           <div class="form-field">
-            <label *ngIf="data.PASSWORD" style="text-align: left">
+            <label *ngIf="data.PASSWORD" class="auth-label-left">
               Password*
             </label>
-
             <nz-input-group nzSuffixIcon="lock">
               <input nz-input type="password" placeholder="Enter Password" required name="password"
                 [(ngModel)]="data.PASSWORD" #password="ngModel" minlength="8"
                 pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" autocomplete="off"
-                style="border: 1px solid #cbcbcb; padding: 10px 6px; font-size: 13px;" />
-
+               class="auth-input-common"/>
             </nz-input-group>
-
-            <!-- FIXED VALIDATION BLOCK -->
             <div *ngIf="password.invalid && (password.touched || registrationSubmitted)" class="error-message">
               <div *ngIf="password.errors?.['required']">
                 Please enter password.
               </div>
-
               <div *ngIf="password.errors?.['pattern']">
                 Password must contain at least 8 characters, including uppercase, lowercase,
                 number, and special character (@, $, !, %, *, ?, &).
               </div>
             </div>
           </div>
-          <!-- Confirm Password -->
           <div class="form-field">
-            <label *ngIf="confirmPassword" style="text-align: left">
+            <label *ngIf="confirmPassword" class="auth-label-left">
               Confirm Password*
             </label>
-
             <nz-input-group nzSuffixIcon="lock">
               <input nz-input type="password" placeholder="Confirm Password" required name="confirmPassword"
                 [(ngModel)]="confirmPassword" #cPassword="ngModel" autocomplete="off"
-                style="border: 1px solid #cbcbcb; padding: 10px 6px; font-size: 13px;" />
+               class="auth-input-common"/>
             </nz-input-group>
-
             <div *ngIf="cPassword.errors?.['required'] && (cPassword.touched || registrationSubmitted)"
               class="error-message">
               Please confirm password.
             </div>
-
             <div *ngIf="confirmPassword !== data.PASSWORD && (cPassword.touched || registrationSubmitted)"
               class="error-message">
               Password and confirm password do not match.
             </div>
           </div>
-
         </div>
-
-        <!-- Name field (shown for Home User or as fallback) -->
         <div class="form-field" *ngIf="userType !== 'business'">
-          <label *ngIf="data.CUSTOMER_NAME" style="text-align: left">Name*</label>
+          <label *ngIf="data.CUSTOMER_NAME" class="auth-label-left">Name*</label>
           <input type="text" placeholder="Enter full name*" required (keypress)="alphaOnly($event)" name="name"
-            [(ngModel)]="data.CUSTOMER_NAME" #name="ngModel" minlength="2" maxlength="128" autocomplete="off" style="
-              border: 1px solid #cbcbcb;
-              padding: 10px 6px;
-              font-size: 13px;
-            " />
+            [(ngModel)]="data.CUSTOMER_NAME" #name="ngModel" minlength="2" maxlength="128" autocomplete="off" 
+           class="auth-input-common"/>
           <div *ngIf="name.errors?.['required'] && (name.touched || registrationSubmitted)" class="error-message">
             Please enter your name.
           </div>
         </div>
-
-        <!-- Email Field -->
-        <!-- <div class="form-field">
-          <label *ngIf="data.EMAIL_ID" style="text-align: left">Email*</label>
-          <input type="email" placeholder="Enter Email*" required name="emailid" [(ngModel)]="data.EMAIL_ID"
-            #email="ngModel" style="
-              border: 1px solid #cbcbcb;
-              padding: 10px 6px;
-              font-size: 13px;
-            " [pattern]="emailPattern" autocomplete="off" maxlength="128" />
-
-          <div *ngIf="email.errors?.['required'] && (email.touched || registrationSubmitted)" class="error-message">
-            Please enter your email address.
-          </div>
-
-          <div *ngIf="email.errors?.['pattern'] && (email.touched || registrationSubmitted)" class="error-message">
-            Please enter a valid email address.
-          </div>
-        </div> -->
-        <!-- Email Field -->
         <div class="form-field">
-          <label *ngIf="data.EMAIL_ID" style="text-align: left">Email*</label>
-
+          <label *ngIf="data.EMAIL_ID" class="auth-label-left">Email*</label>
           <input type="email" [placeholder]="userType === 'business' ? 'Enter Business Email*' : 'Enter Email*'"
             required name="emailid" [(ngModel)]="data.EMAIL_ID" #email="ngModel" autocomplete="off" maxlength="128"
-            [pattern]="emailPattern" style="border: 1px solid #cbcbcb; padding: 10px 6px; font-size: 13px;" />
-
-          <!-- Required Error -->
+            [pattern]="emailPattern" class="auth-input-common" />
           <div *ngIf="email.errors?.['required'] && (email.touched || registrationSubmitted)" class="error-message">
             Please enter your email address.
           </div>
-
-          <!-- Invalid Email Format -->
           <div *ngIf="email.errors?.['pattern'] && (email.touched || registrationSubmitted)" class="error-message">
             Please enter a valid email address.
           </div>
-
-          <!-- Public Domain Not Allowed for Business -->
           <div *ngIf="isPublicBusinessEmail(data.EMAIL_ID) && (email.touched || registrationSubmitted)"
             class="error-message">
             Public email domains are not allowed for business accounts.
           </div>
         </div>
-
-
-        <!-- Mobile Number Field -->
-        <div class="form-field" style="margin-bottom: 0px !important">
-          <label *ngIf="data.CUSTOMER_MOBILE_NO" style="text-align: left">
+        <div class="form-field auth-mobile-field">
+          <label *ngIf="data.CUSTOMER_MOBILE_NO" class="auth-label-left">
             Mobile Number*
           </label>
           <div class="phone-input-group">
-            <div class="country-code-selector" style="
-                border: 1px solid #cbcbcb;
-                padding: 10px 6px;
-                font-size: 13px;
-              " (click)="toggleCountryDropdown(); $event.stopPropagation()">
+            <div class="country-code-selector auth-input-common" (click)="toggleCountryDropdown(); $event.stopPropagation()">
               <span>{{ selectedCountryCode }}</span>
               <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
                 <path d="M1 1L5 5L9 1" stroke="#666" stroke-width="1.5" />
               </svg>
             </div>
-
             <div class="country-dropdown-container" *ngIf="showCountryDropdown">
               <div class="country-dropdown">
                 <div class="search-box">
-                  <input type="text" style="
-                      border: 1px solid #cbcbcb;
-                      padding: 10px 6px;
-                      font-size: 13px;
-                      border-radius: 5px !important;
-                    " placeholder="Search country..." [(ngModel)]="searchQuery" name="countrySearch"
+                  <input type="text" class="auth-input-common_imp"
+                  placeholder="Search country..." [(ngModel)]="searchQuery" name="countrySearch"
                     (input)="filterCountries($event)" (click)="$event.stopPropagation()" autocomplete="off" />
                 </div>
                 <div class="dropdown-container">
-                  <div class="unique-country-list" style="height: 30vh !important; overflow: auto">
-                    <div class="unique-country-item" style="
-                        font-size: 13px;
-                        text-align: left;
-                        padding-left: 2px;
-                      " *ngFor="let country of filteredCountryCodes"
+                  <div class="unique-country-list unique_input_country">
+                    <div class="unique-country-item unique_country_style" *ngFor="let country of filteredCountryCodes"
                       (click)="selectCountry(country); $event.stopPropagation()">
                       {{ country.label }}
                     </div>
@@ -513,201 +315,90 @@
                 </div>
               </div>
             </div>
-
             <input type="text" placeholder="Eg. 99999 99999*" required name="phonenumber"
               [(ngModel)]="data.CUSTOMER_MOBILE_NO" #phone="ngModel" (keypress)="commonFunction.onlynum($event)"
-              maxlength="10" minlength="10" style="
-                border: 1px solid #cbcbcb;
-                padding: 10px 6px;
-                font-size: 13px;
-              " [pattern]="commonFunction.mobpattern" autocomplete="off" />
+              maxlength="10" minlength="10" 
+              class="auth-input-common" [pattern]="commonFunction.mobpattern" autocomplete="off" />
           </div>
           <div *ngIf="phone.errors?.['required'] && (phone.touched || registrationSubmitted)" class="error-message">
             Please enter your mobile number.
           </div>
-
           <div *ngIf="phone.errors?.['pattern'] && (phone.touched || registrationSubmitted)" class="error-message">
             Please enter a valid mobile number.
           </div>
         </div>
-
-        <p style="
-            margin-top: 0px !important;
-            position: relative;
-            text-align: left;
-            margin-bottom: 6px;
-          ">
-          <a style="font-weight: 400; font-size: 12px !important">
+        <p class="auth-whatsapp-note">
+          <a class="auth-whatsapp-text">
             Note: Please enter a WhatsApp-registered number.
           </a>
         </p>
-
-        <!-- Business-specific tax fields (PAN & GST) -->
         <div *ngIf="userType === 'business'" class="business-tax-fields">
-          <div style="display: flex; gap: 15px">
-            <!-- PAN Number (Required for Business) -->
-            <!-- <div class="form-field" style="flex: 1">
-              <label *ngIf="data.PAN_NUMBER || true" style="text-align: left">
-                PAN Number*
-              </label>
-              <input
-                type="text"
-                placeholder="Enter PAN Number"
-                required
-                name="panNumber"
-                [(ngModel)]="data.PAN_NUMBER"
-                #panNumber="ngModel"
-                minlength="10"
-                maxlength="10"
-                autocomplete="off"
-                style="
-                  border: 1px solid #cbcbcb;
-                  padding: 10px 6px;
-                  font-size: 13px;
-                "
-                pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}"
-                (input)="onPanInput($event)"
-              />
-              <div
-                *ngIf="panNumber.errors?.['required'] && (panNumber.touched || registrationSubmitted)"
-                class="error-message"
-              >
-                Please enter PAN number.
-              </div>
-              <div
-                *ngIf="panNumber.errors?.['pattern'] && (panNumber.touched || registrationSubmitted)"
-                class="error-message"
-              >
-                Please enter a valid PAN number (e.g., ABCDE1234F).
-              </div>
-            </div> -->
-
-            <!-- GST Number (Optional for Business) -->
-            <!-- <div class="form-field" style="flex: 1">
-              <label *ngIf="data.GST_NUMBER || true" style="text-align: left">
-                GST Number
-              </label>
-              <input
-                type="text"
-                placeholder="Enter GST Number"
-                name="gstNumber"
-                [(ngModel)]="data.GST_NUMBER"
-                #gstNumber="ngModel"
-                minlength="15"
-                maxlength="15"
-                autocomplete="off"
-                style="
-                  border: 1px solid #cbcbcb;
-                  padding: 10px 6px;
-                  font-size: 13px;
-                "
-                pattern="[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}"
-                (input)="onGstInput($event)"
-              />
-              <div
-                *ngIf="gstNumber.errors?.['pattern'] && (gstNumber.touched || registrationSubmitted)"
-                class="error-message"
-              >
-                Please enter a valid GST number.
-              </div>
-            </div> -->
+          <div class="unique-gap">
           </div>
         </div>
-
-        <!-- Terms and Conditions Agreement -->
-        <div class="form-field" style="display: flex; align-items: flex-start; text-align: left">
-          <!-- Checkbox -->
+        <div class="auth-terms-wrapper">
           <input type="checkbox" id="agree" name="agree" #agree="ngModel" [(ngModel)]="agreeConsent" required
-            style="margin-top: 5px; margin-right: 8px; width: auto" />
-
-          <!-- Label and error container -->
+         class="auth-terms-checkbox"/>
           <div>
-            <label for="agree" style="font-size: 12px !important; margin-bottom: 0">
+            <label for="agree" class="auth-terms-label">
               I have read and agree to the
-              <a (click)="openTerms()" style="
-                  color: #3170de;
-                  cursor: pointer;
-                  text-decoration: underline;
-                ">
+              <a (click)="openTerms()" class="auth-terms-link" >
                 Terms and Conditions
               </a>
               and
-              <a (click)="openPPolicy()" style="
-                  color: #3170de;
-                  cursor: pointer;
-                  text-decoration: underline;
-                ">
+              <a (click)="openPPolicy()" class="auth-terms-link">
                 Privacy Policy
               </a>
               of PockIT Engineers
             </label>
-
-            <div class="error-message" *ngIf="!agreeConsent && registrationSubmitted"
-              style="font-size: 12px; color: red; margin-top: 4px">
+            <div class="error-message auth-terms-error" *ngIf="!agreeConsent && registrationSubmitted"
+             >
               You must agree to the Terms and Conditions before submitting.
             </div>
           </div>
         </div>
-
-        <!-- Submit Button -->
         <button type="submit" class="register-button">
           <span *ngIf="issignUpLoading" class="spinner-border spinner-border-sm me-2"></span>
           {{ issignUpLoading ? "Sending OTP..." : "Register" }}
         </button>
-
-        <!-- Login Link -->
-        <p class="login-link" style="margin-bottom: 0rem">
+        <p class="login-link bottom-rec" >
           Already have an account? <a (click)="openLoginModal()">Login</a>
         </p>
       </form>
     </div>
   </div>
 </div>
-
 <div class="auth-card-container" *ngIf="openVerify && !isverifyOTP">
   <div class="auth-wrapper">
-    <div class="auth-card" style="
-        padding: 50px 30px 20px 30px;
-        margin-bottom: 17px !important;
-        margin-top: 20px;
-      ">
-      <div class="logo-container" style="margin-bottom: 0px">
+    <div class="auth-card auth-verify-card-spacing">
+      <div class="logo-container logo-container-no-margin">
         <img src="assets/img/PockITLogoF.png" alt="Logo" class="auth-logo" />
       </div>
       <div class="auth-logos">
         <img src="assets/img/welcome-logo.jpg" alt="Logo" class="auth-logo" />
-        <!-- <img
-          src="assets/img/pockitEngineers.png"
-          alt="Logo"
-          class="auth-logo"
-        /> -->
       </div>
-
-      <div class="otp-content" style="margin-top: 50px">
-        <h2 style="font-size: 20px">Enter Verification Code</h2>
-        <p class="verification-text" style="color: #cbcbcb; font-size: 13px">
+      <div class="otp-content auth-verify-otp-content">
+        <h2 class="auth-verify-title">Enter Verification Code</h2>
+        <p class="verification-text auth-verify-subtext">
           We've sent a 4-digit verification code to<br />
-          <span class="phone-number" style="color: #636363; font-size: 14px">
+          <span class="phone-number auth-verify-phone">
             <span *ngIf="inputType === 'mobile'">{{ selectedCountryCode }} &nbsp;</span>
             {{ mobileNumberorEmail }}
           </span>
           &nbsp;<span (click)="openLoginModal()"><i class="bi bi-pencil-square"></i></span>
         </p>
-
-        <div style="color: red; margin-bottom: 15px; z-index: 5">
+        <div class="auth-verify-status">
           {{ statusCode }}
         </div>
-
         <form (ngSubmit)="VerifyOTP()" class="otp-form">
           <div class="otp-input-group">
             <input *ngFor="let i of [0, 1, 2, 3]" class="otp-input" type="text" [(ngModel)]="otp[i]" [name]="'otp-' + i"
               maxlength="1" (keydown)="moveToNext($event, i)" (keypress)="allowOnlyNumbers($event)"
               (ngModelChange)="onChange($event, i)" (paste)="handlePaste($event)" required autocomplete="off" />
           </div>
-
           <div class="timer-section">
             <span *ngIf="remainingTime > 0">{{ remainingTime }}</span>
-            <p class="resend-text" style="color: #636363">
+            <p class="resend-text auth-verify-resend-text">
               Didn't receive the code?
               <a (click)="remainingTime == 0 ? resendOtp() : ''" [ngStyle]="{
                   cursor: remainingTime > 0 ? 'wait' : 'pointer',
@@ -720,7 +411,6 @@
               </a>
             </p>
           </div>
-
           <button type="submit" class="verify-button" [disabled]="isverifyOTP">
             <span *ngIf="isverifyOTP" class="spinner-border spinner-border-sm me-2"></span>
             Verify
@@ -730,39 +420,28 @@
     </div>
   </div>
 </div>
-
 <div class="user-location-container" *ngIf="showMap">
   <div class="user-location-wrapper">
     <div class="user-location-header">
       <p class="location-title">User Location</p>
       <p class="location-subtitle">Place the marker at your order location</p>
     </div>
-
     <div class="user-location-map" id="map"></div>
-
     <div class="user-location-details">
-      <!-- <h3 class="location-code">{{ locationCode || "Loading..." }}</h3> -->
       <p class="location-address">
         {{ locationAddress || "Fetching address..." }}
       </p>
     </div>
-
     <div class="user-location-footer">
       <button [disabled]="!locationAddress" class="location-confirm-btn" (click)="confirmLocation()">
         Confirm Location
       </button>
-      <div style="
-          text-align: center;
-          color: rgb(95, 93, 93);
-          margin-top: 10px;
-          cursor: pointer;
-        " (click)="backtologin()">
+      <div class="user-location-back-login"(click)="backtologin()">
         Back to login
       </div>
     </div>
   </div>
 </div>
-
 <ng-template #openMap let-modal class="map-container">
   <div class="map-header">
     <p class="mb-0">User Location</p>
@@ -770,17 +449,15 @@
   </div>
   <div id="map"></div>
   <div class="location-details">
-    <!-- <h3>{{ locationCode || "Loading..." }}</h3> -->
     <p>{{ locationAddress || "Fetching address..." }}</p>
   </div>
   <div class="map-footer">
     <button class="btn btn-primary" (click)="confirmLocation()">Confirm</button>
   </div>
 </ng-template>
-
 <div *ngIf="showAddressDetailsForm" class="address-form-container">
-  <div class="card shadow-sm address-form-card" style="border: none">
-    <div class="d-flex justify-content-center align-items-center card-header" style="height: 80px; border-bottom: none">
+  <div class="card shadow-sm address-form-card address-card-no-border">
+    <div class="d-flex justify-content-center align-items-center card-header address-card-header-height address-card-header-no-border">
       <div class="icon-wrapper">
         <svg width="66" height="67" viewBox="0 0 66 67" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="33" cy="33.5" r="32.7988" stroke="#FFDFBE" stroke-width="0.402439" />
@@ -792,18 +469,13 @@
         </svg>
       </div>
     </div>
-
     <form #addressSubmit="ngForm" (ngSubmit)="saveAddress(addressSubmit)" class="p-3">
-      <div style="background-color: #f4f7f9; padding: 15px">
-        <h2 class="form-title mb-0 ms-3" style="
-            padding: 0px 0px 15px;
-            margin-left: 0px !important;
-            font-size: 17px;
-          ">
+      <div class="address-form-bg">
+        <h2 class="form-title mb-0 ms-3 address-form-title">
           Enter address details
         </h2>
-        <div class="mb-3" style="border-radius: 8px; padding: 12px; background: #fdfdfd">
-          <label class="form-label text-muted small" style="display: flex">Save address as *</label>
+        <div class="mb-3 address-type-card">
+          <label class="form-label text-muted small address-save-label">Save address as *</label>
           <div class="btn-group custom-btn-group">
             <button type="button" class="btn" [ngClass]="{
                 'btn-outline-primary': addressForm.TYPE !== 'H',
@@ -817,7 +489,7 @@
               }" (click)="addressForm.TYPE = 'F'">
               Work
             </button>
-            <button style="margin-left: 10px" type="button" class="btn" [ngClass]="{
+            <button  class="btn address-type-other-btn" type="button" [ngClass]="{
                 'btn-outline-primary': addressForm.TYPE !== 'O',
                 'btn-primary': addressForm.TYPE === 'O'
               }" (click)="addressForm.TYPE = 'O'">
@@ -825,30 +497,20 @@
             </button>
           </div>
         </div>
-
         <div class="mb-3 contact-details" *ngIf="!asGuest">
-          <label class="form-label" style="font-size: 13px">Contact Person Details</label>
-          <div style="font-size: 13px">
+          <label class="form-label address-contact-label">Contact Person Details</label>
+          <div class="address-contact-label" >
             {{ data.CUSTOMER_NAME }} <b>{{ data.CUSTOMER_MOBILE_NO }}</b>
           </div>
         </div>
-        <div style="border-radius: 8px; padding: 12px; background: #fdfdfd">
-          <div class="form-group position-relative" style="padding: 10px">
-            <!-- <input
-              type="text"
-              class="form-control"
-              [value]="locationCode || 'WJHV+GV5'"
-              readonly
-              autocomplete="off"
-            /> -->
-            <button type="button" style="font-size: 13px"
-              class="btn btn-link position-absolute end-0 top-50 translate-middle-y" (click)="onshowMap()">
+        <div class="address-form-white-card">
+          <div class="form-group position-relative address-location-wrapper">
+            <button type="button"
+              class="btn btn-link position-absolute end-0 top-50 translate-middle-y address-contact-label" (click)="onshowMap()">
               Change Location
             </button>
           </div>
-
           <div class="row mt-2">
-            <!-- Address Line 1 -->
             <div class="col-md-6">
               <input type="text" class="form-control" placeholder="House number/flat no/floor no"
                 [(ngModel)]="addressForm.ADDRESS_LINE_1" name="addressLine1" required #addressLine1="ngModel"
@@ -858,8 +520,6 @@
                 Please enter house number/flat no/floor no.
               </div>
             </div>
-
-            <!-- Address Line 2 -->
             <div class="col-md-6">
               <input type="text" class="form-control" placeholder="Area/street/village"
                 [(ngModel)]="addressForm.ADDRESS_LINE_2" name="addressLine2" autocomplete="off" required
@@ -870,54 +530,23 @@
               </div>
             </div>
           </div>
-
           <div class="row mt-2">
-            <!-- Landmark -->
             <div class="col-md-6">
               <input type="text" class="form-control" placeholder="Landmark (optional)"
                 [(ngModel)]="addressForm.LANDMARK" name="landmark" autocomplete="off" maxlength="128" />
             </div>
-
-            <!-- Pincode Dropdown -->
             <div class="col-md-6">
               <div class="position-relative">
-                <!-- (click)="togglePincodeDropdown(); $event.stopPropagation()" -->
                 <div class="dropdown-wrapper">
                   <input type="text" class="form-control" [(ngModel)]="selectedPincode" placeholder="Select pincode"
                     name="pincode" #pincode="ngModel" required maxlength="64" readonly autocomplete="off" />
                   <div *ngIf="isLoading" class="loading-container1 spinner-inside">
-                    <div style="text-align: center" class="spinner-border" role="status">
+                    <div class="text-center" class="spinner-border" role="status">
                       <span class="visually-hidden">Loading...</span>
                     </div>
                   </div>
-                  <!-- <span class="dropdown-icon"></span> -->
                 </div>
-                <!-- <div
-                  *ngIf="(pincode.errors?.['required'] && (pincode.touched || addressSubmitted))"
-                  class="error-message"
-                >
-                  Please Select Pin Code.
-                </div> -->
-                <!-- <div *ngIf="showPincodeDropdown" class="dropdown-menu show">
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Search pincode..."
-                    [(ngModel)]="searchPincode"
-                    name="pincodeSearch"
-                    (input)="filterPincodes($event)"
-                    (click)="$event.stopPropagation()"
-                    autocomplete="off"
-                  />
-                  <div
-                    class="dropdown-item"
-                    *ngFor="let pincode of filteredPincodes"
-                    (click)="selectPincode(pincode)"
-                  >
-                    {{ pincode.PINCODE_NUMBER }}
-                  </div>
-                </div> -->
-                <div style="font-size: 12px" *ngIf="
+                <div class="size-12px" *ngIf="
                     pincode.invalid && (pincode.touched || addressSubmitted)
                   " class="text-danger mt-1">
                   <div *ngIf="pincode.errors?.['required']">
@@ -926,14 +555,11 @@
                   <div *ngIf="pincode.errors?.['maxlength']">
                     Max length exceeded.
                   </div>
-                  <!-- Add more conditions if needed -->
                 </div>
               </div>
             </div>
           </div>
-
           <div class="row mt-2">
-            <!-- City -->
             <div class="col-md-6">
               <input type="text" class="form-control" [(ngModel)]="addressForm.CITY_NAME" [placeholder]="'Enter City'"
                 name="CITY_NAME" autocomplete="off" maxlength="128" required #CITY_NAME="ngModel" />
@@ -942,8 +568,6 @@
                 Please enter City.
               </div>
             </div>
-
-            <!-- State Dropdown -->
             <div class="col-md-6">
               <div class="position-relative">
                 <div class="dropdown-wrapper" (click)="toggleStatesDropdown(); $event.stopPropagation()">
@@ -963,7 +587,6 @@
             </div>
           </div>
         </div>
-
         <div class="d-flex justify-content-center mt-3">
           <button [disabled]="isAddrssSaving" type="submit" class="btn btn-primary w-100">
             <span *ngIf="isAddrssSaving" class="spinner-border spinner-border-sm me-2"></span>

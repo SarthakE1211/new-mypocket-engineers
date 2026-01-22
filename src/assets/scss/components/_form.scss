@@ -15,26 +15,21 @@ form {
         font-size: 14px;
         font-family: $font_2, $font_3;
     }
-
     .form-control {
         &::placeholder {
             text-transform: capitalize;
         }
-
         &:focus {
             box-shadow: none;
         }
     }
-
     label {
         color: $title-color;
     }
 }
-
 .alert-success {
     max-width: 350px;
 }
-
 .was-validated .form-control:invalid,
 .form-control.is-invalid {
     border-color: #dc3545;
@@ -45,12 +40,9 @@ form {
     background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
     transition: all 0.3s ease;
 }
-
 .was-validated {
-
     .form-control,
     .custom-select {
-
         &:invalid,
         &.is-invalid {
             &:focus {
@@ -58,7 +50,6 @@ form {
                 box-shadow: unset;
             }
         }
-
         &:valid,
         &.is-valid {
             &:focus {
@@ -68,17 +59,14 @@ form {
         }
     }
 }
-
 // radio css
 .animate-rdi {
     margin-left: 45px;
-
     .col {
         align-items: center;
         justify-content: flex-end;
         display: flex;
     }
-
     label {
         color: $white;
         margin-bottom: 0;
@@ -95,12 +83,10 @@ form {
         }
     }
 }
-
 .checkbox_animated {
     cursor: pointer;
     position: relative;
     margin: 0 1rem 0 0;
-
     &:before {
         transition: transform 0.4s cubic-bezier(0.45, 1.8, 0.5, 0.75);
         transform: rotate(-45deg) scale(0, 0);
@@ -115,7 +101,6 @@ form {
         border-top-style: none;
         border-right-style: none;
     }
-
     &:after {
         content: "";
         position: absolute;
@@ -127,11 +112,9 @@ form {
         border: 2px solid $light-gray;
         cursor: pointer;
     }
-
     &:checked:before {
         transform: rotate(-45deg) scale(1, 1);
     }
-
     &.color-2 {
         &:before {
             border: 2px solid var(--theme-default3);
@@ -139,7 +122,6 @@ form {
             border-right-style: none;
         }
     }
-
     &.color-3 {
         &:before {
             border: 2px solid var(--theme-default5);
@@ -147,7 +129,6 @@ form {
             border-right-style: none;
         }
     }
-
     &.color-4 {
         &:before {
             border: 2px solid var(--theme-default7);
@@ -155,7 +136,6 @@ form {
             border-right-style: none;
         }
     }
-
     &.color-6 {
         &:before {
             border: 2px solid var(--theme-default8);
@@ -163,7 +143,6 @@ form {
             border-right-style: none;
         }
     }
-
     &.color-7 {
         &:before {
             border: 2px solid var(--theme-default10);
@@ -172,7 +151,6 @@ form {
         }
     }
 }
-
 .radio_animated {
     position: relative;
     margin: 0 20px 0 0;
@@ -210,58 +188,47 @@ input[type='radio'] {
         -webkit-appearance:none;
     }
 }
-
 // sign up modal css
 .signup-modal {
     .modal-content {
         overflow: hidden;
     }
-
     .modal-body {
         padding: 0;
     }
-
     .login-img {
         height: 100%;
     }
-
     .signup-tab {
         padding: 40px 50px;
-
         .nav-tabs {
             justify-content: flex-end;
             border-bottom: none;
-
             .nav-link {
                 border: 1px solid $light-border;
                 border-radius: 0;
                 font-weight: 500;
             }
-
             .nav-item {
                 +.nav-item {
                     margin-left: -1px;
                 }
             }
         }
-
         h4 {
             margin-top: 30px;
             margin-bottom: 20px;
             color: $title-color;
             font-weight: 600;
         }
-
         form {
             a {
                 color: rgba($title-color, 0.7);
-
                 &:hover,
                 &:focus {
                     text-decoration: underline;
                 }
             }
-
             .form-group {
                 svg {
                     width: 22px;
@@ -271,7 +238,6 @@ input[type='radio'] {
                     color: $title-color;
                 }
             }
-
             span {
                 color: $title-color;
                 display: inline-block;
@@ -280,18 +246,15 @@ input[type='radio'] {
         }
     }
 }
-
 .theme-tab-3 {
     .nav-tabs {
         .nav-link {
             color: var(--theme-default5);
-
             &.active {
                 background-color: var(--theme-default5);
                 color: $white;
             }
         }
-
         .nav-item {
             &.show {
                 .nav-link {
@@ -302,18 +265,15 @@ input[type='radio'] {
         }
     }
 }
-
 .theme-tab-4 {
     .nav-tabs {
         .nav-link {
             color: var(--theme-default7);
-
             &.active {
                 background-image: var(--theme-gradient9);
                 color: $white;
             }
         }
-
         .nav-item {
             &.show {
                 .nav-link {
@@ -324,18 +284,15 @@ input[type='radio'] {
         }
     }
 }
-
 .theme-tab-5 {
     .nav-tabs {
         .nav-link {
             color: var(--theme-default10);
-
             &.active {
                 background-color: var(--theme-default10);
                 color: $white;
             }
         }
-
         .nav-item {
             &.show {
                 .nav-link {
@@ -346,7 +303,6 @@ input[type='radio'] {
         }
     }
 }
-
 // signup wizard css
 .property-wizard {
     &.horizontal-wizard {
@@ -354,80 +310,66 @@ input[type='radio'] {
             >div {
                 margin: 0 auto;
             }
-
             .wizard-step-container {
                 .wizard-steps {
                     border-bottom: 1px solid $light-gray;
                     padding-bottom: 20px;
                     margin: -10px;
                     li {
-
                         display: inline-block;
                         margin: 10px;
                     }
                 }
-
                 .log-in {
                     margin-top: 50px;
-
                     form {
                         .form-control {
                             text-transform: inherit;
                             border-radius: 0;
                         }
                     }
-
                     .next-btn {
                         margin-top: 20px;
                         margin-bottom: 0;
                     }
                 }
-
                 .wizard-form-details {
                     .text-end {
                         p {
                             margin-bottom: 0;
                             color: rgba($title-color, 0.4);
-
                             a {
                                 margin-left: 15px;
                             }
                         }
                     }
-
                     form {
                         margin-bottom: 0;
                     }
-
                     .wizard-step-3 {
                         .next-btn {
                             margin-top: 35px;
                         }
                     }
                 }
-
                 .input-data {
                     display: flex;
-
                     .account-content {
                         h3 {
                             color: $title-color;
                             font-size: calc(16px + (20 - 16) * ((100vw - 320px) / (1920 - 320)));
                             margin-bottom: 10px;
                         }
-
                         ul {
                             li {
                                 display: block;
                                 font-family: $font_1, $font_3;
                                 color: $title-color;
-
                                 span {
                                     color: var(--theme-default3);
                                 }
                             }
                         }
-
                         +.account-content {
                             margin-left: calc(20px + (50 - 20) * ((100vw - 320px) / (1920 - 320)));
                         }
@@ -437,7 +379,6 @@ input[type='radio'] {
         }
     }
 }
-
 // log in page css
 .log-in {
     &.row {
@@ -445,13 +386,11 @@ input[type='radio'] {
             margin: 0 auto;
         }
     }
-
     .divider {
         text-align: center;
         position: relative;
         margin: 20px 0;
         z-index: 1;
-
         h6 {
             display: inline-block;
             padding: 5px 15px;
@@ -459,7 +398,6 @@ input[type='radio'] {
             text-transform: uppercase;
             background-color: $white;
         }
-
         &::after {
             content: "";
             position: absolute;
@@ -473,14 +411,11 @@ input[type='radio'] {
             z-index: -1;
         }
     }
-
     .title-3 {
         margin-bottom: 30px;
-
         h2 {
             position: relative;
             font-weight: 600;
-
             &::before {
                 position: absolute;
                 content: "";
@@ -492,16 +427,13 @@ input[type='radio'] {
             }
         }
     }
-
     form {
         .form-group {
             margin-bottom: 30px;
-
             .input-group {
                 .input-group-text {
                     padding-left: 0;
                     padding-right: 0;
-
                     svg {
                         height: 16px;
                     }
@@ -509,16 +441,13 @@ input[type='radio'] {
                 i {
                     font-size: 14px;
                 }
-
                 .input-group-text {
                     background-color: transparent;
                     border: none;
                 }
-
                 input {
                     border: none;
                     border-bottom: 1px solid $light-border;
-
                     &::placeholder {
                         color: #959595;
                     }
@@ -526,7 +455,6 @@ input[type='radio'] {
                         border-bottom: 1px solid $light-border;
                     }
                 }
-
                 .input-group-apend {
                     .input-group-text {
                         border-bottom: 1px solid $light-border;
@@ -534,7 +462,6 @@ input[type='radio'] {
                     }
                 }
             }
-
             textarea {
                 border: none;
                 border-bottom: 1px solid $light-border;
@@ -542,7 +469,6 @@ input[type='radio'] {
                 padding-left: 5px;
                 padding-right: 5px;
             }
-
             .important-note {
                 color: rgba($title-color, 0.4);
                 font-family: $font_2, $font_3;
@@ -550,24 +476,20 @@ input[type='radio'] {
                 margin-top: 5px;
             }
         }
-
         .d-flex {
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
-
             a {
                 color: rgba($title-color, 0.7);
             }
         }
     }
-
     h6 {
         color: $title-color;
         margin-bottom: 20px;
         font-weight: 600;
     }
-
     .social-connect {
         >div {
             &:nth-child(n+3) {
@@ -576,62 +498,50 @@ input[type='radio'] {
         }
     }
 }
-
 .btn-social {
     padding: 0;
     width: 100%;
     text-align: left;
     color: $white;
     transition: 0.5s;
-
     i {
         padding: 11px 12px 12px 11px;
     }
-
     span {
         padding: 8px 15px 7px;
         display: inline-block;
     }
-
     &:hover,
     &:focus {
         transition: 0.5s;
         color: $white;
     }
-
     &.facebook {
         background-color: $facebook;
-
         i,
         &:hover,
         &:focus {
             background-color: darken($facebook, 5%);
         }
     }
-
     &.google {
         background-color: $google;
-
         i,
         &:hover,
         &:focus {
             background-color: darken($google, 5%);
         }
     }
-
     &.twitter {
         background-color: $twitter;
-
         i,
         &:hover,
         &:focus {
             background-color: darken($twitter, 5%);
         }
     }
-
     &.linkedin {
         background-color: $linkedin;
-
         i,
         &:hover,
         &:focus {
@@ -639,7 +549,6 @@ input[type='radio'] {
         }
     }
 }
-
 // captcha
 .captcha {
     background-color: #f9f9f9;
@@ -650,7 +559,6 @@ input[type='radio'] {
     justify-content: center;
     align-items: center;
     margin-bottom: 30px;
-
     .spinner {
         position: relative;
         width: 2em;
@@ -660,13 +568,11 @@ input[type='radio'] {
         align-items: center;
         justify-content: center;
     }
-
     input[type="checkbox"] {
         position: absolute;
         opacity: 0;
         z-index: -1;
     }
-
     input[type="checkbox"]+.checkmark {
         display: inline-block;
         width: 2em;
@@ -679,7 +585,6 @@ input[type='radio'] {
         align-items: center;
         cursor: pointer;
     }
-
     input[type="checkbox"]+.checkmark span {
         content: '';
         position: relative;
@@ -689,7 +594,6 @@ input[type='radio'] {
         height: 1.2em;
         opacity: 0;
     }
-
     input[type="checkbox"]+.checkmark>span:after {
         content: '';
         position: absolute;
@@ -699,7 +603,6 @@ input[type='radio'] {
         left: 0;
         background-color: #029f56;
     }
-
     input[type="checkbox"]+.checkmark>span:before {
         content: '';
         position: absolute;
@@ -709,33 +612,26 @@ input[type='radio'] {
         right: 0;
         background-color: #029f56;
     }
-
     input[type="checkbox"]:checked+.checkmark {
         animation: 2s spincaptcha forwards;
     }
-
     input[type="checkbox"]:checked+.checkmark>span {
         animation: 1s fadein 1.9s forwards;
     }
-
     input[type="checkbox"]:checked+.checkmark>span:after {
         animation: .3s bottomslide 2s forwards;
     }
-
     input[type="checkbox"]:checked+.checkmark>span:before {
         animation: .5s rightslide 2.2s forwards;
     }
-
     .logo {
         margin-left: 50px;
         margin-right: 13px;
         text-align: center;
-
         img {
             height: 2em;
             width: 2em;
         }
-
         p {
             color: rgba($title-color, 0.4);
             margin: 0;
@@ -743,25 +639,21 @@ input[type='radio'] {
             font-weight: 600;
             margin: .4em 0 .2em 0;
         }
-
         small {
             color: rgba($title-color, 0.4);
             margin: 0;
             font-size: .8em;
         }
     }
-
     ::selection {
         background-color: transparent;
         color: teal;
     }
-
     ::-moz-selection {
         background-color: transparent;
         color: teal;
     }
 }
-
 /**=====================
      form css end
 ==========================**/

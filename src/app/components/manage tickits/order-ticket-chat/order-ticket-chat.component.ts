@@ -34,11 +34,9 @@ export class OrderTicketChatComponent {
   @Input() isDrawerVisible: boolean = false;
   @Input() drawerData: any;
   @Input() orderdata: any;
-
   close() {
     this.drawerClose();
   }
-
   FormData: any = {
     TICKET_MASTER_ID: 0,
     SENDER: '',
@@ -58,26 +56,21 @@ export class OrderTicketChatComponent {
     private apiservice: ApiServiceService,
     private toastr: ToastrService,
     private cdr: ChangeDetectorRef,
-    private loaderService: LoaderService // private toastr: ToastrService
+    private loaderService: LoaderService 
   ) {}
   customertype: any = this.apiservice.getCustomerType();
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes['drawerData']) {
       this.fetchChatData();
     }
-
     if (changes['drawerData']) {
-      
     }
   }
-
   retriveimgUrl: any;
   ngOnInit(): void {
     if (this.drawerData.IS_TAKEN_STATUS === 'Yes') {
       this.showcloseticket = true;
     }
-
     this.retriveimgUrl = this.apiservice.retriveimgUrl;
     this.userID = this.apiservice.getUserId();
     this.userNAME = this.apiservice.getUserName();
@@ -85,7 +78,6 @@ export class OrderTicketChatComponent {
     this.userMobile = this.apiservice.getUsermobileNumber();
     this.userEMAIL = this.apiservice.getEmail();
   }
-
   userID: any = this.apiservice.getUserId();
   userNAME: any = this.apiservice.getUserName();
   userAddress: any = this.apiservice.getUserAddress();
@@ -110,52 +102,42 @@ export class OrderTicketChatComponent {
       .subscribe({
         next: (data: any) => {
           const isInitialLoad = this.chatData.length === 0;
-
           this.chatData = data.body.data;
           if (this.chatData.IS_TAKEN_STATUS == 'Yes') {
             this.showcloseticket = true;
           }
           this.isLoading = false;
-
           this.cdr.detectChanges();
-
           setTimeout(() => {
             this.scrollToBottom(true);
           }, 300);
         },
         error: (error: any) => {
-          
           this.chatData = [];
           this.isLoading = false;
         },
       });
   }
-
   scrollToBottom(forceScroll: boolean = false) {
     if (this.chatMessages?.nativeElement) {
       const chatContainer = this.chatMessages.nativeElement;
-
       if (forceScroll || this.isUserAtBottom) {
         chatContainer.scrollTop = chatContainer.scrollHeight;
       }
     }
   }
-
   ngAfterViewChecked() {
-    this.scrollToBottom(); // Will only scroll if user is at the bottom
+    this.scrollToBottom(); 
   }
-
   onScroll() {
     if (this.chatMessages && this.chatMessages.nativeElement) {
       const chatContainer = this.chatMessages.nativeElement;
       const nearBottom =
         chatContainer.scrollTop + chatContainer.clientHeight >=
         chatContainer.scrollHeight - 10;
-
-      this.isUserAtBottom = nearBottom; // Update scrolling state
+      this.isUserAtBottom = nearBottom; 
     }
   }
-
   formatDate(dateStr: string): string {
     const date = new Date(dateStr);
     const hours = date.getHours();
@@ -168,7 +150,6 @@ export class OrderTicketChatComponent {
   toggleChatBox(): void {
     this.isChatBoxVisible = !this.isChatBoxVisible;
   }
-
   getSenderEmpName(senderEmpID: any): any {
     let empName = '';
     this.chatData.filter((obj: any) => {
@@ -182,34 +163,26 @@ export class OrderTicketChatComponent {
   clearImg() {
     this.fileDataLOGO_URL = null;
   }
-
   selectedFile: File | null = null;
   imagePreview: string | null = null;
   onFileSelected(event: any): void {
     const file = event.target.files[0];
-
     if (file) {
-      const maxFileSize = 1 * 1024 * 1024; // 1 MB
+      const maxFileSize = 1 * 1024 * 1024; 
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-
       if (!allowedTypes.includes(file.type)) {
         this.message.error('Please select a valid image (PNG, JPG, JPEG).', '');
         return;
       }
-
       if (file.size > maxFileSize) {
         this.message.error('File size should not exceed 1MB.', '');
         return;
       }
-
       this.fileDataLOGO_URL = file;
     }
-
     if (file && file.type.startsWith('image/')) {
       this.fileDataLOGO_URL = file;
       this.selectedFile = file;
-
-      // Show image preview
       const reader = new FileReader();
       reader.onload = (e) => {
         this.imagePreview = e.target?.result as string;
@@ -225,37 +198,25 @@ export class OrderTicketChatComponent {
     let hours = ('0' + date_ob.getHours()).slice(-2);
     let minutes = ('0' + date_ob.getMinutes()).slice(-2);
     let seconds = ('0' + date_ob.getSeconds()).slice(-2);
-
     return (
       year.toString().slice(2, 4) + month + date + hours + minutes + seconds
     );
   }
   folderName = 'ticket';
   isSpinning: boolean = false;
-
   getmsgssssss() {
     if (sessionStorage.getItem('msgget') === 'yes') {
       sessionStorage.setItem('msgget', 'no');
       this.messageListener();
     }
   }
-
   messageListener() {
     const msgData = sessionStorage.getItem('msgdata');
-
-    
-
     if (msgData) {
       try {
         const event: any = JSON.parse(msgData);
-
-        // 
-
         if (event?.data?.data4) {
           var obj = JSON.parse(event.data.data4);
-
-          // this.fetchChatData()
-
           this.apiservice
             .getAllticketDetails(
               0,
@@ -272,7 +233,6 @@ export class OrderTicketChatComponent {
                 }
               },
             });
-
           if (this.drawerData?.TICKET_NO === obj.TICKET_NO) {
             if (
               !this.drawerData?.TAKEN_BY_USER_ID ||
@@ -281,31 +241,22 @@ export class OrderTicketChatComponent {
               this.drawerData.TAKEN_BY_USER_ID = obj.TAKEN_BY_USER_ID;
             }
           }
-
-          
-
           delete obj.authData;
         }
       } catch (error) {
-        
       }
     }
-
     sessionStorage.setItem('msgget', 'no');
   }
-
   sendMessage() {
     var d = this.getFormatedDate();
     var random = Math.floor(Math.random() * 10000) + 1;
     var LOGO_URL = '';
-
     const msgdata = sessionStorage.getItem('msgdata');
     const parsedData = msgdata ? JSON.parse(msgdata) : null;
-
     const ticketno = parsedData?.data?.data4
       ? JSON.parse(parsedData.data.data4).TAKEN_BY_USER_ID
       : this.drawerData.TAKEN_BY_USER_ID;
-
     if (
       this.FormData.DESCRIPTION != undefined &&
       this.FormData.DESCRIPTION.trim() != ''
@@ -324,7 +275,6 @@ export class OrderTicketChatComponent {
           'yyyyMMddHHmmss'
         );
         var url = formatedDate + number + '.' + fileExt;
-
         this.apiservice
           .onUpload2(this.folderName, this.fileDataLOGO_URL, url)
           .subscribe((successCode: any) => {
@@ -333,15 +283,12 @@ export class OrderTicketChatComponent {
               this.fileDataLOGO_URL = null;
               this.message.success('Image uploaded successfully.', '');
               let USERTYPE: string = '';
-
               this.FormData.URL = LOGO_URL;
-
               this.apiservice
                 .AddChat(this.FormData)
                 .subscribe((response: any) => {
                   const statusCode = response.status;
                   const responseBody = response.body;
-
                   if (
                     response['message'] ==
                     'TicketDetail information saved successfully...'
@@ -350,11 +297,7 @@ export class OrderTicketChatComponent {
                       'TicketDetail information saved successfully...',
                       ''
                     );
-
-                    
                     this.fetchChatData();
-
-
                     if (this.chatData[0]['STATUS'] == 'R') {
                       if (
                         this.drawerData.ORDER_ID !== null &&
@@ -418,7 +361,6 @@ export class OrderTicketChatComponent {
                           WARRANTY_PERIOD: this?.orderdata?.WARRANTY_PERIOD,
                           GUARANTEE_PERIOD: this?.orderdata?.GUARANTEE_PERIOD,
                           RECIVER_NAME: this.drawerData.RECIVER_NAME,
-                          // CREATER_NAME: this.chatData[0].CREATER_NAME,
                           CREATER_ID: this?.orderdata?.CREATER_ID,
                           CREATOR_EMPLOYEE_ID: this?.orderdata?.CREATOR_EMPLOYEE_ID,
                           CREATOR_EMPLOYEE_NAME: this?.orderdata?.CREATOR_EMPLOYEE_NAME,
@@ -428,41 +370,30 @@ export class OrderTicketChatComponent {
                           KEY: 'SUPPORT_USER',
                           ACTION: '',
                         };
-        
                         this.apiservice
                           .updateTicket(updateTicketData)
                           .subscribe((updateResponse) => {
                             if (updateResponse['success']) {
-                              // this.message.success('Ticket updated successfully', '');
                             } else {
-                              // this.message.error('Failed to update ticket', '');
                             }
                           });
                       } else {
                         this.drawerData.STATUS = 'O';
-        
-                        
-        
                         this.apiservice
                           .updateTicket(this.drawerData)
                           .subscribe((updateResponse) => {
                             if (updateResponse['success']) {
-                              // this.message.success('Ticket updated successfully', '');
                             } else {
-                              // this.message.error('Failed to update ticket', '');
                             }
                           });
                       }
                     }
-                    // this.drawerClose();
                     this.isSpinning = false;
                     this.FormData.URL = '';
                     this.fileDataLOGO_URL = null;
                     this.FormData.DESCRIPTION = '';
                     this.selectedFile = null;
                     this.imagePreview = null;
-                    // this.message.success('successfully', '');
-
                     this.isSpinning = false;
                   } else {
                     this.message.error('Something went wrong...', '');
@@ -475,21 +406,7 @@ export class OrderTicketChatComponent {
             }
           });
       } else {
-        
-
         const filter = this.chatData.sort((a: any, b: any) => b.ID - a.ID);
-
-        
-
-        // if(filter[0].STATUS == 'R')
-        // {
-        //   this.FormData['STATUS'] =  'O'
-        // }
-
-       
-
-        
-
         this.apiservice.AddChat(this.FormData).subscribe((successCode) => {
           if (
             successCode['message'] ===
@@ -497,7 +414,6 @@ export class OrderTicketChatComponent {
           ) {
             this.fetchChatData();
             this.isSpinning = false;
-
             this.fileDataLOGO_URL = null;
             this.FormData.DESCRIPTION = '';
             this.selectedFile = null;
@@ -506,11 +422,6 @@ export class OrderTicketChatComponent {
               'TicketDetail information saved successfully...',
               ''
             );
-
-            // 
-
-            
-
             if (this.chatData[0]['STATUS'] == 'R') {
               if (
                 this.drawerData.ORDER_ID !== null &&
@@ -574,7 +485,6 @@ export class OrderTicketChatComponent {
                   WARRANTY_PERIOD: this?.orderdata?.WARRANTY_PERIOD,
                   GUARANTEE_PERIOD: this?.orderdata?.GUARANTEE_PERIOD,
                   RECIVER_NAME: this.drawerData.RECIVER_NAME,
-                  // CREATER_NAME: this.chatData[0].CREATER_NAME,
                   CREATER_ID: this?.orderdata?.CREATER_ID,
                   CREATOR_EMPLOYEE_ID: this?.orderdata?.CREATOR_EMPLOYEE_ID,
                   CREATOR_EMPLOYEE_NAME: this?.orderdata?.CREATOR_EMPLOYEE_NAME,
@@ -584,28 +494,20 @@ export class OrderTicketChatComponent {
                   KEY: 'SUPPORT_USER',
                   ACTION: '',
                 };
-
                 this.apiservice
                   .updateTicket(updateTicketData)
                   .subscribe((updateResponse) => {
                     if (updateResponse['success']) {
-                      // this.message.success('Ticket updated successfully', '');
                     } else {
-                      // this.message.error('Failed to update ticket', '');
                     }
                   });
               } else {
                 this.drawerData.STATUS = 'O';
-
-                
-
                 this.apiservice
                   .updateTicket(this.drawerData)
                   .subscribe((updateResponse) => {
                     if (updateResponse['success']) {
-                      // this.message.success('Ticket updated successfully', '');
                     } else {
-                      // this.message.error('Failed to update ticket', '');
                     }
                   });
               }
@@ -620,31 +522,22 @@ export class OrderTicketChatComponent {
       this.message.error('Please type your message', '');
     }
   }
-
   removeFile(): void {
     this.selectedFile = null;
     this.imagePreview = null;
   }
-
   closeticket() {
     this.isSpinning = true;
-
     this.drawerData.STATUS = 'C';
-
     this.apiservice
       .updateticket(this.drawerData)
       .subscribe((response: HttpResponse<any>) => {
         const statusCode = response.status;
         const responseBody = response.body;
-
         if (statusCode === 200) {
-          // this.message.success('Information Saved Successfully', '');
           this.close();
-
           this.isSpinning = false;
-
           this.message.success('Ticket closed successfully', '');
-
           this.isSpinning = false;
         } else {
           this.message.error('Information Not Saved...', '');

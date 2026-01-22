@@ -1,13 +1,7 @@
 <main class="main">
   <section
     id="hero"
-    class="hero section"
-    style="
-      margin: 15px 30px;
-      border-radius: 17px;
-      padding: 0px 0px;
-      background-color: white !important;
-    "
+    class="hero section card-white-rounded"
   >
     <div class="carousel hero-carousel-container">
       <owl-carousel-o
@@ -17,17 +11,6 @@
         <ng-container *ngFor="let item of carouselItems">
           <ng-template carouselSlide>
             <div class="carousel-item">
-              <!-- <img
-                [ngStyle]="{
-              'background-image': 'url(' + IMAGEuRL + 'BannerImages/' + item.IMAGE_URL + ')',
-              'background-size': '100% 100%',
-              'background-position': 'center',
-              'background-repeat': 'no-repeat',
-
-            }"  alt="{{ item.IMAGE_URL }}"
-                class="carousel-image"
-              /> -->
-
               <div
                 class="carousel-image"
                 [ngStyle]="{
@@ -38,8 +21,7 @@
                   'background-repeat': 'no-repeat'
                 }"
               ></div>
-
-              <div class="carousel-container" style="text-align: left">
+              <div class="carousel-container text-left" >
                 <h3
                   [style.color]="item.TITLE_COLOR + ' !important'"
                   class="carousel-title"
@@ -59,97 +41,26 @@
       </owl-carousel-o>
     </div>
   </section>
-
-  <!-- Services Section -->
-  <!-- <section
-    id="services"
-    class="services section"
-    style="padding-top: 0px !important"
-  > -->
-  <!-- <section
-    id="services"
-    class="services section"
-    *ngIf="teritory_id === 0 || teritory_id === null"
-    style="padding-top: 0px !important"
-  >
-    <div
-      class="container section-title d-flex align-items-start"
-      data-aos="fade-up"
-      style="
-        padding-bottom: 5px !important;
-        padding-left: 23px;
-        padding-right: 23px;
-        justify-content: center !important;
-        margin-bottom: 30px;
-        margin-top: 20px;
-      "
-    >
-      <div>
-        <div style="flex-shrink: 0; margin: 8px; text-align: center">
-          <svg
-            width="66"
-            height="66"
-            viewBox="0 0 66 66"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect width="66" height="65.1219" rx="32.561" fill="#FAFAFA" />
-            <circle cx="32.561" cy="32.561" r="26.561" fill="#F4F4F4" />
-            <path
-              d="M20.6299 39.2116C16.1906 33.1201 16.8468 24.7035 22.1766 19.3737C28.154 13.3963 37.8454 13.3963 43.8228 19.3737C49.1526 24.7035 49.8088 33.1201 45.3695 39.2116L36.0195 52.0413C34.5271 54.0892 31.4723 54.0891 29.9799 52.0413L20.6299 39.2116Z"
-              fill="#4C4C4C"
-            />
-            <circle cx="33.0137" cy="31.0567" r="5.97857" fill="#D9D9D9" />
-          </svg>
-        </div>
-        <p style="font-size: 20px">Service not available in your area</p>
-        <span style="font-size: 13px">
-          Sorry, we are not providing service in your area yet.
-        </span>
-      </div>
-    </div>
-  </section> -->
-
   <section id="services" class="services section">
-    <!-- <section
-    id="services"
-    class="services section"
-    *ngIf="
-      teritory_id !== 0 && teritory_id !== undefined && teritory_id !== null
-    "
-  > -->
     <div
-      class="container section-title d-flex justify-content-between align-items-start"
+      class="container section-title d-flex justify-content-between align-items-start pb-5-plr-23"
       data-aos="fade-up"
-      style="
-        padding-bottom: 5px !important;
-        padding-left: 23px;
-        padding-right: 23px;
-      "
     >
       <div class="d-flex align-items-center">
         <span
-          class="me-2"
-          style="
-            height: 24px;
-            width: 4px;
-            background-color: #f26522;
-            display: inline-block;
-          "
+          class="me-2 indicator-bar"
         ></span>
         <p class="fw-bold m-0 responsive-text">
           {{ "shop.PopularBrands" | translate }}
         </p>
       </div>
       <div class="view-catalogue">
-        <span
-          style="font-weight: 600; cursor: pointer; color: #f16b3f"
+        <span class="text-600-pointer-orange"
           [routerLink]="['/shop/brands']"
           >{{ "shop.AllBrands" | translate }}</span
         >
       </div>
     </div>
-
     <div
       class="container team d-flex justify-content-center align-items-center demo12"
     >
@@ -168,13 +79,12 @@
           [ngStyle]="{
             'max-width': brand.length === 1 ? '300px' : '100%'
           }"
-          style="padding: 10px"
+          class="p-10"
         >
           <ng-container *ngFor="let service of brand">
             <ng-template carouselSlide>
               <div
-                class="laptop-card box h-120 d-flex justify-content-center align-items-center"
-                style="background-color: white; height: 130px; cursor: pointer"
+                class="laptop-card box h-120 d-flex justify-content-center align-items-center bg-white-height-130-pointer"
                 (click)="openDrawer(service)"
               >
                 <div
@@ -198,15 +108,11 @@
             </ng-template>
           </ng-container>
         </owl-carousel-o>
-
         <div *ngIf="brand.length < 4 && !isMobile" class="row w-100">
           <div
             class="col-12 col-sm-6 col-lg-3 col-xl-2-4 col-lg-2-3"
             *ngFor="let service of brand"
           >
-            <!-- <div class="laptop-card box h-120 d-flex justify-content-left align-items-center"
-                                style="background-color: white; height: 165px; cursor: pointer;"
-                                (click)="openDrawer(service)"> -->
             <div (click)="openDrawer(service)">
               <div
                 [ngStyle]="{
@@ -228,67 +134,31 @@
                 class="card-img-top img-fluid"
               ></div>
             </div>
-            <!-- </div> -->
           </div>
         </div>
       </div>
     </div>
   </section>
-
-  <!-- shop products -->
-  <!-- <section
-    *ngIf="
-      TopSellingLaptops.length > 0 &&
-      teritory_id !== 0 &&
-      teritory_id !== undefined &&
-      teritory_id !== null
-    "
-    id="top-selling-laptops"
-    class="services section"
-    style="padding: 10px; padding-top: 20px; padding-bottom: 0px !important"
-  > -->
   <section
-
     id="top-selling-laptops"
-    class="services section"
-    style="padding: 10px; padding-top: 20px; padding-bottom: 0px !important"
+    class="services section padding-10-pt-20-pb-0"
   >
-    <!-- <section
-    *ngIf="
-      TopSellingLaptops.length > 0
-    "
-    id="top-selling-laptops"
-    class="services section"
-    style="padding: 10px; padding-top: 20px; padding-bottom: 0px !important"
-  > -->
-    <!-- Section Title -->
     <div
-      class="container section-title d-flex justify-content-between align-items-start rounded-top-4"
+      class="container section-title d-flex justify-content-between align-items-start rounded-top-4 padding-0-28-10-pb-0"
       data-aos="fade-up"
-      style="padding: 0px 28px 10px; padding-bottom: 0px !important"
     >
       <div class="d-flex align-items-center">
         <span
-          class="me-2"
-          style="
-            height: 24px;
-            width: 4px;
-            background-color: #f26522;
-            display: inline-block;
-          "
+          class="me-2 indicator-bar"
         ></span>
         <p class="fw-bold m-0 responsive-text">
           {{ "home.top_selling.title" | translate }}
         </p>
       </div>
-
       <div class="view-catalogue"></div>
     </div>
-    <!-- End Section Title -->
-
     <div
-      class="container team d-flex justify-content-center align-items-center demo12 rounded-bottom-4"
-      style="padding-bottom: 7px"
+      class="container team d-flex justify-content-center align-items-center demo12 rounded-bottom-4 padding-bottom-7"
     >
       <div *ngIf="loadLaptops" class="d-flex justify-content-center py-4">
         <div class="spinner-border text-secondary" role="status">
@@ -297,20 +167,16 @@
           >
         </div>
       </div>
-
       <div *ngIf="!loadLaptops" class="row w-100">
         <div
           *ngFor="let laptop of TopSellingLaptops | slice : 0 : 10"
-          class="col-12 col-sm-4 col-md-3 col-xl-2-4 col-lg-2-3 mb-4"
-          style="margin-bottom: 0px !important; margin-top: 15px !important"
+          class="col-12 col-sm-4 col-md-3 col-xl-2-4 col-lg-2-3 mb-4 margin-mb-0-mt-15"
         >
           <div
-            class="card border-0 shadow-sm laptop-card h-80"
-            style="transition: all 0.3s ease-in-out; cursor: pointer"
+            class="card border-0 shadow-sm laptop-card h-80 transition-03-ease-pointer"
           >
             <div
-              class="d-flex align-items-center justify-content-center"
-              style="padding: 15px"
+              class="d-flex align-items-center justify-content-center padding-15"
             >
               <img
                 [src]="
@@ -320,44 +186,20 @@
                 "
                 [routerLink]="['/shop/buy_now', laptop.ID]"
                 (click)="InventoryId(laptop)"
-                class="card-img-top img-fluid your-class-name"
+                class="card-img-top img-fluid your-class-name max-h-180-object-contain-radius-8"
                 alt="{{ laptop.ITEM_NAME }}"
                 (error)="handleImageError($event)"
-                style="
-                  max-height: 180px;
-
-                  object-fit: contain;
-                  border-radius: 8px;
-                "
               />
               <span
                 *ngIf="laptop.IS_REFURBISHED === 1"
-                class="badge bg-warning text-dark"
-                style="
-                  position: absolute;
-                  top: 5px;
-                  right: 5px;
-                  font-size: 10px;
-                  padding: 4px 6px;
-                  z-index: 2;
-                  background-color: #f36631 !important;
-                  color: white !important;
-                "
+                class="badge bg-warning text-dark abs-top-5-right-5-fs-10-pad-4-6-z2-bg-f36631"
               >
                 Refurbished
               </span>
             </div>
-            <div class="text-center" style="padding: 2px">
-              <!-- <p class="card-title" style="cursor: pointer; font-weight: 600;">{{ laptop.ITEM_NAME }}</p> -->
-
+            <div class="text-center padding-2" >
               <p
-                style="
-                  padding-top: 0px;
-                  margin: 6px;
-                  font-weight: 500;
-                  margin-bottom: 0px !important;
-                "
-                class="card-title service-name"
+                class="card-title service-name pt-0-m-6-fw-500-mb-0"
                 [attr.title]="
                   laptop.VARIANT_COMBINATION
                     ? laptop.VARIANT_NAME
@@ -367,7 +209,7 @@
                 data-bs-placement="top"
               >
                 <span
-                  style="font-weight: 500"
+                class="font-weight-500"
                   [routerLink]="['/shop/buy_now', laptop.ID]"
                   (click)="InventoryId(laptop)"
                 >
@@ -379,19 +221,13 @@
                 >
               </p>
               <p
-                style="
-                  padding-top: 0px;
-                  margin: 6px;
-                  font-weight: 500;
-                  margin-top: 0px !important;
-                "
-                class="card-title service-name"
+                class="card-title service-name pt-0-m-6-fw-500-mt-0"
                 [attr.title]="laptop.INVENTORY_CATEGORY_NAME"
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
               >
                 <span
-                  style="font-weight: 500; color: #4d4d4d; font-size: 11px"
+                class="fw-500-color-4d4d4d-fs-11"
                   [routerLink]="['/shop/buy_now', laptop.ID]"
                   (click)="InventoryId(laptop)"
                 >
@@ -404,57 +240,31 @@
       </div>
     </div>
   </section>
-
   <section
     *ngIf="refurbishedInventoryData.length > 0"
     id="refurbished-inventory"
-    class="services section"
-    style="padding: 10px; padding-top: 30px; padding-bottom: 0px !important"
+    class="services section pad-10-pt-30-pb-0"
   >
-    <!-- <section
-    *ngIf="
-      refurbishedInventoryData.length > 0 &&
-      teritory_id !== 0 &&
-      teritory_id !== undefined &&
-      teritory_id !== null
-    "
-    id="refurbished-inventory"
-    class="services section"
-    style="padding: 10px; padding-top: 30px; padding-bottom: 0px !important"
-  > -->
-    <!-- Section Title -->
     <div
-      class="container section-title d-flex justify-content-between align-items-start rounded-top-4"
+      class="container section-title d-flex justify-content-between align-items-start rounded-top-4 padding-0-28-10-pb-0"
       data-aos="fade-up"
-      style="padding: 0px 28px 10px; padding-bottom: 0px !important"
     >
       <div class="d-flex align-items-center">
         <span
-          class="me-2"
-          style="
-            height: 24px;
-            width: 4px;
-            background-color: #f26522;
-            display: inline-block;
-          "
+          class="me-2 indicator-bar"
         ></span>
         <p class="fw-bold m-0 responsive-text">Refurbished Products</p>
       </div>
-
       <div class="view-catalogue">
-        <span
-          style="font-weight: 600; cursor: pointer; color: #f16b3f"
+        <span class="text-600-pointer-orange"
           [routerLink]="['/shop/allrefurbisheddata']"
         >
           View All</span
         >
       </div>
     </div>
-    <!-- End Section Title -->
-
     <div
-      class="container team d-flex justify-content-center align-items-center demo12 rounded-bottom-4"
-      style="padding-bottom: 7px"
+      class="container team d-flex justify-content-center align-items-center demo12 rounded-bottom-4 padding-bottom-7"
     >
       <div
         *ngIf="loadServiceforRefurbished"
@@ -464,24 +274,17 @@
           <span class="sr-only">{{ "home.loading.spinner" | translate }}</span>
         </div>
       </div>
-
       <div *ngIf="!loadServiceforRefurbished" class="row w-100">
         <div
           *ngFor="let item of refurbishedInventoryData | slice : 0 : 10"
-          class="col-12 col-sm-4 col-md-3 col-xl-2-4 col-lg-2-3 mb-4"
-          style="margin-bottom: 0px !important; margin-top: 15px !important"
+          class="col-12 col-sm-4 col-md-3 col-xl-2-4 col-lg-2-3 mb-4 margin-mb-0-mt-15"
         >
           <div
-            class="card border-0 shadow-sm laptop-card h-80"
-            style="transition: all 0.3s ease-in-out; cursor: pointer"
+            class="card border-0 shadow-sm laptop-card h-80 transition-03-ease-pointer"
           >
             <div
-              class="d-flex align-items-center justify-content-center"
-              style="padding: 15px"
+              class="d-flex align-items-center justify-content-center padding-15"
             >
-              <!-- [routerLink]="USERID ? ['/shop/buy_now', item.ID] : null"
-                (click)="USERID ? InventoryId(item) : null"
-                [ngClass]="{ 'disabled-link': !USERID }" -->
               <img
                 [src]="
                   item.INVENTORY_IMAGE
@@ -490,43 +293,14 @@
                 "
                 [routerLink]="['/shop/buy_now', item.ID]"
                 (click)="InventoryId(item)"
-                class="card-img-top img-fluid your-class-name"
+                class="card-img-top img-fluid your-class-name max-h-180-object-contain-radius-8"
                 alt="{{ item.ITEM_NAME }}"
                 (error)="handleImageError($event)"
-                style="
-                  max-height: 180px;
-                  object-fit: contain;
-                  border-radius: 8px;
-                "
               />
-
-              <!-- <span
-                *ngIf="item.IS_REFURBISHED == 1"
-                class="badge bg-warning text-dark"
-                style="
-                  position: absolute;
-                  top: 5px;
-                  right: 5px;
-                  font-size: 10px;
-                  padding: 4px 6px;
-                  z-index: 2;
-                  background-color: #f36631 !important;
-                  color: white !important;
-                "
-              >
-                Refurbished
-              </span> -->
             </div>
-
-            <div class="text-center" style="padding: 2px">
+            <div class="text-center padding-2" >
               <p
-                style="
-                  padding-top: 0px;
-                  margin: 6px;
-                  font-weight: 500;
-                  margin-bottom: 0px !important;
-                "
-                class="card-title service-name"
+                class="card-title service-name pt-0-m-6-fw-500-mb-0"
                 [attr.title]="
                   item.VARIANT_COMBINATION ? item.VARIANT_NAME : item.ITEM_NAME
                 "
@@ -534,7 +308,7 @@
                 data-bs-placement="top"
               >
                 <span
-                  style="font-weight: 500"
+                class="font-weight-500"
                   [routerLink]="['/shop/buy_now', item.ID]"
                   (click)="InventoryId(item)"
                 >
@@ -545,21 +319,14 @@
                   }}
                 </span>
               </p>
-
               <p
-                style="
-                  padding-top: 0px;
-                  margin: 6px;
-                  font-weight: 500;
-                  margin-top: 0px !important;
-                "
-                class="card-title service-name"
+                class="card-title service-name pt-0-m-6-fw-500-mt-0"
                 [attr.title]="item.INVENTORY_CATEGORY_NAME"
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
               >
                 <span
-                  style="font-weight: 500; color: #4d4d4d; font-size: 11px"
+                class="fw-500-color-4d4d4d-fs-11"
                   [routerLink]="['/shop/buy_now', item.ID]"
                   (click)="InventoryId(item)"
                 >
@@ -572,35 +339,12 @@
       </div>
     </div>
   </section>
-
-  <div class="container mt-4" style="padding-top: 20px">
+  <div class="container mt-4 padding-top-20">
     <div
       class="container section-title d-flex justify-content-between align-items-start"
       data-aos="fade-up"
     >
-      <!-- <div class="d-flex align-items-center">
-                <span class="me-2"
-                    style="height: 24px; width: 4px; background-color: #f26522; display: inline-block;"></span>
-                <p class="fw-bold m-0 responsive-text">{{'shop.Latest' | translate}}</p>
-            </div> -->
-
-      <!-- <div class="d-flex align-items-center">
-                <button style="color: #3170DE;" class="btn btn-outline-secondary filter-btn" (click)="toggleFilter()">
-                    {{ selectedFilter }}
-                    <i class="bi bi-filter"></i>
-                </button>
-
-                <div class="dropdown-menu show" *ngIf="showFilter">
-                    <button class="dropdown-item" (click)="selectFilter('Latest')">Latest</button>
-                    <button class="dropdown-item" (click)="selectFilter('Alphabetic')">Alphabetic</button>
-                    <button class="dropdown-item" (click)="selectFilter('Price: Low to High')">Price: Low to
-                        High</button>
-                    <button class="dropdown-item" (click)="selectFilter('Price: High to Low')">Price: High to
-                        Low</button>
-                </div>
-            </div> -->
-
-      <div class="dropdown-container" style="width: 300px">
+      <div class="dropdown-container width-300">
         <button
           class="dropdown-toggle"
           (click)="toggleDropdown()"
@@ -616,7 +360,7 @@
           >
             <mask
               id="mask0_4966_4175"
-              style="mask-type: alpha"
+              class="mask-alpha"
               maskUnits="userSpaceOnUse"
               x="0"
               y="0"
@@ -633,7 +377,6 @@
             </g>
           </svg>
         </button>
-
         <div class="dropdown-menu" *ngIf="isDropdownOpen">
           <button
             class="dropdown-item"
@@ -672,42 +415,17 @@
           </button>
         </div>
       </div>
-
-      <!-- <div style="padding-bottom: 20px;" style="color: #3170DE;" class="filter-container">
-                <button style="color: #3170DE;" class="btn btn-outline-secondary filter-btn" (click)="toggleFilter()">
-                    {{ selectedFilter }}
-                    <i class="bi bi-filter"></i>
-                </button>
-
-                <div class="dropdown-menu show" *ngIf="showFilter">
-                    <button class="dropdown-item" (click)="selectFilter('Latest')">Latest</button>
-                    <button class="dropdown-item" (click)="selectFilter('Alphabetic')">Alphabetic</button>
-                    <button class="dropdown-item" (click)="selectFilter('Price: Low to High')">Price: Low to
-                        High</button>
-                    <button class="dropdown-item" (click)="selectFilter('Price: High to Low')">Price: High to
-                        Low</button>
-                </div>
-            </div> -->
     </div>
-
-    <!-- <div class="container team d-flex justify-content-center align-items-center demo12">
-            <div *ngIf="loadServiceforinventory" class="spinner-border text-secondary" role="status">
-                <span class="sr-only"></span>
-            </div>
-        </div> -->
-
     <div
       *ngIf="inventorydata.length > 0; else noDataTemplate1"
-      style="padding: 0px"
-      class="offcanvas-body"
+      class="offcanvas-body padding-0"
     >
       <div
         class="container team d-flex justify-content-center align-items-center demo12"
       >
         <div
           *ngIf="!loadServiceforinventory"
-          class="row gx-5 justify-content-left"
-          style="width: 100vw"
+          class="row gx-5 justify-content-left width-100vw"
         >
           <div
             class="col-md-4 col-sm-6 mb-4"
@@ -717,18 +435,8 @@
             "
           >
             <div class="product-card">
-              <!-- <div style="cursor: pointer; height: 178px; width: 223%" class="product-image w-100 mb-3"
-                                [routerLink]="USERID ? ['/shop/buy_now', product.ID] : null"
-                                (click)="USERID ? InventoryId(product) : null" [ngClass]="{'disabled-link': !USERID}"> -->
-
-              <!-- <img [src]="product.INVENTORY_IMAGE ? IMAGEuRL + 'InventoryImages/' + product.INVENTORY_IMAGE : 'assets/img/services/no-image.png'"
-                                    style="height: 100%; width: 100%; border-radius: 8px" class="img-fluid"
-                                    alt="{{ product.BRAND_NAME }}" (error)="handleImageError($event)" /> -->
-              <!-- [routerLink]="USERID ? ['/shop/buy_now', product.ID] : null"
-                (click)="USERID ? InventoryId(product) : null"
-                [ngClass]="{ 'disabled-link': !USERID }" -->
               <div
-                style="cursor: pointer"
+                class="cursor-pointer"
                 [routerLink]="['/shop/buy_now', product.ID]"
                 (click)="InventoryId(product)"
                 [ngStyle]="{
@@ -741,30 +449,14 @@
                   'background-size': '100% 100%',
                   'background-position': 'center',
                   'background-repeat': 'no-repeat',
-
                   height: '240px',
                   'border-radius': '8px',
                   'background-color': 'rgb(245, 248, 253)',
                   border: 'none'
                 }"
               ></div>
-
-              <!-- </div> -->
-              <!-- <h5 class="product-title">
-                                    {{product.VARIANT_NAME}}
-                                </h5> -->
-
               <span
-                class="product-title"
-                style="
-                  font-size: 14px;
-                  padding-top: 7px;
-                  white-space: nowrap;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  max-width: 100%;
-                  display: block;
-                "
+                class="product-title text-ellipsis-14px"
                 [attr.title]="product.VARIANT_NAME || 'N/A'"
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
@@ -772,38 +464,24 @@
                 {{ product.VARIANT_NAME || "N/A" }}
               </span>
               <span
-                class="product-title"
-                style="
-                  font-size: 12px;
-                  padding-top: 0px;
-                  padding-bottom: 5px;
-                  color: #4d4d4d;
-                  white-space: nowrap;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  max-width: 100%;
-                  display: block;
-                "
+                class="product-title text-ellipsis-12px"
                 [attr.title]="product.INVENTORY_CATEGORY_NAME || 'N/A'"
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
               >
                 {{ product.INVENTORY_CATEGORY_NAME || "N/A" }}
               </span>
-
               <div class="d-flex justify-content-between">
                 <div class="d-flex gap-2 mb-2">
                   <div
-                    *ngIf="product.UNIT_STOCK != 0"
-                    style="color: #9b9d9f; font-size: 12px"
+                    *ngIf="product.UNIT_STOCK != 0" class="color-9b9d9f-fs-12"
                   >
                     {{ product.UNIT_STOCK }}
                     {{ "shop.leftInStock" | translate }}
                   </div>
                   <div
-                    style="font-size: 12px"
                     *ngIf="product.UNIT_STOCK == 0"
-                    class="text-danger"
+                    class="text-danger font-size-12"
                   >
                     {{ "shop.outofstock" | translate }}
                   </div>
@@ -812,106 +490,52 @@
                   *ngIf="product.QUANTITY_PER_UNIT == 1"
                   class="d-flex gap-1 text-warning"
                 ></div>
-
                 <div
                   *ngIf="product.QUANTITY_PER_UNIT != 1"
-                  class="d-flex gap-1 text-warning"
-                  style="font-size: 12px; color: #f36631"
+                  class="d-flex gap-1 text-warning font-12-color-f36631"
                 >
                   ( Pack of {{ product.QUANTITY_PER_UNIT }} )
                 </div>
               </div>
-
-              <hr style="margin: 0px 0px 7px 0px" />
+              <hr class="margin-0-0-7-0" />
               <div class="d-flex justify-content-between">
                 <div class="d-flex gap-2 mb-2">
                   <span
-                    class="product-price"
-                    style="font-weight: bold; color: #3170de; font-size: 14px"
+                    class="product-price fw-bold-color-3170de-fs-14"
                     *ngIf="product.DISCOUNT_ALLOWED == 1"
                   >
                     ₹{{ product.DISCOUNTED_PRICE | number }}
                   </span>
                   <span
-                    *ngIf="product.DISCOUNT_ALLOWED == 0"
-                    style="font-weight: bold; color: #3170de; font-size: 14px"
+                    *ngIf="product.DISCOUNT_ALLOWED == 0" class="fw-bold-color-3170de-fs-14"
                   >
                     ₹{{ product.SELLING_PRICE | number }}
                   </span>
                 </div>
-
                 <div class="d-flex gap-2">
                   <span
                     *ngIf="product.DISCOUNT_ALLOWED == 1"
-                    class="product-old-price"
-                    style="text-decoration: line-through; font-size: 14px"
+                    class="product-old-price line-through-14"
                   >
                     ₹{{ product.SELLING_PRICE | number }}
                   </span>
                 </div>
               </div>
-
               <div class="d-flex gap-2">
                 <button
                   *ngIf="product.IS_ALREADY_IN_CART == 1"
                   [disabled]="product.UNIT_STOCK == 0"
-                  class="w-50"
-                  style="
-                    border-radius: 5px;
-                    color: #3170de;
-                    border: 1.4px solid;
-                  "
+                  class="w-50 radius-5-color-3170de-border-14"
                   routerLink="/shop/cart"
                 >
                   {{ "shop.gotocart" | translate }}
                 </button>
-
-                <!-- <button
-                  *ngIf="product.IS_ALREADY_IN_CART == 0"
-                  [disabled]="
-                    product.UNIT_STOCK == 0 || product.loadingBuyNowcart
-                  "
-                  class="w-50"
-                  style="
-                    background-color: white;
-                    border-radius: 5px;
-                    color: #3170de;
-                    border: 1.4px solid;
-                  "
-                  (click)="addToCart(product, '')"
-                >
-                  <span
-                    *ngIf="product.loadingBuyNowcart"
-                    class="spinner-border spinner-border-sm"
-                  ></span>
-                  <span>&nbsp;{{ "shop.AddToCart" | translate }}</span>
-                </button>
-
-                <button
-                  class="btn btn-buy w-50"
-                  (click)="buyNow(product); InventoryunitMapping(product.ID)"
-                  [disabled]="product.UNIT_STOCK == 0 || product.loadingBuyNow"
-                >
-                  <span
-                    *ngIf="product.loadingBuyNow"
-                    class="spinner-border spinner-border-sm"
-                  ></span>
-                  <span>&nbsp;{{ "shop.buyNow" | translate }}</span>
-                </button> -->
-
-                <!-- Add to Cart -->
                 <button
                   *ngIf="product.IS_ALREADY_IN_CART == 0"
                   [disabled]="
                     product.UNIT_STOCK == 0 || product.loadingBuyNowcart
                   "
-                  class="w-50"
-                  style="
-                    background-color: white;
-                    border-radius: 5px;
-                    color: #3170de;
-                    border: 1.4px solid;
-                  "
+                  class="w-50 bg-white-radius-5-color-3170de-border-14"
                   (click)="
                     teritory_id !== 0 &&
                     teritory_id !== undefined &&
@@ -926,8 +550,6 @@
                   ></span>
                   <span>&nbsp;{{ "shop.AddToCart" | translate }}</span>
                 </button>
-
-                <!-- Buy Now -->
                 <button
                   class="btn btn-buy w-50"
                   [disabled]="product.UNIT_STOCK == 0 || product.loadingBuyNow"
@@ -948,14 +570,12 @@
               </div>
             </div>
           </div>
-
           <div class="text-center mt-3">
             <button
               *ngIf="inventorydata.length > 9 && !showAll"
-              class="btn btn-primary"
+              class="btn btn-primary bg-3170de"
               (click)="loadMore()"
               [disabled]="loading"
-              style="background: #3170de"
             >
               <span
                 *ngIf="loading"
@@ -966,14 +586,12 @@
           </div>
         </div>
       </div>
-
       <ng-template #noDataTemplate1>
         <div class="text-center p-3">
           <img
             src="assets/img/hand-drawn-no-data-concept.png"
             alt="No Data Available"
-            class="img-fluid"
-            style="max-width: 350px"
+            class="img-fluid max-w-350"
           />
           <p class="text-muted mt-2">
             <b>{{ "shop.NoDataAvailable" | translate }}</b>
@@ -982,25 +600,21 @@
       </ng-template>
     </div>
   </div>
-
   <div
-    style="width: 700px"
-    class="offcanvas offcanvas-end custom-offcanvas-width"
+    class="offcanvas offcanvas-end custom-offcanvas-width width-700"
     tabindex="-1"
     id="offcanvasRight"
     aria-labelledby="offcanvasRightLabel"
     #offcanvas
   >
     <div
-      style="padding: 10px; background: white"
-      class="offcanvas-header justify-content-between align-items-start"
+      class="offcanvas-header justify-content-between align-items-start padding-10-bg-white"
     >
-      <h5 id="offcanvasRightLabel" style="margin-bottom: 0px; font-size: 16px">
+      <h5 id="offcanvasRightLabel" class="mb-0-font-16" >
         {{ DrawerName }}
       </h5>
-
       <div class="d-flex align-items-center gap-2">
-        <div class="dropdown" style="width: 300px; position: relative">
+        <div class="dropdown width-300-relative">
           <button
             class="btn btn-outline-secondary dropdown-toggle w-100 d-flex justify-content-between align-items-center"
             type="button"
@@ -1012,24 +626,13 @@
                 : getCategoryNameById(selectedOption1)
             }}
           </button>
-
           <ul
-            class="dropdown-menu"
+            class="dropdown-menu dropdown-absolute-scroll"
             *ngIf="isDropdownOpen1"
-            style="
-              display: block;
-              max-height: 200px;
-              overflow-y: auto;
-              right: 0;
-              left: auto;
-              position: absolute;
-              z-index: 1050;
-            "
           >
             <li>
               <a
-                style="white-space: pre-line"
-                class="dropdown-item"
+                class="dropdown-item white-space-pre-line"
                 [class.active]="selectedOption1 === 'All'"
                 (click)="selectFilter2('All'); toggleDropdown1()"
                 >All</a
@@ -1037,8 +640,7 @@
             </li>
             <li *ngFor="let cat of InventoryCategory">
               <a
-                style="white-space: pre-line"
-                class="dropdown-item"
+                class="dropdown-item white-space-pre-line"
                 [class.active]="selectedOption1 === cat.ID"
                 (click)="selectFilter2(cat.ID); toggleDropdown1()"
                 >{{ cat.CATEGORY_NAME }}</a
@@ -1046,7 +648,6 @@
             </li>
           </ul>
         </div>
-
         <button
           type="button"
           class="btn-close text-reset"
@@ -1055,7 +656,6 @@
         ></button>
       </div>
     </div>
-
     <div
       class="container team d-flex justify-content-center align-items-center demo12"
     >
@@ -1067,39 +667,25 @@
         <span class="sr-only"></span>
       </div>
     </div>
-
     <div *ngIf="displayednventory.length > 0; else noDataTemplate1">
-      <div class="offcanvas-body" style="overflow-y: auto; padding: 0px">
+      <div class="offcanvas-body overflow-auto-padding-0">
         <div class="container mt-4">
           <div *ngIf="!loadServicefordrawer" class="row justify-content-left">
-            <!-- <div class="col-md-6 col-sm-6 mb-6" *ngFor="let product of inventorydataForDrawer"> -->
             <div
-              style="padding-bottom: 15px"
-              class="col-md-6 col-sm-6 mb-6"
+              class="col-md-6 col-sm-6 mb-6 pb-15"
               *ngFor="let product of displayednventory"
             >
-              <div style="border: 1px solid #ddd" class="product-card">
+              <div class="product-card border-1-ddd">
                 <div
-                  style="cursor: pointer; position: relative"
                   data-bs-dismiss="offcanvas"
                   aria-label="Close"
                   [routerLink]="['/shop/buy_now', product.ID]"
                   (click)="InventoryId(product)"
-                  class="product-image w-100 mb-3"
+                  class="product-image w-100 mb-3 cursor-pointer-relative"
                 >
                   <span
                     *ngIf="product.IS_REFURBISHED == 1"
-                    class="badge bg-warning text-dark"
-                    style="
-                      position: absolute;
-                      top: 5px;
-                      right: 5px;
-                      font-size: 10px;
-                      padding: 4px 6px;
-                      z-index: 2;
-                      background-color: #f36631 !important;
-                      color: white !important;
-                    "
+                    class="badge bg-warning text-dark abs-top-5-right-5-fs-10-pad-4-6-z2-bg-f36631"
                   >
                     Refurbished
                   </span>
@@ -1107,70 +693,30 @@
                     [src]="
                       IMAGEuRL + 'InventoryImages/' + product.INVENTORY_IMAGE
                     "
-                    class="img-fluid"
+                    class="img-fluid full-size-padding-0"
                     alt="{{ product.INVENTORY_IMAGE }}"
-                    style="height: 100%; width: 100%; padding: 0px"
                     (error)="onImageError($event)"
                   />
                 </div>
-
-                <!-- <h5 style="cursor: pointer;" (click)="inventoryDetail(product)" class="product-title"
-                                    *ngIf="product.IS_HAVE_VARIANTS == 0">{{product.ITEM_NAME}}</h5>
-                                <h5 style="cursor: pointer;" (click)="inventoryDetail(product)" class="product-title"
-                                    *ngIf="product.IS_HAVE_VARIANTS == 1">{{product.VARIANT_COMBINATION}}</h5> -->
-
                 <h5
-                  style="
-                    cursor: pointer;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                    margin-bottom: 0px;
-                    font-size: 14px;
-                    max-width: 100%;
-                    display: block;
-                  "
-                  class="product-title"
+                  class="product-title cursor-ellipsis-14"
                   (click)="inventoryDetail(product)"
                   *ngIf="product.IS_HAVE_VARIANTS == 0"
                   [attr.title]="product.ITEM_NAME"
                 >
                   {{ product?.ITEM_NAME }}
                 </h5>
-
                 <h5
-                  style="
-                    cursor: pointer;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                    margin-bottom: 0px;
-                    max-width: 100%;
-                    font-size: 14px;
-                    display: block;
-                  "
-                  class="product-title"
+                  class="product-title cursor-ellipsis-14"
                   (click)="inventoryDetail(product)"
                   *ngIf="product.IS_HAVE_VARIANTS == 1"
                   [attr.title]="product.VARIANT_COMBINATION"
                 >
                   {{ product?.VARIANT_COMBINATION }}
                 </h5>
-
                 <span
-                  class="product-title"
+                  class="product-title text-ellipsis-12"
                   (click)="inventoryDetail(product)"
-                  style="
-                    font-size: 12px;
-                    padding-top: 0px;
-                    padding-bottom: 5px;
-                    color: #4d4d4d;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    max-width: 100%;
-                    display: block;
-                  "
                   [attr.title]="product.INVENTORY_CATEGORY_NAME || 'N/A'"
                   data-bs-toggle="tooltip"
                   data-bs-placement="top"
@@ -1178,33 +724,27 @@
                   {{ product.INVENTORY_CATEGORY_NAME || "N/A" }}
                 </span>
                 <div
-                  style="font-size: 12px"
-                  class="d-flex justify-content-between"
+                  class="d-flex justify-content-between font-size-12"
                 >
                   <div class="d-flex gap-2 mb-2">
                     <div
-                      *ngIf="product.UNIT_STOCK != 0"
-                      style="color: #9b9d9f; font-size: 12px"
+                      *ngIf="product.UNIT_STOCK != 0" class="color-9b9d9f-fs-12"
                     >
                       {{ product.UNIT_STOCK }}
                       {{ "shop.leftInStock" | translate }}
                     </div>
                     <div
                       *ngIf="product.UNIT_STOCK == 0"
-                      class="text-danger"
-                      style="font-size: 12px"
+                      class="text-danger font-size-12"
                     >
                       {{ "shop.outofstock" | translate }}
                     </div>
                   </div>
-
                   <div
                     *ngIf="product.QUANTITY_PER_UNIT == 1"
                     class="d-flex gap-1 text-warning"
                   >
-                    <!-- ( pack of {{product.QUANTITY_PER_UNIT}} ) -->
                   </div>
-
                   <div
                     *ngIf="product.QUANTITY_PER_UNIT != 1"
                     class="d-flex gap-1 text-warning"
@@ -1212,21 +752,17 @@
                     ( pack of {{ product.QUANTITY_PER_UNIT }} )
                   </div>
                 </div>
-
-                <hr style="margin: 0px 0px 7px 0px" />
-
+                <hr class="margin-0-0-7-0" />
                 <div class="d-flex justify-content-between">
                   <div class="d-flex gap-2 mb-2">
                     <span
-                      class="product-price"
+                      class="product-price fw-bold-fs-14"
                       *ngIf="product.DISCOUNT_ALLOWED == 1"
-                      style="font-weight: bold; font-size: 14px"
                     >
                       &#8377; {{ product.DISCOUNTED_PRICE | number }}
                     </span>
                     <span
-                      *ngIf="product.DISCOUNT_ALLOWED == 0"
-                      style="font-weight: bold; color: #3170de; font-size: 14px"
+                      *ngIf="product.DISCOUNT_ALLOWED == 0" class="fw-bold-color-3170de-fs-14"
                     >
                       &#8377; {{ product.SELLING_PRICE | number }}
                     </span>
@@ -1234,65 +770,27 @@
                   <div class="d-flex gap-2">
                     <span
                       *ngIf="product.DISCOUNT_ALLOWED == 1"
-                      class="product-old-price"
-                      style="
-                        text-decoration: line-through;
-                        font-weight: bold;
-                        font-size: 14px;
-                      "
+                      class="product-old-price line-through-bold-14"
                     >
                       &#8377; {{ product.SELLING_PRICE | number }}
                     </span>
                   </div>
                 </div>
-
                 <div class="d-flex gap-2">
-                  <!-- <button [disabled]="product.UNIT_STOCK == 0" class="w-50"
-                                        style="border-radius: 5px;color: #3170DE; border: 1px solid;"
-                                        (click)="addToCart(product.ID)">Add to cart</button>
-
-                                    <button class="btn btn-buy w-50" (click)="buyNow(product.ID)"
-                                        (click)="InventoryunitMapping(product.ID)"
-                                        [disabled]="product.UNIT_STOCK == 0">Buy now
-                                    </button> -->
-
                   <button
                     *ngIf="product.IS_ALREADY_IN_CART == 1"
                     [disabled]="product.UNIT_STOCK == 0"
-                    class="w-50"
-                    style="
-                      border-radius: 5px;
-                      color: #3170de;
-                      font-size: 14px;
-                      border: 1px solid;
-                    "
+                    class="w-50 radius-5-color-3170de-fs-14-border"
                     routerLink="/shop/cart"
                   >
                     {{ "shop.gotocart" | translate }}
                   </button>
-
-                  <!-- <button *ngIf="product.IS_ALREADY_IN_CART  == 0"
-                                        [disabled]="product.UNIT_STOCK == 0" class="w-50"
-                                        style="border-radius: 5px;color: #3170DE; border: 1px solid;"
-                                        (click)="addToCart(product)">Add to cart</button> -->
-
-                  <!-- <button class="btn btn-buy w-50" (click)="buyNow(product)"
-                                        (click)="InventoryunitMapping(product.ID)"
-                                        [disabled]="product.UNIT_STOCK == 0">Buy now
-                                    </button> -->
-
                   <button
                     *ngIf="product.IS_ALREADY_IN_CART == 0"
                     [disabled]="
                       product.UNIT_STOCK == 0 || product.loadingBuyNowcart
                     "
-                    class="w-50"
-                    style="
-                      border-radius: 5px;
-                      font-size: 14px;
-                      color: #3170de;
-                      border: 1px solid;
-                    "
+                    class="w-50 radius-5-color-3170de-fs-14-border"
                     (click)="
                       teritory_id !== 0 &&
                       teritory_id !== undefined &&
@@ -1306,20 +804,18 @@
                       class="spinner-border spinner-border-sm"
                     ></span>
                     <span
-                      style="font-size: 14px"
                       [style.visibility]="
                         product.loadingBuyNowcart ? 'hidden' : 'visible'
                       "
+                      class="font-14"
                     >
                       {{ "shop.AddToCart" | translate }}
                     </span>
                   </button>
-
                   <button
-                    class="btn btn-buy w-50"
+                    class="btn btn-buy w-50 padding-3-5"
                     data-bs-dismiss="offcanvas"
                     aria-label="Close"
-                    style="padding: 3px 5px"
                     (click)="
                       teritory_id !== 0 &&
                       teritory_id !== undefined &&
@@ -1336,10 +832,10 @@
                       class="spinner-border spinner-border-sm"
                     ></span>
                     <span
-                      style="font-size: 14px"
                       [style.visibility]="
                         product.loadingBuyNow ? 'hidden' : 'visible'
                       "
+                      class="font-14"
                     >
                       {{ "shop.buyNow" | translate }}
                     </span>
@@ -1348,7 +844,6 @@
               </div>
             </div>
           </div>
-
           <div
             class="d-flex justify-content-center mt-3"
             *ngIf="filteredTotalCount > displayednventory.length"
@@ -1368,14 +863,12 @@
         </div>
       </div>
     </div>
-
     <ng-template #noDataTemplate1>
       <div class="text-center p-3">
         <img
           src="assets/img/hand-drawn-no-data-concept.png"
           alt="No Data Available"
-          class="img-fluid"
-          style="max-width: 350px"
+          class="img-fluid max-w-350"
         />
         <p class="text-muted mt-2">
           <b>{{ "shop.NoDataAvailable" | translate }}</b>
@@ -1383,7 +876,6 @@
       </div>
     </ng-template>
   </div>
-
   <div
     class="modal fade"
     id="guestModal"
@@ -1395,20 +887,10 @@
   >
     <div class="modal-dialog modal-dialog-centered">
       <div
-        class="modal-content"
-        style="
-          border-radius: 12px;
-          background: #fff;
-          color: #000;
-          text-align: center;
-          border: none;
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-          width: 100%;
-          padding: 20px;
-        "
+        class="modal-content card-style-12"
       >
         <div class="modal-header border-0">
-          <h5 class="fw-bold m-auto" style="color: #333; font-size: 20px">
+          <h5 class="fw-bold m-auto color-333-fs-20" >
             <i class="bi bi-person-circle"></i> You are a Guest
           </h5>
           <button
@@ -1418,34 +900,23 @@
             aria-label="Close"
           ></button>
         </div>
-
         <div class="modal-body">
-          <p style="font-size: 15px; color: #555; line-height: 1.5">
+          <p class="fs-15-color-555-lh-15" >
             Please <strong>login</strong> to add an item to your cart and enjoy
             seamless service.
           </p>
         </div>
-
         <div class="modal-footer border-0 d-flex justify-content-center">
           <button
             type="button"
-            class="btn btn-outline-dark px-4 py-2 rounded-pill border-black"
-            style="transition: 0.3s; font-weight: 500"
+            class="btn btn-outline-dark px-4 py-2 rounded-pill border-black transition-03-fw-500"
             data-bs-dismiss="modal"
           >
             <i class="bi bi-x-circle"></i> Cancel
           </button>
-
           <button
             type="button"
-            class="btn btn-primary px-4 py-2 rounded-pill"
-            style="
-              background-color: #0052cc;
-              border-color: #0052cc;
-              color: #fff;
-              font-weight: 500;
-              transition: 0.3s;
-            "
+            class="btn btn-primary px-4 py-2 rounded-pill bg-0052cc-btn"
             (click)="redirectToLogin()"
           >
             <i class="bi bi-box-arrow-in-right"></i> Login
@@ -1454,8 +925,6 @@
       </div>
     </div>
   </div>
-
-  <!-- </main>routerLink="/shop/buy_now" -->
   <div
     class="modal fade"
     id="suggestionModal"
@@ -1469,24 +938,20 @@
       <div
         class="modal-content text-center p-4 position-relative suggestion-modal-content"
       >
-        <!-- Custom Close Icon Button -->
         <button
           type="button"
-          class="btn-close position-absolute"
-          style="top: 10px; right: 10px"
+          class="btn-close position-absolute top-10-right-10"
           (click)="closeSuggestionModal()"
           aria-label="Close"
         ></button>
-
         <div class="modal-body mt-2 suggestion-modal-body">
           <h5
-            class="modal-title mb-3"
+            class="modal-title mb-3 fs-16-fw-600"
             id="suggestionModalLabel"
-            style="font-size: 16px; font-weight: 600"
           >
             Product Not Deliverable
           </h5>
-          <p class="text-muted mb-0" style="font-size: 14px">
+          <p class="text-muted mb-0 font-14" >
             This product can’t be delivered to your location. Please select
             another location.
           </p>
@@ -1496,52 +961,22 @@
   </div>
   <div
     *ngIf="guestuser"
-    class="modal fade show"
+    class="modal fade show fullscreen-overlay"
     id="guestModal"
     tabindex="-1"
     aria-labelledby="guestModalLabel"
     aria-hidden="false"
     data-bs-backdrop="static"
     data-bs-keyboard="false"
-    style="
-      display: block;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.6);
-      z-index: 1055;
-      overflow-y: auto;
-    "
   >
     <div
-      class="modal-dialog modal-dialog-centered"
-      style="
-        max-width: 400px;
-        margin: auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-      "
+      class="modal-dialog modal-dialog-centered centered-flex-container"
     >
       <div
-        class="modal-content"
-        style="
-          border-radius: 16px;
-          background: #fff;
-          color: #000;
-          text-align: center;
-          border: none;
-          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-          width: 100%;
-          padding: 20px;
-          animation: fadeInUp 0.3s ease-in-out;
-        "
+        class="modal-content card-fadeinup"
       >
         <div class="modal-header border-0">
-          <h5 class="fw-bold m-auto" style="color: #333; font-size: 20px">
+          <h5 class="fw-bold m-auto color-333-fs-20" >
             <i class="bi bi-person-circle"></i> You are a Guest
           </h5>
           <button
@@ -1552,35 +987,24 @@
             (click)="closeloginmodal()"
           ></button>
         </div>
-
         <div class="modal-body">
-          <p style="font-size: 15px; color: #555; line-height: 1.5">
+          <p class="fs-15-color-555-lh-15" >
             Please <strong>login</strong> to add an item to your cart and enjoy
             seamless service.
           </p>
         </div>
-
         <div class="modal-footer border-0 d-flex justify-content-center">
           <button
             type="button"
-            class="btn btn-outline-dark px-4 py-2 rounded-pill border-black"
-            style="transition: 0.3s; font-weight: 500"
+            class="btn btn-outline-dark px-4 py-2 rounded-pill border-black transition-03-fw-500"
             data-bs-dismiss="modal"
             (click)="closeloginmodal()"
           >
             <i class="bi bi-x-circle"></i> Cancel
           </button>
-
           <button
             type="button"
-            class="btn btn-primary px-4 py-2 rounded-pill"
-            style="
-              background-color: #0052cc;
-              border-color: #0052cc;
-              color: #fff;
-              font-weight: 500;
-              transition: 0.3s;
-            "
+            class="btn btn-primary px-4 py-2 rounded-pill bg-0052cc-btn"
             (click)="redirectToLogin()"
           >
             <i class="bi bi-box-arrow-in-right"></i> Login
@@ -1589,7 +1013,6 @@
       </div>
     </div>
   </div>
-
   <style>
     @keyframes fadeInUp {
       from {

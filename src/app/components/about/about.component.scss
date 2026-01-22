@@ -1,12 +1,9 @@
 .about-container {
   max-width: 600px;
   margin: auto;
-  //   padding: 20px;
-
   .mobile-menu-header {
     padding: 12px;
     background-color: #f8f8f8;
- 
     .close-menu-btn {
       border: none;
       background: none;
@@ -15,20 +12,16 @@
       align-items: center;
     }
   }
- 
+  
   .accordion-button::after {
-    display: none !important; /* Hides Bootstrap's default arrow icon */
+    display: none !important; 
   }
-  
-  
   .mobile-menu-header {
     display: flex;
-    justify-content: flex-end;
+    // justify-content: flex-end;
     padding: 10px;
     border-bottom: 1px solid #eaeaea;
   }
- 
-  // Back button styling
   .close-menu-btn {
     background: none;
     border: none;
@@ -37,22 +30,18 @@
     margin-right: 10px;
     display: flex;
     align-items: center;
-
     svg {
       width: 24px;
       height: 24px;
       stroke: #000;
     }
   }
-
-  // Accordion styling
   .accordion-item {
     border-radius: 12px;
     overflow: hidden;
     margin-bottom: 12px;
     border: none;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
     .accordion-button {
       font-size: 16px;
       font-weight: 500;
@@ -64,11 +53,9 @@
       align-items: center;
       width: 100%;
     }
-
     .accordion-button:not(.collapsed) {
       background-color: #e9ecef;
     }
-
     .accordion-body {
       font-size: 14px;
       padding: 15px;
@@ -76,20 +63,15 @@
     }
   }
 }
-
-// Responsive Styles
 @media (max-width: 768px) {
   .about-container {
-    // padding: 15px;
   }
   .accordion-button {
     font-size: 14px;
   }
 }
-
 @media (max-width: 480px) {
   .about-container {
-    // padding: 10px;
   }
   .mobile-menu-header {
     font-size: 16px;
@@ -101,26 +83,35 @@
     font-size: 18px;
     margin-bottom: 4px;
   }
-
   ul {
     list-style-type: disc;
     padding-left: 20px;
-
     li {
       font-size: 14px;
       line-height: 1.5;
       margin-bottom: 8px;
     }
   }
-
   strong {
     color: #333;
     font-size: 15px;
   }
 }
-
 .headtitleclass{
       font-weight: 700 !important;
     font-size: 15px !important;
     margin-bottom: 10px !important;
+}
+.custom-justify-flex-start{
+  justify-content: flex-start
+}
+.custom-margin-top-20-lr-20{
+  margin-top: 20px; margin-left: 20px; margin-right: 20px
+}
+.custom-padding-top-bottom-zero{
+  padding-top: 0px !important;padding-bottom: 0px !important;
+}
+.About-title{
+ font-weight: 600;
+    font-size: 16px;
 }

@@ -10,7 +10,6 @@ import { ApiServiceService } from 'src/app/Service/api-service.service';
 import { LoaderService } from 'src/app/Service/loader.service';
 import { ModalService } from 'src/app/Service/modal.service';
 import * as bootstrap from 'bootstrap';
-
 @Component({
   selector: 'app-order-show-tickets',
   templateUrl: './order-show-tickets.component.html',
@@ -28,14 +27,11 @@ export class OrderShowTicketsComponent {
   @Input() isDrawerVisible: boolean = false;
   @Input() orderdata: any;
   @Input() type: any;
-  // @Input() data: any;
   close() {
-
     this.drawerClose();
     this.fetchTicketData();
   }
   constructor(
-
     private cookie: CookieService,
     private modalservice: ModalService,
     private modal: NgbModal,
@@ -45,9 +41,6 @@ export class OrderShowTicketsComponent {
     private apiservice: ApiServiceService,
     private toastr: ToastrService,
     private loaderService: LoaderService
-
-    // private toastr: ToastrService
-
   ) { }
   ngOnInit(): void {
     this.fetchTicketData();
@@ -56,74 +49,34 @@ export class OrderShowTicketsComponent {
     this.userAddress = this.apiservice.getUserAddress();
     this.userMobile = this.apiservice.getUsermobileNumber();
     this.userEMAIL = this.apiservice.getEmail();
-
-
   }
-
-
 isWarrantyValid(): boolean {
   let baseDateStr: string | null = null;
-
   if (this.type === 'shop') {
     const warranty = this.warrentydata;
     baseDateStr = this.shopalldata?.DELIVERY_DATE || null;
-
     if (!warranty || warranty.WARRANTY_ALLOWED !== 1 || !baseDateStr) {
-      
       return false;
     }
-
     const baseDate = new Date(baseDateStr);
     const warrantyEndDate = new Date(baseDate);
     warrantyEndDate.setDate(warrantyEndDate.getDate() + warranty.WARRANTY_PERIOD);
-
     const today = new Date();
-
-    // 
-    // 
-    // 
-    // 
-    // 
-
     return today >= baseDate && today <= warrantyEndDate;
-
   } else if (this.type === 'service') {
     baseDateStr = this.orderdata?.JOB_COMPLETED_DATETIME || null;
     const warrantyPeriod = this.orderdata?.WARRANTY_PERIOD;
-
-    
-
     if (!baseDateStr || !warrantyPeriod) {
-      
       return false;
     }
-
     const baseDate = new Date(baseDateStr);
     const warrantyEndDate = new Date(baseDate);
     warrantyEndDate.setDate(warrantyEndDate.getDate() + warrantyPeriod);
-
-        // 
-
     const today = new Date();
-
-    // 
-    // 
-    // 
-    // 
-    // 
-
     return today >= baseDate && today <= warrantyEndDate;
   }
-
-  
   return false;
 }
-
-
-
-
-
-
   userID: any = this.apiservice.getUserId();
   userNAME: any = this.apiservice.getUserName();
   userAddress: any = this.apiservice.getUserAddress();
@@ -132,18 +85,12 @@ isWarrantyValid(): boolean {
   statusCondition: any
   totalRecords = 1;
   fetchTicketData() {
-
-    // " AND USER_ID='20' AND STATUS = 'Pending'"
     const statusCondition = this.selectedFilterValue ? " AND STATUS = '" + this.selectedFilterValue + "'" : "";
-
     if (this.orderid) {
       var orderfilter = " AND JOB_CARD_ID = '" + this.jobcardid + "'"
-
     } else {
       var orderfilter = " AND SHOP_ORDER_ID IS NOT NULL AND SHOP_ORDER_ID = " + this.shoporderid
-
     }
-
     this.isLoading = true
     this.apiservice
       .getAllTickets(
@@ -158,42 +105,34 @@ isWarrantyValid(): boolean {
           this.ticketData = data.body.data;
           this.totalRecords = data.body.count
           this.filteredTickets = this.ticketData
-
-
-          this.isLoading = false; // Hide loading state
+          this.isLoading = false; 
         },
         error: (error: any) => {
-          this.ticketData = []; // Clear data on error
-          this.isLoading = false; // Hide loading state
+          this.ticketData = []; 
+          this.isLoading = false; 
         },
       });
-
   }
   pageIndex = 1
   pageSize = 6
   sortKey: string = "id";
   sortValue: string = "desc";
   loadMore(reset: boolean = false) {
-    // const statusCondition = this.selectedFilter ? " AND STATUS = '" + this.selectedFilter + "'" : "";
     if (reset) {
       this.pageIndex = 1;
       this.sortKey = "id";
       this.sortValue = "desc";
     }
-
     if (this.filteredTickets.length < this.totalRecords) {
       this.isLoading = true;
-      this.pageSize += 5; // Increase by 5
+      this.pageSize += 5; 
       let queryCondition = ` AND USER_ID='${this.userID}'`;
-
       if (this.statusCondition) {
         queryCondition += this.statusCondition;
       }
-
       if (this.orderid) {
         var filter = " AND JOB_CARD_ID ='" + this.jobcardid + "'"
       } else {
-
         var filter = " AND SHOP_ORDER_ID =" + this.shoporderid
       }
       this.apiservice
@@ -239,15 +178,9 @@ isWarrantyValid(): boolean {
     { label: "All", value: "" },
     { label: "Pending", value: "P" },
     { label: "Assigned", value: "S" },
-    // { label: "Reopen", value: "O" },
-    // { label: "Answered", value: "R" },
-    // { label: "Onhold", value: "H" },
     { label: "Resolved", value: "R" },
     { label: "Closed", value: "C" },
-    // { label: "Banned", value: "B" }
   ];
-  // filterOptions: string[] = [ 'Pending','Assigned', 'Re-Open','On Hold','Resolved', 'Closed','Banned'];
-
   keyup2() {
     if (this.searchTerm.trim().length >= 3 || this.searchTerm.length === 0) {
       this.filterTickets();
@@ -255,9 +188,6 @@ isWarrantyValid(): boolean {
   }
   onEnterKey1(event: Event) {
     document.getElementById('search')?.focus();
-    // event.preventDefault()
-
-    // this.search(true);
   }
   filterTickets(): void {
     if (!this.searchTerm.trim()) {
@@ -273,21 +203,6 @@ isWarrantyValid(): boolean {
     this.totalRecords = this.filteredTickets.length;
   }
   emitted = false;
-  // onScroll() {
-  //   const activityItem = document.getElementById("activityItem");
-  //   if (activityItem) {
-  //     const scrollTop = activityItem.scrollTop;
-  //     const offsetHeight = activityItem.offsetHeight;
-  //     const scrollHeight = activityItem.scrollHeight;
-  //     if (scrollTop + offsetHeight + 1 >= scrollHeight && !this.emitted) {
-  //       this.emitted = true;
-  //       this.onScrollingFinished();
-  //     } else if (scrollTop + offsetHeight + 1 < scrollHeight) {
-  //       this.emitted = false;
-  //     }
-  //   }
-  // }
-
   onScrollingFinished() {
     this.loadMoreP();
   }
@@ -299,10 +214,7 @@ isWarrantyValid(): boolean {
     }
   }
   getNextItems(): boolean {
-
     if (this.filteredTickets?.length >= this.totalRecords) {
-
-
       return false;
     }
     this.pageIndex = this.pageIndex + 1;
@@ -310,41 +222,19 @@ isWarrantyValid(): boolean {
     return true;
   }
   selectedFilter1: any
-  selectedFilterValue: string = ""; // Actual filter value to send
-
+  selectedFilterValue: string = ""; 
   applyFilter(label: string, status: string): void {
     this.selectedFilter = label;
-    // if (status === "Pending") {
-    //   this.selectedFilterValue = "P"; 
-    // } else if (status === "Assigned"){
-    //   this.selectedFilterValue = "A"; 
-    // } else if (status === "Re-Open"){
-    //   this.selectedFilterValue = "O"; 
-    // } else if (status === "Closed"){
-    //   this.selectedFilterValue = "C"; 
-    // } else if (status === "On Hold"){
-    //   this.selectedFilterValue = "H"; 
-    // } else if (status === "Banned"){
-    //   this.selectedFilterValue = "B"; 
-    // } else if (status === "Resolved"){
-    //   this.selectedFilterValue = "R"; 
-    // }
-
     this.selectedFilterValue = status;
-
     this.statusCondition = this.selectedFilterValue
       ? " AND STATUS = '" + this.selectedFilterValue + "'"
       : "";
-
     this.isDropdownOpen = false;
     if (this.orderid) {
       var filter = " AND JOB_CARD_ID = '" + this.jobcardid + "'"
     } else {
       var filter = " AND SHOP_ORDER_ID =" + this.shoporderid
-
     }
-
-    // Fetch filtered data
     this.isLoading = true
     this.apiservice
       .getAllTickets(
@@ -358,38 +248,25 @@ isWarrantyValid(): boolean {
         next: (data: any) => {
           this.ticketData = data.body.data;
           this.filteredTickets = this.ticketData
-
-
-          this.isLoading = false; // Hide loading state
+          this.isLoading = false; 
         },
         error: (error: any) => {
-          this.ticketData = []; // Clear data on error
-          this.isLoading = false; // Hide loading state
+          this.ticketData = []; 
+          this.isLoading = false; 
         },
       });
   }
-
-
   formatDate(date: string): string {
     return moment(date).isSame(moment(), 'day')
       ? moment(date).fromNow()
       : moment(date).format('DD MMM YYYY hh:mm A');
   }
-
   formatTimeAgo(date: string): string {
     return moment(date).fromNow();
   }
   gotoProfile(): void {
-    // this.router.navigate(['/profile'], {
-    //   queryParams: {
-    //     manage_ticket: true,
-    //     content: 'HelpandSupportTab'
-    //   }
-    // });
   }
-
   createTickitVisible: boolean = false
-
   openDrawer: any
   createTickets() {
     this.createTickitVisible = true;
@@ -404,14 +281,10 @@ isWarrantyValid(): boolean {
       }
     }, 100);
   }
-
-
   @ViewChild('closefaqqqqqq') closefaqqqqqq!: any;
-
   drawerClose1() {
     this.createTickitVisible = false;
     if (this.selectedFilterValue) {
-
       this.selectedFilterValue = ''
     }
     setTimeout(() => {
@@ -422,8 +295,6 @@ isWarrantyValid(): boolean {
           offcanvasInstance.hide();
         }
       }
-
-      // Check if both drawers are closed before resetting body styles
       setTimeout(() => {
         if (!this.createTickitVisible && !document.getElementById('offcanvasFAQ')?.classList.contains('show')) {
           this.resetBodyStyles();
@@ -431,11 +302,8 @@ isWarrantyValid(): boolean {
         this.removeBackdrops();
       }, 300);
     }, 100);
-
     this.fetchTicketData();
-
   }
-
   resetBodyStyles() {
     document.body.classList.remove('offcanvas-open');
     document.body.style.overflow = 'auto';
@@ -443,37 +311,14 @@ isWarrantyValid(): boolean {
     document.body.removeAttribute('data-bs-overflow');
     document.body.removeAttribute('data-bs-padding-right');
   }
-
   removeBackdrops() {
     document.querySelectorAll('.offcanvas-backdrop').forEach(backdrop => backdrop.remove());
   }
-
-
   get closeCallback() {
     return this.drawerClose1.bind(this);
   }
-
   chatVisible: boolean = false
   drawerData: any = [];
-  // openChat(data: any) {
-  //   this.drawerData = data
-  //   this.chatVisible = true;
-  // }
-  // chatdrawerClose() {
-  //   this.chatVisible = false;
-  //   setTimeout(() => {
-  //     const serviceDrawer = document.getElementById('offcanvasRight11');
-  //     if (serviceDrawer) {
-  //       const offcanvasInstance =
-  //         bootstrap.Offcanvas.getInstance(serviceDrawer);
-  //       if (offcanvasInstance) {
-  //         offcanvasInstance.hide();
-  //       }
-  //     }
-  //   }, 300);
-  // }
-
-
   openChat(data: any) {
     setTimeout(() => {
       const chatDrawer = document.getElementById('offcanvasChat');
@@ -483,13 +328,11 @@ isWarrantyValid(): boolean {
       }
       this.drawerData = data;
       this.chatVisible = true;
-
     }, 100);
   }
   chatdrawerClose() {
     this.chatVisible = false;
     this.fetchTicketData();
-
     setTimeout(() => {
       const chatDrawer = document.getElementById('offcanvasChat');
       if (chatDrawer) {
@@ -504,7 +347,6 @@ isWarrantyValid(): boolean {
       }
     }, 300);
   }
-
   get chatCallback() {
     return this.chatdrawerClose.bind(this);
   }
@@ -518,5 +360,4 @@ isWarrantyValid(): boolean {
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
-
 }

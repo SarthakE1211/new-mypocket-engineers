@@ -10,27 +10,17 @@ import { Meta, Title } from '@angular/platform-browser';
 import * as bootstrap from 'bootstrap';
 import { CookieService } from 'ngx-cookie-service';
 import { CommonmapComponent } from 'src/app/commonmap/commonmap.component';
-
 @Component({
   selector: 'app-shop-home',
   templateUrl: './shop-home.component.html',
   styleUrls: ['./shop-home.component.scss'],
 })
 export class ShopHomeComponent {
-
   isAddressLine1Stored = false;
-
   valuez = localStorage.getItem('AddressLine1');
-
   isAddressLine1Stored1 = this.valuez !== null && this.valuez !== undefined && this.valuez !== ''? true : false;
-
-
-
   @ViewChild(CommonmapComponent) commonMap!: CommonmapComponent;
-
-
   onOpenMapClicked() {
-
     this.commonMap.openMapModalz();
   }
   carouselOptions1 = {
@@ -42,17 +32,14 @@ export class ShopHomeComponent {
     autoplayTimeout: 5000,
     autoplayHoverPause: true,
     navText: [
-      // '<i class="bi bi-chevron-left" ></i>',
-      // '<i class="bi bi-chevron-right" ></i>'
     ],
-
     responsive: {
-      0: { items: 1 }, // Mobile (Portrait)
-      480: { items: 2 }, // Small devices (Landscape)
-      768: { items: 4 }, // Tablets
-      992: { items: 5 }, // Tablets
-      1100: { items: 6 }, // Tablets
-      1500: { items: 8 }, // Default for larger screens
+      0: { items: 1 }, 
+      480: { items: 2 }, 
+      768: { items: 4 }, 
+      992: { items: 5 }, 
+      1100: { items: 6 }, 
+      1500: { items: 8 }, 
     },
   };
   isDropdownOpen: boolean = false;
@@ -72,7 +59,6 @@ export class ShopHomeComponent {
   DEMO: any;
   cartdata: any = [];
   customertype1: any = this.apiservice.getCustomerType();
-
   ID: any;
   unit_id: any;
   quentity_per_unit: any;
@@ -94,16 +80,9 @@ export class ShopHomeComponent {
     private titleService: Title
   ) {
     this.updateSEO();
-
   }
-
-
-
-
   updateSEO() {
-    // alert('ddd')
     this.titleService.setTitle('Shop - PockIT Web');
-
     this.metaService.updateTag({
       name: 'description',
       content:
@@ -114,8 +93,6 @@ export class ShopHomeComponent {
       content:
         'buy laptop parts, computer accessories, best SSDs online, gaming PC components, laptop chargers, processors, RAM, motherboards',
     });
-
-    // Open Graph (For Facebook, LinkedIn)
     this.metaService.updateTag({
       property: 'og:title',
       content: 'Buy Laptop & Computer Parts Online - PockIT Web',
@@ -125,13 +102,10 @@ export class ShopHomeComponent {
       content:
         'Find top-quality laptop parts, computer accessories, SSDs, RAM, and processors at the best prices only at PockIT Web.',
     });
-
     this.metaService.updateTag({
       property: 'og:url',
       content: 'https://my.pockitengineers.com/shop',
     });
-
-    // Twitter Card
     this.metaService.updateTag({
       name: 'twitter:title',
       content: 'Buy Laptop & Computer Parts Online - PockIT Web',
@@ -141,12 +115,10 @@ export class ShopHomeComponent {
       content:
         'Shop high-quality laptop and PC components at PockIT Web. Best prices on SSDs, RAM, motherboards, and accessories.',
     });
-
     this.metaService.updateTag({
       name: 'twitter:card',
       content: 'summary_large_image',
     });
-
     let link: HTMLLinkElement =
       document.querySelector("link[rel='canonical']") ||
       document.createElement('link');
@@ -156,112 +128,80 @@ export class ShopHomeComponent {
   }
   USERID: any;
   isMobile: boolean = false;
-
-  dataToOpen: any = null; // Store data until offcanvas is initialized
+  dataToOpen: any = null; 
   guestaddressss: any;
   ngOnInit() {
     this.selectFilter('Latest')
     this.brands()
-    this.isMobile = window.innerWidth < 768; // Detect mobile screen
+    this.isMobile = window.innerWidth < 768; 
     window.addEventListener('resize', () => {
       this.isMobile = window.innerWidth < 768;
     });
     this.getTopSellingLaptops()
     this.getBannerData();
     this.getInventoryCategory();
-
     this.IMAGEuRL = this.apiservice.retriveimgUrl2();
     this.USERID = this.apiservice.getUserId();
-
     this.InvertoryId = sessionStorage.getItem('InventoryID');
-
     if (this.USERID !== 0) {
-
       this.Address();
     } else {
-      // this.guestaddressss = this.apiservice.getUserAddress();
       this.guestaddressss = this.apiservice.getUserAddressLocal();
-
       if (this.guestaddressss !== '') {
         this.guestaddressss = JSON.parse(this.guestaddressss);
-
         sessionStorage.setItem(
           'CurrentTerritory',
           this.guestaddressss.TERRITORY_ID?.toString()
         );
-
-
-
-
         if (
           this.guestaddressss.TERRITORY_ID !== null &&
           this.guestaddressss.TERRITORY_ID !== undefined &&
           this.guestaddressss.TERRITORY_ID !== 0 &&
           this.guestaddressss.TERRITORY_ID !== ''
         ) {
-          //  if( this.teritory_id !==0 &&  this.teritory_id !==undefined &&  this.teritory_id !==null){
           this.teritory_id = this.guestaddressss.TERRITORY_ID;
           this.getTopSellingLaptops();
           this.brands();
           this.inventory();
           this.InventoryunitMapping(this.InvertoryId);
           this.refurbishedInventory();
-
-          // }
         } else {
           this.getTopSellingLaptops();
           this.brands();
           this.inventory();
           this.InventoryunitMapping(this.InvertoryId);
           this.refurbishedInventory();
-
           this.teritory_id = 0;
         }
       } else {
-
-
         this.teritory_id = 0;
       }
     }
-
     this.route.queryParams.subscribe((params) => {
       if (params['data']) {
         try {
-          const parsedData = JSON.parse(params['data']); // Parse JSON string
-          // Log extracted data
-          this.dataToOpen = parsedData; // Store the data
+          const parsedData = JSON.parse(params['data']); 
+          this.dataToOpen = parsedData; 
         } catch (error) {
-
         }
       }
     });
     const addressJustSaved = sessionStorage.getItem('addressJustSaved');
     if (addressJustSaved === 'true') {
-      // Remove flag so it only runs once
       sessionStorage.removeItem('addressJustSaved');
-
-      //reopen last drawer if any
       const lastBrandId = sessionStorage.getItem('lastOpenedBrandId');
-
       if (lastBrandId) {
-        // Wait for data (brands list) to load before reopening
         setTimeout(() => {
           const brand = this.brand?.find((b: any) => b.ID == lastBrandId);
           if (brand) {
             this.openDrawer(brand);
           }
-        }, 800); // delay ensures page fully initialized
+        }, 800); 
       }
     }
   }
-
-
-
-
-
   loadServiceforRefurbished: boolean = false;
   refurbishedInventoryData: any[] = [];
-
   refurbishedInventory() {
     this.loadServiceforRefurbished = true;
     const refurbishedUserId = this.apiservice.getUserId();
@@ -283,17 +223,15 @@ export class ShopHomeComponent {
         }
       });
   }
-
   TopSellingLaptops: any[] = [];
   loadLaptops: boolean = false;
   getTopSellingLaptops() {
-
     this.loadLaptops = true;
     this.apiservice.getTopSellingLaptopsForWeb('ID', 'asc').subscribe(
       (data) => {
         if (data.data.length > 0) {
           this.loadLaptops = false;
-          this.TopSellingLaptops = data.data.slice(0, 10); // Show top 10
+          this.TopSellingLaptops = data.data.slice(0, 10); 
         } else {
           this.loadLaptops = false;
           this.TopSellingLaptops = [];
@@ -305,12 +243,9 @@ export class ShopHomeComponent {
       }
     );
   }
-
   userID: any = this.apiservice.getUserId();
   openLoginModal() {
-    // this.message.info('Please log in to access services and other features.');
     if (this.userID === 0) {
-      // Open modal if user is guest
       const modalElement = document.getElementById('guestModal');
       if (modalElement) {
         const modal = new bootstrap.Modal(modalElement);
@@ -318,7 +253,6 @@ export class ShopHomeComponent {
       }
     }
   }
-
   redirectToLogin() {
     if (this.userID == 0 || this.userID == null || this.userID == undefined) {
       this.cookie.deleteAll();
@@ -329,15 +263,12 @@ export class ShopHomeComponent {
       });
     }
   }
-
   onImageError(event: any) {
     event.target.src = 'assets/img/services/no-image.png';
   }
-
   handleImageError(event: any) {
-    event.target.src = 'assets/img/services/no-image.png'; // Set default image
+    event.target.src = 'assets/img/services/no-image.png'; 
   }
-
   getBannerData() {
     var filter: any = '';
     if (this.customertype1 == 'B') {
@@ -360,9 +291,7 @@ export class ShopHomeComponent {
         (data) => {
           if (data['code'] == 200) {
             this.carouselItems = data['data'];
-
             if (data.data.length > 0) {
-              // this.PopularServices = data.data.slice(0, 4); // Only take the first 4 records
             } else {
             }
           }
@@ -370,9 +299,7 @@ export class ShopHomeComponent {
         (error) => { }
       );
   }
-
   loadService: boolean = false;
-
   brands() {
     this.loadService = true;
     this.apiservice
@@ -382,32 +309,26 @@ export class ShopHomeComponent {
           const statusCode = response.status;
           if (statusCode === 200) {
             this.loadService = false;
-            this.brand = response.body.data; // Store all brands
+            this.brand = response.body.data; 
           } else {
             this.loadService = false;
             this.brand = [];
           }
         },
         (err: HttpErrorResponse) => {
-
         }
       );
   }
-
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
-
   toggleDropdown1() {
     this.isDropdownOpen1 = !this.isDropdownOpen1;
   }
-
   chooseOption(option: string) {
     this.selectedOption = option;
-    this.isDropdownOpen = false; // Close dropdown after selection
+    this.isDropdownOpen = false; 
   }
-
-  // Close dropdown if clicked outside
   @HostListener('document:click', ['$event'])
   closeDropdown(event: Event) {
     const button = document.querySelector('.dropdown-toggle');
@@ -415,7 +336,6 @@ export class ShopHomeComponent {
       this.isDropdownOpen = false;
     }
   }
-
   showFilter = false;
   selectedFilter = 'Latest';
   sortKey = 'ID';
@@ -423,100 +343,59 @@ export class ShopHomeComponent {
   toggleFilter() {
     this.showFilter = !this.showFilter;
   }
-
   selectFilter(filter: any) {
-    // this.selectedFilter = filter;
-    // this.showFilter = false;
     this.selectedOption = filter;
     this.isDropdownOpen = false;
-
     switch (filter) {
       case 'Latest':
         this.sortKey = 'ID';
         this.sortValue = 'DESC';
         break;
-
       case 'Alphabetic':
         this.sortKey = 'ITEM_NAME';
         this.sortValue = 'ASC';
         break;
-
-      // case 'Top Rated':
-      //   this.sortKey = 'RATING';
-      //   this.sortValue = 'DESC';
-      //   break;
-
       case 'Price: Low to High':
         this.sortKey = 'SELLING_PRICE';
         this.sortValue = 'ASC';
         break;
-
       case 'Price: High to Low':
         this.sortKey = 'SELLING_PRICE';
         this.sortValue = 'DESC';
         break;
     }
-    // Call sorting function with updated values
     this.inventory();
   }
-
   selectFilter1(filter: any) {
-    // this.selectedFilter = filter;
-    // this.showFilter = false;
     this.selectedOption = filter;
     this.isDropdownOpen = false;
-    // Call sorting function with updated values
-    // const USERID = this.apiservice.getUserId();
-    // this.loadServicefordrawer = true
-    // this.apiservice.getinventoryData1(0, 0, this.sortKey, this.sortValue, ' AND STATUS = 1 AND IS_HAVE_VARIANTS = 0 AND INVENTORY_TYPE IN (\"B\", \"P\") AND BRAND_ID = ' + data.ID, USERID).subscribe((data) => {
-    //   if (data['code'] == 200) {
-    //     this.inventorydataForDrawer = data.data;
-    //     this.loadServicefordrawer = false;
-    //     this.updateDisplayedInventorydata()
-
-    //   } else {
-    //     this.inventorydataForDrawer = []
-    //     this.loadServicefordrawer = false;
-    //   }
-    // })
   }
-
   @ViewChild('offcanvas') offcanvas!: ElementRef;
   private offcanvasInstance: Offcanvas | null = null;
-
   ngAfterViewInit() {
     setTimeout(() => {
       if (this.offcanvas) {
         this.offcanvasInstance = new Offcanvas(this.offcanvas.nativeElement);
-
-        // If there is stored data, open the drawer now
         if (this.dataToOpen) {
           this.openDrawer(this.dataToOpen);
-          this.dataToOpen = null; // Reset after opening
+          this.dataToOpen = null; 
         }
       } else {
-
       }
-    }, 100); // Small delay to ensure view is initialized
+    }, 100); 
   }
-
   DrawerName: any;
   inventorydataForDrawer: any[] = [];
   displayednventory: any[] = [];
   displayLimitnventory: number = 4;
-
   filteredTotalCount: number = 0;
   loadingMoreInventory: boolean = false;
   loadServicefordrawer: boolean = false;
-
   @ViewChild('dropdownToggle') dropdownToggle!: ElementRef;
-
   guestuser = false;
-
   closeloginmodal() {
     this.guestuser = false;
   }
-
   getInventoryCategory() {
     this.apiservice
       .InventoryCategoryget(0, 0, 'SEQ_NO', 'asc', ' AND IS_ACTIVE = 1')
@@ -532,27 +411,20 @@ export class ShopHomeComponent {
         },
         (error) => {
           this.InventoryCategory = [];
-
         }
       );
   }
-
   getCategoryNameById(id: any): string {
     const found = this.InventoryCategory.find((cat: any) => cat.ID == id);
     return found ? found.CATEGORY_NAME : 'All';
   }
-
   openDrawer(data: any) {
-
     this.isDropdownOpen1 = false
     this.DrawerName = data.BRAND_NAME;
-    // drawer reopen
     sessionStorage.setItem('lastOpenedBrandId', data.ID);
-
     if (this.offcanvasInstance) {
       this.offcanvasInstance.show();
     }
-
     const USERID = this.apiservice.getUserId();
     this.loadServicefordrawer = true;
     this.apiservice
@@ -568,20 +440,17 @@ export class ShopHomeComponent {
         if (data.code === 200) {
           this.inventorydataForDrawer = data.data;
           this.loadServicefordrawer = false;
-          this.updateDisplayedInventorydata(); // Initial render
+          this.updateDisplayedInventorydata(); 
         } else {
           this.inventorydataForDrawer = [];
           this.loadServicefordrawer = false;
         }
       });
   }
-
   selectFilter2(option: any) {
     this.selectedOption1 = option;
-    this.displayLimitnventory = 4; // Reset on category change
+    this.displayLimitnventory = 4; 
     this.updateDisplayedInventorydata();
-
-    // Close Bootstrap dropdown
     try {
       const dropdownEl = this.dropdownToggle?.nativeElement;
       const dropdownInstance =
@@ -592,10 +461,8 @@ export class ShopHomeComponent {
       console.warn('Dropdown close failed', err);
     }
   }
-
   updateDisplayedInventorydata() {
     let filteredData = [];
-
     if (this.selectedOption1 === 'All') {
       filteredData = this.inventorydataForDrawer;
     } else {
@@ -604,11 +471,9 @@ export class ShopHomeComponent {
           String(item.INVENTORY_CATEGORY_ID) === String(this.selectedOption1)
       );
     }
-
     this.filteredTotalCount = filteredData.length;
     this.displayednventory = filteredData.slice(0, this.displayLimitnventory);
   }
-
   loadMoreInventory() {
     this.loadingMoreInventory = true;
     setTimeout(() => {
@@ -617,7 +482,6 @@ export class ShopHomeComponent {
       this.loadingMoreInventory = false;
     }, 500);
   }
-
   inventorydatadatails: any = [];
   inventoryDetail(data: any) {
     this.apiservice
@@ -636,42 +500,10 @@ export class ShopHomeComponent {
         }
       });
   }
-
   inventoryId: any;
-  // showAll: boolean = false;
-
-  // inventory() {
-  //   this.apiservice.getinventoryData(0, 0, this.sortKey, this.sortValue, ' AND STATUS = 1 AND IS_HAVE_VARIANTS = 0').subscribe((data) => {
-  //     if (data['code'] == 200) {
-  //       this.inventorydata = data.data
-  //
-  //     } else {
-  //       this.inventorydata = []
-  //     }
-  //   })
-  // }
-
   showAll: boolean = false;
   loading: boolean = false;
   loadServiceforinventory: boolean = false;
-
-  // inventory() {
-  //   // this.apiservice.getinventoryData(0, 0, this.sortKey, this.sortValue, ' AND STATUS = 1 AND IS_HAVE_VARIANTS = 0')
-  //   this.loadServiceforinventory = true;
-  //   const USERID = this.apiservice.getUserId();
-  //   this.apiservice.getsimpleinventoryforcart(0, 0, this.sortKey, this.sortValue, ' AND STATUS = 1 AND IS_HAVE_VARIANTS = 0 AND INVENTORY_TYPE IN ("B", "P")', USERID)
-  //     .subscribe((data) => {
-  //       if (data['code'] == 200) {
-  //         this.inventorydata = data.data;
-  //         this.loadServiceforinventory = false;
-  //
-  //       } else {
-  //         this.loadServiceforinventory = false;
-  //         this.inventorydata = [];
-  //       }
-  //     });
-  // }
-
   inventory() {
     this.loadServiceforinventory = true;
     const USERID = this.apiservice.getUserId();
@@ -693,15 +525,13 @@ export class ShopHomeComponent {
         }
       });
   }
-
   loadMore() {
     this.loading = true;
     setTimeout(() => {
       this.showAll = true;
       this.loading = false;
-    }, 1000); // Simulating a small delay for smooth UI
+    }, 1000); 
   }
-
   carouselOptions = {
     loop: true,
     margin: 10,
@@ -720,14 +550,8 @@ export class ShopHomeComponent {
       1000: { items: 1 },
     },
   };
-
-  // Address get
-
   teritory_id_for_buy: any;
-
   Address() {
-
-
     this.apiservice
       .getAddress(
         0,
@@ -740,60 +564,32 @@ export class ShopHomeComponent {
         if (data['code'] == 200) {
           this.Addressdata = data.data;
           if (true) {
-
             if (this.Addressdata.length > 0) {
-              // Ensure array has at least one entry
               this.STATE_ID = this.Addressdata[0].STATE_ID;
-              this.ADDRESS_ID = this.Addressdata[0].ID; // Use "ID" instead of "ADDRESS_ID" as per JSON
+              this.ADDRESS_ID = this.Addressdata[0].ID; 
               this.teritory_id = this.Addressdata[0].TERRITORY_ID;
               this.teritory_id_for_buy = this.Addressdata[0].TERRITORY_ID;
             }
-            // if (
-            //   this.teritory_id !== 0 &&
-            //   this.teritory_id !== undefined &&
-            //   this.teritory_id !== null
-            // ) {
-            //   this.getTopSellingLaptops();
-            //   this.brands();
-            //   this.inventory();
-            //   this.InventoryunitMapPINCODE_FORg(this.InvertoryId);
-            // }
-
             this.getTopSellingLaptops();
             this.brands();
             this.inventory();
-
             this.InventoryunitMapping(this.InvertoryId);
             this.refurbishedInventory();
           } else {
-
           }
         } else {
           this.Addressdata = [];
         }
-
       });
-    // this.Addressdata = [];
-    // this.STATE_ID = this.Addressdata[0].STATE_ID;
-    // this.ADDRESS_ID = this.Addressdata[0].ID; // Use "ID" instead of "ADDRESS_ID" as per JSON
-    // this.teritory_id = this.Addressdata[0].TERRITORY_ID;
-    // this.teritory_id_for_buy = this.Addressdata[0].TERRITORY_ID;
   }
-
-  // InventoryunitMapping For the UNIT data
   inventoryMappingdata: any = [];
   UNIT_ID: any;
   UNIT_NAME: any;
   QUANTITY_PER_UNIT: any;
-
   InventoryunitMapping(ID: any) {
     if (this.USERID == 0) {
-      // this.message.error('Log in to shop and use all features.');
-      // return;
-      // this.openLoginModal();
       return;
     }
-
     this.apiservice
       .getinventoryunitMapping(0, 0, 'id', 'desc', ' AND ITEM_ID = ' + ID)
       .subscribe((data) => {
@@ -806,12 +602,10 @@ export class ShopHomeComponent {
           this.inventoryMappingdata = [];
         }
       });
-
     this.apiservice
       .getinventoryDatacart(0, 0, 'id', 'desc', ' AND ID = ' + ID + ' AND UNIT_ID = ' + this.UNIT_ID + ' AND QUANTITY_PER_UNIT = ' + this.QUANTITY_PER_UNIT, this.userID, ID, this.QUANTITY_PER_UNIT, this.UNIT_ID)
       .subscribe((data) => {
         if (data['code'] == 200) {
-
           this.inventoryMappingdata = data.data;
           this.UNIT_ID = data.data.UNIT_ID;
           this.UNIT_NAME = data.data.UNIT_NAME;
@@ -820,61 +614,17 @@ export class ShopHomeComponent {
           this.inventoryMappingdata = [];
         }
       });
-
-
   }
-
-  // buyNow(product: any) {
-
-  //   if( this.USERID == 0){
-  //     this.message.error('Log in to shop and use all features..');
-
-  //   }else{
-
-  //
-  //     this.ID = product.ID
-  //     this.unit_id = product.UNIT_ID
-  //     this.quentity_per_unit = product.QUANTITY_PER_UNIT
-  //     this.unit_name = product.UNIT_NAME
-
-  //
-  //
-  //
-  //
-
-  //     this.apiservice.CartGet(this.customer_id, this.ID, this.quantity, this.IS_TEMP_CART, this.STATE_ID, this.teritory_id, this.ADDRESS_ID, this.TYPE , this.unit_id, this.quentity_per_unit,this.unit_name).subscribe((data) => {
-  //       if (data['code'] == 200) {
-  //         this.cartdata.CART_ID = data.data.CART_ID;  // Extract only CART_ID
-  //
-  //         sessionStorage.setItem("CART_ID", this.cartdata.CART_ID.toString()); // Convert to string before storing
-  //         this.DEMO =  data.data.CART_ID
-  //
-  //         this.router.navigate(['/shop/check-out', this.DEMO]);
-  //       } else {
-  //         this.cartdata = [];
-  //       }
-  //     });
-
-  //   }
-
-  // }
-
-  // loadingStates: { [key: number]: boolean } = {};
-
   handleBuyNow(product: any) {
     this.buyNow(product);
     this.InventoryunitMapping(product.ID);
   }
   usercheckid = localStorage.getItem('userId');
   buyNow(product: any) {
-
     if (!this.usercheckid) {
-
       this.guestuser = true;
-
     }
-    product.loadingBuyNow = true; // Activate loader for clicked product
-
+    product.loadingBuyNow = true; 
     this.ID = product.ID;
     this.unit_id = product.UNIT_ID;
     this.quentity_per_unit = product.QUANTITY_PER_UNIT;
@@ -896,12 +646,10 @@ export class ShopHomeComponent {
       )
       .subscribe(
         (data) => {
-          product.loadingBuyNow = false; // Disable loader for this product
-
+          product.loadingBuyNow = false; 
           if (data['code'] == 200) {
             this.cartdata.CART_ID = data.data.CART_ID;
             sessionStorage.setItem('CART_ID', this.cartdata.CART_ID.toString());
-            // sessionStorage.setItem('Home', Home);
             this.router.navigate([
               '/shop/check-out',
               this.cartdata.CART_ID,
@@ -912,74 +660,24 @@ export class ShopHomeComponent {
           }
         },
         (error) => {
-          product.loadingBuyNow = false; // Disable loader in case of error
-
+          product.loadingBuyNow = false; 
         }
       );
   }
-
-  // buyNow(product: any) {
-  //   if (this.USERID == 0) {
-  //     this.message.error('Log in to shop and use all features.');
-  //     return;
-  //   }
-
-  //   product.loadingBuyNow = true; // Activate loader for clicked product
-
-  //   this.ID = product.ID;
-  //   this.unit_id = product.UNIT_ID;
-  //   this.quentity_per_unit = product.QUANTITY_PER_UNIT;
-  //   this.unit_name = product.UNIT_NAME;
-  //   let Home: any = 1;
-
-  //   this.apiservice.CartGet(
-  //     this.customer_id, this.ID, this.quantity, this.IS_TEMP_CART,
-  //     this.STATE_ID, this.teritory_id, this.ADDRESS_ID, this.TYPE,
-  //     this.unit_id, this.quentity_per_unit, this.unit_name
-  //   ).subscribe(
-  //     (data) => {
-  //       product.loadingBuyNow = false; // Disable loader for this product
-  //       if (data['code'] == 200) {
-  //         this.cartdata.CART_ID = data.data.CART_ID;
-  //         sessionStorage.setItem('CART_ID', this.cartdata.CART_ID.toString());
-  //         this.router.navigate(['/shop/check-out', this.cartdata.CART_ID, 'H']);
-  //       } else {
-  //         this.cartdata = [];
-  //       }
-  //     },
-  //     (error) => {
-  //       product.loadingBuyNow = false; // Disable loader in case of error
-  //
-  //     }
-  //   );
-  // }
-
   IS_TEMP_CART1 = 0;
   TYPE1 = 'P';
   addTOcartdata: any = [];
-  // IDa:any
   loadingBuyNowcart: boolean = false;
-
   addToCart(product: any, type: any) {
     if (!this.usercheckid) {
-
-
       this.guestuser = true;
-
     }
-
-    // if (this.USERID == 0) {
-    //   this.openLoginModal();
-    //   return;
-    // }
-    product.loadingBuyNowcart = true; // Activate loader for clicked product
-
+    product.loadingBuyNowcart = true; 
     const ID = product.ID;
     const unit_id = product.UNIT_ID;
     const quentity_per_unit = product.QUANTITY_PER_UNIT;
     const unit_name = product.UNIT_NAME;
     const SERVICE_ID = 0;
-
     this.apiservice
       .CartGetforaddtocart1(
         this.customer_id,
@@ -996,28 +694,17 @@ export class ShopHomeComponent {
         unit_name
       )
       .subscribe((data) => {
-        product.loadingBuyNowcart = false; // Activate loader for clicked product
-
+        product.loadingBuyNowcart = false; 
         if (data['code'] == 200) {
-          this.addTOcartdata.CART_ID = data.data.CART_ID; // Extract only CART_ID
-
-          // this.apiservice.addItemToCart(ID)
-          this.cartService.fetchAndUpdateCartDetails(this.USERID); // ⭐️ Common Cal
+          this.addTOcartdata.CART_ID = data.data.CART_ID; 
+          this.cartService.fetchAndUpdateCartDetails(this.USERID); 
           this.message.success('Item added to cart successfully.');
           sessionStorage.setItem(
             'CART_ID_FOR_CART',
             this.addTOcartdata.CART_ID.toString()
-          ); // Convert to string before storing
-
+          ); 
           if (type == 'S') {
-            // this.DrawerName = data.BRAND_NAME
-            //
-            // if (this.offcanvasInstance) {
-            //   this.offcanvasInstance.show();
-            // }
-
             const USERID = this.apiservice.getUserId();
-            //  this.loadServicefordrawer = true
             this.apiservice
               .getinventoryData1(
                 0,
@@ -1031,54 +718,36 @@ export class ShopHomeComponent {
               .subscribe((data) => {
                 if (data['code'] == 200) {
                   this.inventorydataForDrawer = data.data;
-                  // this.loadServicefordrawer = false;
                   this.updateDisplayedInventorydata();
                   this.inventory();
                 } else {
                   this.inventorydataForDrawer = [];
-                  // this.loadServicefordrawer = false;
                 }
               });
           } else {
             this.inventory();
           }
         } else {
-          product.loadingBuyNowcart = false; // Activate loader for clicked product
-
+          product.loadingBuyNowcart = false; 
           this.addTOcartdata = [];
         }
       });
-
-    // }
   }
-
   InventoryId(product: any) {
     const ID = product.ID;
     const UNIT_ID = product.UNIT_ID;
     const QUANTITY_PER_UNIT = product.QUANTITY_PER_UNIT;
-
-    sessionStorage.setItem('InventoryID', ID.toString()); // Store ID correctly
-    sessionStorage.setItem('UNIT_ID', UNIT_ID.toString()); // Store ID correctly
-    sessionStorage.setItem('QUANTITY_PER_UNIT', QUANTITY_PER_UNIT.toString()); // Store ID correctly
-    // this.inventoryId = ID;
-    //
+    sessionStorage.setItem('InventoryID', ID.toString()); 
+    sessionStorage.setItem('UNIT_ID', UNIT_ID.toString()); 
+    sessionStorage.setItem('QUANTITY_PER_UNIT', QUANTITY_PER_UNIT.toString()); 
   }
   isAddressStored = !!localStorage.getItem('AddressLine1');
-
   openSuggestionModal() {
-    
-    // if (!this.usercheckid) {
-    //   this.guestuser = true;
-    //   return;
-    // } else {
-    //   this.onOpenMapClicked()
-      
       if (!this.userID) {
       this.guestuser = true;
       return;
     } else if ((!this.isAddressStored || this.isAddressStored === null || this.isAddressStored === undefined) && this.userID) {
       localStorage.setItem('locationby', '1');
-      
       this.onOpenMapClicked();
     } else {
       const modalEl = document.getElementById('suggestionModal');
@@ -1087,15 +756,7 @@ export class ShopHomeComponent {
         modal.show();
       }
     }
-    // }
-    // Commented out suggestion modal for now
-    // const modalEl = document.getElementById('suggestionModal');
-    // if (modalEl) {
-    //   const modal = new bootstrap.Modal(modalEl);
-    //   modal.show();
-    // }
   }
-
   closeSuggestionModal() {
     const modalEl = document.getElementById('suggestionModal');
     if (modalEl) {
@@ -1104,14 +765,4 @@ export class ShopHomeComponent {
       modalInstance.hide();
     }
   }
-
-
-
-
-
-
-
-
-
-
 }

@@ -1,48 +1,23 @@
 <div *ngIf="modalVisible">
   <div class="backdrop"></div>
-
   <div class="map-container">
     <div
-      class="map-header"
-      style="
-        background-color: #007bff;
-        padding: 12px 16px;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-radius: 6px;
-      "
+      class="map-header btn-flex"
     >
-      <div
-        style="
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          width: 100%;
-        "
+      <div class="flex-column-center"
       >
         <p
-          class="mb-0"
-          style="
-            margin: 0;
-            font-weight: bold;
-            font-size: 16px;
-            color: white !important;
-          "
+          class="mb-0 text-bold-16-white"
         >
           User Location
         </p>
         <p
-          class="text-muted small mb-0"
-          style="margin: 0; font-size: 12px; color: white !important"
+          class="text-muted small mb-0 text-12-white-m-0"
         >
           Place the marker at your order location
         </p>
       </div>
-
-      <div style="text-align: end; padding: 6px" *ngIf="gettruecondition()">
+      <div class="text-end-p-6" *ngIf="gettruecondition()">
         <button class="close-menu-btn" (click)="closeMap()">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -61,27 +36,13 @@
         </button>
       </div>
     </div>
-
-    <!-- Map Container -->
     <div id="map"></div>
-
     <div class="location-details">
-      <p style="margin-left:650px">{{ locationAddress || "Fetching address..." }}</p>
+      <p class="ml-650">{{ locationAddress || "Fetching address..." }}</p>
     </div>
-
     <div class="map-footer">
-      <button
+      <button class="btn-primary"
         [disabled]="!locationAddress"
-        style="
-          padding: 10px 20px;
-          font-size: 14px;
-          background-color: #007bff;
-          color: #fff;
-          border: none;
-          border-radius: 6px;
-          cursor: pointer;
-          transition: background-color 0.3s;
-        "
         (click)="confirmLocation()"
       >
         Confirm Location
@@ -89,11 +50,10 @@
     </div>
   </div>
 </div>
-
 <div *ngIf="isMobileMenuOpen" class="backdrop"></div>
 <div class="mobile-menu" [class.show]="isMobileMenuOpen">
   <div *ngIf="showContent == 'addressTab'">
-    <div class="mobile-menu-header" style="justify-content: left">
+    <div class="mobile-menu-header justify-left">
       <button class="close-menu-btn" (click)="closeMobileMenu()">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +72,7 @@
       Saved Addresses
     </div>
     <div *ngIf="loadAddresses" class="loading-container">
-      <div style="text-align: center" class="spinner-border" role="status">
+      <div class="spinner-border text-center" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
     </div>
@@ -138,7 +98,6 @@
             Default Address
           </div>
         </div>
-
         <div class="add-address" (click)="addNewAddress()">
           + Add New Address
         </div>
@@ -146,11 +105,9 @@
     </div>
   </div>
   <div *ngIf="showContent == 'addressForm'">
-    <!-- <label for="">{{addressForm | json}} addresss</label> -->
     <div *ngIf="addressForm">
       <div
-        class="mobile-menu-header"
-        style="justify-content: right"
+        class="mobile-menu-header justify-right"
         *ngIf="gettruecondition()"
       >
         <button class="close-menu-btn" (click)="closeMobileMenu()">
@@ -170,9 +127,8 @@
           </svg>
         </button>
       </div>
-
-      <div class="mobile-menu-content">
-        <div style="flex-shrink: 0; margin: 8px; text-align: center">
+      <div class="mobile-menu-content ">
+        <div class="flex-no-shrink-center">
           <svg
             width="66"
             height="66"
@@ -189,25 +145,14 @@
             <circle cx="33.0137" cy="31.0567" r="5.97857" fill="#D9D9D9" />
           </svg>
         </div>
-
         <div
-          class="address-form-content"
-          style="
-            background: #fcfcfd;
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-          "
+          class="address-form-content flex-column-container"
         >
           <h2 class="form-title">Enter address details</h2>
-
           <form
-            class="address-form"
+            class="address-form flex-1-column"
             #addressSubmit="ngForm"
             (ngSubmit)="saveAddress(addressSubmit)"
-            style="flex: 1; display: flex; flex-direction: column"
             (keydown)="onKeyDown($event)"
           >
             <div class="save-address-type">
@@ -251,31 +196,15 @@
                 </label>
               </div>
             </div>
-
-            <!-- <div class="form-group">
-              <input type="text" class="form-control" [value]="locationCode || 'WJHV+GV5'" readonly />
-              <button type="button" class="change-btn" (click)="onshowMap()">
-                Change
-              </button>
-            </div> -->
-
             <div
-              class="form-group"
-              style="
-                display: flex;
-                justify-content: center;
-                cursor: pointer;
-                font-weight: bold;
-              "
+              class="form-group flex-center-pointer-bold"
             >
               <span
                 (click)="onshowMap()"
-                style="color: #3170de"
-                class="form-text"
+                class="form-text text-3170de"
                 >Change Location</span
               >
             </div>
-
             <div class="form-group">
               <input
                 type="text"
@@ -294,9 +223,6 @@
                 Please enter house number/flat no/floor no.
               </div>
             </div>
-
-            <!-- {{Ecommtype }} -->
-
             <div class="form-group">
               <input
                 type="text"
@@ -306,7 +232,6 @@
                 name="addressLine2"
               />
             </div>
-
             <div class="form-group">
               <input
                 type="text"
@@ -316,10 +241,8 @@
                 name="LANDMARK"
               />
             </div>
-
-            <span style="display: none"> {{ searchPincode }} </span>
+            <span class="d-none"> {{ searchPincode }} </span>
             <div class="form-group pincode-field">
-              <!-- (click)="togglePincodeDropdown(selectedPincode); $event.stopPropagation()" -->
               <div class="pincode-input-group">
                 <div class="input-container">
                   <input
@@ -338,20 +261,13 @@
                     class="loading-container1 spinner-inside"
                   >
                     <div
-                      style="text-align: center"
-                      class="spinner-border"
+                      class="spinner-border text-center"
                       role="status"
                     >
                       <span class="visually-hidden">Loading...</span>
                     </div>
                   </div>
                 </div>
-
-                <!-- <div class="dropdown-icon">
-                <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
-                  <path d="M1 1L5 5L9 1" stroke="#666" stroke-width="1.5" />
-                </svg>
-              </div> -->
               </div>
               <div
                 *ngIf="pincode.errors?.['required'] && (pincode.touched || addressSubmitted)"
@@ -359,28 +275,7 @@
               >
                 Please Enter Valid Pincode
               </div>
-
-              <!-- <div class="pincode-dropdown-container" *ngIf="showPincodeDropdown">
-              <div class="pincode-dropdown">
-                <div class="search-box">
-                  <input type="text" placeholder="Search pincode..." [(ngModel)]="searchPincode"
-                    (ngModelChange)="togglePincodeDropdown123(searchPincode)" name="pincodeSearch"
-                    (input)="filterPincodes($event)" (click)="$event.stopPropagation()" #pincodeSearch="ngModel" />
-                </div>
-                <div class="pincode-list">
-                  <div class="pincode-item" *ngFor="let pincode of filteredPincodes"
-                    (click)="selectPincode(pincode); $event.stopPropagation()">
-                    <span class="area">{{ pincode.PINCODE_NUMBER }}</span>
-                  </div>
-                </div>
-              </div>
-            </div> -->
             </div>
-            <!-- <div *ngIf="(pincode.errors?.['required'] && (pincode.touched || addressSubmitted))" class="error-message"
-              style="margin-top: -0.75rem">
-              Please Select Pincode.
-            </div> -->
-
             <div class="form-group">
               <input
                 type="text"
@@ -393,13 +288,11 @@
               />
             </div>
             <div
-              style="margin-bottom: 20px !important; margin-top: 0px !important"
               *ngIf="cityName.errors?.['required'] && (cityName.touched || addressSubmitted)"
-              class="error-message"
+              class="error-message mt-0-mb-20"
             >
               Please Enter City
             </div>
-
             <div class="form-group pincode-field">
               <div
                 class="pincode-input-group"
@@ -418,7 +311,6 @@
                   </svg>
                 </div>
               </div>
-
               <div class="pincode-dropdown-container" *ngIf="showStateDropdown">
                 <div class="pincode-dropdown">
                   <div class="search-box">
@@ -437,7 +329,6 @@
                       *ngFor="let state of filteredStates"
                       (click)="selectState(state); $event.stopPropagation()"
                     >
-                      <!-- <span class="state">{{ state.code }}</span> -->
                       <span class="area">{{ state.NAME }}</span>
                     </div>
                   </div>
@@ -456,17 +347,15 @@
                 id="flexCheckChecked"
               />
               <label
-                class="form-check-label"
+                class="form-check-label fs-13-fw-600"
                 for="flexCheckChecked"
-                style="font-size: 13px; font-weight: 600"
               >
                 Is Default Address
               </label>
             </div>
             <button
               type="submit"
-              class="confirm-button"
-              style="margin-top: auto"
+              class="confirm-button mt-auto"
               [disabled]="isConfirmLoading"
             >
               <span

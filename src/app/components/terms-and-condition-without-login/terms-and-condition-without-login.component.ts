@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-
 @Component({
   selector: 'app-terms-and-condition-without-login',
   templateUrl: './terms-and-condition-without-login.component.html',
@@ -8,33 +7,21 @@ import { Meta, Title } from '@angular/platform-browser';
 })
 export class TermsAndConditionWithoutLoginComponent  {
  constructor(private titleService: Title,private metaService: Meta) { this.updateSEO() }
-
   updateSEO() {
-    // Set Page Title
     this.titleService.setTitle('Terms and Conditions - PockIT');
-
-    // Meta Description & Keywords
     this.metaService.updateTag({ name: 'description', content: 'Read the Terms and Conditions of PockIT Web to understand our policies on IT services, hardware sales, payments, returns, and user responsibilities.' });
     this.metaService.updateTag({ name: 'keywords', content: 'terms and conditions, PockIT Web policies, IT services terms, hardware sales policy, return policy, warranty, user agreement' });
-
-    // Open Graph (For Facebook, LinkedIn)
     this.metaService.updateTag({ property: 'og:title', content: 'Terms and Conditions - PockIT Web' });
     this.metaService.updateTag({ property: 'og:description', content: 'Review the Terms and Conditions of PockIT Web, covering IT services, hardware sales, payments, shipping, refunds, and warranties.' });
     this.metaService.updateTag({ property: 'og:url', content: 'https://my.pockitengineers.com/terms-and-conditions' });
-
-    // Twitter Card
     this.metaService.updateTag({ name: 'twitter:title', content: 'Terms and Conditions - PockIT Web' });
     this.metaService.updateTag({ name: 'twitter:description', content: 'Understand the policies of PockIT Web regarding IT services, hardware sales, payment terms, shipping, and returns.' });
     this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
-
-    // Canonical Tag
     let link: HTMLLinkElement = document.querySelector("link[rel='canonical']") || document.createElement('link');
     link.setAttribute('rel', 'canonical');
     link.setAttribute('href', window.location.href);
     document.head.appendChild(link);
-    
 }
-
   termsSections = [
     {
       title: 'Services Offered',

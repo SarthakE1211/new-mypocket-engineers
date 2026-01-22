@@ -1,14 +1,12 @@
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule, Meta, Title } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './pages/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// import { LoginComponent } from './pages/login/login/login.component';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -59,7 +57,6 @@ import { TermsAndConditionWithoutLoginComponent } from './components/terms-and-c
 import { CommonmapComponent } from './commonmap/commonmap.component';
 registerLocaleData(en);
 initializeApp(environment.firebase);
-
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
 }
@@ -115,7 +112,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     RouterModule,
     CommonModule,
     ToastrModule.forRoot(),
-
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -123,10 +119,9 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       }
     })
-
   ],
   providers: [ApiServiceService, DatePipe, CartService, Title, Meta],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA], // Corrected
+  schemas: [CUSTOM_ELEMENTS_SCHEMA], 
 })
 export class AppModule { }

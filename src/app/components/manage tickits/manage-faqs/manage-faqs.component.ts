@@ -8,7 +8,6 @@ import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from 'src/app/Service/api-service.service';
 import { LoaderService } from 'src/app/Service/loader.service';
 import { ModalService } from 'src/app/Service/modal.service';
-
 @Component({
   selector: 'app-manage-faqs',
   templateUrl: './manage-faqs.component.html',
@@ -17,7 +16,6 @@ import { ModalService } from 'src/app/Service/modal.service';
 export class ManageFaqsComponent {
   @Input() drawerClose!: Function;
   @Input() isFAQDrawerVisible: boolean = false;
-  // @Input() data: any;
   close() {
     this.drawerClose();
     this.getfaqhead();
@@ -27,7 +25,6 @@ export class ManageFaqsComponent {
   userAddress: any = this.apiservice.getUserAddress();
   userMobile: any = this.apiservice.getUsermobileNumber();
   currentterritory:any=sessionStorage.getItem('CurrentTerritory')
-
   userEMAIL: any = this.apiservice.getEmail();
   constructor(
     private route: ActivatedRoute,
@@ -39,9 +36,8 @@ export class ManageFaqsComponent {
     private message: ToastrService,
     private apiservice: ApiServiceService,
     private toastr: ToastrService,
-    private loaderService: LoaderService // private toastr: ToastrService
+    private loaderService: LoaderService 
   ) {}
-
   ngOnInit(): void {
     this.userID = this.apiservice.getUserId();
     this.userNAME = this.apiservice.getUserName();
@@ -57,15 +53,12 @@ export class ManageFaqsComponent {
     ) {
     }
   }
-
   manageTickets() {
     this.showDrawer();
   }
   isDrawerVisible = false;
-
   showDrawer() {
     this.isDrawerVisible = true;
-
     setTimeout(() => {
       const chatDrawer = document.getElementById('offcanvasRight11');
       if (chatDrawer) {
@@ -77,10 +70,8 @@ export class ManageFaqsComponent {
       }
     }, 100);
   }
-
   TikitdrawerClose() {
     this.isDrawerVisible = false;
-
     setTimeout(() => {
       const chatDrawer = document.getElementById('offcanvasRight11');
       if (chatDrawer) {
@@ -95,15 +86,11 @@ export class ManageFaqsComponent {
       }
     }, 300);
   }
-
   get closeCallback() {
     return this.TikitdrawerClose.bind(this);
   }
   gotoProfile() {
-    // this.showContent = 'normal';
-    // this.getuserList();
   }
-
   faqData: any = [];
   faqLoading: boolean = false;
   getfaqData(headid: any) {
@@ -120,16 +107,15 @@ export class ManageFaqsComponent {
           next: (data: any) => {
             if (data.data.length > 0) {
               this.faqData = data.data;
-
-              this.faqLoading = false; // Hide loading state
+              this.faqLoading = false; 
             } else {
               this.faqData = [];
-              this.faqLoading = false; // Hide loading state
+              this.faqLoading = false; 
             }
           },
           error: (error: any) => {
-            this.faqData = []; // Clear data on error
-            this.faqLoading = false; // Hide loading state
+            this.faqData = []; 
+            this.faqLoading = false; 
           },
         });
     }
@@ -140,7 +126,6 @@ export class ManageFaqsComponent {
     this.activePanelIndex = this.activePanelIndex === index ? null : index;
   }
   togglePanel111111(index: number, headid: any): void {
-
     this.faqData = [];
     this.activePanelIndex = null;
     this.activePanelIndex11111 =
@@ -155,7 +140,6 @@ export class ManageFaqsComponent {
   }
   faqDatahead: any = [];
   faqheadLoading: boolean = false;
-
   getfaqhead() {
     this.faqheadLoading = true;
     this.apiservice
@@ -164,16 +148,15 @@ export class ManageFaqsComponent {
         next: (data: any) => {
           if (data.data.length > 0) {
             this.faqDatahead = data.data;
-
-            this.faqheadLoading = false; // Hide loading state
+            this.faqheadLoading = false; 
           } else {
             this.faqDatahead = [];
-            this.faqheadLoading = false; // Hide loading state
+            this.faqheadLoading = false; 
           }
         },
         error: (error: any) => {
           this.faqDatahead = [];
-          this.faqheadLoading = false; // Hide loading state
+          this.faqheadLoading = false; 
         },
       });
   }

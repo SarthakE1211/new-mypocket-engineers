@@ -6,7 +6,6 @@ Description: This is Real Estate website
 Author: Pixelstrap
 Author URI: https://themeforest.net/user/pixelstrap
 -----------------------------------------------------------------------------------
-
 1. Bootstrap CSS
 2. Font awesome CSS
 3. Feather icon CSS
@@ -29,9 +28,7 @@ Author URI: https://themeforest.net/user/pixelstrap
     7.13 Customizer CSS
     7.14 Admin pages CSS
     7.15 Inner pages CSS
-    
 8. Admin Responsive CSS
-
 */
 // vendors
 @import "vendors/bootstrap";
@@ -41,20 +38,15 @@ Author URI: https://themeforest.net/user/pixelstrap
 @import "vendors/slick";
 @import "vendors/sweetalert2";
 @import "vendors/chartist";
-
 // utils
 @import "utils/variables";
 @import "utils/mixins";
-
 // base
 @import "base/reset";
-
 // layout
 @import "layout/sidebar";
-
 // components
 @import "components/buttons";
-
 @import "components/labels";
 @import "components/form";
 @import "components/card";
@@ -64,10 +56,8 @@ Author URI: https://themeforest.net/user/pixelstrap
 @import "components/slick";
 @import "components/loader";
 @import "components/customizer";
-
 // pages
 @import "pages/admin-pages";
 @import "pages/inner-pages";
-
 // Template
 @import "template/admin-responsive";

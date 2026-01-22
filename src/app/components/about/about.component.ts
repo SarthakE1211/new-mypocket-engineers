@@ -17,14 +17,10 @@ import { Location } from '@angular/common';
 export class AboutComponent {
   @Input() drawerClose!: Function;
   @Input() isDrawerVisible: boolean = false;
-  // @Input() data: any;
   close() {
-
     this.drawerClose();
-    // this.fetchTicketData();
   }
   constructor(
-
     private cookie: CookieService,
     private modalservice: ModalService,
     private modal: NgbModal,
@@ -36,9 +32,6 @@ export class AboutComponent {
     private loaderService: LoaderService,
     private translate: TranslateService,
     private location: Location
-
-    // private toastr: ToastrService
-
   ) { }
   items = [
     { title: 'Terms of Service', content: '' },
@@ -52,21 +45,14 @@ export class AboutComponent {
     this.userAddress = this.apiservice.getUserAddress();
     this.userMobile = this.apiservice.getUsermobileNumber();
     this.userEMAIL = this.apiservice.getEmail();
-
-    
-
   }
   userID: any = this.apiservice.getUserId();
   userNAME: any = this.apiservice.getUserName();
   userAddress: any = this.apiservice.getUserAddress();
   userMobile: any = this.apiservice.getUsermobileNumber();
   userEMAIL: any = this.apiservice.getEmail();
-
   gotoSettings() {
-    // this.showContent = 'settingsTab';
-    // this.getuserList();
   }
-
   appLanguageLoading: boolean = false;
   selectedLanguage: any;
   appLanguageData: any = [];
@@ -76,7 +62,6 @@ export class AboutComponent {
       .getAppLanguageData(0, 0, 'SEQ_NO', 'asc', ' AND IS_ACTIVE =1 ')
       .subscribe({
         next: (data: any) => {
-          
           this.appLanguageData = data.data;
           const englishLanguage = this.appLanguageData.find(
             (lang: any) => lang.NAME.toLowerCase() === 'english'
@@ -84,21 +69,19 @@ export class AboutComponent {
           if (englishLanguage) {
             this.selectedLanguage = englishLanguage.ID;
           }
-          
-          this.appLanguageLoading = false; // Hide loading state
+          this.appLanguageLoading = false; 
         },
         error: (error: any) => {
-          this.appLanguageData = []; // Clear data on error
-          this.appLanguageLoading = false; // Hide loading state
+          this.appLanguageData = []; 
+          this.appLanguageLoading = false; 
         },
       });
   }
   goBack() {
     this.location.back();
   }
-  activeIndex: number | null = null; // Tracks the currently opened section
-
+  activeIndex: number | null = null; 
   toggleAccordion(index: number) {
-    this.activeIndex = this.activeIndex === index ? null : index; // Toggle open/close
+    this.activeIndex = this.activeIndex === index ? null : index; 
   }
 }

@@ -1,20 +1,13 @@
 <header id="header" class="header d-flex align-items-center">
-  <!-- {{isServiceDisabled}} {{isShopDisabled}} -->
-  <!-- {{ guestaddress.PINCODE_FOR }} -->
-  <div style="padding: 5px" class="container-fluid d-flex align-items-center justify-content-between">
-    <!-- Left side with logo -->
+  <div class="header-root container-fluid d-flex align-items-center justify-content-between">
     <div class="d-flex align-items-center">
       <a href="/" class="logo">
         <img src="assets/img/PockIT_Logo.png" alt="PockIT Engineers Logo" />
       </a>
-
-      <!-- Shop and Services with icons - hidden on mobile -->
-      <div class="nav-links d-none-mobile" style="display: flex">
-        <!-- Shop Link -->
-        <!-- [routerLink]="isShopDisabled ? null : '/shop/home'"  -->
-        <a class="d-flex align-items-center ms-2 d-none d-md-block" routerLinkActive="active"
-          [routerLink]="isShopDisabled ? null : '/shop/home'" (click)="handleNavClick('I', $event)"
-          [class.disabled]="isShopDisabled" style="cursor: pointer;font-size: 14px;">
+      <div class="nav-links d-none-mobile nav-links-flex">
+        <a class="d-flex align-items-center ms-2 d-none d-md-block nav-link-pointer nav-link-text"
+          routerLinkActive="active" [routerLink]="isShopDisabled ? null : '/shop/home'"
+          (click)="handleNavClick('I', $event)" [class.disabled]="isShopDisabled">
           <svg width="22" height="22" viewBox="0 0 26 23" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M6.82521 6.2412H4.20724C3.68065 6.2412 3.23646 6.63332 3.17115 7.15584L1.66233 19.2264C1.58443 19.8496 2.07037 20.4 2.69843 20.4H17.2594C17.8875 20.4 18.3734 19.8496 18.2955 19.2264L17.9292 16.2962M6.82521 6.2412H13.1326M6.82521 6.2412C6.82519 6.49851 6.82518 5.63494 6.82518 5.63951M6.82521 6.2412C6.82525 5.58632 6.82535 4.43448 6.82551 4.42291C6.85143 2.49031 8.06823 0.931641 10.007 0.931641C11.9504 0.931641 13.114 2.49779 13.1325 4.43681C13.1326 4.44505 13.1326 5.58897 13.1326 6.2412M13.1326 6.2412H15.7506C16.2772 6.2412 16.7214 6.63332 16.7867 7.15584L17.2114 10.5534M13.1326 6.2412C13.1326 6.49929 13.1327 5.63624 13.1327 5.63951M9.82015 13.2819H24.4871M24.4871 13.2819L20.8097 9.60447M24.4871 13.2819L20.8097 16.9593"
@@ -22,58 +15,47 @@
           </svg>
           {{ "header.shop" | translate }}
         </a>
-
-        <!-- Service Link -->
-        <!-- [routerLink]="isServiceDisabled ? null : '/service'" -->
-        <a class="d-flex align-items-center ms-2 d-none d-md-block" routerLinkActive="active"
-          [routerLink]="isServiceDisabled ? null : '/service'" (click)="handleNavClick('S', $event)"
-          [class.disabled]="isServiceDisabled" style="cursor: pointer;font-size: 14px;">
+        <a class="d-flex align-items-center ms-2 d-none d-md-block nav-link-pointer nav-link-text"
+          routerLinkActive="active" [routerLink]="isServiceDisabled ? null : '/service'"
+          (click)="handleNavClick('S', $event)" [class.disabled]="isServiceDisabled">
           <img *ngIf="!isActive" class="imageee" src="assets/img/blackService.svg" alt="Inactive Image" width="24"
             height="24" />
-
           <img *ngIf="isActive" src="assets/img/orangeService.svg" alt="Active Image" width="24" height="24" />
           {{ "header.services" | translate }}
         </a>
       </div>
     </div>
-
     <div class="d-flex align-items-center d-none-mobile">
-      <div style="margin-right: 1rem !important">
+      <div class="mr-1rem">
         <div class="responsive-search-wrapper">
-          <!-- Large screen: Full input search -->
-
           <div class="search-header-wrapper large-screen"
             [@openClose]="isLargeScreen && showsearchtruee ? 'open' : 'closed'">
             <input type="text" placeholder="{{ 'header.search.placeholder' | translate }}" [(ngModel)]="searchKeyword"
               (click)="filterOptions()" (input)="filterOptions()" (blur)="onblurclick()" class="search-header-input" />
-            <!-- <button class="search-header-button">
-              <i class="search-header-icon"></i>
-            </button> -->
             <div class="search-header-dropdown" *ngIf="showOptionsList && filteredOptions?.length == 0">
-              <div style="text-align: center; padding: 5px">
-                <strong style="text-align: center">{{
+              <div class="search-header-5px">
+                <strong class="text-center">{{
                   "header.search.noData" | translate
                   }}</strong>
               </div>
             </div>
             <div class="search-header-dropdown" *ngIf="showOptionsList && searchloading">
               <div *ngIf="searchloading" class="loading-container">
-                <div style="text-align: center" class="spinner-border" role="status">
+                <div class="spinner-border text-center" role="status">
                   <span class="visually-hidden">{{
                     "header.search.loading" | translate
                     }}</span>
                 </div>
               </div>
             </div>
-
             <div class="search-header-dropdown" *ngIf="showOptionsList && filteredOptions?.length"
               (click)="$event.stopPropagation()">
-              <div style="padding: 5px" *ngFor="let option of filteredOptions">
-                <strong style="font-size: small !important">{{
+              <div class="header-root" *ngFor="let option of filteredOptions">
+                <strong class="font-small-important">{{
                   option.CATEGORY == "ItemBrands" ? "Brands" : option.CATEGORY
                   }}</strong>
                 <div *ngFor="let record2 of option['MATCHED_RECORDS']">
-                  <div *ngIf="record2['CATEGORY'] == 'Category'" class="row search-header-option" style="width: 100%"
+                  <div *ngIf="record2['CATEGORY'] == 'Category'" class="row search-header-option full-width"
                     (click)="selectOption(record2)">
                     <div class="col-2">
                       <img height="100%" width="100%" [src]="urllll + 'Category/' + record2['DATA']['ICON']" alt="" />
@@ -84,17 +66,10 @@
                         " height="100%" width="100%" src="assets/img/services/no-image.png" alt="" />
                     </div>
                     <div class="col-10">
-                      <!-- <p>
-                        {{ record2.CATEGORY }}
-                      </p> -->
-                      <strong style="
-                          white-space: nowrap;
-                          overflow: hidden;
-                          text-overflow: ellipsis;
-                        ">{{ record2.TITLE }}</strong>
+                      <strong class="text-ellipsis-nowrap">{{ record2.TITLE }}</strong>
                     </div>
                   </div>
-                  <div *ngIf="record2['CATEGORY'] == 'SubCategory'" class="row search-header-option" style="width: 100%"
+                  <div *ngIf="record2['CATEGORY'] == 'SubCategory'" class="row search-header-option full-width"
                     (click)="selectOption(record2)">
                     <div class="col-2">
                       <img height="100%" width="100%" [src]="
@@ -107,21 +82,13 @@
                         " height="100%" width="100%" src="assets/img/services/no-image.png" alt="" />
                     </div>
                     <div class="col-10">
-                      <p style="
-                          white-space: nowrap;
-                          overflow: hidden;
-                          text-overflow: ellipsis;
-                        ">
+                      <p class="text-ellipsis-nowrap">
                         {{ record2["DATA"].CATEGORY_NAME }}
                       </p>
-                      <strong style="
-                          white-space: nowrap;
-                          overflow: hidden;
-                          text-overflow: ellipsis;
-                        ">{{ record2.TITLE }}</strong>
+                      <strong class="text-ellipsis-nowrap">{{ record2.TITLE }}</strong>
                     </div>
                   </div>
-                  <div *ngIf="record2['CATEGORY'] == 'Service'" class="row search-header-option" style="width: 100%"
+                  <div *ngIf="record2['CATEGORY'] == 'Service'" class="row search-header-option full-width"
                     (click)="selectOption(record2, true)">
                     <div class="col-2">
                       <img *ngIf="
@@ -138,23 +105,14 @@
                         " height="100%" width="100%" src="assets/img/services/no-image.png" alt="" />
                     </div>
                     <div class="col-10">
-                      <p style="
-                          white-space: nowrap;
-                          overflow: hidden;
-                          text-overflow: ellipsis;
-                        ">
+                      <p class="text-ellipsis-nowrap">
                         {{ record2["DATA"]["CATEGORY_NAME"] }} >
                         {{ record2["DATA"]["SUB_CATEGORY_NAME"] }}
                       </p>
-                      <strong style="
-                          white-space: nowrap;
-                          overflow: hidden;
-                          text-overflow: ellipsis;
-                        ">{{ record2.TITLE }}</strong>
+                      <strong class="text-ellipsis-nowrap">{{ record2.TITLE }}</strong>
                     </div>
                   </div>
-
-                  <div *ngIf="record2['CATEGORY'] == 'ItemBrands'" class="row search-header-option" style="width: 100%"
+                  <div *ngIf="record2['CATEGORY'] == 'ItemBrands'" class="row search-header-option full-width"
                     (click)="clickonbrand(record2)">
                     <div class="col-2">
                       <img height="100%" width="100%" [src]="
@@ -169,18 +127,10 @@
                         " height="100%" width="100%" src="assets/img/services/no-image.png" alt="" />
                     </div>
                     <div class="col-10">
-                      <!-- <p>
-                      {{ record2.CATEGORY }}
-                    </p> -->
-                      <strong style="
-                          white-space: nowrap;
-                          overflow: hidden;
-                          text-overflow: ellipsis;
-                        ">{{ record2.TITLE }}</strong>
+                      <strong class="text-ellipsis-nowrap">{{ record2.TITLE }}</strong>
                     </div>
                   </div>
-
-                  <div *ngIf="record2['CATEGORY'] == 'Items'" class="row search-header-option" style="width: 100%"
+                  <div *ngIf="record2['CATEGORY'] == 'Items'" class="row search-header-option full-width"
                     (click)="InventoryId(record2)">
                     <div class="col-2">
                       <img height="100%" width="100%" [src]="
@@ -195,48 +145,34 @@
                         " height="100%" width="100%" src="assets/img/services/no-image.png" alt="" />
                     </div>
                     <div class="col-10">
-                      <p style="
-                          white-space: nowrap;
-                          overflow: hidden;
-                          text-overflow: ellipsis;
-                        ">
+                      <p class="text-ellipsis-nowrap">
                         {{ record2["DATA"].BRAND_NAME }}
                       </p>
-                      <strong style="
-                          white-space: nowrap;
-                          overflow: hidden;
-                          text-overflow: ellipsis;
-                        ">{{ record2.TITLE }}</strong>
+                      <strong class="text-ellipsis-nowrap">{{ record2.TITLE }}</strong>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
-          <!-- Small screen: Search icon only, click to open dropdown -->
           <div class="small-screen" *ngIf="!isLargeScreen">
             <button class="search-icon-btn" (click)="toggleMobileSearch()">
               <i class="search-header-icon"></i>
             </button>
-
             <div class="mobile-search-dropdown" *ngIf="showMobileSearch">
               <input type="text" placeholder="{{ 'header.search.placeholder' | translate }}" [(ngModel)]="searchKeyword"
                 (click)="filterOptions()" (input)="filterOptions()" (blur)="onblurclick()"
                 class="search-header-input" />
-              <!-- <button class="search-header-button">
-              <i class="search-header-icon"></i>
-            </button> -->
               <div class="search-header-dropdown" *ngIf="showOptionsList && filteredOptions?.length == 0">
-                <div style="text-align: center; padding: 5px">
-                  <strong style="text-align: center">{{
+                <div class="search-header-5px">
+                  <strong class="text-center">{{
                     "header.search.noData" | translate
                     }}</strong>
                 </div>
               </div>
               <div class="search-header-dropdown" *ngIf="showOptionsList && searchloading">
                 <div *ngIf="searchloading" class="loading-container">
-                  <div style="text-align: center" class="spinner-border" role="status">
+                  <div class="spinner-border text-center" role="status">
                     <span class="visually-hidden">{{
                       "header.search.loading" | translate
                       }}</span>
@@ -245,12 +181,12 @@
               </div>
               <div class="search-header-dropdown" *ngIf="showOptionsList && filteredOptions?.length"
                 (click)="$event.stopPropagation()">
-                <div style="padding: 5px" *ngFor="let option of filteredOptions">
-                  <strong style="font-size: small !important">{{
+                <div class="header-root" *ngFor="let option of filteredOptions">
+                  <strong class="font-small-important">{{
                     option.CATEGORY == "ItemBrands" ? "Brands" : option.CATEGORY
                     }}</strong>
                   <div *ngFor="let record2 of option['MATCHED_RECORDS']">
-                    <div *ngIf="record2['CATEGORY'] == 'Category'" class="row search-header-option" style="width: 100%"
+                    <div *ngIf="record2['CATEGORY'] == 'Category'" class="row search-header-option full-width"
                       (click)="selectOption(record2)">
                       <div class="col-2">
                         <img height="100%" width="100%" [src]="urllll + 'Category/' + record2['DATA']['ICON']" alt="" />
@@ -261,18 +197,11 @@
                           " height="100%" width="100%" src="assets/img/services/no-image.png" alt="" />
                       </div>
                       <div class="col-10">
-                        <!-- <p>
-                        {{ record2.CATEGORY }}
-                      </p> -->
-                        <strong style="
-                            white-space: nowrap;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                          ">{{ record2.TITLE }}</strong>
+                        <strong class="text-ellipsis-nowrap">{{ record2.TITLE }}</strong>
                       </div>
                     </div>
-                    <div *ngIf="record2['CATEGORY'] == 'SubCategory'" class="row search-header-option"
-                      style="width: 100%" (click)="selectOption(record2)">
+                    <div *ngIf="record2['CATEGORY'] == 'SubCategory'" class="row search-header-option full-width"
+                      (click)="selectOption(record2)">
                       <div class="col-2">
                         <img height="100%" width="100%" [src]="
                             urllll + 'SubCategory/' + record2['DATA']['IMAGE']
@@ -284,21 +213,13 @@
                           " height="100%" width="100%" src="assets/img/services/no-image.png" alt="" />
                       </div>
                       <div class="col-10">
-                        <p style="
-                            white-space: nowrap;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                          ">
+                        <p class="text-ellipsis-nowrap">
                           {{ record2["DATA"].CATEGORY_NAME }}
                         </p>
-                        <strong style="
-                            white-space: nowrap;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                          ">{{ record2.TITLE }}</strong>
+                        <strong class="text-ellipsis-nowrap">{{ record2.TITLE }}</strong>
                       </div>
                     </div>
-                    <div *ngIf="record2['CATEGORY'] == 'Service'" class="row search-header-option" style="width: 100%"
+                    <div *ngIf="record2['CATEGORY'] == 'Service'" class="row search-header-option full-width"
                       (click)="selectOption(record2)">
                       <div class="col-2">
                         <img *ngIf="
@@ -315,23 +236,15 @@
                           " height="100%" width="100%" src="assets/img/services/no-image.png" alt="" />
                       </div>
                       <div class="col-10">
-                        <p style="
-                            white-space: nowrap;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                          ">
+                        <p class="text-ellipsis-nowrap">
                           {{ record2["DATA"]["CATEGORY_NAME"] }} >
                           {{ record2["DATA"]["SUB_CATEGORY_NAME"] }}
                         </p>
-                        <strong style="
-                            white-space: nowrap;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                          ">{{ record2.TITLE }}</strong>
+                        <strong class="text-ellipsis-nowrap">{{ record2.TITLE }}</strong>
                       </div>
                     </div>
-                    <div *ngIf="record2['CATEGORY'] == 'ItemBrands'" class="row search-header-option"
-                      style="width: 100%" (click)="clickonbrand(record2)">
+                    <div *ngIf="record2['CATEGORY'] == 'ItemBrands'" class="row search-header-option full-width"
+                      (click)="clickonbrand(record2)">
                       <div class="col-2">
                         <img height="100%" width="100%" [src]="
                             urllll +
@@ -345,18 +258,10 @@
                           " height="100%" width="100%" src="assets/img/services/no-image.png" alt="" />
                       </div>
                       <div class="col-10">
-                        <!-- <p>
-                        {{ record2.CATEGORY }}
-                      </p> -->
-                        <strong style="
-                            white-space: nowrap;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                          ">{{ record2.TITLE }}</strong>
+                        <strong class="text-ellipsis-nowrap">{{ record2.TITLE }}</strong>
                       </div>
                     </div>
-
-                    <div *ngIf="record2['CATEGORY'] == 'Items'" class="row search-header-option" style="width: 100%"
+                    <div *ngIf="record2['CATEGORY'] == 'Items'" class="row search-header-option full-width"
                       (click)="InventoryId(record2)">
                       <div class="col-2">
                         <img height="100%" width="100%" [src]="
@@ -371,41 +276,23 @@
                           " height="100%" width="100%" src="assets/img/services/no-image.png" alt="" />
                       </div>
                       <div class="col-10">
-                        <p style="
-                            white-space: nowrap;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                          ">
+                        <p class="text-ellipsis-nowrap">
                           {{ record2["DATA"].BRAND_NAME }}
                         </p>
-                        <strong style="
-                            white-space: nowrap;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                          ">{{ record2.TITLE }}</strong>
+                        <strong class="text-ellipsis-nowrap">{{ record2.TITLE }}</strong>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-
               <div class="no-results" *ngIf="searchKeyword && !filteredOptions.length">
                 {{ "header.search.noResults" | translate }}
               </div>
             </div>
           </div>
         </div>
-
-        <!-- <div class="select">
-          <select name="langauge" [(ngModel)]="LANGUAGES" (change)="changeLanguage(LANGUAGES)">
-            <option *ngFor="let lang of languages" [value]="lang">
-              {{ lang | uppercase }}
-            </option>
-          </select>
-        </div> -->
       </div>
-
-      <button class="icon-btn d-block position-relative" style="margin-right: 1rem !important" *ngIf="
+      <button class="icon-btn d-block position-relative mr-1rem" *ngIf="
           isLargeScreen && userID != 0 && userID != null && userID != undefined
         " (click)="toggleMobileSearch2222()">
         <svg width="28" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -414,10 +301,9 @@
             stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </button>
-
-      <button class="icon-btn d-block position-relative" style="margin-right: 1rem !important"
+      <button class="icon-btn d-block position-relative mr-1rem"
         *ngIf="userID != 0 && userID != null && userID != undefined">
-        <span style="display: none">{{ msggettt() }}</span>
+        <span class="display-none-unique">{{ msggettt() }}</span>
         <svg width="20" height="26" viewBox="0 0 20 26" fill="none" xmlns="http://www.w3.org/2000/svg"
           data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
           (click)="opennotification()">
@@ -425,43 +311,14 @@
             d="M0.971816 20.4015L0.971805 20.4015C0.909862 20.532 0.88193 20.676 0.89061 20.8201C0.899291 20.9643 0.944301 21.1039 1.02145 21.226H1.02145C1.0986 21.348 1.20538 21.4486 1.33186 21.5183C1.45833 21.588 1.60039 21.6246 1.7448 21.6246H1.74483H6.07517C6.29477 23.6038 7.98322 25.15 10.0211 25.15C12.0591 25.15 13.7476 23.6038 13.9672 21.6246H18.2974C18.4419 21.6246 18.5839 21.588 18.7104 21.5183C18.8369 21.4486 18.9437 21.3481 19.0208 21.226C19.098 21.1039 19.143 20.9643 19.1517 20.8202C19.1604 20.676 19.1325 20.532 19.0705 20.4015L19.0705 20.4015L17.6045 17.3157V11.4433C17.6045 8.22527 15.5937 5.47853 12.7593 4.38309V3.60655C12.7593 2.09685 11.5306 0.85 10.0211 0.85C8.51167 0.85 7.28298 2.09685 7.28298 3.60655V4.38309C4.44857 5.47853 2.43776 8.22527 2.43776 11.4433V17.3157L0.971816 20.4015ZM10.0211 2.56159C10.5969 2.56159 11.0476 3.00986 11.0476 3.60655V3.94333C10.7118 3.89754 10.3693 3.87381 10.0211 3.87381C9.67302 3.87381 9.33042 3.89754 8.9947 3.94333V3.60655C8.9947 3.00986 9.44536 2.56159 10.0211 2.56159ZM10.0211 5.58594C13.2876 5.58594 15.8928 8.187 15.8928 11.4433V17.5088C15.8928 17.6358 15.9211 17.7612 15.9756 17.8759L16.9433 19.9128H13.8414H12.4296H7.61266H6.20094H3.099L4.06667 17.8759C4.12117 17.7612 4.14946 17.6358 4.14948 17.5088V11.4433C4.14948 8.187 6.75465 5.58594 10.0211 5.58594ZM10.0211 23.4384C8.90678 23.4384 8.00362 22.6676 7.80401 21.6246H12.2383C12.0387 22.6676 11.1355 23.4384 10.0211 23.4384Z"
             fill="#333333" stroke="#333333" stroke-width="0.3" />
         </svg>
-        <span *ngIf="msgreciveddd" style="
-            height: 10px;
-            width: 10px;
-            background-color: red;
-            border-radius: 50px;
-          " class="position-absolute top-0">
+        <span *ngIf="msgreciveddd" class="position-absolute top-0 notification-dot-unique">
           <span class="visually-hidden">{{
             "header.cart.itemsInCart" | translate
             }}</span>
         </span>
       </button>
-      <!-- <button class="icon-btn d-block" style="margin-right: 1rem !important"
-        routerLink="/shop/cart">
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M17.0186 17.8066C15.3099 17.8066 13.9219 19.1947 13.9219 20.9034C13.9219 22.6122 15.3099 24.0002 17.0186 24.0002C18.7274 24.0002 20.1154 22.6122 20.1154 20.9034C20.1154 19.1947 18.7274 17.8066 17.0186 17.8066ZM17.0186 22.12C16.3495 22.12 15.8021 21.5725 15.8021 20.9034C15.8021 20.2343 16.3495 19.6868 17.0186 19.6868C17.6878 19.6868 18.2352 20.2343 18.2352 20.9034C18.2352 21.5725 17.6933 22.12 17.0186 22.12Z"
-            fill="#333333"
-          />
-          <path
-            d="M0.690092 1.88018H1.99516C2.69194 1.88018 3.25599 2.44977 3.25599 3.15207V13.7806C3.25599 15.5171 4.67719 16.9217 6.41912 16.9217H19.0551C19.5749 16.9217 19.9952 16.5014 19.9952 15.9816C19.9952 15.4618 19.5749 15.0415 19.0551 15.0415H6.41912C5.71682 15.0415 5.13617 14.483 5.13617 13.7806V13.7198L17.7168 13.6479C19.6689 13.6369 21.3611 12.3041 21.8311 10.4074L23.5454 3.45069C23.6173 3.16866 23.5509 2.86452 23.374 2.63779C23.197 2.41106 22.926 2.27281 22.6385 2.27281H22.6329L5.05323 2.36682C4.69931 1.00092 3.4606 0 1.99516 0H0.690092C0.170276 0 -0.25 0.420277 -0.25 0.940092C-0.25 1.45991 0.170276 1.88018 0.690092 1.88018ZM5.13617 4.25253L21.4274 4.16959L20.0062 9.95392C19.7463 11.0101 18.7952 11.7567 17.7058 11.7622L5.13617 11.8396V4.25253Z"
-            fill="#333333"
-          />
-          <path
-            d="M3.84375 20.9034C3.84375 22.6122 5.23177 24.0002 6.94052 24.0002C8.64928 24.0002 10.0373 22.6122 10.0373 20.9034C10.0373 19.1947 8.64928 17.8066 6.94052 17.8066C5.23177 17.8066 3.84375 19.1947 3.84375 20.9034ZM8.15711 20.9034C8.15711 21.5725 7.60965 22.12 6.94052 22.12C6.2714 22.12 5.72393 21.5725 5.72393 20.9034C5.72393 20.2343 6.2714 19.6868 6.94052 19.6868C7.60965 19.6868 8.15711 20.2343 8.15711 20.9034Z"
-            fill="#333333"
-          />
-        </svg>
-      </button> -->
-
-      <button *ngIf="userID != 0 && userID != null && userID != undefined" class="icon-btn d-block position-relative"
-        style="margin-right: 1rem !important" routerLink="/shop/cart">
+      <button *ngIf="userID != 0 && userID != null && userID != undefined"
+        class="icon-btn d-block position-relative mr-1rem" routerLink="/shop/cart">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M17.0186 17.8066C15.3099 17.8066 13.9219 19.1947 13.9219 20.9034C13.9219 22.6122 15.3099 24.0002 17.0186 24.0002C18.7274 24.0002 20.1154 22.6122 20.1154 20.9034C20.1154 19.1947 18.7274 17.8066 17.0186 17.8066ZM17.0186 22.12C16.3495 22.12 15.8021 21.5725 15.8021 20.9034C15.8021 20.2343 16.3495 19.6868 17.0186 19.6868C17.6878 19.6868 18.2352 20.2343 18.2352 20.9034C18.2352 21.5725 17.6933 22.12 17.0186 22.12Z"
@@ -480,34 +337,16 @@
             }}</span>
         </span>
       </button>
-
-      <!-- User Profile -->
       <div *ngIf="!userID">
         <div class="login-container">
-          <!-- Desktop & Tablet View (show LOGIN button) -->
-          <!-- <button
-            *ngIf="!isMobile"
-            class="btn chat-btn d-flex align-items-center justify-content-center w-100"
-            (click)="openModal()"
-          >
-            LOGIN kkk
-          </button> -->
           <div *ngIf="!isMobile" class="user-profile d-flex align-items-center" (click)="toggleMobileMenu()">
             <div
-              class="profile-photo-container border: 3px solid #f36631; position-relative d-flex justify-content-center align-items-center"
-              style="width: 55px; height: 55px">
-              <img [src]="imagePreview || 'assets/img/blueEmpImage.png'" alt="Profile Photo" class="profile-photo"
-                (error)="setDefaultImage($event)" style="
-                  width: 40px;
-                  height: 40px;
-                  border-radius: 50%;
-                  object-fit: cover;
-                  border: 3px solid #f36631;
-                " />
+              class="profile-photo-container border: 3px solid #f36631; position-relative d-flex justify-content-center align-items-center box-55px-unique">
+              <img [src]="imagePreview || 'assets/img/blueEmpImage.png'" alt="Profile Photo"
+                class="profile-photo profile-img-40px-unique" (error)="setDefaultImage($event)" />
             </div>
-
             <div class="user-info ms-2 d-none d-md-block">
-              <div class="user-name" style="font-size: 14px;">
+              <div class="user-name font-size-14px-unique">
                 {{ "header.profile.guest" | translate }}
               </div>
             </div>
@@ -517,8 +356,6 @@
                 d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
             </svg>
           </div>
-
-          <!-- Mobile View (show SVG icon) -->
           <div *ngIf="isMobile" (click)="toggleMobileMenu()" class="mobile-login-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#3170DE" viewBox="0 0 24 24">
               <path
@@ -527,57 +364,46 @@
           </div>
         </div>
       </div>
-      <div style="display: flex">
+      <div class="nav-links-flex">
         <div *ngIf="userID" class="user-profile d-flex align-items-center" (click)="toggleMobileMenu()">
-          <div class="profile-photo-container position-relative d-flex justify-content-center align-items-center"
-            style="width: 55px; height: 55px">
-            <img [src]="imagePreview || 'assets/img/blueEmpImage.png'" alt="Profile Photo" class="profile-photo ss"
-              (error)="setDefaultImage($event)" style="
-                border-radius: 50%;
-                object-fit: cover;
-                border: 3px solid #f36631 !important;
-              " />
+          <div
+            class="profile-photo-container position-relative d-flex justify-content-center align-items-center box-55px-unique">
+            <img [src]="imagePreview || 'assets/img/blueEmpImage.png'" alt="Profile Photo"
+              class="profile-photo ss profile-border-circle-unique" (error)="setDefaultImage($event)" />
           </div>
-
           <div class="user-info ms-2 d-none d-md-block">
-            <div *ngIf="customerType != 'B'" class="user-name" style="line-height: 1;">
-              <span style="font-weight: 700; font-size: 14px">{{
+            <div *ngIf="customerType != 'B'" class="user-name line-height-1-unique">
+              <span class="fw-700-font-14-unique">{{
                 userNAME.length > 10
                 ? (userNAME | slice : 0 : 10) + "..."
                 : userNAME
                 }}</span>
             </div>
-            <div *ngIf="customerType == 'B'" class="user-name" style="line-height: 1;">
-              <span style="font-weight: 700; font-size: 14px">{{
+            <div *ngIf="customerType == 'B'" class="user-name line-height-1-unique">
+              <span class="fw-700-font-14-unique">{{
                 BusinessName.length > 20
                 ? (BusinessName | slice : 0 : 20) + "..."
                 : BusinessName
                 }}</span>
             </div>
             <div class="user-location" *ngIf="mainaddress!==undefined && mainaddress!=='' && mainaddress!==null">
-              <span style="font-weight: 400; font-size: 13px">{{
+              <span class="fw-700-font-13-unique">{{
                 mainaddress.length > 20
                 ? (mainaddress | slice : 0 : 20) + "..."
                 : mainaddress
                 }}</span>
             </div>
           </div>
-
           <div class="d-none d-md-block">
             <svg xmlns="http://www.w3.org/2000/svg" width="10" height="8" viewBox="0 0 12 8" fill="none">
               <path d="M1 1L6 6L11 1" stroke="#0E0E0E" stroke-width="1.5" stroke-linecap="round" />
             </svg>
           </div>
-
         </div>
       </div>
     </div>
   </div>
-
-  <!-- Mobile menu overlay - shown when mobile menu is open -->
   <div class="mobile-menu-overlay" [class.show]="isMobileMenuOpen" (click)="closeMobileMenu()"></div>
-
-  <!-- Mobile menu drawer -->
   <div class="mobile-menu" [class.show]="isMobileMenuOpen">
     <div *ngIf="showContent == 'normal'">
       <div class="mobile-menu-header">
@@ -589,46 +415,16 @@
           </svg>
         </button>
       </div>
-
       <div class="mobile-menu-content">
-        <!-- Login/Profile in mobile menu -->
         <div *ngIf="!userID">
           <div class="profile-header d-flex flex-column">
-            <!-- Profile Photo Section -->
-            <div class="d-flex justify-content-center align-items-center" style="height: 100%; width: 100%">
+            <div class="d-flex justify-content-center align-items-center full-size-unique">
               <div class="profile-photo-container position-relative d-flex justify-content-center align-items-center">
-                <img [src]="imagePreview || 'assets/img/blueEmpImage.png'" alt="Profile Photo" class="profile-photo"
-                  (error)="setDefaultImage($event)" style="
-                    width: 100px;
-                    height: 100px;
-                    border-radius: 50%;
-                    object-fit: cover;
-                  " />
-                <button *ngIf="userID" class="edit-photo-btn" style="
-                    width: 30px;
-                    height: 30px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    border: none;
-                    cursor: pointer;
-                    position: absolute;
-                    bottom: 5px;
-                    right: 5px;
-                    background-color: white;
-                    border-radius: 50%;
-                    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-                    overflow: hidden;
-                  ">
+                <img [src]="imagePreview || 'assets/img/blueEmpImage.png'" alt="Profile Photo"
+                  class="profile-photo profile-img-100px-unique" (error)="setDefaultImage($event)" />
+                <button *ngIf="userID" class="edit-photo-btn btn-circle-30px-unique">
                   <input #icon type="file" accept=".png, .jpg, .jpeg" (change)="fileChangeEvent($event)"
-                    class="file-input" style="
-                      position: absolute;
-                      inset: 0;
-                      opacity: 0;
-                      cursor: pointer;
-                      width: 100%;
-                      height: 100%;
-                    " />
+                    class="file-input absolute-full-transparent-unique" />
                   <svg width="13" height="13" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M13.2543 2.52944L13.2541 2.52967L12.5371 3.25402L14.6921 5.40906L15.4183 4.6828L13.2543 2.52944ZM13.2543 2.52944C13.3951 2.38636 13.5629 2.27275 13.748 2.19523C13.9331 2.11772 14.1318 2.07785 14.3324 2.07797V2.07814M13.2543 2.52944L14.3324 2.07814M14.3324 2.07814L14.3383 2.0778M14.3324 2.07814L14.3383 2.0778M14.3383 2.0778C14.5397 2.06613 14.7411 2.10019 14.9275 2.17745C15.1138 2.2547 15.2803 2.37314 15.4144 2.52388L15.4143 2.52398M14.3383 2.0778L15.4143 2.52398M15.4143 2.52398L15.4183 2.52802M15.4143 2.52398L15.4183 2.52802M15.4183 2.52802C15.7035 2.81405 15.8636 3.20149 15.8636 3.60541M15.4183 2.52802L15.8636 3.60541M15.8636 3.60541C15.8636 4.00929 15.7036 4.39669 15.4184 4.6827L15.8636 3.60541ZM15.3711 1.10425L15.3328 1.19664L1.30183 16.9629C1.36117 16.9874 1.42478 17 1.489 17V17.1H1.48906H4.42302C4.50036 17.1 4.57697 17.0848 4.64843 17.0552L4.61015 16.9628L4.64843 17.0552C4.71988 17.0256 4.7848 16.9822 4.83948 16.9275C4.83949 16.9274 4.83949 16.9274 4.8395 16.9274L16.2513 5.51563L16.2514 5.51551C16.7577 5.00758 17.0416 4.31944 17.0408 3.60229C17.0399 2.8852 16.7544 2.19778 16.2471 1.69104C15.9967 1.43947 15.699 1.24003 15.3711 1.10425ZM13.8592 6.24194L4.17915 15.922H2.07801V13.8192L11.7083 4.09109L13.8592 6.24194Z"
@@ -637,22 +433,14 @@
                 </button>
               </div>
             </div>
-
-            <!-- Profile Details Section -->
             <div class="profile-details text-center">
               <div class="d-flex align-items-center">
-                <div class="profile-name" style="text-align: center">Guest</div>
+                <div class="profile-name text-center">Guest</div>
                 <button *ngIf="userID" class="edit-details-btn ms-2" (click)="editProfileDetails()">
                   <i class="fas fa-pen"></i>
                 </button>
               </div>
-
-              <div *ngIf="userID" class="profile-contact mt-2" style="
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                  text-align: left;
-                ">
+              <div *ngIf="userID" class="profile-contact mt-2 flex-between-center-left-unique">
                 <div class="dropdown-location">
                   <span>{{ userMobile }}</span>
                   <span class="email-text">
@@ -663,9 +451,8 @@
                     }}
                   </span>
                 </div>
-
                 <svg width="15" height="15" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"
-                  (click)="editContactInfo()" style="cursor: pointer">
+                  (click)="editContactInfo()" class="nav-link-pointer">
                   <path
                     d="M13.2543 2.52944L13.2541 2.52967L12.5371 3.25402L14.6921 5.40906L15.4183 4.6828L13.2543 2.52944ZM13.2543 2.52944C13.3951 2.38636 13.5629 2.27275 13.748 2.19523C13.9331 2.11772 14.1318 2.07785 14.3324 2.07797V2.07814M13.2543 2.52944L14.3324 2.07814M14.3324 2.07814L14.3383 2.0778M14.3324 2.07814L14.3383 2.0778M14.3383 2.0778C14.5397 2.06613 14.7411 2.10019 14.9275 2.17745C15.1138 2.2547 15.2803 2.37314 15.4144 2.52388L15.4143 2.52398M14.3383 2.0778L15.4143 2.52398M15.4143 2.52398L15.4183 2.52802M15.4143 2.52398L15.4183 2.52802M15.4183 2.52802C15.7035 2.81405 15.8636 3.20149 15.8636 3.60541M15.4183 2.52802L15.8636 3.60541M15.8636 3.60541C15.8636 4.00929 15.7036 4.39669 15.4184 4.6827L15.8636 3.60541ZM15.3711 1.10425L15.3328 1.19664L1.30183 16.9629C1.36117 16.9874 1.42478 17 1.489 17V17.1H1.48906H4.42302C4.50036 17.1 4.57697 17.0848 4.64843 17.0552L4.61015 16.9628L4.64843 17.0552C4.71988 17.0256 4.7848 16.9822 4.83948 16.9275C4.83949 16.9274 4.83949 16.9274 4.8395 16.9274L16.2513 5.51563L16.2514 5.51551C16.7577 5.00758 17.0416 4.31944 17.0408 3.60229C17.0399 2.8852 16.7544 2.19778 16.2471 1.69104C15.9967 1.43947 15.699 1.24003 15.3711 1.10425ZM13.8592 6.24194L4.17915 15.922H2.07801V13.8192L11.7083 4.09109L13.8592 6.24194Z"
                     fill="#3170DE" stroke="#3170DE" stroke-width="0.2" />
@@ -674,16 +461,12 @@
             </div>
           </div>
         </div>
-
-        <div *ngIf="userID" class="profile-wrapper" (click)="editContactInfo()" style="cursor: pointer">
+        <div *ngIf="userID" class="profile-wrapper nav-link-pointer" (click)="editContactInfo()">
           <div class="profile-card">
-            <!-- Profile Image -->
             <div class="profile-image">
               <img [src]="imagePreview || 'assets/img/blueEmpImage.png'" (error)="setDefaultImage($event)"
                 alt="Profile Image" />
             </div>
-
-            <!-- User Details -->
             <div class="profile-details">
               <div class="user-name" *ngIf="customerType == 'B'">
                 <span class="profile-name">
@@ -705,11 +488,9 @@
                 </span>
               </div>
               <div class="user-info">
-                <!-- {{ "header.profile.mobileNo" | translate }} -->
                 <span>{{ userMobile }}</span>
               </div>
               <div class="user-info">
-                <!-- {{ "header.profile.emailId" | translate }} -->
                 <span>
                   {{
                   userEMAIL.length > 25
@@ -719,39 +500,19 @@
                 </span>
               </div>
             </div>
-
-
-            <!-- Arrow Icon -->
             <div class="profile-arrow">
               <i class="bi bi-chevron-right" (click)="editContactInfo()"></i>
-              <!-- <i class="bi bi-amazon"></i> -->
             </div>
           </div>
         </div>
-        <p style="margin-bottom: 0px !important;
-    font-size: 12px;
-    color: grey;
-    text-align: center;
-    margin-top: 5px;">Version 2.2.1</p>
-        <!-- Mobile action buttons -->
-        <div class="mobile-action-buttons mobile-profile-section" style="margin-top: 5px;">
-          <div *ngIf="userID" style="
-              background-color: rgb(245 245 245);
-              border-radius: 5px;
-              border: 1px solid #dcdcdc;
-            ">
-            <a class="mobile-nav-item" style="
-                cursor: pointer;
-
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                text-decoration: none;
-              " (click)="openAddress()">
-              <div style="display: flex; align-items: center; gap: 15px">
+        <p class="text-muted-center-12-unique">Version 2.2.2</p>
+        <div class="mobile-action-buttons mobile-profile-section mt-5px-unique">
+          <div *ngIf="userID" class="bg-light-border-unique">
+            <a class="mobile-nav-item flex-space-between-cursor-unique" (click)="openAddress()">
+              <div class="flex-center-gap15-unique">
                 <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <mask id="mask0_3642_47076" style="mask-type: alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="22"
-                    height="22">
+                  <mask id="mask0_3642_47076" class="mask-alpha-unique" maskUnits="userSpaceOnUse" x="0" y="0"
+                    width="22" height="22">
                     <rect width="22" height="22" fill="#D9D9D9" />
                   </mask>
                   <g mask="url(#mask0_3642_47076)">
@@ -760,7 +521,6 @@
                       fill="#2A3B8F" />
                   </g>
                 </svg>
-
                 <span (click)="openAddress()">{{
                   "header.profile.myAddresses" | translate
                   }}</span>
@@ -768,49 +528,24 @@
               <span (click)="openAddress()"><i class="bi bi-chevron-right"></i></span>
             </a>
           </div>
-
-          <div *ngIf="userID != 0 && userID != null && userID != undefined" style="
-              background-color: rgb(245 245 245);
-              border-radius: 5px;
-              border: 1px solid #dcdcdc;
-              margin-top: 10px;
-            ">
-            <a (click)="openLanguage()" class="mobile-nav-item" style="
-                display: flex;
-                align-items: center;
-                cursor: pointer;
-                justify-content: space-between;
-                text-decoration: none;
-              ">
-              <div style="display: flex; align-items: center; gap: 15px">
+          <div *ngIf="userID != 0 && userID != null && userID != undefined" class="bg-light-border-mt10-unique">
+            <a (click)="openLanguage()" class="mobile-nav-item flex-center-space-cursor-unique">
+              <div class="flex-center-gap15-unique">
                 <svg width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M12.5202 22H8.47983C8.21047 22 7.97703 21.9083 7.7795 21.725C7.58197 21.5417 7.46525 21.3125 7.42934 21.0375L7.10611 18.48C6.87267 18.3883 6.65287 18.2783 6.44673 18.15C6.23986 18.0217 6.03766 17.8842 5.84014 17.7375L3.49674 18.7275C3.24534 18.8192 2.99394 18.8283 2.74254 18.755C2.49114 18.6817 2.29361 18.5258 2.14995 18.2875L0.156716 14.74C0.0130597 14.5017 -0.031833 14.245 0.0220382 13.97C0.0759095 13.695 0.210588 13.475 0.426073 13.31L2.44625 11.7425C2.42829 11.6142 2.41931 11.4902 2.41931 11.3707V10.6282C2.41931 10.5094 2.42829 10.3858 2.44625 10.2575L0.426073 8.69C0.210588 8.525 0.0759095 8.305 0.0220382 8.03C-0.031833 7.755 0.0130597 7.49833 0.156716 7.26L2.14995 3.7125C2.27565 3.45583 2.46851 3.29523 2.72853 3.2307C2.98927 3.1669 3.24534 3.18083 3.49674 3.2725L5.84014 4.2625C6.03766 4.11583 6.24417 3.97833 6.45965 3.85C6.67514 3.72167 6.89062 3.61167 7.10611 3.52L7.42934 0.9625C7.46525 0.6875 7.58197 0.458333 7.7795 0.275C7.97703 0.0916667 8.21047 0 8.47983 0H12.5202C12.7895 0 13.023 0.0916667 13.2205 0.275C13.418 0.458333 13.5347 0.6875 13.5707 0.9625L13.8939 3.52C14.1273 3.61167 14.3475 3.72167 14.5544 3.85C14.7605 3.97833 14.9623 4.11583 15.1599 4.2625L17.5033 3.2725C17.7547 3.18083 18.0061 3.17167 18.2575 3.245C18.5089 3.31833 18.7064 3.47417 18.85 3.7125L20.8433 7.26C20.9869 7.49833 21.0318 7.755 20.978 8.03C20.9241 8.305 20.7894 8.525 20.5739 8.69L18.5538 10.2575C18.5717 10.3858 18.5807 10.5094 18.5807 10.6282V11.3707C18.5807 11.4902 18.5627 11.6142 18.5268 11.7425L20.547 13.31C20.7625 13.475 20.8972 13.695 20.951 13.97C21.0049 14.245 20.96 14.5017 20.8163 14.74L18.8231 18.26C18.6795 18.4983 18.4776 18.6589 18.2176 18.7418C17.9569 18.8239 17.7008 18.8192 17.4494 18.7275L15.1599 17.7375C14.9623 17.8842 14.7558 18.0217 14.5403 18.15C14.3249 18.2783 14.1094 18.3883 13.8939 18.48L13.5707 21.0375C13.5347 21.3125 13.418 21.5417 13.2205 21.725C13.023 21.9083 12.7895 22 12.5202 22ZM10.5539 14.85C11.5954 14.85 12.4843 14.4742 13.2205 13.7225C13.9567 12.9708 14.3249 12.0633 14.3249 11C14.3249 9.93667 13.9567 9.02917 13.2205 8.2775C12.4843 7.52583 11.5954 7.15 10.5539 7.15C9.4944 7.15 8.60086 7.52583 7.87324 8.2775C7.14633 9.02917 6.78288 9.93667 6.78288 11C6.78288 12.0633 7.14633 12.9708 7.87324 13.7225C8.60086 14.4742 9.4944 14.85 10.5539 14.85ZM10.5539 12.65C10.1049 12.65 9.72354 12.4894 9.40965 12.1682C9.09504 11.8477 8.93773 11.4583 8.93773 11C8.93773 10.5417 9.09504 10.1523 9.40965 9.8318C9.72354 9.5106 10.1049 9.35 10.5539 9.35C11.0028 9.35 11.3846 9.5106 11.6992 9.8318C12.0131 10.1523 12.17 10.5417 12.17 11C12.17 11.4583 12.0131 11.8477 11.6992 12.1682C11.3846 12.4894 11.0028 12.65 10.5539 12.65ZM9.42257 19.8H11.5505L11.9276 16.885C12.4843 16.7383 13.0007 16.5227 13.4769 16.2382C13.9524 15.9544 14.3877 15.6108 14.7828 15.2075L17.4494 16.335L18.4999 14.465L16.1834 12.6775C16.2732 12.4208 16.3361 12.1502 16.372 11.8657C16.4079 11.5819 16.4258 11.2933 16.4258 11C16.4258 10.7067 16.4079 10.4177 16.372 10.1332C16.3361 9.8494 16.2732 9.57917 16.1834 9.3225L18.4999 7.535L17.4494 5.665L14.7828 6.82C14.3877 6.39833 13.9524 6.04523 13.4769 5.7607C13.0007 5.4769 12.4843 5.26167 11.9276 5.115L11.5774 2.2H9.44951L9.07241 5.115C8.51574 5.26167 7.99965 5.4769 7.52415 5.7607C7.04793 6.04523 6.61229 6.38917 6.21723 6.7925L3.55061 5.665L2.50012 7.535L4.81658 9.295C4.7268 9.57 4.66395 9.845 4.62803 10.12C4.59212 10.395 4.57416 10.6883 4.57416 11C4.57416 11.2933 4.59212 11.5775 4.62803 11.8525C4.66395 12.1275 4.7268 12.4025 4.81658 12.6775L2.50012 14.465L3.55061 16.335L6.21723 15.18C6.61229 15.6017 7.04793 15.9544 7.52415 16.2382C7.99965 16.5227 8.51574 16.7383 9.07241 16.885L9.42257 19.8Z"
                     fill="#2A3B8F" />
                 </svg>
-
                 <span> {{ "settings" | translate }} </span>
               </div>
               <span (click)="openLanguage()"><i class="bi bi-chevron-right"></i></span>
             </a>
           </div>
-          <div style="
-              background-color: rgb(245 245 245);
-              border-radius: 5px;
-              border: 1px solid #dcdcdc;
-              margin-top: 10px;
-            ">
-            <a class="mobile-nav-item" style="
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                text-decoration: none;
-                cursor: pointer;
-              " [routerLink]="isShopDisabled ? null : '/shop/home'" [class.disabled]="isShopDisabled"
+          <div class="bg-light-border-mt10-unique">
+            <a class="mobile-nav-item flex-between-center-cursor-unique"
+              [routerLink]="isShopDisabled ? null : '/shop/home'" [class.disabled]="isShopDisabled"
               (click)="onShopClick1($event)">
-              <!-- routerLink="shop/home"
-            (click)="closemodelllllll()" -->
-              <div style="display: flex; align-items: center; gap: 15px">
+              <div class="flex-center-gap15-unique">
                 <svg width="22" height="22" viewBox="0 0 26 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M6.82521 6.2412H4.20724C3.68065 6.2412 3.23646 6.63332 3.17115 7.15584L1.66233 19.2264C1.58443 19.8496 2.07037 20.4 2.69843 20.4H17.2594C17.8875 20.4 18.3734 19.8496 18.2955 19.2264L17.9292 16.2962M6.82521 6.2412H13.1326M6.82521 6.2412C6.82519 6.49851 6.82518 5.63494 6.82518 5.63951M6.82521 6.2412C6.82525 5.58632 6.82535 4.43448 6.82551 4.42291C6.85143 2.49031 8.06823 0.931641 10.007 0.931641C11.9504 0.931641 13.114 2.49779 13.1325 4.43681C13.1326 4.44505 13.1326 5.58897 13.1326 6.2412M13.1326 6.2412H15.7506C16.2772 6.2412 16.7214 6.63332 16.7867 7.15584L17.2114 10.5534M13.1326 6.2412C13.1326 6.49929 13.1327 5.63624 13.1327 5.63951M9.82015 13.2819H24.4871M24.4871 13.2819L20.8097 9.60447M24.4871 13.2819L20.8097 16.9593"
@@ -821,68 +556,21 @@
               <span><i class="bi bi-chevron-right"></i></span>
             </a>
           </div>
-
-          <div style="
-              background-color: rgb(245 245 245);
-              border-radius: 5px;
-              border: 1px solid #dcdcdc;
-              margin-top: 10px;
-            ">
-            <a class="mobile-nav-item" style="
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                text-decoration: none;
-                cursor: pointer;
-              " [routerLink]="isServiceDisabled ? null : '/service'" (click)="onNavClick($event)"
+          <div class="bg-light-border-mt10-unique">
+            <a class="mobile-nav-item flex-between-center-cursor-unique"
+              [routerLink]="isServiceDisabled ? null : '/service'" (click)="onNavClick($event)"
               [class.disabled]="isServiceDisabled">
-              <!-- href="service"
-            routerLink="service"
-            (click)="closemodelllllll()" -->
-
-              <!-- {{isServiceDisabled}} -->
-
-              <div style="display: flex; align-items: center; gap: 15px">
+              <div class="flex-center-gap15-unique">
                 <img height="24px" width="24px" src="assets/img/blueService.svg" alt="" />
-
-                <!-- {{isServiceDisabled}} -->
                 <span>{{ "header.services" | translate }}</span>
               </div>
               <span><i class="bi bi-chevron-right"></i></span>
             </a>
           </div>
-
-          <div *ngIf="userID != 0 && userID != null && userID != undefined" style="
-              background-color: rgb(245 245 245);
-              border-radius: 5px;
-              border: 1px solid #dcdcdc;
-              margin-top: 10px;
-            ">
-            <a href="service" class="mobile-nav-item" style="
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                text-decoration: none;
-                cursor: pointer;
-              " routerLink="service" (click)="openOrdersModal()">
-              <!-- <a
-            [routerLink]="isServiceDisabled ? null : '/service'"
-            (click)="isServiceDisabled ? handleNavClick('S', $event) : 'openOrdersModal()'"
-            [class.disabled]="isServiceDisabled"
-
-
-            class="mobile-nav-item"
-            style="
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              text-decoration: none;
-              cursor: pointer;
-            "
-
-          > -->
-
-              <div style="display: flex; align-items: center; gap: 15px">
+          <div *ngIf="userID != 0 && userID != null && userID != undefined" class="bg-light-border-mt10-unique">
+            <a href="service" class="mobile-nav-item flex-between-center-cursor-unique" routerLink="service"
+              (click)="openOrdersModal()">
+              <div class="flex-center-gap15-unique">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <rect x="4" y="3" width="14" height="18" stroke="#2A3B8F" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round" rx="2" />
@@ -895,26 +583,14 @@
                   <line x1="7" y1="15" x2="11" y2="15" stroke="#2A3B8F" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round" />
                 </svg>
-
                 <span>{{ "header.profile.myOrders" | translate }}</span>
               </div>
               <span><i class="bi bi-chevron-right"></i></span>
             </a>
           </div>
-          <div style="
-              background-color: rgb(245 245 245);
-              border-radius: 5px;
-              border: 1px solid #dcdcdc;
-              margin-top: 10px;
-            ">
-            <a class="mobile-nav-item" style="
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                text-decoration: none;
-                cursor: pointer;
-              " (click)="openHelpandSupport()">
-              <div style="display: flex; align-items: center; gap: 15px">
+          <div class="bg-light-border-mt10-unique">
+            <a class="mobile-nav-item flex-between-center-cursor-unique" (click)="openHelpandSupport()">
+              <div class="flex-center-gap15-unique">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M20 7H4C2.89543 7 2 7.89543 2 9V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V9C22 7.89543 21.1046 7 20 7Z"
@@ -923,48 +599,25 @@
                     d="M16 21V5C16 4.46957 15.7893 3.96086 15.4142 3.58579C15.0391 3.21071 14.5304 3 14 3H10C9.46957 3 8.96086 3.21071 8.58579 3.58579C8.21071 3.96086 8 4.46957 8 5V21"
                     stroke="#2A3B8F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
-
                 <span> {{ "header.helpSupport" | translate }}</span>
               </div>
               <span (click)="openHelpandSupport()"><i class="bi bi-chevron-right"></i></span>
             </a>
           </div>
-
-          <div style="
-              background-color: rgb(245 245 245);
-              border-radius: 5px;
-              border: 1px solid #dcdcdc;
-              margin-top: 10px;
-            ">
-            <a (click)="openAbout()" class="mobile-nav-item" style="
-                display: flex;
-                align-items: center;
-                cursor: pointer;
-                justify-content: space-between;
-                text-decoration: none;
-              ">
-              <div style="display: flex; align-items: center; gap: 5px">
-                <img src="assets/img/PockITLogoF.png" alt="PockIt Logo" style="height: 24px; width: 28px" />
-
+          <div class="bg-light-border-mt10-unique">
+            <a (click)="openAbout()" class="mobile-nav-item flex-center-space-cursor-unique">
+              <div class="flex-center-gap5-unique">
+                <img src="assets/img/PockITLogoF.png" alt="PockIt Logo" class="size-24x28-unique" />
                 <span>&nbsp;&nbsp;{{ "header.about" | translate }}</span>
               </div>
               <span><i class="bi bi-chevron-right"></i></span>
             </a>
           </div>
-          <div *ngIf="!isdeleteAccount && userID != 0 && userID != null && userID != undefined" style="
-              background-color: rgb(245 245 245);
-              border-radius: 5px;
-              border: 1px solid #dcdcdc;
-              margin-top: 10px;
-            ">
-            <a class="mobile-nav-item" data-bs-toggle="modal" data-bs-target="#ratenowmodaltrack" style="
-                display: flex;
-                align-items: center;
-                cursor: pointer;
-                justify-content: space-between;
-                text-decoration: none;
-              ">
-              <div style="display: flex; align-items: center; gap: 5px">
+          <div *ngIf="!isdeleteAccount && userID != 0 && userID != null && userID != undefined"
+            class="bg-light-border-mt10-unique">
+            <a class="mobile-nav-item flex-center-space-cursor-unique" data-bs-toggle="modal"
+              data-bs-target="#ratenowmodaltrack">
+              <div class="flex-center-gap5-unique">
                 <svg width="28px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                   stroke="#2A3B8F">
                   <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -980,20 +633,10 @@
               <span><i class="bi bi-chevron-right"></i></span>
             </a>
           </div>
-          <div *ngIf="isdeleteAccount && userID != 0 && userID != null && userID != undefined" style="
-              background-color: rgb(245 245 245);
-              border-radius: 5px;
-              border: 1px solid #dcdcdc;
-              margin-top: 10px;
-            ">
-            <a class="mobile-nav-item" style="
-                display: flex;
-                align-items: center;
-                cursor: pointer;
-                justify-content: space-between;
-                text-decoration: none;
-              ">
-              <div style="display: flex; align-items: center; gap: 5px">
+          <div *ngIf="isdeleteAccount && userID != 0 && userID != null && userID != undefined"
+            class="bg-light-border-mt10-unique">
+            <a class="mobile-nav-item flex-center-space-cursor-unique">
+              <div class="flex-center-gap5-unique">
                 <svg width="28px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                   stroke="#2A3B8F">
                   <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -1010,19 +653,9 @@
               <span><i class="bi bi-chevron-right"></i></span>
             </a>
           </div>
-          <div style="
-    background-color: rgb(251, 251, 251);
-    border-radius: 5px;
-    border: 1px solid #2a3b8f;
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-    height: 35px;
-    justify-content: center;
-    background-color: #2a3b8f;
-  ">
-            <a (click)="!isLoggingOut && onLogout()" class="mobile-nav-item"
-              [style.pointerEvents]="isLoggingOut ? 'none' : 'auto'" style="cursor: pointer; color: white">
+          <div class="bg-blue-flex-center-unique">
+            <a (click)="!isLoggingOut && onLogout()" class="mobile-nav-item cursor-pointer-white-unique"
+              [style.pointerEvents]="isLoggingOut ? 'none' : 'auto'">
               <ng-container *ngIf="!isLoggingOut">
                 <span *ngIf="userID else elseuserblock"> {{ "header.logout" | translate }}</span>
                 <ng-template #elseuserblock>Login</ng-template>
@@ -1033,13 +666,11 @@
               </ng-container>
             </a>
           </div>
-
         </div>
       </div>
     </div>
-
     <div *ngIf="showContent == 'updateProfile'">
-      <div class="mobile-menu-header" style="justify-content: left">
+      <div class="mobile-menu-header justify-left-unique">
         <button class="close-menu-btn" (click)="gotoProfile1111()">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1048,40 +679,16 @@
         </button>
         {{ "header.yourProfile" | translate }}
       </div>
-
       <div class="mobile-menu-content">
-        <!-- Login/Profile in mobile menu -->
-
         <div *ngIf="userID" class="profile-wrapper">
           <div class="profile-header d-flex flex-column">
-            <!-- Profile Photo Section -->
-            <div class="d-flex justify-content-center align-items-center" style="height: 100%; width: 100%">
+            <div class="d-flex justify-content-center align-items-center full-size-unique">
               <div
                 class="profile-photo-container position-relative d-flex justify-content-center align-items-center profile-image">
-                <img [src]="imagePreview || 'assets/img/blueEmpImage.png'" alt="Profile Photo" class="profile-photo"
-                  (error)="setDefaultImage($event)" (click)="openImage(imagePreview)" style="
-                    width: 100px;
-                    height: 100px;
-                    border-radius: 50%;
-                    object-fit: cover;
-                    border: 3px solid #f36631;
-                  " />
-                <button class="edit-photo-btn" style="
-                    width: 30px;
-                    height: 30px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    border: none;
-                    cursor: pointer;
-                    position: absolute;
-                    bottom: 5px;
-                    right: 5px;
-                    background-color: white;
-                    border-radius: 50%;
-                    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-                    overflow: hidden;
-                  " (click)="openprofileModal()">
+                <img [src]="imagePreview || 'assets/img/blueEmpImage.png'" alt="Profile Photo"
+                  class="profile-photo profile-img-100px-border-unique" (error)="setDefaultImage($event)"
+                  (click)="openImage(imagePreview)" />
+                <button class="edit-photo-btn btn-circle-30px-shadow-unique" (click)="openprofileModal()">
                   <svg width="13" height="13" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M13.2543 2.52944L13.2541 2.52967L12.5371 3.25402L14.6921 5.40906L15.4183 4.6828L13.2543 2.52944ZM13.2543 2.52944C13.3951 2.38636 13.5629 2.27275 13.748 2.19523C13.9331 2.11772 14.1318 2.07785 14.3324 2.07797V2.07814M13.2543 2.52944L14.3324 2.07814M14.3324 2.07814L14.3383 2.0778M14.3324 2.07814L14.3383 2.0778M14.3383 2.0778C14.5397 2.06613 14.7411 2.10019 14.9275 2.17745C15.1138 2.2547 15.2803 2.37314 15.4144 2.52388L15.4143 2.52398M14.3383 2.0778L15.4143 2.52398M15.4143 2.52398L15.4183 2.52802M15.4143 2.52398L15.4183 2.52802M15.4183 2.52802C15.7035 2.81405 15.8636 3.20149 15.8636 3.60541M15.4183 2.52802L15.8636 3.60541M15.8636 3.60541C15.8636 4.00929 15.7036 4.39669 15.4184 4.6827L15.8636 3.60541ZM15.3711 1.10425L15.3328 1.19664L1.30183 16.9629C1.36117 16.9874 1.42478 17 1.489 17V17.1H1.48906H4.42302C4.50036 17.1 4.57697 17.0848 4.64843 17.0552L4.61015 16.9628L4.64843 17.0552C4.71988 17.0256 4.7848 16.9822 4.83948 16.9275C4.83949 16.9274 4.83949 16.9274 4.8395 16.9274L16.2513 5.51563L16.2514 5.51551C16.7577 5.00758 17.0416 4.31944 17.0408 3.60229C17.0399 2.8852 16.7544 2.19778 16.2471 1.69104C15.9967 1.43947 15.699 1.24003 15.3711 1.10425ZM13.8592 6.24194L4.17915 15.922H2.07801V13.8192L11.7083 4.09109L13.8592 6.24194Z"
@@ -1090,24 +697,21 @@
                 </button>
               </div>
             </div>
-
-            <!-- Profile Details Section -->
             <div class="profile-details">
               <div class="align-items-center">
                 <form class="register-form" #registrationForm="ngForm" (ngSubmit)="updateUserProfile(registrationForm)">
                   <div class="form-field">
-                    <label>{{ "header.profile.name" | translate }} <span style="color: red">*</span></label>
+                    <label>{{ "header.profile.name" | translate }} <span class="text-red-unique">*</span></label>
                     <input type="text" [placeholder]="'header.profile.nameLabel' | translate" required name="name"
                       [(ngModel)]="userData.NAME" #name="ngModel" minlength="2" maxlength="128" />
                     <div class="error-message" *ngIf="name.errors?.['required'] && name.touched">
                       {{ "header.profile.nameRequired" | translate }}
                     </div>
                   </div>
-
                   <div class="form-field">
                     <label>{{
                       "header.profile.mobileNumber" | translate
-                      }}<span style="color: red">*</span></label>
+                      }}<span class="text-red-unique">*</span></label>
                     <div class="phone-input-group">
                       <input type="text" [placeholder]="'header.profile.mobileLabel' | translate" required
                         name="phonenumber" [(ngModel)]="userData.MOBILE_NO" #phone="ngModel"
@@ -1118,43 +722,35 @@
                       class="error-message">
                       {{ "header.profile.mobileRequired" | translate }}
                     </div>
-
                     <div *ngIf="(phone.errors?.['pattern'] && (phone.touched || registrationSubmitted))"
                       class="error-message">
                       {{ "header.profile.mobileInvalid" | translate }}
                     </div>
                   </div>
-
                   <div class="form-field">
-                    <label> {{ "header.profile.email" | translate }}<span style="color: red">*</span></label>
+                    <label> {{ "header.profile.email" | translate }}<span class="text-red-unique">*</span></label>
                     <input type="email" placeholder="Eg. abcd@gmail.com" required name="emailid"
                       [(ngModel)]="userData.EMAIL" #email="ngModel" maxlength="128" [disabled]="true"
                       [pattern]="commonFunction.emailpattern" autocomplete="off" />
-
                     <div *ngIf="(email.errors?.['required'] && (email.touched || registrationSubmitted))"
                       class="error-message">
                       {{ "header.profile.emailRequired" | translate }}
                     </div>
-
                     <div *ngIf="(email.errors?.['pattern'] && (email.touched || registrationSubmitted))"
                       class="error-message">
                       {{ "header.profile.emailInvalid" | translate }}
                     </div>
                   </div>
-                  <div class="form-field" *ngIf="userData?.CUSTOMER_TYPE=='I'"
-                    style="display: flex;align-items: center;">
+                  <div class="form-field flex-align-center-unique" *ngIf="userData?.CUSTOMER_TYPE=='I'">
                     <label>Is Have GST?&nbsp;&nbsp;</label>
-
                     <div class="form-check form-switch">
-
-                      <input class="form-check-input" style="    padding: 11px 16px !important;
-    border-radius: 20px !important;
-    width: 54px;" [(ngModel)]="userData.IS_HAVE_GST" (ngModelChange)="chagegst($event)" name="ishavegst"
-                        type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                      <input class="form-check-input pill-padding-width-unique" [(ngModel)]="userData.IS_HAVE_GST"
+                        (ngModelChange)="chagegst($event)" name="ishavegst" type="checkbox" role="switch"
+                        id="flexSwitchCheckChecked" checked>
                     </div>
                   </div>
                   <div class="form-field" *ngIf="userData?.CUSTOMER_TYPE=='I' && userData?.IS_HAVE_GST">
-                    <label>Company Name<span style="color: red">*</span></label>
+                    <label>Company Name<span class="text-red-unique">*</span></label>
                     <input type="text" placeholder="Enter company name" required name="companynm"
                       [(ngModel)]="userData.INDIVIDUAL_COMPANY_NAME" #companyname="ngModel" minlength="2"
                       maxlength="128" />
@@ -1163,10 +759,8 @@
                       Enter company name
                     </div>
                   </div>
-
-                  <div class="form-field" *ngIf="userData?.CUSTOMER_TYPE=='I' && userData?.IS_HAVE_GST"
-                    style="margin-bottom: 2px !important;">
-                    <label>Company Address<span style="color: red">*</span></label>
+                  <div class="form-field mb-2px-unique" *ngIf="userData?.CUSTOMER_TYPE=='I' && userData?.IS_HAVE_GST">
+                    <label>Company Address<span class="text-red-unique">*</span></label>
                     <textarea placeholder="Enter company Address" required name="COMPANY_ADDRESS" rows="2"
                       [(ngModel)]="userData.COMPANY_ADDRESS" #companyaddress="ngModel" minlength="2" maxlength="256"
                       (keypress)="commonFunction.allowOnly($event)"></textarea>
@@ -1175,9 +769,8 @@
                       Enter company address
                     </div>
                   </div>
-
                   <div class="form-field" *ngIf="userData?.CUSTOMER_TYPE=='I' && userData?.IS_HAVE_GST">
-                    <label>GST No.<span style="color: red">*</span></label>
+                    <label>GST No.<span class="text-red-unique">*</span></label>
                     <input type="text" placeholder="Enter GST No." required name="GST_NO" [(ngModel)]="userData.GST_NO"
                       #GST_NOs="ngModel" minlength="15" maxlength="15"
                       pattern="^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$" />
@@ -1185,14 +778,10 @@
                       *ngIf="GST_NOs.errors?.['required'] && (GST_NOs.touched || registrationSubmitted)">
                       Enter GST No.
                     </div>
-
                     <div *ngIf="(GST_NOs.errors?.['pattern'] && (GST_NOs.touched))" class="error-message">
                       Please enter valid GST No.
                     </div>
                   </div>
-
-
-
                   <button type="submit" class="register-button">
                     <span *ngIf="isprofileLoading" class="spinner-border spinner-border-sm me-2"></span>
                     {{ isprofileLoading ? "Update Profile" : "Update Profile" }}
@@ -1203,45 +792,32 @@
           </div>
         </div>
         <div class="modal fade show" id="photoModal" tabindex="-1">
-          <div class="modal-dialog modal-dialog-centered" style="max-width: 300px">
+          <div class="modal-dialog modal-dialog-centered max-w-300-unique">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title">Select Photo</h5>
                 <button type="button" class="btn-close" (click)="closeModal()"></button>
               </div>
               <div class="modal-body">
-                <div style="border-top: 1px solid #ccc; padding: 10px" (click)="openCamera()">
-                  <span style="cursor: pointer"><i style="color: #2a3b8f" class="bi bi-camera-fill"></i>
+                <div class="border-top-pad-10-unique" (click)="openCamera()">
+                  <span class="nav-link-pointer"><i class="bi bi-camera-fill text-blue-2a3b8f-unique"></i>
                     &nbsp; Camera</span>
                 </div>
-                <div style="
-                    border-top: 1px solid #ccc;
-                    border-bottom: 1px solid #ccc;
-                    padding: 10px;
-                  ">
-                  <span (click)="fileInput.click()" style="cursor: pointer">
-                    <i style="color: #2a3b8f" class="bi bi-image-fill"></i>
+                <div class="border-y-pad-10-unique">
+                  <span (click)="fileInput.click()" class="nav-link-pointer">
+                    <i class="bi bi-image-fill text-blue-2a3b8f-unique"></i>
                     &nbsp; {{ "header.profile.uploadFile" | translate }}
                     <input type="file" #fileInput accept=".png, .jpg, .jpeg" (change)="fileChangeEvent($event)"
                       hidden />
                   </span>
                 </div>
-
-                <!-- <button class="modal-btn" (click)="openCamera()">
-                  📷
-                </button>
-                <label class="modal-btn">
-                  📁 Upload File
-
-                </label> -->
               </div>
             </div>
           </div>
         </div>
-        <!-- Capture Photo Modal -->
         <div class="modal fade show" id="CapturePhotoModal" tabindex="-1" [hidden]="!isCapturePhotoModalOpen">
           <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="padding: 0">
+            <div class="modal-content p-0-unique">
               <div class="modal-header">
                 <h5 class="modal-title">
                   {{ "header.profile.photoCapture.title" | translate }}
@@ -1250,25 +826,19 @@
               </div>
               <div class="modal-body text-center">
                 <video #videoElement autoplay></video>
-                <canvas #canvasElement style="display: none"></canvas>
-
+                <canvas #canvasElement class="display-none-unique"></canvas>
                 <button class="capture-btn" (click)="captureImage()">
                   📸 {{ "header.profile.photoCapture.capture" | translate }}
                 </button>
-
                 <img [src]="capturedImage" *ngIf="capturedImage" class="captured-photo" />
               </div>
             </div>
           </div>
         </div>
-
-        <!-- Mobile action buttons -->
-        <!-- <div class="mobile-action-buttons mobile-profile-section"></div> -->
       </div>
     </div>
-
     <div *ngIf="showContent == 'addressTab'">
-      <div class="mobile-menu-header" style="justify-content: left">
+      <div class="mobile-menu-header justify-left-unique">
         <button class="close-menu-btn" (click)="gotoProfile()">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1278,7 +848,7 @@
         {{ "menu.addressBook.title" | translate }}
       </div>
       <div *ngIf="loadAddresses" class="loading-container">
-        <div style="text-align: center" class="spinner-border" role="status">
+        <div class="spinner-border text-center" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
@@ -1290,7 +860,7 @@
             <div class="address-header">
               <div class="icon-text">
                 <i class="bi bi-house-door"></i>
-                <span class="address-name" style="font-size: 13px;">{{ address.ADDRESS_LINE_1 }}</span>
+                <span class="address-name font-13px-unique">{{ address.ADDRESS_LINE_1 }}</span>
               </div>
               <div *ngIf="customertype1 == 'I'; else otherCode">
                 <button class="edit-btn" (click)="editAddress(address)">
@@ -1300,41 +870,33 @@
                   <i class="bi bi-trash"></i>
                 </button>
               </div>
-
               <ng-template #otherCode>
                 <input type="radio" name="addressdefault" [value]="address.ID" [(ngModel)]="selectedAddress" />
               </ng-template>
             </div>
-            <div class="address-details" style="font-size: 12px;">
+            <div class="address-details font-12px-unique">
               {{ address.ADDRESS_LINE_2 }}
             </div>
             <div class="default-badge" *ngIf="address.IS_DEFAULT">
               {{ "menu.addressBook.labels.defaultAddress" | translate }}
             </div>
           </div>
-
-          <div *ngIf="customertype1 == 'I'; else otherCode2" class="add-address" (click)="addNewAddress()"
-            style="font-size: 15px;">
+          <div *ngIf="customertype1 == 'I'; else otherCode2" class="add-address font-15px-unique"
+            (click)="addNewAddress()">
             {{ "menu.addressBook.labels.addNew" | translate }}
           </div>
-
           <ng-template #otherCode2>
             <div class="add-address" (click)="confirmAddress()">
-              <!-- <i class="bi bi-house-door" style="margin-right: 8px;"></i>  -->
               Set address as default
-              <i style="margin-left: 8px" class="bi bi-arrow-right-circle-fill"></i>
+              <i class="bi bi-arrow-right-circle-fill ml-8px-unique"></i>
             </div>
           </ng-template>
         </div>
       </div>
     </div>
     <div *ngIf="showContent == 'addressForm'">
-
       <div *ngIf="addressForm">
-
-
-
-        <div class="mobile-menu-header" style="justify-content: left">
+        <div class="mobile-menu-header justify-left-unique">
           <button class="close-menu-btn" (click)="gotoProfile()">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1342,9 +904,8 @@
             </svg>
           </button>
         </div>
-
         <div class="mobile-menu-content">
-          <div style="flex-shrink: 0; margin: 0px; text-align: center">
+          <div class="flex-noshrink-center-unique">
             <svg width="66" height="66" viewBox="0 0 66 66" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="66" height="65.1219" rx="32.561" fill="#FAFAFA" />
               <circle cx="32.561" cy="32.561" r="26.561" fill="#F4F4F4" />
@@ -1354,61 +915,38 @@
               <circle cx="33.0137" cy="31.0567" r="5.97857" fill="#D9D9D9" />
             </svg>
           </div>
-
-          <div class="address-form-content" style="
-            background: #ffffff;margin-top: 0px !important;
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-          ">
-            <h2 class="form-title" style="font-size: 16px;">{{ "address.addTitle" | translate }}</h2>
-
-            <form class="address-form" #addressSubmit="ngForm" (ngSubmit)="saveAddress(addressSubmit)"
-              style="flex: 1; display: flex; flex-direction: column" (keydown)="onKeyDown($event)">
-              <div style="max-height: 60vh; overflow: auto;scrollbar-width: none; ">
-                <!-- <div class="contact-details" *ngIf="userID">
-                  <p class="section-label">
-                    {{ "address.contactPersonDetails" | translate }}
-                  </p>
-                  <div style="font-size: 13px;">{{ userNAME }} {{ userMobile }}</div>
-                </div> -->
-
+          <div class="address-form-content bg-white-flex-col-scroll-unique">
+            <h2 class="form-title font-16px-unique">{{ "address.addTitle" | translate }}</h2>
+            <form class="address-form flex-1-col-unique" #addressSubmit="ngForm" (ngSubmit)="saveAddress(addressSubmit)"
+              (keydown)="onKeyDown($event)">
+              <div class="maxh-60vh-scroll-unique">
                 <div class="save-address-type">
                   <p class="section-label">
                     {{ "address.saveAddressAs" | translate }}
                   </p>
                   <div class="address-type-options">
-                    <label class="radio-container" style="padding: 6px;" [class.selected]="addressForm.TYPE === 'H'">
+                    <label class="radio-container padding-6px-unique" [class.selected]="addressForm.TYPE === 'H'">
                       <input type="radio" [(ngModel)]="addressForm.TYPE" name="addressType" value="H" />
                       <span class="radio-label">{{
                         "address.home" | translate
                         }}</span>
                     </label>
-                    <label class="radio-container" style="padding: 6px;" [class.selected]="addressForm.TYPE === 'F'">
+                    <label class="radio-container padding-6px-unique" [class.selected]="addressForm.TYPE === 'F'">
                       <input type="radio" [(ngModel)]="addressForm.TYPE" name="addressType" value="F" />
                       <span class="radio-label">{{
                         "address.work" | translate
                         }}</span>
                     </label>
-                    <label class="radio-container" style="padding: 6px;" [class.selected]="addressForm.TYPE === 'O'">
+                    <label class="radio-container padding-6px-unique" [class.selected]="addressForm.TYPE === 'O'">
                       <input type="radio" [(ngModel)]="addressForm.TYPE" name="addressType" value="O" />
                       <span class="radio-label">Other</span>
                     </label>
                   </div>
                 </div>
-
-                <div class="form-group" style="
-                  display: flex;
-                  justify-content: center;
-                  cursor: pointer;
-                  font-weight: bold;
-                ">
-                  <span (click)="onshowMap()" style="color: #3170de" class="form-text">{{ "address.change" | translate
+                <div class="form-group flex-center-cursor-bold-unique">
+                  <span (click)="onshowMap()" class="form-text color-3170de-uniqu">{{ "address.change" | translate
                     }}</span>
                 </div>
-
                 <div class="form-group">
                   <input type="text" class="form-control" [placeholder]="'address.housePlaceholder' | translate"
                     [(ngModel)]="addressForm.ADDRESS_LINE_1" name="addressLine1" required #addressLine1="ngModel"
@@ -1418,22 +956,15 @@
                     {{ "address.validationErrors.houseRequired" | translate }}
                   </div>
                 </div>
-
                 <div class="form-group">
                   <input type="text" class="form-control" [(ngModel)]="addressForm.ADDRESS_LINE_2"
                     [placeholder]="'address.buildingPlaceholder' | translate" name="addressLine2" />
                 </div>
-
                 <div class="form-group">
                   <input type="text" class="form-control" [placeholder]="'address.landmark' | translate"
                     [(ngModel)]="addressForm.LANDMARK" name="LANDMARK" />
                 </div>
-
                 <div class="form-group pincode-field">
-                  <!-- (click)="
-                    togglePincodeDropdown(selectedPincode);
-                    $event.stopPropagation()" -->
-
                   <div class="pincode-input-group">
                     <div class="input-container">
                       <input type="text" class="form-control" [(ngModel)]="selectedPincode" [placeholder]="
@@ -1442,58 +973,23 @@
                           : ('address.selectPinCode' | translate)
                       " name="pincode" readonly #pincode="ngModel" autocomplete="false" required />
                       <div *ngIf="isLoading" class="loading-container1 spinner-inside">
-                        <div style="text-align: center" class="spinner-border" role="status">
+                        <div class="spinner-border text-center" role="status">
                           <span class="visually-hidden">{{
                             "header.search.loading" | translate
                             }}</span>
                         </div>
                       </div>
                     </div>
-
-                    <!-- <div class="dropdown-icon">
-                      <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
-                        <path d="M1 1L5 5L9 1" stroke="#666" stroke-width="1.5" />
-                      </svg>
-                    </div> -->
                   </div>
-
-                  <!-- <div
-                  *ngIf="pincode.errors?.['required'] && (pincode.touched || addressSubmitted)"
-                  class="error-message"
-                >
-                  Please Select Pin Code.
-                </div> -->
-
-                  <!-- <div class="pincode-dropdown-container" *ngIf="showPincodeDropdown">
-                    <div class="pincode-dropdown">
-                      <div class="search-box">
-                        <input type="text" [placeholder]="'address.searchPincode' | translate"
-                          [(ngModel)]="searchPincode" (ngModelChange)="
-                          togglePincodeDropdown123(searchPincode)
-                        " name="pincodeSearch" (input)="filterPincodes($event)" (click)="$event.stopPropagation()"
-                          #pincodeSearch="ngModel" />
-                      </div>
-                      <div class="pincode-list">
-                        <div class="pincode-item" *ngFor="let pincode of filteredPincodes" (click)="
-                          selectPincode(pincode); $event.stopPropagation()
-                        ">
-                          <span class="area">{{ pincode.PINCODE_NUMBER }}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div> -->
                 </div>
-
                 <div *ngIf="(pincode.errors?.['required'] && (pincode.touched || addressSubmitted))"
-                  class="error-message" style="margin-top: -0.75rem">
+                  class="error-message mt-neg-075rem-unique">
                   {{ "address.pincodeValidation" | translate }}
                 </div>
-
                 <div class="form-group">
                   <input type="text" class="form-control" [(ngModel)]="addressForm.CITY_NAME"
                     [placeholder]="'address.enterCityName' | translate" name="cityName" />
                 </div>
-
                 <div class="form-group pincode-field">
                   <div class="pincode-input-group" (click)="toggleStatesDropdown(); $event.stopPropagation()">
                     <input type="text" class="form-control" name="state" [value]="
@@ -1506,7 +1002,6 @@
                       </svg>
                     </div>
                   </div>
-
                   <div class="pincode-dropdown-container" *ngIf="showStateDropdown">
                     <div class="pincode-dropdown">
                       <div class="search-box">
@@ -1516,27 +1011,21 @@
                       <div class="pincode-list">
                         <div class="pincode-item" *ngFor="let state of filteredStates"
                           (click)="selectState(state); $event.stopPropagation()">
-                          <!-- <span class="state">{{ state.code }}</span> -->
                           <span class="area">{{ state.NAME }}</span>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div *ngIf="VisibleIsDefault" class="form-check" style="margin-bottom: 10px;">
+                <div *ngIf="VisibleIsDefault" class="form-check mb-10px-unique">
                   <input class="form-check-input" [(ngModel)]="addressForm.IS_DEFAULT" type="checkbox"
                     name="flexCheckChecked" id="flexCheckChecked" />
-                  <label class="form-check-label" for="flexCheckChecked" style="font-size: 13px;font-weight: 600;">
+                  <label class="form-check-label font-13px-fw-600-unique" for="flexCheckChecked">
                     {{ "address.isDefaultAddress" | translate }}
                   </label>
                 </div>
               </div>
-              <!-- <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 10px; background: #fcfcfd;">
-              <button type="button" class="confirm-button" (click)="saveAddress()">
-                Confirm
-              </button>
-            </div> -->
-              <button type="submit" class="confirm-button" style="margin-top: auto" [disabled]="isConfirmLoading">
+              <button type="submit" class="confirm-button mt-auto-unique" [disabled]="isConfirmLoading">
                 <span *ngIf="isConfirmLoading" class="spinner-border spinner-border-sm me-2"></span>
                 {{
                 isConfirmLoading
@@ -1550,7 +1039,7 @@
       </div>
     </div>
     <div *ngIf="showContent === 'languageTab'">
-      <div class="mobile-menu-header d-flex align-items-center" style="justify-content: flex-start">
+      <div class="mobile-menu-header d-flex align-items-center justify-start-unique">
         <button class="close-menu-btn" (click)="gotoSettings()">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1558,22 +1047,19 @@
           </svg>
         </button>
       </div>
-
       <div class="mobile-menu-content">
         <span class="language-title">{{
           "header.languagess" | translate
           }}</span>
       </div>
-
       <div class="language-list-container">
         <div *ngIf="appLanguageLoading" class="loading-container">
-          <div style="text-align: center" class="spinner-border" role="status">
+          <div class="spinner-border text-center" role="status">
             <span class="visually-hidden">{{
               "header.search.loading" | translate
               }}</span>
           </div>
         </div>
-
         <div *ngIf="!appLanguageLoading">
           <div class="language-option" *ngFor="let lang of appLanguageData">
             <input type="radio" [id]="lang.ID" [value]="lang.ID" [(ngModel)]="selectedLanguage"
@@ -1583,9 +1069,8 @@
         </div>
       </div>
     </div>
-
     <div *ngIf="showContent == 'aboutTab'">
-      <div class="mobile-menu-header" style="justify-content: left">
+      <div class="mobile-menu-header justify-left-unique">
         <button class="close-menu-btn" (click)="gotoSettings()">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1593,30 +1078,18 @@
           </svg>
         </button>
       </div>
-
       <div class="mobile-menu-content">
-        <div style="padding-left: 8px; font-weight: 600; margin-bottom: 25px">
+        <div class="pl-8-fw-600-mb-25-unique">
           {{ "menu.settings.items.about" | translate }}
         </div>
-        <a class="mobile-nav-item" style="
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            text-decoration: none;
-            margin-bottom: 0px;
-          ">
-          <div style="display: flex; align-items: center; gap: 5px">
+        <a class="mobile-nav-item flex-align-between-no-dec-mb0-unique">
+          <div class="flex-center-gap5-unique">
             <span>{{ "menu.settings.items.terms" | translate }}</span>
           </div>
           <span (click)="openTermsandServices()"><i class="bi bi-chevron-right"></i></span>
         </a>
-        <a class="mobile-nav-item" style="
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            text-decoration: none;
-          ">
-          <div style="display: flex; align-items: center; gap: 5px">
+        <a class="mobile-nav-item flex-align-between-no-dec-unique">
+          <div class="flex-center-gap5-unique">
             <span>{{ "menu.settings.items.licenses" | translate }}</span>
           </div>
           <span (click)="openLicenses()"><i class="bi bi-chevron-right"></i></span>
@@ -1624,7 +1097,7 @@
       </div>
     </div>
     <div *ngIf="showContent == 'licensesTab'">
-      <div class="mobile-menu-header" style="justify-content: left">
+      <div class="mobile-menu-header justify-left-unique">
         <button class="close-menu-btn" (click)="gotoAbout()" [attr.aria-label]="'header.menu.back' | translate">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1632,15 +1105,14 @@
           </svg>
         </button>
       </div>
-
       <div class="mobile-menu-content">
-        <div style="padding-left: 8px; font-weight: 600; margin-bottom: 25px">
+        <div class="pl-8-fw-600-mb-25-unique">
           {{ "menu.settings.items.licenses" | translate }}
         </div>
       </div>
     </div>
     <div *ngIf="showContent == 'TermsandServicesTab'">
-      <div class="mobile-menu-header" style="justify-content: left">
+      <div class="mobile-menu-header justify-left-unique">
         <button class="close-menu-btn" (click)="gotoAbout()" [attr.aria-label]="'header.menu.back' | translate">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1648,15 +1120,14 @@
           </svg>
         </button>
       </div>
-
       <div class="mobile-menu-content">
-        <div style="padding-left: 8px; font-weight: 600; margin-bottom: 25px">
+        <div class="pl-8-fw-600-mb-25-unique">
           {{ "menu.settings.items.terms" | translate }}
         </div>
       </div>
     </div>
     <div *ngIf="showContent == 'HelpandSupportTab'">
-      <div class="mobile-menu-header" style="justify-content: left">
+      <div class="mobile-menu-header justify-left-unique">
         <button class="close-menu-btn" (click)="gotoProfile()">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1664,9 +1135,8 @@
           </svg>
         </button>
       </div>
-
       <div class="mobile-menu-content">
-        <div style="padding-left: 8px; font-weight: 600; margin-bottom: 25px">
+        <div class="pl-8-fw-600-mb-25-unique">
           Help & Support
         </div>
         <div class="faq-container">
@@ -1674,7 +1144,7 @@
             {{ "menu.settings.items.faq" | translate }}
           </div>
           <div *ngIf="faqLoading" class="loading-container">
-            <div style="text-align: center" class="spinner-border" role="status">
+            <div class="spinner-border text-center" role="status">
               <span class="visually-hidden">{{
                 "header.search.loading" | translate
                 }}</span>
@@ -1699,7 +1169,6 @@
               </div>
             </div>
           </div>
-
           <div class="manage-tickets">
             <button class="btn btn-primary w-100" (click)="manageTickets()">
               {{ "menu.settings.items.manageTickets" | translate }}
@@ -1708,11 +1177,8 @@
         </div>
       </div>
     </div>
-
     <div *ngIf="showContent == 'myorder'">
-      <div class="mobile-menu-header d-flex align-items-center" style="justify-content: flex-start" style="font-size: 15px !important;
-        font-weight: 500 !important;
-        justify-content: flex-start !important;">
+      <div class="mobile-menu-header d-flex align-items-center justify-start-unique justify-start-unique">
         <button class="close-menu-btn" (click)="gotoProfile()" aria-label="Back">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1721,10 +1187,8 @@
         </button>
         {{ "menu.orders.title" | translate }}
       </div>
-
       <div class="mobile-menu-content">
         <div>
-          <!-- Tabs -->
           <div class="order-tabs d-flex justify-content-center mb-2">
             <button class="btn small-btn me-2" [class.active]="selectedTab === 'current'"
               (click)="switchTab('current')">
@@ -1734,94 +1198,41 @@
               {{ "menu.orders.shopOrders" | translate }}
             </button>
           </div>
-
-          <!-- Loading Spinner -->
           <div *ngIf="loading" class="text-center my-4">
             <div class="spinner-border text-primary" role="status"></div>
           </div>
-
-          <div class="container mt-4" style="padding: 0px !important;">
+          <div class="container mt-4 p-0-important-unique">
             <div *ngIf="!loading && selectedTab === 'current'">
               <div *ngIf="orders?.length > 0; else noDatademo">
-                <div class="card order-card" style="cursor: pointer;" *ngFor="let order of orders"
+                <div class="card order-card cursor-pointer-unique" *ngFor="let order of orders"
                   (click)="goToOrderDetails(order.ID)">
-                  <div class="d-flex justify-content-between"
-                    style="justify-content: flex-start !important;align-items: center;">
-                    <!-- <div class="service-icon d-flex align-items-center justify-content-center rounded-circle bg-light"
-                      style="width: 40px; height: 40px;">
-                      <img alt="Service Icon"
-                        *ngIf="order!==undefined && order.SERVICE_IMAGE!==undefined && order.SERVICE_IMAGE!==null && order.SERVICE_IMAGE!==''"
-                        class="rounded-circle" style="width: 35px; height: 35px;border: 1px solid #2a3b8f;"
-                        [src]="urllll + 'Item/' + order.SERVICE_IMAGE">
-                      <img alt="Service Icon" *ngIf="order!==undefined && order.SERVICE_IMAGE===null"
-                        class="rounded-circle" style="width: 35px; height: 35px;border: 1px solid #2a3b8f;"
-                        src="assets/img/nopimage.jpg">
-                    </div> -->
-
-                    <div class="service-icon d-flex align-items-center justify-content-center rounded-circle bg-light"
-                      style="width: 40px; height: 40px; border: 1px solid #2a3b8f;">
-                      <img *ngIf="order?.SERVICE_IMAGE" class="rounded-circle"
-                        [src]="urllll + 'Item/' + order.SERVICE_IMAGE" alt="Service Icon"
-                        style="width: 35px; height: 35px;  object-fit: contain;" />
-
-                      <img *ngIf="order && order.SERVICE_IMAGE === null" class="rounded-circle"
-                        src="assets/img/nopimage.jpg" alt="Service Icon"
-                        style="width: 35px; height: 35px;  object-fit: contain;" />
+                  <div class="d-flex justify-content-between justify-start-align-center-unique">
+                    <div
+                      class="service-icon d-flex align-items-center justify-content-center rounded-circle bg-light w40-h40-border2a3b8f-unique">
+                      <img *ngIf="order?.SERVICE_IMAGE" class="rounded-circle w35-h35-object-contain-unique"
+                        [src]="urllll + 'Item/' + order.SERVICE_IMAGE" alt="Service Icon" />
+                      <img *ngIf="order && order.SERVICE_IMAGE === null"
+                        class="rounded-circle w35-h35-object-contain-unique" src="assets/img/nopimage.jpg"
+                        alt="Service Icon" />
                     </div>
-
-
-                    <!-- *ngIf="order!==undefined && order.SERVICE_IMAGE===null" -->
-
-                    <!-- <img src="https://via.placeholder.com/50" class="product-img me-3" alt="Product Image"> -->
                     <div>
-                      <!-- <h6 class="mb-1">Apple MacBook Air Laptop: A...</h6> -->
-                      <small class="text-muted"
-                        style="font-size: 12px; font-weight: bold; color: black !important;">&nbsp;Order ID : {{
+                      <small class="text-muted font12-bold-black-unique">&nbsp;Order ID : {{
                         order.ORDER_NUMBER }}</small>
                     </div>
-                    <!-- <div>
-                      <span class="status-value badge" style="height: 20px; font-size: 12px" [ngStyle]="{
-                          'background-color':
-                            order.ORDER_STATUS === 'OP' &&
-                            order.REFUND_STATUS === 'P'
-                              ? 'red'
-                              : '',
-                          color:
-                            order.ORDER_STATUS === 'OP' &&
-                            order.REFUND_STATUS === 'P'
-                              ? 'white'
-                              : ''
-                        }">
-                        {{
-                        order.ORDER_STATUS === "OP" &&
-                        order.REFUND_STATUS === "P"
-                        ? "Cancel Requested"
-                        : order.ORDER_STATUS_NAME
-                        }}
-                      </span>
-                    </div> -->
                   </div>
-                  <hr style="
-                      border: 1px solid #c7c7c7;
-                      margin: 0px;
-                      margin-top: 8px;
-                    " />
-                  <div class="order-time d-flex align-items-center text-muted"
-                    style="margin-top: 10px; cursor: pointer">
+                  <hr class="border-c7c7c7-margin-top8-unique" />
+                  <div class="order-time d-flex align-items-center text-muted margin-top10-cursor-pointer-unique">
                     <div class="cart-icon">
                       <i class="bi bi-clock"></i>
                     </div>
-
                     &nbsp; &nbsp;
                     <span>{{ formatDate(order.CREATED_MODIFIED_DATE) }}</span>
                   </div>
-                  <!-- <hr style="border: 1px solid #c7c7c7; margin: 0px;margin-top: 4px;"> -->
-                  <div class="d-flex justify-content-between" style="margin-top: 4px; cursor: pointer">
-                    <p class="mb-1 text-muted" style="font-size: 12px; padding-top: 2px;color: black !important;">
+                  <div class="d-flex justify-content-between margin-top4-cursor-pointer-unique">
+                    <p class="mb-1 text-muted font12-paddingtop2-colorblack-unique">
                       <b>Status</b>
                     </p>
-                    <span class="status-value badge" style="font-size: 11px !important;    align-self: center;"
-                      [ngStyle]="{
+                    <span class="status-value badge font11-alignself-center-unique" [ngStyle]="{
                       'background-color':
                         order.ORDER_STATUS_NAME === 'OP' &&
                         order.REFUND_STATUS === 'P'
@@ -1843,11 +1254,10 @@
                   </div>
                 </div>
               </div>
-
               <ng-template #noDatademo>
                 <div class="text-center mt-4">
-                  <img src="assets/img/hand-drawn-no-data-concept.png" alt="No Data Available" class="img-fluid"
-                    style="max-width: 150px" />
+                  <img src="assets/img/hand-drawn-no-data-concept.png" alt="No Data Available"
+                    class="img-fluid maxwidth150-unique" />
                   <p class="text-muted mt-2">
                     <b>{{ "shop.NoDataAvailable" | translate }}</b>
                   </p>
@@ -1855,55 +1265,36 @@
               </ng-template>
             </div>
           </div>
-          <div class="container mt-4" style="padding: 0px !important;" *ngIf="!loading && selectedTab === 'past'">
+          <div class="container mt-4 p-0-important-unique" *ngIf="!loading && selectedTab === 'past'">
             <div *ngIf="Shoporders.length > 0; else noData">
-              <div class="card order-card" *ngFor="let order of Shoporders" (click)="goToOrderShopDetails(order.ID)"
-                style="cursor: pointer">
+              <div class="card order-card nav-link-pointer" *ngFor="let order of Shoporders"
+                (click)="goToOrderShopDetails(order.ID)">
                 <div class="d-flex align-items-center">
-                  <!-- <div class="service-icon d-flex align-items-center justify-content-center rounded-circle bg-light"
-                    style="width: 40px; height: 40px;">
-                    <img alt="Service Icon"
-                      *ngIf="order!==undefined && order.INVENTORY_IMAGE!==undefined && order.INVENTORY_IMAGE!==null && order.INVENTORY_IMAGE!==''"
-                      class="rounded-circle" style="width: 35px; height: 35px;border: 1px solid #2a3b8f;"
-                      [src]="urllll + 'InventoryImages/' + order.INVENTORY_IMAGE">
-                    <img alt="Service Icon" *ngIf="order!==undefined && order.INVENTORY_IMAGE===null"
-                      class="rounded-circle" style="width: 35px; height: 35px;border: 1px solid #2a3b8f;"
-                      src="assets/img/nopimage.jpg">
-                  </div> -->
-
-                  <div class="service-icon d-flex align-items-center justify-content-center rounded-circle bg-light"
-                    style="width: 40px; height: 40px;
-border: 1px solid #2a3b8f;">
-                    <img *ngIf="order?.INVENTORY_IMAGE" class="rounded-circle"
-                      [src]="urllll + 'InventoryImages/' + order.INVENTORY_IMAGE" alt="Service Icon"
-                      style="width: 30px; height: 30px;  object-fit: contain;" />
-
-                    <img *ngIf="!order?.INVENTORY_IMAGE" class="rounded-circle" src="assets/img/nopimage.jpg"
-                      alt="Service Icon" style="width: 30px; height: 30px;  object-fit: contain;" />
+                  <div
+                    class="service-icon d-flex align-items-center justify-content-center rounded-circle bg-light size40-border2a3b8f-unique">
+                    <img *ngIf="order?.INVENTORY_IMAGE" class="rounded-circle size30-object-contain-unique"
+                      [src]="urllll + 'InventoryImages/' + order.INVENTORY_IMAGE" alt="Service Icon" />
+                    <img *ngIf="!order?.INVENTORY_IMAGE" class="rounded-circle size30-object-contain-unique"
+                      src="assets/img/nopimage.jpg" alt="Service Icon" />
                   </div>
-
                   <div>
-                    <small class="text-muted"
-                      style="font-size: 12px; font-weight: bold; color: black !important;">&nbsp;Order ID : {{
+                    <small class="text-muted font12-bold-black-unique">&nbsp;Order ID : {{
                       order.ORDER_NUMBER }}</small>
                   </div>
                 </div>
-                <hr style="border: 1px solid #c7c7c7; margin: 0px; margin: 8px" />
-                <!-- <span class="text-muted" style="font-size: 12px;">{{ formatDate(order.CREATED_MODIFIED_DATE) }}</span> -->
-                <div class="order-time d-flex align-items-center text-muted" style="cursor: pointer">
+                <hr class="hr-border-c7c7c7-unique" />
+                <div class="order-time d-flex align-items-center text-muted nav-link-pointer">
                   <div class="cart-icon">
                     <i class="bi bi-clock"></i>
                   </div>
-
                   &nbsp; &nbsp;
                   <span>{{ formatDate(order.CREATED_MODIFIED_DATE) }}</span>
                 </div>
-
-                <div class="d-flex justify-content-between" style="margin-top: 5px">
-                  <p class="mb-1 text-muted" style="font-size: 12px;color: black !important;">
+                <div class="d-flex justify-content-between mt-5">
+                  <p class="mb-1 text-muted text-small-black">
                     <b>Status</b>
                   </p>
-                  <span class="status-value badge" style="font-size: 11px !important;    align-self: center;" [ngStyle]="{
+                  <span class="status-value badge font11-alignself-center-unique" [ngStyle]="{
                       'background-color':
                         order.ORDER_STATUS_NAME === 'OP' &&
                         order.REFUND_STATUS === 'P'
@@ -1927,8 +1318,8 @@ border: 1px solid #2a3b8f;">
             </div>
             <ng-template #noData>
               <div class="text-center mt-4">
-                <img src="assets/img/hand-drawn-no-data-concept.png" alt="No Data Available" class="img-fluid"
-                  style="max-width: 150px" />
+                <img src="assets/img/hand-drawn-no-data-concept.png" alt="No Data Available"
+                  class="img-fluid maxwidth150-unique" />
                 <p class="text-muted mt-2">
                   <b>{{ "shop.NoDataAvailable" | translate }}</b>
                 </p>
@@ -1938,7 +1329,6 @@ border: 1px solid #2a3b8f;">
         </div>
       </div>
     </div>
-
     <div class="drawer" *ngIf="showContent === 'createtickitTab'" [class.open]="showContent === 'createtickitTab'">
       <button class="close-menu-btn" (click)="gotoProfile()">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -1949,42 +1339,20 @@ border: 1px solid #2a3b8f;">
       <div class="drawer-content">
         <app-manage-tickits></app-manage-tickits>
       </div>
-      <!-- <div class="drawer-overlay" (click)="closeDrawer()"></div> -->
     </div>
   </div>
-
   <div *ngIf="showMap" class="map-container">
-    <div class="map-header" style="
-        background-color: #007bff;
-        padding: 12px 16px;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-radius: 6px;
-      ">
-      <div style="
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          width: 100%;
-        ">
-        <p class="mb-0" style="
-            margin: 0;
-            font-weight: bold;
-            font-size: 16px;
-            color: white !important;
-          ">
+    <div class="map-header custom-button">
+      <div class="flex-column-center">
+        <p class="mb-0 bold-white-text">
           {{ "address.userLocation" | translate }}
         </p>
-        <p class="text-muted small mb-0" style="margin: 0; font-size: 12px; color: white !important">
+        <p class="text-muted small mb-0 text-small-white">
           {{ "address.placeMarker" | translate }}
         </p>
       </div>
       <div>
-        <button class="close-menu-btn" (click)="closeMap()"
-          style="background: none; border: none; color: #fff; cursor: pointer">
+        <button class="close-menu-btn btn-transparent" (click)="closeMap()">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -1993,45 +1361,26 @@ border: 1px solid #2a3b8f;">
         </button>
       </div>
     </div>
-
     <div id="map"></div>
     <div class="location-details">
-      <!-- <h3>{{ locationCode || "Loading..." }}</h3> -->
       <p>{{ locationAddress || ("address.fetchingAddress" | translate) }}</p>
     </div>
     <div class="map-footer">
-      <button [disabled]="!locationAddress" style="
-          padding: 10px 20px;
-          font-size: 14px;
-          background-color: #007bff;
-          color: #fff;
-          border: none;
-          border-radius: 6px;
-          cursor: pointer;
-          transition: background-color 0.3s;
-        " (click)="confirmLocation()">
+      <button [disabled]="!locationAddress" class="btn-primary" (click)="confirmLocation()">
         {{ "address.confirmLocation" | translate }}
       </button>
     </div>
   </div>
-
-
-
-
 </header>
-<!-- Bootstrap Modal -->
-
 <div class="modal fade" id="ordersModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
   aria-labelledby="ordersModalLabel" aria-hidden="false">
   <div class="modal-dialog modal-sm">
-    <div class="modal-content" style="width: 400px">
+    <div class="modal-content width-400">
       <div class="modal-header">
         <h5 class="modal-title" id="ordersModalLabel">Orders</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-
       <div class="modal-body">
-        <!-- Tabs -->
         <div class="order-tabs d-flex justify-content-center mb-2">
           <button class="btn small-btn me-2" [class.active]="selectedTab === 'current'" (click)="switchTab('current')">
             Service Orders
@@ -2040,13 +1389,9 @@ border: 1px solid #2a3b8f;">
             Product Orders
           </button>
         </div>
-
-        <!-- Loading Spinner -->
         <div *ngIf="loading" class="text-center my-4">
           <div class="spinner-border text-primary" role="status"></div>
         </div>
-
-        <!-- Orders List -->
         <div class="order-list" *ngIf="!loading && selectedTab === 'current'">
           <ng-container *ngIf="orders.length > 0; else noData">
             <div *ngFor="let order of orders" class="order-item p-2">
@@ -2064,18 +1409,16 @@ border: 1px solid #2a3b8f;">
               </div>
             </div>
           </ng-container>
-
           <ng-template #noData>
             <div class="text-center mt-4">
-              <img src="assets/img/hand-drawn-no-data-concept.png" alt="No Data Available" class="img-fluid"
-                style="max-width: 150px" />
+              <img src="assets/img/hand-drawn-no-data-concept.png" alt="No Data Available"
+                class="img-fluid maxwidth150-unique" />
               <p class="text-muted mt-2">
                 <b>{{ "shop.NoDataAvailable" | translate }}</b>
               </p>
             </div>
           </ng-template>
         </div>
-
         <div class="order-list" *ngIf="!loading && selectedTab === 'past'">
           <div *ngFor="let order of Shoporders" class="order-item p-2">
             <div (click)="goToOrderShopDetails(order.ID)" class="order-header d-flex justify-content-between">
@@ -2096,48 +1439,35 @@ border: 1px solid #2a3b8f;">
     </div>
   </div>
 </div>
-
-<!-- Offcanvas Drawer -->
-
 <div *ngIf="isFAQDrawerVisible" id="offcanvasFAQ" class="offcanvas offcanvas-end widthclass" tabindex="-1"
   aria-labelledby="offcanvasFAQLabel">
-  <button style="display: none" id="closefaq" #closefaq type="button" data-bs-dismiss="offcanvas" class="btn-close"
+  <button id="closefaq" #closefaq type="button" data-bs-dismiss="offcanvas" class="btn-close display-none-unique"
     (click)="FAQdrawerClose()" aria-label="Close"></button>
-  <!-- <div class="offcanvas-header">
-    <h5 id="offcanvasFAQLabel">FAQs</h5>
-    <button type="button" class="btn-close" (click)="FAQdrawerClose()" aria-label="Close"></button>
-  </div> -->
-  <div style="padding: 0px">
+  <div class="p-0">
     <app-manage-faqs [drawerClose]="FAQcloseCallback" [isFAQDrawerVisible]="isFAQDrawerVisible">
     </app-manage-faqs>
   </div>
 </div>
-
 <div *ngIf="isDrawerVisible" [ngClass]="{ 'ticket_drawer open': isDrawerVisible }" class="ticket_drawer">
-  <!-- <app-show-tickets></app-show-tickets> -->
   <div class="drawer-content">
     <app-show-tickets [drawerClose]="closeCallback" [isDrawerVisible]="isDrawerVisible"></app-show-tickets>
   </div>
 </div>
 <div *ngIf="isLanguageDrawerVisible" [ngClass]="{ 'language_drawer open': isLanguageDrawerVisible }"
   class="language_drawer">
-  <!-- <app-show-tickets></app-show-tickets> -->
   <div class="drawer-content">
     <app-app-language [drawerClose]="LanguagecloseCallback"
       [isDrawerVisible]="isLanguageDrawerVisible"></app-app-language>
   </div>
 </div>
 <div *ngIf="isAboutDrawerVisible" [ngClass]="{ 'about_drawer open': isAboutDrawerVisible }" class="about_drawer">
-  <!-- <app-show-tickets></app-show-tickets> -->
   <div class="drawer-content">
     <app-about [drawerClose]="aboutcloseCallback" [isDrawerVisible]="isAboutDrawerVisible"></app-about>
   </div>
 </div>
-
-<!-- Knowledge Drawer -->
-<div class="offcanvas offcanvas-end custom-drawer12" id="isServiceDrawerOpen123" tabindex="-1" data-bs-backdrop="static"
-  style="width: 700px">
-  <div class="mobile-menu-header d-flex align-items-center" style="justify-content: flex-start">
+<div class="offcanvas offcanvas-end custom-drawer12 width-700" id="isServiceDrawerOpen123" tabindex="-1"
+  data-bs-backdrop="static">
+  <div class="mobile-menu-header d-flex align-items-center">
     <button class="close-menu-btn" (click)="backtoSubCategory()" *ngIf="isKBvisible && !loading123"
       [attr.aria-label]="'header.menu.back' | translate">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -2151,13 +1481,6 @@ border: 1px solid #2a3b8f;">
         <polyline points="15 18 9 12 15 6"></polyline>
       </svg>
     </button>
-    <!-- <h5 class="offcanvas-title">Knowledge Base</h5>
-  <button
-    type="button"
-    class="btn-close"
-    data-bs-dismiss="offcanvas"
-    (click)="closeDrawer()"
-  ></button> -->
     <div *ngIf="!isKBvisible && !isSubCategoryVisible && !loading123">
       <button class="close-menu-btn" data-bs-dismiss="offcanvas" (click)="gotoProfile123()"
         [attr.aria-label]="'header.menu.back' | translate">
@@ -2170,7 +1493,6 @@ border: 1px solid #2a3b8f;">
     {{ "knowledgeBase.title" | translate }}
   </div>
   <div class="offcanvas-body">
-    <!-- Loader -->
     <div *ngIf="loading123" class="text-center my-3">
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">{{
@@ -2178,8 +1500,6 @@ border: 1px solid #2a3b8f;">
           }}</span>
       </div>
     </div>
-
-    <!-- List of Devices (Show only when not loading) -->
     <ul *ngIf="isCategoryVisible && !loading123" class="list-group list-container">
       <li *ngFor="let device of KnowledgeBaseCategory" (click)="getsubcategory(device)"
         class="list-group-item list-group-item-action d-flex align-items-center">
@@ -2187,32 +1507,21 @@ border: 1px solid #2a3b8f;">
         <i class="bi bi-chevron-right"></i>
       </li>
     </ul>
-
     <ul *ngIf="isSubCategoryVisible && !loading123" class="list-group list-container">
-      <!-- <span
-        (click)="backtoCategory()"
-        style="cursor: pointer; margin-bottom: 10px"
-      >
-        ← Back</span
-      > -->
       <li *ngFor="let device of KnowledgeBaseSubCategory" (click)="getKB(device)"
         class="list-group-item list-group-item-action d-flex align-items-center">
         <span class="ms-3 flex-grow-1">{{ device.NAME }}</span>
         <i class="bi bi-chevron-right"></i>
       </li>
     </ul>
-
     <div *ngIf="isKBvisible && !loading123">
       <div class="offcanvas-body">
-        <!-- Loader -->
         <div *ngIf="loading123" class="text-center my-3">
           <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>
         </div>
-
-        <!-- List of Devices (Show only when not loading) -->
-        <ul *ngIf="isCategoryVisible && !loading123" class="list-group list-container" style="cursor: pointer">
+        <ul *ngIf="isCategoryVisible && !loading123" class="list-group list-container nav-link-pointer">
           <li *ngFor="let device of KnowledgeBaseCategory" (click)="getsubcategory(device)"
             class="list-group-item list-group-item-action d-flex align-items-center mb-2">
             <span class="ms-3 flex-grow-1 text-truncate" [attr.title]="device.NAME">
@@ -2221,30 +1530,21 @@ border: 1px solid #2a3b8f;">
             <i class="bi bi-chevron-right"></i>
           </li>
         </ul>
-
         <ul *ngIf="isSubCategoryVisible && !loading123" class="list-group list-container">
           <li *ngFor="let device of KnowledgeBaseSubCategory" (click)="getKB(device)"
             class="list-group-item list-group-item-action d-flex align-items-center mb-2">
-            <span style="cursor: pointer" class="ms-3 flex-grow-1 text-truncate" [attr.title]="device.NAME">
+            <span class="ms-3 flex-grow-1 text-truncate nav-link-pointer" [attr.title]="device.NAME">
               {{ device.NAME }}
             </span>
             <i class="bi bi-chevron-right"></i>
           </li>
         </ul>
-
         <div *ngIf="isKBvisible && !loading123">
-          <div *ngFor="let device of KnowledgeBase; let i = index" class="border rounded p-3 bg-light shadow-sm"
-            style="border-color: #9daee7 !important; margin-top: 5px">
-            <!-- Category & Subcategory with Icons -->
+          <div *ngFor="let device of KnowledgeBase; let i = index"
+            class="border rounded p-3 bg-light shadow-sm border-top-margin">
             <div class="d-flex justify-content-between align-items-center">
-              <p class="fw-bold mb-1 text-truncate" style="
-                  font-size: 14px;
-                  max-width: 80%;
-                  white-space: nowrap;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  cursor: pointer;
-                " [attr.id]="'category-tooltip-' + i" data-bs-toggle="tooltip" data-bs-placement="top" [attr.title]="
+              <p class="fw-bold mb-1 text-truncate text-ellipsis" [attr.id]="'category-tooltip-' + i"
+                data-bs-toggle="tooltip" data-bs-placement="top" [attr.title]="
                   device.KNOWLEDGEBASE_CATEGORY_NAME +
                   ' > ' +
                   device.KNOWLEDGEBASE_SUB_CATEGORY_NAME
@@ -2252,51 +1552,33 @@ border: 1px solid #2a3b8f;">
                 {{ device.KNOWLEDGEBASE_CATEGORY_NAME }} >
                 {{ device.KNOWLEDGEBASE_SUB_CATEGORY_NAME }}
               </p>
-
-              <!-- Show Document Icon at the End -->
               <div *ngIf="device.TYPE == 'D'">
-                <span style="font-size: 16px; cursor: pointer" (click)="downloadDocument(device.DOCUMENT)" [attr.title]="
+                <span class="text-clickable" (click)="downloadDocument(device.DOCUMENT)" [attr.title]="
                     'menu.knowledgeBase.downloadDocument' | translate
                   ">
                   <i class="bi bi-file-earmark-text"></i>
                 </span>
               </div>
-
-              <!-- Show Link Icon at the End -->
               <div *ngIf="device.TYPE == 'L'">
-                <span style="font-size: 16px; cursor: pointer" [attr.title]="'menu.knowledgeBase.openLink' | translate">
+                <span class="text-clickable" [attr.title]="'menu.knowledgeBase.openLink' | translate">
                   <a href="{{ device.LINK }}" target="_blank">
-                    <i class="bi bi-link-45deg text-success" style="font-size: 20px"></i>
+                    <i class="bi bi-link-45deg text-success text-20"></i>
                   </a>
                 </span>
               </div>
             </div>
-
             <div class="accordion-item">
               <h2 class="accordion-header" [id]="'heading' + i">
-                <button class="accordion-button" type="button" (click)="toggleAccordion(i)"
-                  [attr.aria-expanded]="activeIndex === i" [attr.aria-controls]="'collapse' + i" style="
-                    width: 100%;
-                    display: flex;
-                    align-items: center;
-                    overflow: hidden;
-                  " [attr.id]="'title-tooltip-' + i" data-bs-toggle="tooltip" data-bs-placement="top"
+                <button class="accordion-button flex-align-overflow" type="button" (click)="toggleAccordion(i)"
+                  [attr.aria-expanded]="activeIndex === i" [attr.aria-controls]="'collapse' + i"
+                  [attr.id]="'title-tooltip-' + i" data-bs-toggle="tooltip" data-bs-placement="top"
                   [attr.title]="device.TITLE">
-                  <!-- Title with ellipsis (No Overlap) -->
-                  <span class="text-truncate" style="
-                      flex: 1;
-                      white-space: nowrap;
-                      overflow: hidden;
-                      text-overflow: ellipsis;
-                      padding-right: 30px;
-                    ">
+                  <span class="text-truncate flex-ellipsis">
                     {{ device.TITLE }}
                   </span>
-
-                  <!-- Chevron Icon (Fixed Position) -->
-                  <i class="bi" [ngClass]="
+                  <i class="bi ml-auto-large" [ngClass]="
                       activeIndex === i ? 'bi-chevron-up' : 'bi-chevron-down'
-                    " style="margin-left: auto; font-size: 18px"></i>
+                    "></i>
                 </button>
               </h2>
               <div [id]="'collapse' + i" class="accordion-collapse collapse" [class.show]="activeIndex === i"
@@ -2314,66 +1596,52 @@ border: 1px solid #2a3b8f;">
     </div>
   </div>
 </div>
-
 <div class="offcanvas offcanvas-end" data-bs-backdrop="static" tabindex="-1" id="offcanvasRight"
   aria-labelledby="offcanvasRightLabel">
   <div class="offcanvas-header pb-1">
-    <h5 style="font-size: 16px !important;" id="offcanvasRightLabel">
+    <h5 class="text-16" id="offcanvasRightLabel">
       {{ "header.notification.title" | translate }}
     </h5>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
       [attr.aria-label]="'header.menu.close' | translate"></button>
   </div>
-  <div class="offcanvas-body pt-0" style="overflow: hidden !important">
+  <div class="offcanvas-body pt-0 overflow-hidden">
     <div *ngIf="notificationloader">
       <app-common-loader class="overlay-loader"></app-common-loader>
     </div>
-
     <div class="row">
       <div class="col-12 px-0">
         <div class="notification-filter-tabs d-flex gap-2 px-2 mb-1">
           <button class="btn btn-outline-primary btn-sm tab-btn" [class.active]="selectedType === 'All'"
             (click)="filterNotifications('All')">All</button>
-
           <button class="btn btn-outline-primary btn-sm tab-btn" [class.active]="selectedType === 'O'"
             (click)="filterNotifications('O')">Order</button>
           <button class="btn btn-outline-primary btn-sm tab-btn" [class.active]="selectedType === 'SH'"
             (click)="filterNotifications('SH')">Shop</button>
-
-          <!-- <button class="btn btn-outline-primary btn-sm tab-btn" [class.active]="selectedType === 'I'"
-            (click)="filterNotifications('I')">Inventory</button> -->
-
           <button class="btn btn-outline-primary btn-sm tab-btn" [class.active]="selectedType === 'IR'"
             (click)="filterNotifications('IR')">Inventory Requests</button>
-
           <button class="btn btn-outline-primary btn-sm tab-btn" [class.active]="selectedType === 'J'"
             (click)="filterNotifications('J')">Job</button>
           <button class="btn btn-outline-primary btn-sm tab-btn" [class.active]="selectedType === 'TC'"
             (click)="filterNotifications('TC')">Support Ticket</button>
-
           <button class="btn btn-outline-primary btn-sm tab-btn" [class.active]="selectedType === 'F'"
             (click)="filterNotifications('F')">Feedbacks</button>
         </div>
       </div>
     </div>
-
-    <div class="row" id="scrollableDiv" (scroll)="getnotificationonscroll($event)"
-      style="max-height: 85vh; overflow: auto ; overflow-x: hidden !important;">
-
-      <div class="no-cart-items text-center" style="align-content: center" *ngIf="notificationdata.length == 0">
-        <img src="assets/img/hand-drawn-no-data-concept.png" style="width: 195px; height: 140px"
-          [alt]="'notification.noNotifications' | translate" class="no-cart-img mb-2" />
+    <div class="row scrollable-container" id="scrollableDiv" (scroll)="getnotificationonscroll($event)">
+      <div class="no-cart-items text-center align-content-center" *ngIf="notificationdata.length == 0">
+        <img src="assets/img/hand-drawn-no-data-concept.png" [alt]="'notification.noNotifications' | translate"
+          class="no-cart-img mb-2 size-195x140" />
         <h6 class="fw-bold">
           {{ "notification.noNotifications" | translate }}
         </h6>
       </div>
-
       <ng-container *ngFor="let dataa of notificationdata; let i = index">
         <div *ngIf="shouldShowDateHeader(dataa.CREATED_MODIFIED_DATE, i)" class="date-header">
           <span>{{ getDateHeader(dataa.CREATED_MODIFIED_DATE) }}</span>
           <hr class="date-divider" />
         </div>
-
         <div class="col-12 notification-item-wrapper">
           <div class="notification-card">
             <div class="notification-content">
@@ -2390,7 +1658,6 @@ border: 1px solid #2a3b8f;">
                 <p class="notification-description">
                   {{ dataa.DESCRIPTION }}
                 </p>
-
                 <div class="notification-footer" *ngIf="dataa.ATTACHMENT">
                   <p class="view-attachment" (click)="viewattachmenttt(dataa.ATTACHMENT)">
                     <i class="bi bi-eye"></i>
@@ -2408,51 +1675,36 @@ border: 1px solid #2a3b8f;">
 <div *ngIf="userID !== 0">
   <app-add-address></app-add-address>
 </div>
-
-<div class="modal fade" style="z-index: 1051 !important;" id="ratenowmodaltrack" data-bs-backdrop="static"
-  data-bs-keyboard="false" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="false">
+<div class="modal fade z-index-1051" id="ratenowmodaltrack" data-bs-backdrop="static" data-bs-keyboard="false"
+  tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="false">
   <div class="modal-dialog modal-dialog-centered modal-md">
-    <div class="modal-content border-0 shadow-sm rounded-4 p-4"
-      style="background-color: #ffffff;padding: 10px !important;">
-      <div class="modal-header border-0 pb-0" style="padding: 0px !important;">
+    <div class="modal-content border-0 shadow-sm rounded-4 p-4 bg-white-padding">
+      <div class="modal-header border-0 pb-0 p-0-important-unique">
         <h4 class="modal-title fw-bold text-dark w-100 text-center">Delete Account</h4>
-        <!-- <button type="button"  data-bs-dismiss="modal" aria-label="Close"
-                    class="btn-close position-absolute top-0 end-0 m-3" ></button> -->
       </div>
-
-      <div class="modal-body p-0 pt-4" style="padding-top: 1px !important;">
+      <div class="modal-body p-0 pt-4 pt-1">
         <form #feedbackForm="ngForm">
-          <p class="text-center mb-3 text-secondary" style="    font-size: 12px;">
+          <p class="text-center mb-3 text-secondary text-12">
             Your account will be deactivated. We will retain your data in case you wish to reactivate it later. For any
             queries, please contact support.</p>
-
-          <!-- Submit Button -->
           <div class="text-center">
             <button *ngIf="!isdeleteAccount" type="submit"
-              class="btn btn-primary px-4 py-2 rounded-pill fw-semibold text-white" style="border-radius: 5px !important;
-    padding: 6px 10px !important;
-    font-size: 12px;" (click)="deleteAccount()">
+              class="btn btn-primary px-4 py-2 rounded-pill fw-semibold text-white rounded-5" (click)="deleteAccount()">
               <span> Yes, Deactivate </span></button>
-
-            <button *ngIf="isdeleteAccount" class="btn btn-sm btn-outline-danger rounded-pill" style="border-radius: 5px !important;
-    padding: 6px 10px !important;
-    font-size: 12px;"> Yes, Deactivate
+            <button *ngIf="isdeleteAccount" class="btn btn-sm btn-outline-danger rounded-pill rounded-5"> Yes,
+              Deactivate
               &nbsp;
-              <div class="spinner-border text-danger" role="status" style="height: 10px;width: 10px;">
+              <div class="spinner-border text-danger size-10x10" role="status">
                 <span class="visually-hidden"></span>
               </div>
             </button>
-            <button [disabled]="isdeleteAccount" type="submit" class="btn px-4 py-2 rounded-pill fw-semibold text-white"
-              style="    border-radius: 5px !important;
-    padding: 6px 10px !important;
-    font-size: 12px;
-    color: black !important;
-    border: 1px solid;
-    margin-left: 10px;" data-bs-dismiss="modal" aria-label="Close">
+            <button [disabled]="isdeleteAccount" type="submit"
+              class="btn px-4 py-2 rounded-pill fw-semibold text-white custom-box" data-bs-dismiss="modal"
+              aria-label="Close">
               <span> Cancel </span></button>
           </div>
-          <div style="text-align: center;margin-top: 10px;"><a href="mailto:itsupport@pockitengineers.com"
-              style="font-size: 13px;">itsupport@pockitengineers.com</a></div>
+          <div class="text-center-mt10"><a href="mailto:itsupport@pockitengineers.com"
+              class="font-13px-unique">itsupport@pockitengineers.com</a></div>
         </form>
       </div>
     </div>

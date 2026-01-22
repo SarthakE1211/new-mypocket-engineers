@@ -1,4 +1,3 @@
-
 import {
   Component,
   Renderer2,
@@ -12,7 +11,6 @@ import {
   HttpErrorResponse,
   HttpEventType,
   HttpResponse,
-
 } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
@@ -29,16 +27,11 @@ import { CommonFunctionService } from 'src/app/Service/CommonFunctionService';
 import { registerdata } from '../pages/login/login.component';
 import { NgForm } from '@angular/forms';
 import { LoaderService } from 'src/app/Service/loader.service';
-
-
 declare var google: any;
-
-
 interface User {
   ID: number;
   EMAIL_ID?: string;
 }
-
 interface AddressForm {
   CUSTOMER_ID: number;
   CUSTOMER_TYPE: number;
@@ -63,12 +56,10 @@ interface AddressForm {
   LANDMARK: '';
   PINCODE_FOR: '';
 }
-
 interface LocationOption {
   id: number;
   name: string;
 }
-
 @Component({
   selector: 'app-commonmap',
   templateUrl: './commonmap.component.html',
@@ -87,44 +78,30 @@ export class CommonmapComponent {
   PopularServices: any[] = [];
   ServiceCateogries: any[] = [];
   public commonFunction = new CommonFunctionService();
-
   IMAGEuRL: any;
   services = [
     { name: 'Computer', image: '' },
     { name: 'WiFi', image: '' },
     { name: 'Printer', image: '' },
     { name: 'CCTV', image: '' },
-    { name: 'Big Service', image: '' }, // This should be the large card
+    { name: 'Big Service', image: '' }, 
   ];
-
-
-
-
   public openMapModalz(): void {
-
-
     this.initializemap();
     const modal = document.getElementById('addressmodalSubCatClick');
-
     if (modal) {
       modal.style.display = 'block';
-      // Ensure modal has high z-index to be above all other modals
       modal.style.zIndex = '11010';
     }
-
-    this.renderer.addClass(document.body, 'modal-open'); // Prevent background scroll & blur
+    this.renderer.addClass(document.body, 'modal-open'); 
     this.modalVisible = true;
     this.showMap = true;
     const el = document.getElementById('addressmodalSubCatClick');
-
-    // this.confirmLocation();
-
     if (el) {
       const m = new bootstrap.Modal(el);
       m.show();
     }
   }
-
   public closeMapModalz(): void {
     const el = document.getElementById('addressmodalSubCatClick');
     if (el) {
@@ -133,9 +110,8 @@ export class CommonmapComponent {
     }
   }
   handleImageError(event: any) {
-    event.target.src = 'assets/img/services/no-image.png'; // Set default image
+    event.target.src = 'assets/img/services/no-image.png'; 
   }
-
   carouselOptions = {
     loop: true,
     margin: 10,
@@ -165,20 +141,15 @@ export class CommonmapComponent {
     navText: [
       '<i class="bi bi-chevron-left" ></i>',
       '<i class="bi bi-chevron-right" ></i>',
-
-      // '<i class="bi bi-chevron-left" style="color: #007bff;"></i>',
-      // '<i class="bi bi-chevron-right" style="color: #007bff;"></i>'
     ],
-
     responsive: {
-      0: { items: 1 }, // Mobile (Portrait)
-      480: { items: 2 }, // Small devices (Landscape)
-      768: { items: 3 }, // Tablets
-      1024: { items: 4 }, // Default for larger screens
-      1200: { items: 5 }, // Default for larger screens
+      0: { items: 1 }, 
+      480: { items: 2 }, 
+      768: { items: 3 }, 
+      1024: { items: 4 }, 
+      1200: { items: 5 }, 
     },
   };
-
   carouselOptions2 = {
     loop: true,
     margin: 10,
@@ -191,7 +162,6 @@ export class CommonmapComponent {
       1000: { items: 1 },
     },
   };
-
   carouselOptions3 = {
     loop: true,
     margin: 10,
@@ -201,18 +171,14 @@ export class CommonmapComponent {
     autoplayTimeout: 5000,
     autoplayHoverPause: true,
     navText: [
-      // '<i class="bi bi-chevron-left" ></i>',
-      // '<i class="bi bi-chevron-right" ></i>'
     ],
-
     responsive: {
-      0: { items: 2 }, // Mobile (Portrait)
-      480: { items: 4 }, // Small devices (Landscape)
-      768: { items: 6 }, // Tablets
-      1500: { items: 8 }, // Default for larger screens
+      0: { items: 2 }, 
+      480: { items: 4 }, 
+      768: { items: 6 }, 
+      1500: { items: 8 }, 
     },
   };
-
   carouselOptions4 = {
     loop: true,
     margin: 10,
@@ -224,28 +190,23 @@ export class CommonmapComponent {
     navText: [
       '<i class="bi bi-chevron-left" ></i>',
       '<i class="bi bi-chevron-right" ></i>',
-
-      // '<i class="bi bi-chevron-left" style="color: #007bff;"></i>',
-      // '<i class="bi bi-chevron-right" style="color: #007bff;"></i>'
     ],
-
     responsive: {
-      0: { items: 2 }, // Mobile (Portrait)
-      480: { items: 2 }, // Small devices (Landscape)
-      768: { items: 4 }, // Tablets
-      1024: { items: 6 }, // Default for larger screens
+      0: { items: 2 }, 
+      480: { items: 2 }, 
+      768: { items: 4 }, 
+      1024: { items: 6 }, 
     },
   };
   isFocused: string = '';
   customertype1: any = this.apiservice.getCustomerType();
   today = new Date();
-  selectedDate: string = format(this.today, 'EEE, MMM d, yyyy'); // Default to today
+  selectedDate: string = format(this.today, 'EEE, MMM d, yyyy'); 
   dates: { display: string; fullDate: string }[] = [];
-
   timeSlots = [
     {
       period: 'Morning',
-      times: { start: '09:00', end: '12:00', disabled: false }, // 24-hour format
+      times: { start: '09:00', end: '12:00', disabled: false }, 
     },
     {
       period: 'Afternoon',
@@ -253,18 +214,16 @@ export class CommonmapComponent {
     },
     {
       period: 'Evening',
-      times: { start: '15:00', end: '24:00', disabled: false }, // Change '12:00 AM' to '23:59'
+      times: { start: '15:00', end: '24:00', disabled: false }, 
     },
   ];
-  selectedSlot: string = ''; // Stores the selected time slot
-
+  selectedSlot: string = ''; 
   formatTime(time: string): string {
     let [hours, minutes] = time.split(':').map(Number);
     let period = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12; // Convert '00' or '12-23' to 12-hour format
+    hours = hours % 12 || 12; 
     return `${hours}:${minutes.toString().padStart(2, '0')} ${period}`;
   }
-
   constructor(
     private router: Router,
     private cookie: CookieService,
@@ -280,13 +239,10 @@ export class CommonmapComponent {
     private loaderService: LoaderService, private renderer: Renderer2,
   ) {
     this.updateSEO();
-
     this.generateDates();
   }
   updateSEO() {
-    // alert('ddd')
     this.titleService.setTitle('PockIT - Your Digital Service Marketplace');
-
     this.metaService.updateTag({
       name: 'description',
       content:
@@ -297,8 +253,6 @@ export class CommonmapComponent {
       content:
         'PockIT Web, service marketplace, digital services, e-commerce platform, online bookings',
     });
-
-    // Open Graph (For Facebook, LinkedIn)
     this.metaService.updateTag({
       property: 'og:title',
       content: 'PockIT Web - Your Digital Service Marketplace',
@@ -308,13 +262,10 @@ export class CommonmapComponent {
       content:
         'Find, book, and manage services effortlessly with PockIT Web, the ultimate digital service marketplace.',
     });
-    // this.metaService.updateTag({ property: 'og:image', content: 'https://pockitapp.pockitengineers.com/assets/images/logo.png' });
     this.metaService.updateTag({
       property: 'og:url',
       content: 'https://my.pockitengineers.com/',
     });
-
-    // Twitter Card
     this.metaService.updateTag({
       name: 'twitter:title',
       content: 'PockIT Web - Your Digital Service Marketplace',
@@ -324,26 +275,19 @@ export class CommonmapComponent {
       content:
         'Find, book, and manage services effortlessly with PockIT Web, the ultimate digital service marketplace.',
     });
-    // this.metaService.updateTag({ name: 'twitter:image', content: 'https://pockitapp.pockitengineers.com/assets/images/logo.png' });
     this.metaService.updateTag({
       name: 'twitter:card',
       content: 'summary_large_image',
     });
-
     let link: HTMLLinkElement =
       document.querySelector("link[rel='canonical']") ||
       document.createElement('link');
     link.setAttribute('rel', 'canonical');
     link.setAttribute('href', window.location.href);
     document.head.appendChild(link);
-
-    //
   }
-
   openLoginModal() {
-    // this.message.info('Please log in to access services and other features.');
     if (this.userID === 0) {
-      // Open modal if user is guest
       const modalElement = document.getElementById('guestModal');
       if (modalElement) {
         const modal = new bootstrap.Modal(modalElement);
@@ -354,38 +298,24 @@ export class CommonmapComponent {
   addressSubscription: any = Subscription;
   customertype: any = this.apiservice.getCustomerType();
   isMobile: boolean = false;
-
   loadingPage: boolean = false;
-
   ngOnInit() {
-
-    this.isMobile = window.innerWidth < 768; // Detect mobile screen
+    this.isMobile = window.innerWidth < 768; 
     window.addEventListener('resize', () => {
       this.isMobile = window.innerWidth < 768;
     });
-
     this.IMAGEuRL = this.apiservice.retriveimgUrl2();
-    //
     this.geServiceCategoriesViewOnly();
     if (this.userID === 0 || !this.userID) {
-
       this.getBannerData();
-
-      // Ensure addressID is an object
       if (typeof this.addressID === 'string') {
         try {
           this.addressID = JSON.parse(this.addressID);
         } catch (error) {
-
-
-
-          return; // Stop execution if JSON parsing fails
+          return; 
         }
       }
-
       if (this.addressID?.PINCODE) {
-
-
         this.apiservice
           .getterritoryPincodeData(
             0,
@@ -398,7 +328,6 @@ export class CommonmapComponent {
             (data: any) => {
               if (data?.code === 200 && data?.data?.length > 0) {
                 this.DefaultAddressArray = data.data[0];
-
                 if (
                   this.DefaultAddressArray?.TERRITORY_ID == 0 ||
                   this.DefaultAddressArray?.TERRITORY_ID == null ||
@@ -406,7 +335,6 @@ export class CommonmapComponent {
                 ) {
                   this.geServiceCategoriesViewOnly();
                 } else {
-                  // Fetch related data
                   this.getProjectData();
                   this.geServiceCategories();
                 }
@@ -419,18 +347,13 @@ export class CommonmapComponent {
       } else {
       }
     } else {
-
-
       this.getBannerData();
       this.getAddresses1();
       const subscribedChannelsStr = this.apiservice.getsubscribedChannels();
-
       let channelsArray2: string[] = [];
-
       if (subscribedChannelsStr) {
         try {
           const parsed = JSON.parse(subscribedChannelsStr);
-
           if (Array.isArray(parsed)) {
             channelsArray2 = parsed
               .map((item: any) => {
@@ -448,26 +371,18 @@ export class CommonmapComponent {
                 !['null', 'undefined'].includes(name.trim().toLowerCase())
               ) as string[];
           }
-
           this.getNonSubscribedChannels(channelsArray2);
         } catch (e) {
-
         }
-
       }
-
-
-
-
       setTimeout(() => {
         if (document.documentElement.scrollHeight <= window.innerHeight) {
-          document.body.style.overflowY = 'auto'; // Force scrollbar if missing
+          document.body.style.overflowY = 'auto'; 
         } else {
-          document.body.style.overflowY = ''; // Keep default behavior
+          document.body.style.overflowY = ''; 
         }
-      }, 200); // Delay to allow content to load
+      }, 200); 
     }
-
   }
   getNonSubscribedChannels(channelsArray2: string[]) {
     const channelFilter = {
@@ -482,21 +397,16 @@ export class CommonmapComponent {
         },
       ],
     };
-
-
     this.apiservice.NonSubscribedChannels(channelFilter).subscribe(
       (response) => {
         let newChannels: string[] = response?.body?.data?.map((item: any) => item.CHANNEL_NAME) || [];
-
         const isValidChannel = (c: any) =>
           typeof c === 'string' &&
           c.trim() !== '' &&
           c.trim().toLowerCase() !== 'null' &&
           c.trim().toLowerCase() !== 'undefined';
-
         const cleanChannelsArray2 = channelsArray2.filter(isValidChannel);
         const cleanNewChannels = newChannels.filter(isValidChannel);
-
         if (cleanNewChannels.length > 0) {
           this.apiservice.subscribeToMultipleTopics(cleanNewChannels).subscribe({
             next: () => {
@@ -504,54 +414,34 @@ export class CommonmapComponent {
                 ...cleanChannelsArray2,
                 ...cleanNewChannels
               ];
-
-
-
               const encrypted = this.commonFunction.encryptdata(
                 JSON.stringify(updatedChannelsArray)
               );
-
               localStorage.setItem('subscribedChannels', encrypted);
-
               const decrypted = this.commonFunction.decryptdata(
                 localStorage.getItem('subscribedChannels') || ''
               );
-
-
-
             },
             error: (err) => {
-
             }
           });
         } else {
-
         }
       },
       (error) => {
-
       }
     );
-
-
-
-
-
     if (this.locationmodel) {
-
       this.modalVisible = true;
       localStorage.removeItem('locationby');
     }
-
   }
   locationmodel = localStorage.getItem('locationby');
-
   ngAfterViewInit() {
     setTimeout(() => {
       this.loadService = false;
-    }, 100); //
+    }, 100); 
   }
-
   CartDetailsForCheck: any = [];
   getCartDetsils() {
     this.apiservice.getCartDetails(this.userID).subscribe((data: any) => {
@@ -562,8 +452,6 @@ export class CommonmapComponent {
       }
     });
   }
-
-
   DefaultAddressArray: any = [];
   getAddresses1() {
     this.loadingPage = true;
@@ -579,42 +467,25 @@ export class CommonmapComponent {
         (data) => {
           if (data['code'] == 200) {
             this.loadingPage = false;
-
             this.addresses = data['data'];
-
             if (this.addresses.length > 0) {
-              // Get default address
               this.defaultAddress =
                 this.addresses.find((addr) => addr.IS_DEFAULT === 1) ||
                 this.addresses[0];
-
               sessionStorage.setItem(
                 'CurrentTerritory',
                 this.defaultAddress?.TERRITORY_ID?.toString()
               );
-
               this.DefaultAddressArray = this.defaultAddress;
-
               if (this.DefaultAddressArray['TERRITORY_ID']) {
                 this.getProjectData();
-                // this.brands();
-                // this.getTopSellingLaptops();
                 this.getOfferData();
-                this.generateDates(); // Populate the dates array
+                this.generateDates(); 
                 this.geServiceCategories();
               } else {
-                // this.message.error(
-                //   'Territory not found, Please select other pincode'
-                // );
-                // sessionStorage.setItem('closemodalfalse', 'false');
-                // this.modalservice.openModal();
                 this.geServiceCategoriesViewOnly();
               }
             } else {
-
-              // this.message.error(
-              //   "You don't have any default address. Please add an address."
-              // );
               sessionStorage.setItem('closemodalfalse', 'false');
               this.modalService1.openModal();
             }
@@ -623,19 +494,13 @@ export class CommonmapComponent {
         (error) => { }
       );
   }
-
-  // IF Pincode has no data show view only data
-
   ServiceCateogriesView: any[] = [];
   displayedCategories1: any[] = [];
   loadCategories1 = false;
   loadMoreLoading1 = false;
   itemsPerPage = 10;
   currentPage = 1;
-
   geServiceCategoriesViewOnly() {
-
-
     this.loadCategories1 = true;
     this.apiservice
       .getCategoriesServicesViewOnly(0, 0, 'SEQ_NO', 'asc', ' AND STATUS = 1')
@@ -644,7 +509,7 @@ export class CommonmapComponent {
           if (data.data && data.data.length > 0) {
             this.ServiceCateogriesView = data.data.map((item: any) => ({
               ...item,
-              title: item.NAME, // for HTML binding
+              title: item.NAME, 
             }));
             this.currentPage = 1;
             this.updateDisplayedCategories();
@@ -659,72 +524,28 @@ export class CommonmapComponent {
         }
       );
   }
-
-
-
   viewOnlySubCategories: any[] = [];
   viewOnlySelectedCategoryTitle: string = '';
   loadingViewOnly = false;
-
-
-
-  // closeViewOnlyCategoryDrawer() {
-  //   this.viewOnlySubCategories = [];
-  //   this.viewOnlySelectedCategoryTitle = '';
-  //          const drawer = document.getElementById('viewOnlyServiceDrawer');
-  //         if (drawer) {
-  //           const bsDrawer = new bootstrap.Offcanvas(drawer);
-  //           bsDrawer.hide();
-  //         }
-  // }
-
   closeViewOnlyCategoryDrawer() {
     this.viewOnlySubCategories = [];
     this.viewOnlySelectedCategoryTitle = '';
-
     const drawer1 = document.getElementById('viewOnlyServiceDrawer');
     const drawer2 = document.getElementById('viewOnlyServiceDrawerFinal');
-
-    // if (drawer1) {
-    //   const instance1 = bootstrap.Offcanvas.getInstance(drawer1);
-    //   if (instance1) {
-    //     instance1.hide();
-    //   }
-    // }
-
-    // if (drawer2) {
-    //   const instance2 = bootstrap.Offcanvas.getInstance(drawer2);
-    //   if (instance2) {
-    //     instance2.hide();
-    //   }
-    // }
-
-    // setTimeout(() => {
-    //   const backdrops = document.querySelectorAll('.offcanvas-backdrop');
-    //   backdrops.forEach((backdrop) => backdrop.remove());
-    //   document.body.classList.remove('offcanvas-backdrop', 'modal-open');
-    // }, 300);
   }
-
   viewOnlyServicesList: any[] = [];
   viewOnlySelectedDevice: any = null;
   cartspinner: boolean = false;
-
   initializemap() {
-
-
     setTimeout(() => {
-      // Ensure modal is fully visible before initializing map
       const mapElement = document.getElementById('map');
       if (mapElement && mapElement.offsetHeight > 0) {
         this.initializeMapWithLocation();
       } else {
-        // If map element not ready, try again after a short delay
         setTimeout(() => this.initializeMapWithLocation(), 200);
       }
     }, 300);
   }
-
   selectedDevicename: any = '';
   closeaddressmodalSubCatClick() {
     this.modalVisible = false;
@@ -733,13 +554,9 @@ export class CommonmapComponent {
     if (modalElement) {
       let modal = bootstrap.Modal.getInstance(modalElement);
       modalElement.style.display = 'none';
-
       if (modal) {
-
-
         modal.hide();
       }
-
     }
     const serviceDrawer = document.getElementById('addressmodalSubCatClick');
     if (serviceDrawer) {
@@ -751,47 +568,29 @@ export class CommonmapComponent {
     }
   }
   guestuser = false;
-
-
-
   closeloginmodal() {
     this.guestuser = false;
   }
   openActionDrawerViewOnly(subcategory: any, type: any) {
     const pincodeFor = localStorage.getItem('pincodeFor');
-
     if (!this.userID) {
-
       this.guestuser = true;
-
-
     } else {
-
-
-
       if (!pincodeFor) {
         this.initializemap();
         const modal = document.getElementById('addressmodalSubCatClick');
-
         modal.style.display = 'block';
-        this.renderer.addClass(document.body, 'modal-open'); // Prevent background scroll & blur
+        this.renderer.addClass(document.body, 'modal-open'); 
         this.modalVisible = true;
         this.showMap = true;
         const drawer = document.getElementById('addressmodalSubCatClick');
         if (drawer) {
-
-
           const bsDrawer = new bootstrap.Offcanvas(drawer);
-
           bsDrawer.show();
-
         }
-
-
       } else {
         this.selectedDevicename = subcategory.NAME;
         let filter = '';
-
         if (type === 'parrent1') {
           filter = " AND (SERVICE_TYPE= 'O' OR SERVICE_TYPE= 'C' OR SERVICE_TYPE IS NULL) AND IS_FOR_B2B = 0 AND PARENT_ID=" + subcategory.ID;
         } else {
@@ -799,18 +598,15 @@ export class CommonmapComponent {
             " AND (SERVICE_TYPE= 'O' OR SERVICE_TYPE= 'C' OR SERVICE_TYPE IS NULL) AND PARENT_ID=0 AND IS_FOR_B2B = 0 AND SUB_CATEGORY_ID=" +
             subcategory.ID;
         }
-
         this.viewOnlySelectedDevice = subcategory;
         this.viewOnlySelectedCategoryTitle = subcategory.CATEGORY_NAME || 'Service';
         this.cartspinner = true;
-
         this.apiservice
           .getParentServicesViewOnly(0, 0, 'id', 'asc', filter)
           .subscribe(
             (data) => {
               this.cartspinner = false;
               const services = data.data;
-
               if (services && services.length > 0) {
                 this.viewOnlyServicesList = services;
                 setTimeout(() => {
@@ -822,7 +618,6 @@ export class CommonmapComponent {
                     bsDrawer.show();
                   }
                 }, 100);
-
               } else {
                 this.viewOnlyServicesList = [];
                 this.showServiceUnavailableModal();
@@ -836,9 +631,7 @@ export class CommonmapComponent {
       }
     }
   }
-
   saveAddressAdd(form: NgForm): void {
-
     this.addressSubmitted = true;
     if (form.invalid) {
       return;
@@ -846,19 +639,13 @@ export class CommonmapComponent {
     if (this.latitude && this.longitude) {
       this.addressForm.GEO_LOCATION = `${this.latitude},${this.longitude}`;
     }
-
-    // Add validation here
-
     this.isAddrssSaving = true;
-    // this.data.STATUS = 1;
     this.addressForm.CUSTOMER_TYPE = 1;
     this.addressForm.CUSTOMER_ID = this.userID;
     this.addressForm.CONTACT_PERSON_NAME = this.data.CUSTOMER_NAME;
     this.addressForm.MOBILE_NO = this.data.CUSTOMER_MOBILE_NO;
     this.addressForm.EMAIL_ID = this.data.EMAIL_ID;
     this.addressForm.ADDRESS_LINE_1 = this.addressForm.ADDRESS_LINE_1;
-    // this.addressForm.CONTACT_PERSON_NAME =  this.use
-
     this.addressForm.CUSTOMER_TYPE = 1;
     if (this.addressForm.TYPE == 'Home') {
       this.addressForm.TYPE = 'H';
@@ -867,13 +654,9 @@ export class CommonmapComponent {
     } else if (this.addressForm.TYPE == 'Other') {
       this.addressForm.TYPE = 'O';
     }
-
     this.addressForm.IS_DEFAULT = true;
-
     const registerData = this.data;
-
     this.isConfirmLoading = true;
-
     if (!this.asGuest) {
       this.loadData();
       this.apiservice.RegistrationCustomerAddress(this.addressForm).subscribe(
@@ -883,7 +666,6 @@ export class CommonmapComponent {
             this.isAddrssSaving = false;
             this.isOk = false;
             this.message.success('Address has been saved successfully.', '');
-
             sessionStorage.setItem(
               'userAddress',
               this.commonFunction.encryptdata(this.addressForm.ADDRESS_LINE_2)
@@ -892,48 +674,33 @@ export class CommonmapComponent {
               'userAddress',
               this.commonFunction.encryptdata(this.addressForm.ADDRESS_LINE_2)
             );
-// Auto-update header address everywhere
-           // this.apiservice.setAddress(this.addressForm.ADDRESS_LINE_2);
            this.apiservice.setAddress(this.addressForm.CITY_NAME);
-
             sessionStorage.setItem(
               'CurrentTerritory',
-
               this.addressForm?.TERRITORY_ID?.toString()
             );
             this.isloginSendOTP = false;
             this.modalService1.closeModal();
-            // this.otpSent = true;
-            // this.showOtpModal = true;
-            // this.userID = successCode.USER_ID;
-            // this.USER_NAME = successCode.USER_NAME;
             this.showAddressDetailsForm = false;
             this.statusCode = '';
-            // this.data = registerData;
             const pincodeFor = this.addressForm.PINCODE_FOR;
-
-            // Save to localStorage
             localStorage.setItem('pincodeFor', pincodeFor);
             this.isConfirmLoading = false;
-
             if (successCode.body?.SUBSCRIBED_CHANNELS.length > 0) {
               const channelNames = successCode.body.SUBSCRIBED_CHANNELS.map(
                 (channel: any) => channel.CHANNEL_NAME
               );
-
               this.apiservice.subscribeToMultipleTopics(channelNames).subscribe(
                 (successCode: any) => { },
                 (error) => {
                   if (error.status === 300) {
                   } else if (error.status === 500) {
-                    // Handle server-side error
                     this.message.error(
                       'An unexpected error occurred. Please try again later.',
                       ''
                     );
                   } else {
                     this.isConfirmLoading = false;
-                    // Generic error handling
                     this.message.error(
                       'An unknown error occurred. Please try again later.',
                       ''
@@ -948,13 +715,9 @@ export class CommonmapComponent {
             if (modalElement) {
               let modal = bootstrap.Modal.getInstance(modalElement);
               modalElement.style.display = 'none';
-
               if (modal) {
-
-
                 modal.hide();
               }
-
             }
             const serviceDrawer = document.getElementById('addressmodalSubCatClick');
             if (serviceDrawer) {
@@ -964,7 +727,6 @@ export class CommonmapComponent {
                 offcanvasInstance.hide();
               }
             }
-            // window.location.href = '/service';
             this.redirectAfterAddressSave();
           } else if (successCode.body.code === 300) {
             this.isAddrssSaving = false;
@@ -976,7 +738,6 @@ export class CommonmapComponent {
             this.isConfirmLoading = false;
             this.stopLoader();
           }
-
           this.isConfirmLoading = false;
           this.stopLoader();
         },
@@ -984,20 +745,16 @@ export class CommonmapComponent {
           this.isConfirmLoading = false;
           this.isAddrssSaving = false;
           this.stopLoader();
-          // Handle error if login fails
           if (error.status === 300) {
             this.isAddrssSaving = false;
-            // Handle specific HTTP error (e.g., invalid credentials)
             this.message.error('Email-ID is already exists', '');
           } else if (error.status === 500) {
-            // Handle server-side error
             this.message.error(
               'An unexpected error occurred. Please try again later.',
               ''
             );
           } else {
             this.isAddrssSaving = false;
-            // Generic error handling
             this.message.error(
               'An unknown error occurred. Please try again later.',
               ''
@@ -1006,12 +763,11 @@ export class CommonmapComponent {
         }
       );
     } else {
-      const addressFormString = JSON.stringify(this.addressForm); // Convert object to string
+      const addressFormString = JSON.stringify(this.addressForm); 
       const encryptedAddress =
-        this.commonFunction.encryptdata(addressFormString); // Encrypt string
+        this.commonFunction.encryptdata(addressFormString); 
       sessionStorage.setItem('userAddress', encryptedAddress);
       localStorage.setItem('userAddress', encryptedAddress);
-      // sessionStorage.setItem('userAddress', this.commonFunction.encryptdata(this.addressForm));
       var abc = 0;
       sessionStorage.setItem(
         'userId',
@@ -1021,9 +777,7 @@ export class CommonmapComponent {
         'userId',
         this.commonFunction.encryptdata(abc.toString())
       );
-
       sessionStorage.getItem('userId');
-
       sessionStorage.setItem(
         'customertype',
         this.commonFunction.encryptdata('I')
@@ -1042,13 +796,9 @@ export class CommonmapComponent {
       if (modalElement) {
         let modal = bootstrap.Modal.getInstance(modalElement);
         modalElement.style.display = 'none';
-
         if (modal) {
-
-
           modal.hide();
         }
-
       }
       const serviceDrawer = document.getElementById('addressmodalSubCatClick');
       if (serviceDrawer) {
@@ -1058,21 +808,12 @@ export class CommonmapComponent {
           offcanvasInstance.hide();
         }
       }
-
-      // window.location.href = '/service';
       this.redirectAfterAddressSave();
     }
-
-    // Call your API to save the address
-    // Reset form and hide after successful save
   }
-
   openServiceDrawerViewOnly(category: any) {
-
-
     this.loadingViewOnly = true;
     this.viewOnlySelectedCategoryTitle = category.NAME;
-
     this.apiservice
       .getSubCategoriesServicesViewOnly(
         0,
@@ -1093,16 +834,9 @@ export class CommonmapComponent {
           } else {
             this.viewOnlySubCategories = [];
           }
-
-          // Open the drawer
           const drawer = document.getElementById('viewOnlyServiceDrawer');
           if (drawer) {
             const bsDrawer = new bootstrap.Offcanvas(drawer);
-
-            // const bsModal = new bootstrap.Modal(document.getElementById('viewOnlyServiceDrawer'), {
-            //   backdrop: false
-            // });
-            // bsModal.show()
             bsDrawer.show();
           }
         },
@@ -1112,7 +846,6 @@ export class CommonmapComponent {
         }
       );
   }
-
   showServiceUnavailableModal() {
     const modalEl = document.getElementById('suggestionModal');
     if (modalEl) {
@@ -1120,7 +853,6 @@ export class CommonmapComponent {
       modal.show();
     }
   }
-
   openSuggestionModal() {
     const modalEl = document.getElementById('suggestionModal');
     if (modalEl) {
@@ -1128,7 +860,6 @@ export class CommonmapComponent {
       modal.show();
     }
   }
-
   closeSuggestionModal() {
     const modalEl = document.getElementById('suggestionModal');
     if (modalEl) {
@@ -1136,20 +867,15 @@ export class CommonmapComponent {
         bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
       modalInstance.hide();
     }
-
-    // Remove all possible backdrops
     setTimeout(() => {
       const backdrops = document.querySelectorAll(
         '.modal-backdrop, .offcanvas-backdrop'
       );
       backdrops.forEach((backdrop) => backdrop.remove());
-
-      // Clean up body classes
       document.body.classList.remove('modal-open', 'offcanvas-backdrop');
-      document.body.style.overflow = ''; // just in case it's blocked
+      document.body.style.overflow = ''; 
     }, 300);
   }
-
   closeFinalDrawer() {
     const drawer = document.getElementById('viewOnlyServiceDrawerFinal');
     if (drawer) {
@@ -1159,13 +885,11 @@ export class CommonmapComponent {
       }
     }
   }
-
   updateDisplayedCategories() {
     const start = 0;
     const end = this.itemsPerPage * this.currentPage;
     this.displayedCategories1 = this.ServiceCateogriesView.slice(start, end);
   }
-
   loadMore2() {
     this.loadMoreLoading1 = true;
     setTimeout(() => {
@@ -1174,7 +898,6 @@ export class CommonmapComponent {
       this.loadMoreLoading1 = false;
     }, 500);
   }
-
   getBannerData() {
     var filter: any = '';
     if (this.customertype1 == 'B') {
@@ -1202,11 +925,9 @@ export class CommonmapComponent {
         (error) => { }
       );
   }
-
   TopSellingLaptops: any[] = [];
   loadLaptops: boolean = false;
   OfferData: any[] = [];
-
   getOfferData() {
     this.apiservice
       .getBannerData(
@@ -1221,7 +942,6 @@ export class CommonmapComponent {
           if (data['code'] == 200) {
             this.OfferData = data['data'];
             if (data.data.length > 0) {
-              // this.PopularServices = data.data.slice(0, 4); // Only take the first 4 records
             } else {
             }
           } else {
@@ -1233,14 +953,13 @@ export class CommonmapComponent {
         }
       );
   }
-
   getTopSellingLaptops() {
     this.loadLaptops = true;
     this.apiservice.getTopSellingLaptopsForWeb('ID', 'asc').subscribe(
       (data) => {
         if (data.data.length > 0) {
           this.loadLaptops = false;
-          this.TopSellingLaptops = data.data.slice(0, 10); // Show top 10
+          this.TopSellingLaptops = data.data.slice(0, 10); 
         } else {
           this.loadLaptops = false;
           this.TopSellingLaptops = [];
@@ -1251,10 +970,8 @@ export class CommonmapComponent {
       }
     );
   }
-
   loadBrands: boolean = false;
   brand: any[] = [];
-
   brands() {
     this.loadBrands = true;
     this.apiservice
@@ -1264,7 +981,7 @@ export class CommonmapComponent {
           const statusCode = response.status;
           if (statusCode === 200) {
             this.loadBrands = false;
-            this.brand = response.body.data; // Store all brands
+            this.brand = response.body.data; 
           } else {
             this.loadBrands = false;
             this.brand = [];
@@ -1273,12 +990,10 @@ export class CommonmapComponent {
         (err: HttpErrorResponse) => { }
       );
   }
-
   loadService: boolean = false;
   getProjectData() {
     this.homepageprogress = 0;
     this.loadService = true;
-
     this.isLoading = false;
     this.apiservice
       .getPoppulerServicesForWeb(
@@ -1290,10 +1005,9 @@ export class CommonmapComponent {
         (data) => {
           if (data.data.length > 0) {
             this.loadService = false;
-            this.PopularServices = data.data.slice(0, 10); // Only take the first 4 records
+            this.PopularServices = data.data.slice(0, 10); 
           } else {
             this.loadService = false;
-
             this.PopularServices = [];
           }
         },
@@ -1302,10 +1016,9 @@ export class CommonmapComponent {
         }
       );
   }
-  loadMoreLoading: boolean = false; // New loader for "Load More" button
-
+  loadMoreLoading: boolean = false; 
   loadCategories: boolean = false;
-  itemsToShow: number = 10; // Initially show 6 items
+  itemsToShow: number = 10; 
   displayedCategories: any[] = [];
   geServiceCategories() {
     this.loadCategories = true;
@@ -1322,16 +1035,11 @@ export class CommonmapComponent {
       .subscribe(
         (data) => {
           if (data.data.length > 0) {
-            // this.ServiceCateogries = [];
-            // this.ServiceCateogries.push(...data.data, ...data.data);
             this.ServiceCateogries = data.data;
-
-            // this.ServiceCateogries = [...data.data, ...data.data , ...data.data]; // Duplicate data
             this.displayedCategories = this.ServiceCateogries.slice(
               0,
               this.itemsToShow
-            ); // Show initial items
-
+            ); 
             this.loadCategories = false;
           } else {
             this.ServiceCateogries = [];
@@ -1343,22 +1051,19 @@ export class CommonmapComponent {
         }
       );
   }
-
   loadMore() {
-    this.loadMoreLoading = true; // Show "Load More" spinner
+    this.loadMoreLoading = true; 
     setTimeout(() => {
       let newLength = this.displayedCategories.length + 6;
       this.displayedCategories = this.ServiceCateogries.slice(0, newLength);
-      this.loadMoreLoading = false; // Hide spinner after timeout
-    }, 500); // 500ms delay
+      this.loadMoreLoading = false; 
+    }, 500); 
   }
-
   isDrawerOpen1 = false;
   isMapModalOpen = false;
   isEdit = false;
   addressType = 'home';
   showMap: boolean = false;
-
   address: any = {
     houseNo: '',
     landmark: '',
@@ -1376,26 +1081,20 @@ export class CommonmapComponent {
   pincodeloading: boolean = false;
   selectedLocation: any;
   isPincodeLoading: boolean=true;
- 
-
   closeDrawer2() {
     this.isDrawerOpen1 = false;
   }
-
   setAddressType(type: string) {
     this.addressType = type;
   }
-
   openMapModal() {
     this.isMapModalOpen = true;
     this.modalVisible1 = true;
   }
-
   closeMapModal() {
     this.isMapModalOpen = false;
     this.modalVisible1 = false;
   }
-
   saveLocation() {
     this.address.plusCode = 'XYZ123';
     this.address.addressLine = 'Sample Street, Pune';
@@ -1403,64 +1102,45 @@ export class CommonmapComponent {
     this.address.state = 'Maharashtra';
     this.closeMapModal();
   }
-
   confirmAddress2(form: any) {
     if (form.valid) {
       this.closeDrawer();
     }
   }
   setDefaultAddress() {
-    // if (this.selectedAddress) {
-    //   this.defaultAddress = this.addresses.find(addr => addr.ID === this.selectedAddress);
-    // }
   }
-
   addressData: any = [];
-
   confirmAddress() {
-    // Step 1: Check if address is selected
     if (!this.selectedAddress) {
       alert('Please select an address before confirming.');
       return;
     }
-    //
     const defaultaddress = this.addresses.filter(
       (data: any) => data.ID == this.selectedAddress
     );
-    //
     this.apiservice.updateAddressDefault(defaultaddress[0]).subscribe(
       (res) => {
         if (res.code !== 200) {
           this.message.error('Default address not updated successfully.', '');
           return;
         }
-
         this.message.success('Default address updated successfully.', '');
-
-        // Step 3: Get cart details
         this.apiservice.getCartDetails(this.userID).subscribe(
           (cartRes: any) => {
             const cartDetails = cartRes.data?.CART_DETAILS;
             const cartInfo = cartRes.data?.CART_INFO;
-
             if (cartDetails?.length > 0 && cartInfo?.length > 0) {
-              // Step 4: Get latest address list and find default
               const condition = ` AND CUSTOMER_ID=${this.userID} AND STATUS = 1`;
-
               this.apiservice
                 .getAddresses1data(0, 0, 'IS_DEFAULT',
                   'desc', condition)
                 .subscribe({
                   next: (addressRes: any) => {
                     this.addressData = addressRes.data;
-
                     const defaultAddress = this.addressData.find(
                       (addr: any) => addr.IS_DEFAULT === 1
                     );
-
                     if (!defaultAddress) return;
-
-                    // Step 5: Prepare data to update cart
                     const updateCartData = {
                       CART_ID: cartDetails[0].CART_ID,
                       ADDRESS_ID: cartInfo[0].ADDRESS_ID,
@@ -1470,8 +1150,6 @@ export class CommonmapComponent {
                       NEW_TERRITORY_ID: defaultAddress.TERRITORY_ID,
                       CUSTOMER_ID: cartInfo[0].CUSTOMER_ID,
                     };
-
-                    // Step 6: Update cart with new address info
                     this.apiservice
                       .updateAddressToUpdateCart(updateCartData)
                       .subscribe(
@@ -1493,14 +1171,11 @@ export class CommonmapComponent {
                   error: (err) => { },
                 });
             } else {
-              // No cart items, just navigate
               this.navigateToServicePage();
             }
           },
           (error) => { }
         );
-
-        // Step 7: Close the modal
         this.closeAddressModal();
       },
       (error) => {
@@ -1508,23 +1183,16 @@ export class CommonmapComponent {
       }
     );
   }
-
-  // Utility method to navigate to service page and reload
   navigateToServicePage() {
     this.router.navigateByUrl('/service').then(() => {
       window.location.reload();
     });
   }
-
-  // editAddress(address: any) {
-  //   // Open edit form/modal
-  // }
   editAddress(address: any) {
     address['shop'] = '0';
     this.modalService1.setDrawerState(true, address);
     this.closeAddressModal();
   }
-
   deleteAddress(addressId: number) {
     this.apiservice.DeleteAddress(this.userID, addressId).subscribe(
       (res) => {
@@ -1540,12 +1208,8 @@ export class CommonmapComponent {
       }
     );
   }
-
   addNewAddress() {
-    // Open add address form/modal
-
     this.closeAddressModal();
-
     this.modalService1.openModal();
   }
   closeAddressModal() {
@@ -1553,53 +1217,37 @@ export class CommonmapComponent {
     let modal: any = bootstrap.Modal.getInstance(modalElement);
     modal.hide();
   }
-  //
-
   selectedService: any = [];
   uploadedImageUrl: string | null = null;
-  // Service opencode
-
   quantity = 1;
-  // uploadedImageUrl: string | null = null;
-
   addresses: any[] = [];
   defaultAddress: any;
   selectedAddress: string = '';
-
   data: any = {
     SERVICE_PHOTO_FILE: '',
     ID: null,
   };
-
   isInCart: boolean = false;
-
-  // userId = sessionStorage.getItem('userId');
-  // decrepteduserIDString = this.userId ? this.commonFunction.decryptdata(this.userId) : '';
-  // decrepteduserID = parseInt(this.decrepteduserIDString, 10);
-
   homepageprogress = 0;
   openDrawer(service: any) {
     service.DESCRIPTION = '';
     this.selectedService = service;
     this.showModal = false;
     this.defaultAddress = this.addresses.find((addr) => addr.IS_DEFAULT === 1);
-    this.selectedAddress = this.defaultAddress?.ID; // Set default preselected
+    this.selectedAddress = this.defaultAddress?.ID; 
     const offcanvas = new bootstrap.Offcanvas(
       document.getElementById('serviceOffcanvas')!
     );
     offcanvas.show();
-
     this.updateProgress1();
     this.isInCart = false;
   }
-
   updateProgress1() {
-    this.homepageprogress += 50; // Adjust increment as needed
+    this.homepageprogress += 50; 
     if (this.homepageprogress > 100) {
       this.homepageprogress = 100;
     }
   }
-
   increaseQty() {
     if (this.quantity < this.selectedService?.MAX_QTY) {
       this.quantity++;
@@ -1610,25 +1258,19 @@ export class CommonmapComponent {
       );
     }
   }
-
   decreaseQty() {
     if (this.quantity > 1) {
       this.quantity--;
     }
   }
-
   imagePreview: any = null;
   showModal: boolean = false;
   isUploading: boolean = false;
   progressPercent: number = 0;
-
   fileChangeEvent(event: any) {
     const file = event.target.files[0];
-    const maxFileSize = 1 * 1024 * 1024; // 5MB limit
-    // this.message.success('File size should not exceed 5MB.','');
-
+    const maxFileSize = 1 * 1024 * 1024; 
     if (!file) return;
-
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
     if (!allowedTypes.includes(file.type)) {
       this.message.error(
@@ -1637,33 +1279,20 @@ export class CommonmapComponent {
       );
       return;
     }
-
     if (file.size > maxFileSize) {
       this.message.error('File size should not exceed 1MB.', '');
       return;
     }
-
-    // Generate unique filename
     const fileExt = file.name.split('.').pop();
     const randomNum = Math.floor(100000 + Math.random() * 900000);
     const dateStr = this.datePipe.transform(new Date(), 'yyyyMMdd');
     const filename = `${dateStr}${randomNum}.${fileExt}`;
-
-    // Show preview
-    // const reader = new FileReader();
-    // reader.onload = (e: any) => {
-    //   this.imagePreview = e.target.result;
-    // };
-    // reader.readAsDataURL(file);
-
-    this.selectedService.SERVICE_PHOTO_FILE = filename; // Store the generated filename
+    this.selectedService.SERVICE_PHOTO_FILE = filename; 
     this.uploadImage(file, filename);
   }
-
   uploadImage(file: File, filename: string) {
     this.isUploading = true;
     this.progressPercent = 0;
-
     this.apiservice.onUpload('CartItemPhoto', file, filename).subscribe({
       next: (event) => {
         if (event.type === HttpEventType.UploadProgress) {
@@ -1672,8 +1301,6 @@ export class CommonmapComponent {
           this.isUploading = false;
           if (event.body?.code === 200) {
             this.message.success('Image uploaded successfully.', '');
-            // this.data.SERVICE_PHOTO_FILE = event.body.fileUrl; // Store uploaded image URL
-
             this.imagePreview =
               this.IMAGEuRL +
               'CartItemPhoto/' +
@@ -1696,13 +1323,11 @@ export class CommonmapComponent {
       },
     });
   }
-
   removeImage() {
     this.selectedService.SERVICE_PHOTO_FILE = null;
     this.imagePreview = null;
     this.showModal = false;
   }
-
   openModal() {
     this.imagePreview =
       this.IMAGEuRL +
@@ -1710,46 +1335,35 @@ export class CommonmapComponent {
       this.selectedService.SERVICE_PHOTO_FILE;
     this.showModal = true;
   }
-
   closeModal() {
     this.showModal = false;
   }
-
   IconDeleteConfirm(data: any) { }
   viewImage(data: any) { }
-
   openAddressModal() {
     let modalElement: any = document.getElementById('addressModal');
     let modal = new bootstrap.Modal(modalElement);
     modal.show();
   }
-
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
-
     if (file) {
       const formData = new FormData();
       formData.append('image', file);
     }
   }
-  IS_EXPRESS: number = 0; // 0 = not selected, 1 = selected
-
+  IS_EXPRESS: number = 0; 
   toggleExpressService() {
     this.IS_EXPRESS = this.IS_EXPRESS === 1 ? 0 : 1;
-    // this.selectedService.IS_EXPRESS1 = this.IS_EXPRESS;
   }
-
-  isLoading = false; // Add this property in your component
-
+  isLoading = false; 
   toggleCart(selectedService: any) {
     if (!selectedService || !this.DefaultAddressArray) {
       this.message.error('Invalid service or address details.');
       return;
     }
-
-    this.isLoading = true; // Start loading
+    this.isLoading = true; 
     this.isInCart = !this.isInCart;
-
     if (this.isInCart) {
       const formatteddataadd = {
         SERVICE_ID: selectedService.ID,
@@ -1767,23 +1381,19 @@ export class CommonmapComponent {
         TERITORY_ID: this.DefaultAddressArray?.TERRITORY_ID,
         STATE_ID: this.DefaultAddressArray?.STATE_ID,
       };
-
       this.apiservice.AddToCart(formatteddataadd).subscribe(
         (res) => {
           this.isLoading = false;
           this.apiservice.addItemToCart(formatteddataadd);
-
           if (res.code == 200) {
-            this.cartService.fetchAndUpdateCartDetails(this.userID); // ⭐️ Common Call
+            this.cartService.fetchAndUpdateCartDetails(this.userID); 
           }
-
           res.code === 200
             ? this.message.success('Item added to cart successfully.')
             : this.message.error('Failed to add item to cart.');
         },
         (error) => {
           this.isLoading = false;
-
           this.message.error('Error adding item to cart.');
         }
       );
@@ -1797,18 +1407,15 @@ export class CommonmapComponent {
             );
             return;
           }
-
           const cartItem = cartRes.data?.CART_DETAILS?.find(
             (item: any) =>
               Number(item.SERVICE_ID) === Number(selectedService.ID)
           );
-
           if (!cartItem) {
             this.isLoading = false;
             this.message.error('Item not found in cart.');
             return;
           }
-
           const formatteddataremove = {
             CUSTOMER_ID: this.userID,
             SERVICE_ID: selectedService.ID,
@@ -1816,12 +1423,11 @@ export class CommonmapComponent {
             CART_ITEM_ID: cartItem.ID,
             TYPE: 'S',
           };
-
           this.apiservice.RemoveFromCart(formatteddataremove).subscribe(
             (res) => {
               this.isLoading = false;
               if (res.code == 200) {
-                this.cartService.fetchAndUpdateCartDetails(this.userID); // ⭐️ Common Call
+                this.cartService.fetchAndUpdateCartDetails(this.userID); 
               }
               res.code === 200
                 ? this.message.success('Item removed from cart successfully.')
@@ -1829,20 +1435,17 @@ export class CommonmapComponent {
             },
             (error) => {
               this.isLoading = false;
-
               this.message.error('Error removing item from cart.');
             }
           );
         },
         (error) => {
           this.isLoading = false;
-
           this.message.error('Error fetching cart details.');
         }
       );
     }
   }
-
   offcanvasInstance!: bootstrap.Offcanvas | null;
   updatedselectedService: any = [];
   TerritoryData: any = [];
@@ -1868,7 +1471,6 @@ export class CommonmapComponent {
         (response) => {
           if (response?.code === 200) {
             this.TerritoryData = response.data;
-
             if (this.TerritoryData && this.TerritoryData.length > 0) {
               if (this.dates && this.dates.length > 0) {
                 this.getCartSlots(this.TerritoryData);
@@ -1885,7 +1487,6 @@ export class CommonmapComponent {
           this.loadepage = false;
         }
       );
-
     const formatteddataadd = {
       SERVICE_ID: this.selectedService.ID,
       QUANTITY: this.quantity,
@@ -1902,7 +1503,6 @@ export class CommonmapComponent {
       TERITORY_ID: this.DefaultAddressArray?.TERRITORY_ID,
       STATE_ID: this.DefaultAddressArray?.STATE_ID,
     };
-
     this.apiservice.AddToCart(formatteddataadd).subscribe(
       (res) => {
         this.loadepage = false;
@@ -1917,18 +1517,15 @@ export class CommonmapComponent {
       },
       (error) => {
         this.loadepage = false;
-
         this.message.error('Error adding item to cart.');
       }
     );
   }
-
   decreaseHomeProgress() {
     if (this.homepageprogress > 0) {
-      this.homepageprogress -= 50; // Decrease progress on back
+      this.homepageprogress -= 50; 
     }
   }
-
   backaddress() {
     this.isInCart = false;
     this.decreaseHomeProgress();
@@ -1937,14 +1534,11 @@ export class CommonmapComponent {
     if (!cartId || cartId.length === 0 || !cartId[0]?.ID) {
       return;
     }
-
     const cartID = cartId[0]['ID'];
-
     this.apiservice.CartslotGet(this.userID, cartID).subscribe(
       (response) => {
         if (response?.code === 200 && response.data?.length > 0) {
-          const slot = response.data[0]; // First object from response
-
+          const slot = response.data[0]; 
           this.timeSlots = [
             {
               period: 'Morning',
@@ -1974,9 +1568,7 @@ export class CommonmapComponent {
               },
             },
           ];
-
           this.selectedDate = this.dates[0].fullDate;
-
           this.updateTimeSlots(this.selectedDate);
           this.updateProgress1();
         } else {
@@ -1985,8 +1577,6 @@ export class CommonmapComponent {
       (error) => { }
     );
   }
-
-  /** Function to open the drawer */
   openDrawerUI(data: any) {
     const drawerElement = document.getElementById('addressSlotDrawer');
     if (drawerElement) {
@@ -1996,17 +1586,15 @@ export class CommonmapComponent {
     } else {
     }
   }
-
   generateDates() {
-    this.dates = []; // Clear previous dates to avoid duplicates
-    const startDate = this.today; // Start from today
-    const endDate = addDays(startDate, 30); // Go up to 30 days from today
+    this.dates = []; 
+    const startDate = this.today; 
+    const endDate = addDays(startDate, 30); 
     let currentDate = startDate;
-
     while (currentDate <= endDate) {
       this.dates.push({
         display: format(currentDate, 'EEE d'),
-        fullDate: format(currentDate, 'EEE, MMM d, yyyy'), // Ensure format consistency
+        fullDate: format(currentDate, 'EEE, MMM d, yyyy'), 
       });
       currentDate = addDays(currentDate, 1);
     }
@@ -2014,13 +1602,11 @@ export class CommonmapComponent {
   MaxEndValue: any;
   remark: any;
   selectDate(date: string) {
-    this.selectedSlot = ''; // Reset slot
+    this.selectedSlot = ''; 
     this.selectedDate = date;
-
     if (this.TerritoryData && this.TerritoryData.length > 0) {
       this.updateTimeSlots(date);
     } else {
-      // Wait until TerritoryData is available
       const interval = setInterval(() => {
         if (this.TerritoryData && this.TerritoryData.length > 0) {
           clearInterval(interval);
@@ -2029,7 +1615,6 @@ export class CommonmapComponent {
       }, 100);
     }
   }
-
   updateTimeSlots(date: any) {
     const activeTerritory = this.TerritoryData?.find(
       (t: any) => t.IS_ACTIVE === 1
@@ -2037,21 +1622,15 @@ export class CommonmapComponent {
     if (!activeTerritory) {
       return;
     }
-
     const selectedDateMoment = moment(date, 'ddd, MMM D, YYYY');
-
     if (!Array.isArray(this.updatedselectedService)) {
       this.updatedselectedService = [];
     }
-
     if (!this.timeSlots || this.timeSlots.length === 0) {
       return;
     }
-
-    // ✅ Get calculated time range
     const { serviceStart, serviceEnd } =
       this.getServiceTimeRange(selectedDateMoment);
-
     if (!serviceStart || !serviceEnd || serviceStart.isAfter(serviceEnd)) {
       this.timeSlots = this.timeSlots.map((period) => ({
         ...period,
@@ -2059,46 +1638,37 @@ export class CommonmapComponent {
       }));
       return;
     }
-
     this.timeSlots = this.timeSlots.map((period) => {
       const slotStart = moment(period.times.start, 'HH:mm');
       const slotEnd = moment(period.times.end, 'HH:mm');
-
       const isValid =
         (slotStart.isSameOrAfter(serviceStart) &&
           slotEnd.isSameOrBefore(serviceEnd)) ||
         serviceStart.isBetween(slotStart, slotEnd, null, '[)') ||
         serviceEnd.isBetween(slotStart, slotEnd, null, '(]');
-
       return {
         ...period,
         times: { ...period.times, disabled: !isValid },
       };
     });
   }
-
   getServiceTimeRange(selectedDate: moment.Moment) {
     const activeTerritory = this.TerritoryData?.find(
       (t: any) => t.IS_ACTIVE === 1
     );
     if (!activeTerritory) return { serviceStart: null, serviceEnd: null };
-
-    // Prepare start times
     const startTimes = [
       ...this.updatedselectedService.map((service: any) =>
         moment(service.START_TIME || '00:00:01', 'HH:mm:ss')
       ),
       moment(activeTerritory.START_TIME, 'HH:mm:ss'),
     ].filter((time) => time.isValid());
-
-    // Prepare end times
     const endTimes = [
       ...this.updatedselectedService.map((service: any) =>
         moment(service.END_TIME || '23:59:59', 'HH:mm:ss')
       ),
       moment(activeTerritory.END_TIME, 'HH:mm:ss'),
     ].filter((time) => time.isValid());
-
     if (selectedDate.isSame(moment(), 'day')) {
       const maxPrepMinutes = this.updatedselectedService.reduce(
         (maxTime: number, service: any) => {
@@ -2108,50 +1678,37 @@ export class CommonmapComponent {
               : service.PREPARATION_HOURS != null
                 ? parseInt(service.PREPARATION_HOURS, 10)
                 : 0;
-
           const minutes =
             service.T_PREPARATION_MINUTES != null
               ? parseInt(service.T_PREPARATION_MINUTES, 10)
               : service.PREPARATION_MINUTES != null
                 ? parseInt(service.PREPARATION_MINUTES, 10)
                 : 0;
-
           const totalMinutes = hours * 60 + minutes;
-
           return Math.max(maxTime, totalMinutes);
         },
         0
       );
-
       if (maxPrepMinutes > 0) {
         startTimes.push(moment().add(maxPrepMinutes, 'minutes'));
       }
     }
-
     if (startTimes.length === 0 || endTimes.length === 0) {
       return { serviceStart: null, serviceEnd: null };
     }
-
-    // Get max start and min end
     const serviceStart = moment.max(startTimes);
     const serviceEnd = moment.min(endTimes);
-
-    this.MaxEndValue = serviceStart.format('hh:mm A'); // For bookNow()
-
+    this.MaxEndValue = serviceStart.format('hh:mm A'); 
     return { serviceStart, serviceEnd };
   }
-
-  // Select slot as before
   selectSlot(times: any) {
     this.selectedSlot = `${this.formatTime(times.start)} - ${this.formatTime(
       times.end
     )}`;
   }
-
   isAllSlotsDisabled(): boolean {
     return this.timeSlots?.every((slot) => slot.times.disabled);
   }
-
   bookNow() {
     if (!this.selectedDate) {
       this.message.warning('Please select a date.');
@@ -2161,7 +1718,6 @@ export class CommonmapComponent {
       this.message.warning('Please select a time slot.');
       return;
     }
-
     this.isLoading = true;
     try {
       const [startTime, endTime] = this.selectedSlot.split(' - ');
@@ -2169,12 +1725,10 @@ export class CommonmapComponent {
         this.selectedDate,
         'yyyy-MM-dd'
       );
-
       const formattedStartTime = moment(startTime, 'hh:mm A').format(
         'HH:mm:ss'
       );
       const formattedEndTime = moment(endTime, 'hh:mm A').format('HH:mm:ss');
-
       const today = moment().format('YYYY-MM-DD');
       const maxEndMoment = moment(
         `${today} ${this.MaxEndValue}`,
@@ -2188,9 +1742,7 @@ export class CommonmapComponent {
         `${today} ${formattedEndTime}`,
         'YYYY-MM-DD HH:mm:ss'
       );
-
       let expectedTime: string;
-
       if (maxEndMoment.isBefore(slotStartMoment)) {
         expectedTime = formattedStartTime;
       } else if (
@@ -2200,23 +1752,16 @@ export class CommonmapComponent {
       } else {
         expectedTime = formattedEndTime;
       }
-
-      // Round to next 10 min
       const roundedTime = moment(expectedTime, 'HH:mm:ss');
       const minutes = roundedTime.minutes();
       const remainder = minutes % 10;
       if (remainder !== 0) {
         roundedTime.add(10 - remainder, 'minutes').seconds(0);
       } else {
-        roundedTime.seconds(0); // To ensure seconds are 0 even if already on 10-min mark
+        roundedTime.seconds(0); 
       }
-
-      //
-
       expectedTime = roundedTime.format('HH:mm:ss');
-
       const expectedDateTime = `${formattedDate} ${expectedTime}`;
-
       const payload = {
         SCHEDULE_DATE: formattedDate,
         SCHEDULE_START_TIME: formattedStartTime,
@@ -2226,8 +1771,6 @@ export class CommonmapComponent {
         REMARK: this.remark || '',
         CART_ID: this.cartId,
       };
-
-      // API Call
       this.apiservice.BookOrder(payload).subscribe({
         next: (res) => {
           this.isLoading = false;
@@ -2240,47 +1783,33 @@ export class CommonmapComponent {
         },
         error: (err) => {
           this.isLoading = false;
-
           this.message.error('Error occurred while scheduling.');
         },
       });
     } catch (error) {
       this.isLoading = false;
-
       this.message.error('Something went wrong.');
     }
   }
-
-  // Service code
-
   selectedDevice: any = null;
   isServiceDrawerOpen = false;
   isActionDrawerOpen = false;
   isDrawerOpen = false;
   servicesList: any[] = [];
-
   calculateEstimatedTime(service: any): string {
     if (!service.START_TIME || !service.END_TIME) return 'N/A';
-
     const startTime = new Date(`1970-01-01T${service.START_TIME}`);
     const endTime = new Date(`1970-01-01T${service.END_TIME}`);
-
     const diffMinutes = (endTime.getTime() - startTime.getTime()) / (1000 * 60);
     const hours = Math.floor(diffMinutes / 60);
     const minutes = diffMinutes % 60;
-
     return `${hours ? hours + ' hr ' : ''}${minutes} mins`;
   }
-  quantityMap: { [key: number]: number } = {}; // प्रत्येक service साठी qty स्टोअर करणारं object
+  quantityMap: { [key: number]: number } = {}; 
   CartDetails: any;
-
-  // @ViewChild('guestModal') guestModal!: TemplateRef<any>;
-
   increaseQty1(service: any, maxQty: number, event: Event) {
     event.stopPropagation();
-
     if (this.userID === 0) {
-      // Open modal if user is guest
       const modalElement = document.getElementById('guestModal');
       if (modalElement) {
         const modal = new bootstrap.Modal(modalElement);
@@ -2297,13 +1826,11 @@ export class CommonmapComponent {
       }
     }
   }
-
   redirectToLogin() {
     if (this.userID == 0 || this.userID == null || this.userID == undefined) {
       this.cookie.deleteAll();
       sessionStorage.clear();
       localStorage.clear();
-
       this.router.navigate(['/login']).then(() => {
         window.location.reload();
       });
@@ -2316,14 +1843,12 @@ export class CommonmapComponent {
     this.apiservice.getCartDetails(this.userID).subscribe((data: any) => {
       if (data['code'] === 200) {
         CartDetails = data?.data?.CART_DETAILS || [];
-
         if (CartDetails.length === 0) {
           this.addToCart(service);
         } else {
           const existingItem = CartDetails.find(
             (item: any) => item.SERVICE_ID === service.ID
           );
-
           if (existingItem) {
             this.increaseQuantity(existingItem, service);
           } else {
@@ -2336,12 +1861,10 @@ export class CommonmapComponent {
       }
     });
   }
-
   addToCart(service: any) {
     const formatteddataadd = {
       SERVICE_ID: service.ID,
       QUANTITY: service.QUANTITY + 1,
-      // INVENTORY_ID: 0,
       TYPE: 'S',
       SERVICE_CATALOGUE_ID: service.PARENT_ID,
       BRAND_NAME: service.BRAND_NAME,
@@ -2355,14 +1878,12 @@ export class CommonmapComponent {
       STATE_ID: this.DefaultAddressArray?.STATE_ID,
     };
     service.QUANTITY = formatteddataadd.QUANTITY;
-
     this.apiservice.AddToCart(formatteddataadd).subscribe(
       (res) => {
         this.isLoading = false;
         this.cartspinner = false;
-
         if (res.code == 200) {
-          this.cartService.fetchAndUpdateCartDetails(this.userID); // ⭐️ Common Call
+          this.cartService.fetchAndUpdateCartDetails(this.userID); 
         }
         res.code === 200
           ? this.message.success('Item added to cart successfully.')
@@ -2371,12 +1892,10 @@ export class CommonmapComponent {
       (error) => {
         this.isLoading = false;
         this.cartspinner = false;
-
         this.message.error('Error adding item to cart.');
       }
     );
   }
-
   increaseQuantity(data: any, service: any) {
     const payload = {
       TYPE: 'S',
@@ -2386,9 +1905,7 @@ export class CommonmapComponent {
       QUANTITY: data.QUANTITY + 1,
       SERVICE_ID: data.SERVICE_ID,
     };
-
     service.QUANTITY = payload.QUANTITY;
-
     this.apiservice
       .CartCountUpdateService(
         payload.TYPE,
@@ -2401,22 +1918,18 @@ export class CommonmapComponent {
       .subscribe((response) => {
         if (response['code'] === 200) {
           this.cartspinner = false;
-
           data.QUANTITY++;
           this.apiservice.addItemToCart(service);
-          setTimeout(() => { }, 0); // UI Update workaround
+          setTimeout(() => { }, 0); 
           this.message.success('Add Quantity Updated successfully.', '');
         } else {
           this.cartspinner = false;
         }
       });
   }
-
   decreaseQty1(service: any, event: Event) {
     event.stopPropagation();
-
     if (this.userID === 0) {
-      // Open modal if user is guest
       const modalElement = document.getElementById('guestModal');
       if (modalElement) {
         const modal = new bootstrap.Modal(modalElement);
@@ -2425,17 +1938,13 @@ export class CommonmapComponent {
     } else {
       if (service.QUANTITY === 0) {
         this.message.error('Please add quantity first.', '');
-        // You can replace console.error with an alert or a toast notification
         return;
       }
-
       if (service.QUANTITY > 1) {
         this.cartspinner = true;
-
         this.decreaseQuantity(service);
       } else {
         this.cartspinner = true;
-
         this.removeItemFromCart(service);
       }
     }
@@ -2444,13 +1953,10 @@ export class CommonmapComponent {
     this.apiservice.getCartDetails(this.userID).subscribe((data: any) => {
       if (data['code'] === 200) {
         const CartDetails = data?.data?.CART_DETAILS || [];
-
         this.cartspinner = false;
-
         const existingItem = CartDetails.find(
           (item: any) => item.SERVICE_ID === service.ID
         );
-
         if (existingItem) {
           if (existingItem.QUANTITY > 1) {
             const payload = {
@@ -2461,9 +1967,7 @@ export class CommonmapComponent {
               QUANTITY: existingItem.QUANTITY - 1,
               SERVICE_ID: existingItem.SERVICE_ID,
             };
-
             service.QUANTITY = payload.QUANTITY;
-
             this.apiservice
               .CartCountUpdateService(
                 payload.TYPE,
@@ -2486,7 +1990,6 @@ export class CommonmapComponent {
       }
     });
   }
-
   removeItemFromCart(service: any) {
     this.apiservice.getCartDetails(this.userID).subscribe((data: any) => {
       if (data['code'] === 200) {
@@ -2494,9 +1997,6 @@ export class CommonmapComponent {
         const existingItem = CartDetails.find(
           (item: any) => item.SERVICE_ID === service.ID
         );
-
-        //
-
         if (existingItem) {
           const payload = {
             SERVICE_ID: existingItem.SERVICE_ID,
@@ -2505,19 +2005,14 @@ export class CommonmapComponent {
             CUSTOMER_ID: this.userID,
             TYPE: 'S',
           };
-
           this.apiservice.RemoveFromCart(payload).subscribe((response) => {
             if (response['code'] === 200) {
-              this.cartService.fetchAndUpdateCartDetails(this.userID); // ⭐️ Common Call
+              this.cartService.fetchAndUpdateCartDetails(this.userID); 
               this.cartspinner = false;
-
               service.QUANTITY = 0;
-
-              // this.CartDetails = this.CartDetails.filter((item: any) => item.ID !== existingItem.ID);
               this.message.success('Item removed from cart.', '');
             } else {
               this.cartspinner = false;
-
               this.message.error('Failed to remove item.');
             }
           });
@@ -2525,72 +2020,50 @@ export class CommonmapComponent {
       }
     });
   }
-
-  progress: any = 0; // Initial progress
-
+  progress: any = 0; 
   openServiceDrawer(service: any) {
     this.progress = 0;
     this.loadCategories = true;
-    // if(service)
-    // {
     this.selectedService = service;
     this.loadCategories = false;
-    // }
-    // this.isServiceDrawerOpen = true;
-    // this.renderer.addClass(document.body, 'offcanvas-backdrop-custom'); // Add backdrop
-
-    this.updateProgress(); // Update progress
-
+    this.updateProgress(); 
     const offcanvas = new bootstrap.Offcanvas(
       document.getElementById('isServiceDrawerOpen')!
     );
-
     offcanvas.show();
     this.isActionDrawerOpen = false;
     this.isDrawerOpen = false;
   }
-
   updateProgress() {
-    this.progress += 25; // Adjust increment as needed
+    this.progress += 25; 
     if (this.progress > 100) {
       this.progress = 100;
     }
   }
-
   openActionDrawer(device: any) {
-    // event.stopPropagation();
-
     this.selectedDevice = device;
-
     if (device.children && device.children.length > 0) {
       this.isActionDrawerOpen = true;
       this.isDrawerOpen = false;
       this.isServiceDrawerOpen = false;
     } else {
-      this.fetchServices(device); // Fetch service details dynamically
+      this.fetchServices(device); 
     }
   }
-
   openActionDrawercomplete(action: any) {
     if (action) {
       this.selectedDevice = action;
-
       this.isActionDrawerOpen = true;
       this.isDrawerOpen = false;
       this.isServiceDrawerOpen = false;
-      this.fetchServices(action); // Fetch service details dynamically
+      this.fetchServices(action); 
     }
   }
-
   selectedServiceReviews: any[] = [];
-
-  loadingReviews: boolean = false; // Loader flag
-
+  loadingReviews: boolean = false; 
   openReviews(service: any, event: Event) {
     event.stopPropagation();
-
     this.loadingReviews = true;
-
     this.apiservice
       .getCustomerServiceFeedback(
         0,
@@ -2602,11 +2075,10 @@ export class CommonmapComponent {
       .subscribe(
         (response) => {
           this.loadingReviews = false;
-
           if (response?.code === 200 && response.data?.length > 0) {
             this.selectedServiceReviews = response.data.map((review: any) => ({
               ...review,
-              RATING: Number(review.RATING), // Convert rating to number
+              RATING: Number(review.RATING), 
             }));
           } else {
             this.selectedServiceReviews = [];
@@ -2616,27 +2088,19 @@ export class CommonmapComponent {
           this.loadingReviews = false;
         }
       );
-
-    // const modalElement = document.getElementById('reviewsModal');
-    // if (modalElement) {
-    //   const modal = new bootstrap.Modal(modalElement);
-    //   modal.show();
-    // }
     setTimeout(() => {
       const modalElement = document.getElementById('reviewsModal');
       if (modalElement) {
         const modal = new bootstrap.Modal(modalElement);
         modal.show();
       }
-    }, 100); // slight delay to ensure modal is rendered
+    }, 100); 
   }
   loading: boolean = false;
-
   fetchServices(id: any) {
     this.loading = true;
     const categoryId = id['key'] ? id['key'] : id.SUB_CATEGORY_ID;
     const parentId = id.IS_PARENT == 1 ? id.ID : 0;
-
     this.apiservice
       .getCategories(
         this.customertype,
@@ -2649,53 +2113,43 @@ export class CommonmapComponent {
       .subscribe(
         (categoriesResponse) => {
           this.loading = false;
-
           if (
             categoriesResponse?.code === 200 &&
             categoriesResponse.data?.length > 0
           ) {
-            this.updateProgress(); // Update progress
-
+            this.updateProgress(); 
             this.servicesList = categoriesResponse.data;
             if (this.userID !== 0) {
               this.apiservice.getCartDetails(this.userID).subscribe(
                 (cartResponse) => {
-                  // Always iterate over servicesList, regardless of CART_DETAILS length
                   this.servicesList.forEach((service: any) => {
                     const cartItem = cartResponse?.data?.CART_DETAILS?.find(
                       (item: any) => item.SERVICE_ID === service.ID
                     );
-
                     service.QUANTITY =
                       cartItem?.QUANTITY ||
                       (service.QUANTITY > 0 ? service.QUANTITY : 0);
                   });
-
-                  // Open drawer after short delay
                   setTimeout(() => {
                     this.isDrawerOpen = true;
                   }, 100);
                 },
                 (cartError) => {
-                  // Even on error, set default QUANTITY to 1
                   this.servicesList.forEach((service: any) => {
                     service.QUANTITY =
                       service.QUANTITY > 0 ? service.QUANTITY : 1;
                   });
-
                   setTimeout(() => {
                     this.isDrawerOpen = true;
                   }, 100);
                 }
               );
             } else {
-              // If userID is zero, set default QUANTITY and open drawer
               this.servicesList.forEach((service: any) => {
                 service.QUANTITY = service.QUANTITY > 0 ? service.QUANTITY : 1;
               });
-
               setTimeout(() => {
-                this.isDrawerOpen = true; // Open drawer when userID is zero
+                this.isDrawerOpen = true; 
               }, 100);
             }
           } else {
@@ -2707,45 +2161,26 @@ export class CommonmapComponent {
           }
         },
         (categoriesError) => {
-          this.loading = false; // Hide loader on error
+          this.loading = false; 
         }
       );
   }
-
-  // openDrawer() {
-  //
-  //   this.isDrawerOpen = true; // जर तुम्ही *ngIf वापरत असाल तर
-  // }
-
-  // closeDrawer() {
-  //   this.isServiceDrawerOpen = false;
-  //   this.isActionDrawerOpen = false;
-  //   this.selectedService = null;
-  //   this.selectedDevice = null;
-  // }
-
   closeDrawer() {
     this.isServiceDrawerOpen = false;
     this.isActionDrawerOpen = false;
     this.isDrawerOpen = false;
     this.loading = false;
   }
-
   onBackClick() {
-    this.isDrawerOpen = false; // Close the drawer
-    this.decreaseProgress(); // Decrease progress
+    this.isDrawerOpen = false; 
+    this.decreaseProgress(); 
   }
-
   isDrawerVisible: boolean = false;
   drawerData: any = [];
   originalBackdropOpacity: string = '';
-  // isDrawerVisible: boolean = false;
-  // drawerData: any = [];
-
   cartquantity: any;
   openNextDrawer(data: any) {
     this.drawerData = data;
-
     setTimeout(() => {
       const serviceDrawer = document.getElementById('offcanvasRight11');
       if (serviceDrawer) {
@@ -2753,30 +2188,19 @@ export class CommonmapComponent {
         if (!offcanvasInstance) {
           offcanvasInstance = new bootstrap.Offcanvas(serviceDrawer);
         }
-        this.updateProgress(); // Update progress
-
+        this.updateProgress(); 
         offcanvasInstance.show();
       }
       this.cartquantity =
         this.drawerData.QUANTITY == 0 ? 1 : this.drawerData.QUANTITY;
-
       this.drawerData.DESCRIPTION = '';
       this.showModal = false;
       this.imagePreview = null;
       this.drawerData.SERVICE_PHOTO_FILE = '';
-
       this.isDrawerVisible = true;
-
-      // this.drawerData.QUANTITY =
-      //   this.drawerData.QUANTITY == 0 ? 1 : this.drawerData.QUANTITY;
-      // this.drawerData.SELECTED_QTY
-
       document.body.style.overflow = '';
-
-      //
     }, 200);
   }
-
   drawerClose() {
     this.isDrawerVisible = false;
     setTimeout(() => {
@@ -2790,63 +2214,42 @@ export class CommonmapComponent {
         this.decreaseProgress();
       }
     }, 300);
-
-    //
-
-    // this.drawerData.QUANTITY = this.drawerData.QUANTITY
-    //   ? 0
-    //   : this.drawerData.QUANTITY;
   }
-
   decreaseProgress() {
     if (this.progress > 0) {
-      this.progress -= 25; // Decrease progress on back
+      this.progress -= 25; 
     }
   }
-
   get closeCallback() {
     return this.drawerClose.bind(this);
   }
-
   USERID = this.apiservice.getUserId();
   selectedServiceDescription: any = '';
-
   serviceData: any;
   openDescriptionModal(service: any) {
     this.serviceData = service;
-
     this.selectedServiceDescription = service.DESCRIPTION ? this.sanitizer.bypassSecurityTrustHtml(service.DESCRIPTION) : 'No description available.';
-
     const modal = new bootstrap.Modal(
       document.getElementById('descriptionModal')!
     );
     modal.show();
   }
-
   InventoryId(product: any) {
     const ID = product.ID;
     const UNIT_ID = product.UNIT_ID;
     const QUANTITY_PER_UNIT = product.QUANTITY_PER_UNIT;
-
-    sessionStorage.setItem('InventoryID', ID.toString()); // Store ID correctly
-    sessionStorage.setItem('UNIT_ID', UNIT_ID.toString()); // Store ID correctly
-    sessionStorage.setItem('QUANTITY_PER_UNIT', QUANTITY_PER_UNIT.toString()); // Store ID correctly
-    // this.inventoryId = ID;
-    //
+    sessionStorage.setItem('InventoryID', ID.toString()); 
+    sessionStorage.setItem('UNIT_ID', UNIT_ID.toString()); 
+    sessionStorage.setItem('QUANTITY_PER_UNIT', QUANTITY_PER_UNIT.toString()); 
   }
-
-  // Open Brands
-
   openBrandsDrawer(data: any) {
-    const brandData = { ID: data.ID, BRAND_NAME: data.BRAND_NAME }; // Extract only required properties
+    const brandData = { ID: data.ID, BRAND_NAME: data.BRAND_NAME }; 
     this.router.navigate(['/shop/home'], {
       queryParams: { data: JSON.stringify(brandData) },
     });
   }
   openRegister: boolean = false;
   whichOTP = '';
-
-
   @ViewChild('register') register!: TemplateRef<any>;
   isloginSendOTP: boolean = false;
   issignUpLoading: boolean = false;
@@ -2882,21 +2285,15 @@ export class CommonmapComponent {
   }
   selectPincode(pincode: any) {
     this.isPincodeLoading = true;
-
     this.selectedPincode = pincode.PINCODE_NUMBER;
     this.addressForm.PINCODE = pincode.PINCODE;
     this.addressForm.PINCODE_ID = pincode.ID;
     this.addressForm.PINCODE_FOR = pincode.PINCODE_FOR;
-
-
-
     this.showPincodeDropdown = false;
-
     this.getTerritory();
     setTimeout(() => {
       this.addressForm.PINCODE = pincode.PINCODE;
       this.isPincodeLoading = false;
- 
     }, 500);
   }
   terrotaryData: any = [];
@@ -2912,23 +2309,16 @@ export class CommonmapComponent {
       .subscribe({
         next: (data: any) => {
           this.terrotaryData = data.data;
-          // this.addressForm.TERRITORY_ID = this.terrotaryData[0].TERRITORY_ID;
           const territory = this.terrotaryData[0];
           this.addressForm.TERRITORY_ID = territory.TERRITORY_ID ? territory.TERRITORY_ID : 0;
-
-          // this.getStateData();
-
-          this.pincodeloading = false; // Hide loading state
+          this.pincodeloading = false; 
         },
         error: (error: any) => {
-
-          this.terrotaryData = []; // Clear data on error
-          this.pincodeloading = false; // Hide loading state
+          this.terrotaryData = []; 
+          this.pincodeloading = false; 
         },
       });
   }
-
-
   showConfirmPasswordError: boolean = false;
   asGuest: boolean = false
   showAddressDetailsForm = false;
@@ -2939,11 +2329,8 @@ export class CommonmapComponent {
     this.openVerify = false;
     this.modalVisible = true;
     this.showMap = true;
-    // modalVisible
     this.showAddressDetailsForm = false;
     this.asGuest = true;
-    // localStorage.setItem('isLogged', 'true');
-    // window.location.href='/service'
   }
   closeregister() {
     this.modalService.dismissAll();
@@ -2953,41 +2340,7 @@ export class CommonmapComponent {
     this.data = new registerdata();
     this.showAddressDetailsForm = false;
   }
-
-  //  address: any = {
-  // houseNo: '',
-  // landmark: '',
-  // city: '',
-  // pincode: '',
-  // state: '',
-  // };
-  // map2: any;
-  // longitude: any;
-  // latitude: any;
-
-  // locationCode: string = '';
-  // locationAddress: string = '';
-  // pincodeData: any = [];
-  // pincodeloading: boolean = false;
-  // selectedLocation: any;
-  // currentMarker: any;
-
-  // ngAfterViewInit() {
-  //   this.initializeMapWithLocation();
-  // }
-
-  // 1. Initialize Map with Current Location or Default Location
-
   initializeMapWithLocation() {
-
-
-
-    // const customerType = localStorage.getItem('customerType');
-    // if (customerType === 'I' || localStorage.getItem('skipLocationCheck') === 'true') {
-    //   // Skip map init for home users
-    //   return;
-    // }
-
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -2996,47 +2349,36 @@ export class CommonmapComponent {
           this.loadMap(this.latitude, this.longitude);
         },
         () => {
-          this.loadMap(28.6139, 77.209); // Default to Delhi if denied
+          this.loadMap(28.6139, 77.209); 
         }
       );
-
     } else {
-      this.loadMap(28.6139, 77.209); // Default to Delhi if geolocation not supported
+      this.loadMap(28.6139, 77.209); 
     }
   }
-
-  // 2. Load Map and Place Marker
   loadMap(lat: number, lng: number) {
-
     const mapElement = document.getElementById('map');
-
     if (!mapElement) {
       return;
     }
-
-    // Destroy previous map instance if it exists to avoid memory leaks
     if (this.map2) {
       google.maps.event.clearInstanceListeners(this.map2);
       if (this.currentMarker) {
         this.currentMarker.setMap(null);
       }
     }
-
     this.map2 = new google.maps.Map(mapElement, {
       center: { lat, lng },
       zoom: 15,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
     });
-
     this.currentMarker = new google.maps.Marker({
       position: { lat, lng },
       map: this.map2,
       draggable: true,
     });
-
     const geocoder = new google.maps.Geocoder();
     this.fetchAddressFromCoords(lat, lng, geocoder);
-
     google.maps.event.addListener(
       this.currentMarker,
       'dragend',
@@ -3046,28 +2388,18 @@ export class CommonmapComponent {
         this.fetchAddressFromCoords(this.latitude, this.longitude, geocoder);
       }
     );
-
-    // 🟢 Point select: Add click event on map
     google.maps.event.addListener(this.map2, 'click', (event: any) => {
       const clickedLat = event.latLng.lat();
       const clickedLng = event.latLng.lng();
-
-      // Move marker to clicked location
       this.currentMarker.setPosition({ lat: clickedLat, lng: clickedLng });
-
-      // Update stored coordinates
       this.latitude = clickedLat;
       this.longitude = clickedLng;
-
-      // Fetch address of clicked location
       this.fetchAddressFromCoords(clickedLat, clickedLng, geocoder);
     });
-
     this.setupSearchBox(geocoder);
   }
   setupSearchBox(geocoder: any) {
     setTimeout(() => {
-      // Create a container div for positioning
       const searchBoxContainer = document.createElement('div');
       searchBoxContainer.style.cssText = `
             position: absolute;
@@ -3075,8 +2407,6 @@ export class CommonmapComponent {
             left: 10%;
             z-index: 5;
         `;
-
-      // Create search box input dynamically
       const searchInput = document.createElement('input');
       searchInput.type = 'text';
       searchInput.id = 'searchBox';
@@ -3090,86 +2420,60 @@ export class CommonmapComponent {
             background-color: white;
             box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
         `;
-
-      // Append input to the container
       searchBoxContainer.appendChild(searchInput);
-
-      // Add container as a custom control on the map
       this.map2.controls[google.maps.ControlPosition.LEFT].push(
         searchBoxContainer
       );
-
-      // Initialize Google Places SearchBox
       const searchBox = new google.maps.places.SearchBox(searchInput);
-
       searchBox.addListener('places_changed', () => {
         const places = searchBox.getPlaces();
         if (!places || places.length === 0) return;
-
         const place = places[0];
         if (!place.geometry) return;
-
         const location = place.geometry.location;
         this.latitude = location.lat();
         this.longitude = location.lng();
-
-        // Center map and move marker
         this.map2.setCenter(location);
         this.currentMarker.setPosition(location);
-
-        // Fetch address for selected location
         this.fetchAddressFromCoords(this.latitude, this.longitude, geocoder);
       });
     }, 500);
   }
   fetchAddressFromCoords(lat: number, lng: number, geocoder: any) {
-
-
     const latLng = new google.maps.LatLng(lat, lng);
-
     geocoder.geocode({ location: latLng }, (results: any, status: any) => {
       if (status === 'OK' && results[0]) {
         const addressComponents = results[0].address_components;
-
-        // Filter out unwanted address components
         const filteredAddress = addressComponents
           .filter(
             (comp: any) =>
-              comp.types.includes('route') || // Street name
-              comp.types.includes('sublocality_level_1') || // Area/Locality
+              comp.types.includes('route') || 
+              comp.types.includes('sublocality_level_1') || 
               comp.types.includes('sublocality') ||
-              comp.types.includes('neighborhood') // Neighborhood
+              comp.types.includes('neighborhood') 
           )
           .map((comp: any) => comp.long_name)
           .join(', ');
-
         this.locationAddress = filteredAddress || '';
         this.addressForm.ADDRESS_LINE_2 = this.locationAddress;
-
         const postalCode =
           addressComponents.find((comp: any) =>
             comp.types.includes('postal_code')
-          )?.long_name || '416310'; // Fallback Pincode if not found
-
+          )?.long_name || '416310'; 
         if (results[0].plus_code && results[0].plus_code.global_code) {
           this.locationCode = results[0].plus_code.global_code.split(' ').pop();
         }
       } else {
-
       }
     });
   }
-
   getAddressComponent(components: any[], type: string): string {
     const component = components.find((comp) => comp.types.includes(type));
     return component ? component.long_name : '';
   }
-
   getpincode(pincodeeeee: any) {
-    let pincode: string = this.addressForm.PINCODE || ''; // Use existing PINCODE if available
-
+    let pincode: string = this.addressForm.PINCODE || ''; 
     if (pincode || pincodeeeee) {
-      // If PINCODE is already available, use it directly
       if (pincode != null && pincode != null && pincode != '') {
         this.fetchPincodeData(pincode);
       } else if (
@@ -3180,37 +2484,29 @@ export class CommonmapComponent {
         this.fetchPincodeData(pincodeeeee);
       }
     } else {
-      // Get current location's PINCODE if not available
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
-
           try {
             const response = await fetch(
               `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
             );
             const data = await response.json();
-
             pincode = data.address.postcode || '';
-
-            this.fetchPincodeData(pincode); // Fetch data with detected pincode
+            this.fetchPincodeData(pincode); 
           } catch (error: any) {
-
-            this.pincodeData = []; // Clear data on error
-            this.pincodeloading = false; // Hide loading state
+            this.pincodeData = []; 
+            this.pincodeloading = false; 
           }
         },
         (error) => {
-
-          this.pincodeData = []; // Clear data on error
-          this.pincodeloading = false; // Hide loading state
+          this.pincodeData = []; 
+          this.pincodeloading = false; 
         }
       );
     }
   }
-
-  // Common method to fetch pincode data
   fetchPincodeData(pincode: string) {
     this.isLoading = true;
     if (pincode) {
@@ -3226,41 +2522,31 @@ export class CommonmapComponent {
           next: (data: any) => {
             this.pincodeData = data.data;
             this.selectPincode(this.pincodeData[0]);
-            // this.searchPincode = pincode;
-            // if (!this.addressForm.PINCODE_ID) {
-            //   this.addressForm.PINCODE_ID = this.pincodeData[0].ID;
-            // }
             this.addressForm.PINCODE = '';
             this.addressForm.COUNTRY_ID = this.pincodeData[0].COUNTRY_ID;
             this.addressForm.STATE_ID = this.pincodeData[0].STATE;
             this.addressForm.DISTRICT_ID = this.pincodeData[0].DISTRICT;
             this.addressForm.DISTRICT_NAME = this.pincodeData[0].DISTRICT_NAME;
-            // this.addressForm.TERRITORY_ID = this.pincodeData[0].TERRITORY_ID;
             if (
               this.addressForm.PINCODE !== '' &&
               this.addressForm.PINCODE !== undefined &&
               this.addressForm.PINCODE !== null
             ) {
-              // this.selectPincode(this.addressForm.PINCODE)
               this.getTerritory();
             } else {
             }
-            // alert(this.addressForm.TERRITORY_ID)
             this.getStateData();
-
-            this.pincodeloading = false; // Hide loading state
+            this.pincodeloading = false; 
             this.isLoading = false;
           },
           error: (error: any) => {
-
-            this.pincodeData = []; // Clear data on error
-            this.pincodeloading = false; // Hide loading state
+            this.pincodeData = []; 
+            this.pincodeloading = false; 
             this.isLoading = false;
           },
         });
     }
   }
-
   stateData: any = [];
   getStateData() {
     this.apiservice
@@ -3274,38 +2560,24 @@ export class CommonmapComponent {
       .subscribe({
         next: (data: any) => {
           this.stateData = data.data;
-
-          this.pincodeloading = false; // Hide loading state
+          this.pincodeloading = false; 
         },
         error: (error: any) => {
-
-          this.stateData = []; // Clear data on error
-          this.pincodeloading = false; // Hide loading state
+          this.stateData = []; 
+          this.pincodeloading = false; 
         },
       });
   }
   selectState(state: any) {
     this.selectedState = state.NAME;
     this.addressForm.STATE_ID = state.ID;
-
     this.showStateDropdown = false;
   }
-  // showAddressDetailsForm = false;
   user: User | null = null;
-
   confirmLocation(): void {
     const customerType = localStorage.getItem('customerType');
-
-    // if (customerType == 'I') {
-    //
-    //   this.showMap = false;
-    //   this.showAddressDetailsForm = false;
-    //   window.location.href = '/service';
-    //   return;
-    // }
-    // Define a default static location (e.g., New Delhi)
-    const defaultLatitude = 28.6139; // Example: New Delhi latitude
-    const defaultLongitude = 77.209; // Example: New Delhi longitude
+    const defaultLatitude = 28.6139; 
+    const defaultLongitude = 77.209; 
     this.addressForm.PINCODE = '';
     if (this.currentMarker) {
       const position = this.currentMarker.getPosition();
@@ -3313,30 +2585,20 @@ export class CommonmapComponent {
         this.latitude = position.lat();
         this.longitude = position.lng();
       } else {
-        // Fallback to default location if marker position is not available
         this.latitude = defaultLatitude;
         this.longitude = defaultLongitude;
       }
     } else {
-      // If no marker is present, set to default location directly
       this.latitude = defaultLatitude;
       this.longitude = defaultLongitude;
     }
     const registerData = this.data;
-    // Fetch address based on coordinates
-
     this.getAddress(this.latitude, this.longitude);
-
-    // Hide the map
     this.modalVisible = false;
     this.closeregister();
-
-    // Show the address form and initialize with location data
     this.showAddressDetailsForm = true;
     this.addressForm.GEO_LOCATION = `${this.latitude},${this.longitude}`;
     this.data = registerData;
-
-    // Pre-fill user data if available
     if (this.user && this.user.ID) {
       this.addressForm.CUSTOMER_ID = this.user.ID;
       if (this.user.EMAIL_ID) {
@@ -3344,7 +2606,6 @@ export class CommonmapComponent {
       }
     }
   }
-
   getAddress(latitude: number, longitude: number): void {
     const geocoder = new google.maps.Geocoder();
     this.isPincodeLoading = true;
@@ -3353,10 +2614,6 @@ export class CommonmapComponent {
       (results: any, status: any) => {
         if (status === google.maps.GeocoderStatus.OK && results[0]) {
           const addressComponents = results[0].address_components;
-
-          // Extract relevant address details
-          // this.addressForm.ADDRESS_LINE_1 = results[0].formatted_address;
-
           const city = addressComponents.find((comp: any) =>
             comp.types.includes('locality')
           );
@@ -3366,24 +2623,16 @@ export class CommonmapComponent {
           const country = addressComponents.find((comp: any) =>
             comp.types.includes('country')
           );
-          // const postalCode = addressComponents.find((comp: any) =>
-          //   comp.types.includes('postal_code')
-          // );
-
           const postalCode = addressComponents.find((comp: any) =>
             comp.types.includes('postal_code')
-          )?.long_name; // Fallback Pincode if not found
+          )?.long_name; 
           this.selectedPincode = '';
           this.addressForm.PINCODE = '';
-
           this.addressForm.PINCODE_ID = '';
           this.addressForm.CITY_NAME = city ? city.long_name : '';
           this.selectedState = state ? state.long_name : '';
-          // this.addressForm.COUNTRY_ID = country ? country.long_name : '';
-          // this.addressForm.PINCODE = postalCode ? postalCode.long_name : '';
           this.getpincode(postalCode);
         } else {
-
           this.addressForm.ADDRESS_LINE_1 = 'Unknown Area';
           this.addressForm.ADDRESS_LINE_2 = 'Unknown City';
           this.addressForm.CITY_ID = 0;
@@ -3394,13 +2643,11 @@ export class CommonmapComponent {
       }
     );
   }
-
   addressForm: AddressForm = {
     CUSTOMER_ID: 0,
     CUSTOMER_TYPE: 1,
     CONTACT_PERSON_NAME: '',
     MOBILE_NO: '',
-
     EMAIL_ID: '',
     ADDRESS_LINE_1: '',
     ADDRESS_LINE_2: '',
@@ -3420,17 +2667,12 @@ export class CommonmapComponent {
     CLIENT_ID: 1,
     PINCODE_FOR: '',
   };
-
-  // Mock data for dropdowns - replace with actual API calls
   countries: LocationOption[] = [{ id: 1, name: 'India' }];
-
   states: LocationOption[] = [{ id: 1, name: 'Maharashtra' }];
-
   cities: LocationOption[] = [
     { id: 1, name: 'Mumbai' },
     { id: 2, name: 'Pune' },
   ];
-
   districts: LocationOption[] = [
     { id: 1, name: 'Mumbai City' },
     { id: 2, name: 'Mumbai Suburban' },
@@ -3438,9 +2680,7 @@ export class CommonmapComponent {
   isConfirmLoading = false;
   addressSubmitted: boolean = false;
   isAddrssSaving: boolean = false;
-
   saveAddress(form: NgForm): void {
-
     this.addressSubmitted = true;
     if (form.invalid) {
       return;
@@ -3448,19 +2688,13 @@ export class CommonmapComponent {
     if (this.latitude && this.longitude) {
       this.addressForm.GEO_LOCATION = `${this.latitude},${this.longitude}`;
     }
-
-    // Add validation here
-
     this.isAddrssSaving = true;
-    // this.data.STATUS = 1;
     this.addressForm.CUSTOMER_TYPE = 1;
     this.addressForm.CUSTOMER_ID = this.USER_ID;
     this.addressForm.CONTACT_PERSON_NAME = this.data.CUSTOMER_NAME;
     this.addressForm.MOBILE_NO = this.data.CUSTOMER_MOBILE_NO;
     this.addressForm.EMAIL_ID = this.data.EMAIL_ID;
     this.addressForm.ADDRESS_LINE_1 = this.addressForm.ADDRESS_LINE_1;
-    // this.addressForm.CONTACT_PERSON_NAME =  this.use
-
     this.data.CUSTOMER_TYPE = 1;
     if (this.addressForm.TYPE == 'Home') {
       this.addressForm.TYPE = 'H';
@@ -3469,13 +2703,9 @@ export class CommonmapComponent {
     } else if (this.addressForm.TYPE == 'Other') {
       this.addressForm.TYPE = 'O';
     }
-
     this.addressForm.IS_DEFAULT = true;
-
     const registerData = this.data;
-
     this.isConfirmLoading = true;
-
     if (!this.asGuest) {
       this.loadData();
       this.apiservice.RegistrationCustomerAddress(this.addressForm).subscribe(
@@ -3485,41 +2715,33 @@ export class CommonmapComponent {
             this.isAddrssSaving = false;
             this.isOk = false;
             this.message.success('Address has been saved successfully.', '');
-
             sessionStorage.setItem(
               'userAddress',
               this.commonFunction.encryptdata(this.addressForm.ADDRESS_LINE_2)
             );
             this.isloginSendOTP = false;
             this.modalService1.closeModal();
-            // this.otpSent = true;
-            // this.showOtpModal = true;
             this.USER_ID = successCode.USER_ID;
             this.USER_NAME = successCode.USER_NAME;
             this.showAddressDetailsForm = false;
             this.statusCode = '';
             this.data = registerData;
-
             this.isConfirmLoading = false;
-
             if (successCode.body?.SUBSCRIBED_CHANNELS.length > 0) {
               const channelNames = successCode.body.SUBSCRIBED_CHANNELS.map(
                 (channel: any) => channel.CHANNEL_NAME
               );
-
               this.apiservice.subscribeToMultipleTopics(channelNames).subscribe(
                 (successCode: any) => { },
                 (error) => {
                   if (error.status === 300) {
                   } else if (error.status === 500) {
-                    // Handle server-side error
                     this.message.error(
                       'An unexpected error occurred. Please try again later.',
                       ''
                     );
                   } else {
                     this.isConfirmLoading = false;
-                    // Generic error handling
                     this.message.error(
                       'An unknown error occurred. Please try again later.',
                       ''
@@ -3539,7 +2761,6 @@ export class CommonmapComponent {
             this.isConfirmLoading = false;
             this.stopLoader();
           }
-
           this.isConfirmLoading = false;
           this.stopLoader();
         },
@@ -3547,20 +2768,16 @@ export class CommonmapComponent {
           this.isConfirmLoading = false;
           this.isAddrssSaving = false;
           this.stopLoader();
-          // Handle error if login fails
           if (error.status === 300) {
             this.isAddrssSaving = false;
-            // Handle specific HTTP error (e.g., invalid credentials)
             this.message.error('Email-ID is already exists', '');
           } else if (error.status === 500) {
-            // Handle server-side error
             this.message.error(
               'An unexpected error occurred. Please try again later.',
               ''
             );
           } else {
             this.isAddrssSaving = false;
-            // Generic error handling
             this.message.error(
               'An unknown error occurred. Please try again later.',
               ''
@@ -3569,12 +2786,11 @@ export class CommonmapComponent {
         }
       );
     } else {
-      const addressFormString = JSON.stringify(this.addressForm); // Convert object to string
+      const addressFormString = JSON.stringify(this.addressForm); 
       const encryptedAddress =
-        this.commonFunction.encryptdata(addressFormString); // Encrypt string
+        this.commonFunction.encryptdata(addressFormString); 
       sessionStorage.setItem('userAddress', encryptedAddress);
       localStorage.setItem('userAddress', encryptedAddress);
-      // sessionStorage.setItem('userAddress', this.commonFunction.encryptdata(this.addressForm));
       var abc = 0;
       sessionStorage.setItem(
         'userId',
@@ -3584,9 +2800,7 @@ export class CommonmapComponent {
         'userId',
         this.commonFunction.encryptdata(abc.toString())
       );
-
       sessionStorage.getItem('userId');
-
       sessionStorage.setItem(
         'customertype',
         this.commonFunction.encryptdata('I')
@@ -3601,16 +2815,9 @@ export class CommonmapComponent {
       this.statusCode = '';
       window.location.href = '/service';
     }
-
-    // Call your API to save the address
-    // Reset form and hide after successful save
   }
-
-
-
   cancelAddressForm(): void {
     this.showAddressDetailsForm = false;
-    // Reset form data
     this.addressForm = {
       CUSTOMER_ID: 0,
       CUSTOMER_TYPE: 1,
@@ -3637,25 +2844,9 @@ export class CommonmapComponent {
     };
   }
   modalVisible1: boolean = false;
-
-
-
-  // handleNextClick(service: any, event: Event) {
-  //   event.stopPropagation();
-
-  //   if (this.userID !== 0) {
-  //     // Logged-in user → directly open map modal
-  //     this.openMapModal();
-  //   } else {
-  //     // Guest → open login modal first, then after login show map modal
-  //     this.openLoginModal();
-  //   }
-  // }
-
   closeMap() {
     this.modalService1.closeModal();
   }
-
   gettruecondition() {
     if (sessionStorage.getItem('closemodalfalse') == 'false') {
       return false;
@@ -3673,23 +2864,15 @@ export class CommonmapComponent {
   }
   filterStates(event: any) {
     const query = event.target.value.toLowerCase();
-
     this.filteredStates = this.stateData.filter(
       (item: any) =>
         item.NAME.toLowerCase().includes(query) ||
         item.NAME.toLowerCase().includes(query)
     );
   }
-
-  //for navigation after address save
   redirectAfterAddressSave() {
     const currentUrl = this.router.url;
     sessionStorage.setItem('addressJustSaved', 'true');
       window.location.reload();
-    // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-    //   this.router.navigateByUrl(currentUrl);
-    // });
   }
-
-
 }

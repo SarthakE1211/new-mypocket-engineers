@@ -10,21 +10,16 @@ import { CommonFunctionService } from './CommonFunctionService';
 import { CookieService } from 'ngx-cookie-service';
 import { Ticketfaqmapping } from '../components/models/TicketingSystem';
 declare var bootstrap: any;
-
-// import { appkeys } from "../app.constant";
 interface Coordinates {
   latitude: number;
   longitude: number;
 }
-
 interface DefaultTerritory {
   latitude: number;
   longitude: number;
   name: string;
 }
-
 const DEFAULT_PINCODE = '110001';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -36,7 +31,6 @@ export class ApiServiceService {
   options = {
     headers: this.httpHeaders,
   };
-
   httpHeaders1 = new HttpHeaders();
   options1 = {
     headers: this.httpHeaders1,
@@ -72,30 +66,20 @@ export class ApiServiceService {
   // weburl = 'https://pockitapp.pockitengineers.com/'
   // commonimgUrl = 'https://pn5m5nf6-8767.inc1.devtunnels.ms/api/upload/';
   // isLocalhost = true
-  //   commoncode = 'https://vcq8df4r-6787.inc1.devtunnels.ms';
-  //   weburl = 'https://pockitapp.pockitengineers.com/'
-  //   commonimgUrl = 'https://vcq8df4r-6787.inc1.devtunnels.ms/api/upload/';
-  // isLocalhost=true
-
-
   commonapikey = 'WGykEs0b241gNKcDshYU9C4I0Ft1JoSb';
   commonapplicationkey = 'ZU63HDzj79PEFzz5';
-
   url = `${this.commoncode}/`;
-  baseUrl = `${this.commoncode}/`; // Base URL for your API
+  baseUrl = `${this.commoncode}/`;
   retriveimgUrl = `${this.commoncode}/static/`;
-
-  // Set default pincode and territory for home users
   setDefaultPincodeForHomeUser(): Observable<any> {
     const body = {
       PINCODE: DEFAULT_PINCODE,
       CUSTOMER_TYPE: 'I',
-      TERRITORY_ID: '1', // Default territory ID
+      TERRITORY_ID: '1',
       ADDRESS_TYPE: 'H',
       CUSTOMER_ID: this.getDecryptedItemlocal('userId') || '',
       DEFAULT_ADDRESS: true
     };
-
     return this.httpClient
       .post<any>(`${this.baseUrl}api/customerAddress/add`, body, {
         observe: 'response',
@@ -118,7 +102,7 @@ export class ApiServiceService {
           return throwError(() => error);
         })
       );
-  }  // Get territories for default pincode
+  }
   getDefaultPincodeTerritories(): Observable<any> {
     return this.httpClient
       .get<any>(`${this.baseUrl}territory/pincode/${DEFAULT_PINCODE}/territories`, {
@@ -134,8 +118,6 @@ export class ApiServiceService {
         })
       );
   }
-
-  // Get territories for an arbitrary pincode
   getTerritoriesByPincode(pincode: string): Observable<any> {
     if (!pincode) {
       pincode = DEFAULT_PINCODE;
@@ -159,16 +141,12 @@ export class ApiServiceService {
   userId = Number(sessionStorage.getItem('userId'));
   userName = sessionStorage.getItem('userName');
   roleId = sessionStorage.getItem('roleId');
-
   retriveimgUrl2(): string {
     return `${this.commoncode}/static/`;
   }
-
   Retrive(): string {
     return `${this.commoncode}/static/`;
   }
-
-  // Get default territories for home users and guests
   getDefaultTerritories(): Observable<any> {
     return this.httpClient
       .get<any>(`${this.baseUrl}territory/default/get`, {
@@ -184,10 +162,7 @@ export class ApiServiceService {
         })
       );
   }
-
   public commonFunction = new CommonFunctionService();
-
-  // Start Decrept all the data
   private getDecryptedItem(key: string): string {
     const storedValue = sessionStorage.getItem(key);
     return storedValue ? this.commonFunction.decryptdata(storedValue) : '';
@@ -196,48 +171,36 @@ export class ApiServiceService {
     const storedValue1 = localStorage.getItem(key);
     return storedValue1 ? this.commonFunction.decryptdata(storedValue1) : '';
   }
-  // getUserId(): any {
-  //   const decryptedString = this.getDecryptedItem('userId');
-  //
-
-  //   return decryptedString ? parseInt(decryptedString, 10) : null;
-  // }
   private getDecryptedItemfromlocal(key: string): string {
     const storedValue = localStorage.getItem(key);
     return storedValue ? this.commonFunction.decryptdata(storedValue) : '';
   }
-
   getsubscribedChannels(): string {
     return this.getDecryptedItemfromlocal('subscribedChannels');
   }
   getUserId(): any {
     const decryptedString = this.getDecryptedItem('userId');
-
     if (
       decryptedString === null ||
       decryptedString === undefined ||
       decryptedString === ''
     ) {
-      return; // returns undefined if no valid value exists
+      return;
     }
-
-    return parseInt(decryptedString, 10); // if it's "0", this will return 0 correctly
+    return parseInt(decryptedString, 10);
   }
-
   getUserName(): string {
     return this.getDecryptedItem('userName');
   }
   getEmail(): string {
     return this.getDecryptedItem('emailId');
   }
-
   getPlanFor(): string {
     return this.getDecryptedItem('planFor');
   }
   getUserAddress(): string {
     return this.getDecryptedItem('userAddress');
   }
-
   getUserAddressLocal(): string {
     return this.getDecryptedItemlocal('userAddress');
   }
@@ -253,36 +216,26 @@ export class ApiServiceService {
   getCustomerType(): string {
     return this.getDecryptedItem('customertype');
   }
-  // End Decrept all the data
-
-  private cartItems: any[] = []; // Store cart items
-  private cartCount = new BehaviorSubject<number>(0); // Observable for count
-
-  cartCount$ = this.cartCount.asObservable(); // Expose as observable
-
-  // constructor() {}
-
+  private cartItems: any[] = [];
+  private cartCount = new BehaviorSubject<number>(0);
+  cartCount$ = this.cartCount.asObservable();
   addToCart(item: any) {
     this.cartItems.push(item);
-    this.cartCount.next(this.cartItems.length); // Update count
+    this.cartCount.next(this.cartItems.length);
   }
-
   getCartItems() {
     return this.cartItems;
   }
-
   private updateCartCount() {
-    this.cartCount.next(this.cartItems.length); // Emit new count
+    this.cartCount.next(this.cartItems.length);
   }
   clearCart() {
-    this.cartItems = []; // Clear the array
-    this.updateCartCount(); // Update count
+    this.cartItems = [];
+    this.updateCartCount();
   }
-
   addItemToCart(item: any) {
     this.addToCart(item);
   }
-
   getLocation(): Promise<Coordinates> {
     return new Promise((resolve, reject) => {
       if (navigator.geolocation) {
@@ -299,12 +252,9 @@ export class ApiServiceService {
       }
     });
   }
-
   constructor(private httpClient: HttpClient, private cookie: CookieService) {
     this.token = localStorage.getItem('token') || ' ';
-    // this.getheader();
   }
-
   getSubscriptionList(ID: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -312,18 +262,13 @@ export class ApiServiceService {
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: this.token,
     });
-
     return this.httpClient.get<any>(
       `${this.baseUrl}api/appUser/getSubscriptionDetails/${ID}`,
-
       {
         headers,
       }
     );
   }
-
-  // <----------------------------------------------------------- Home Page Calls -------------------------------------------->
-
   getBannerData(
     pageIndex: number,
     pageSize: number,
@@ -352,7 +297,6 @@ export class ApiServiceService {
       }
     );
   }
-
   getTopSellingLaptopsForWeb(
     sortKey: string = '',
     sortValue: string = ''): Observable<any> {
@@ -360,22 +304,17 @@ export class ApiServiceService {
       sortKey: sortKey,
       sortValue: sortValue
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
-      // Token:  localStorage.getItem('token') || ' ',
-
     });
-
     return this.httpClient.post<any>(
       `${this.baseUrl}app/getPopularInvenotry`,
       JSON.stringify(data),
       { headers }
     );
   }
-
   getAddresses1data(
     pageIndex: number,
     pageSize: number,
@@ -404,7 +343,6 @@ export class ApiServiceService {
       }
     );
   }
-
   data: any = sessionStorage.getItem('token')
   getAddresses12data(
     pageIndex: number,
@@ -421,7 +359,6 @@ export class ApiServiceService {
       sortValue: sortValue,
       filter: filter + ' AND STATUS = 1',
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
@@ -434,15 +371,11 @@ export class ApiServiceService {
       { headers: headers }
     );
   }
-
-
   updateAddressToUpdateCart(data: any): Observable<any> {
-    // data.CLIENT_ID = this.clientId; // Uncomment if needed
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
-
       token: localStorage.getItem('token') || ' ',
     });
     return this.httpClient.post<any>(
@@ -471,7 +404,6 @@ export class ApiServiceService {
       { headers }
     );
   }
-
   getterritoryPincodeData(
     pageIndex: number,
     pageSize: number,
@@ -514,14 +446,12 @@ export class ApiServiceService {
       sortValue,
       filter,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(`${this.baseUrl}faqHead/get`, requestData, {
       headers,
     });
@@ -540,7 +470,6 @@ export class ApiServiceService {
       { headers }
     );
   }
-
   AddToCart(data: any): Observable<any> {
     data.CLIENT_ID = this.clientId;
     const headers = new HttpHeaders({
@@ -555,7 +484,6 @@ export class ApiServiceService {
       { headers }
     );
   }
-
   getCustomerServiceFeedback(
     pageIndex: number,
     pageSize: number,
@@ -577,7 +505,6 @@ export class ApiServiceService {
       token: localStorage.getItem('token') || ' ',
     });
     return this.httpClient.post<any>(
-      // this.baseUrl + 'api/customerServiceFeedback/getCustomerServiceFeedback',
       this.baseUrl + 'customerServiceFeedback/getCustomerServiceFeedback',
       JSON.stringify(data),
       {
@@ -585,7 +512,6 @@ export class ApiServiceService {
       }
     );
   }
-
   getPoppulerServices(
     pageIndex: number,
     pageSize: number,
@@ -601,27 +527,23 @@ export class ApiServiceService {
       sortValue,
       filter,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
     });
-
     return this.httpClient
       .get<any>(`${this.baseUrl}app/getPoppulerServices/${TERRITORY_ID}`, {
         headers,
       })
       .pipe();
   }
-
   getPoppulerServicesForWeb(
     TERRITORY_ID: any,
     CUSTOMER_ID: any,
     CUSTOMER_TYPE: any,
     sortKey: string = '',
     sortValue: string = '',
-
   ): Observable<any> {
     const requestData = {
       TERRITORY_ID: TERRITORY_ID,
@@ -630,14 +552,11 @@ export class ApiServiceService {
       sortKey: sortKey,
       sortValue: sortValue
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
-      // Token:  localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       `${this.baseUrl}app/getPoppulerServicesForWeb
  `,
@@ -645,7 +564,6 @@ export class ApiServiceService {
       { headers }
     );
   }
-
   getServicesForWeb(
     TERRITORY_ID: any,
     CUSTOMER_ID: any,
@@ -664,21 +582,17 @@ export class ApiServiceService {
       CUSTOMER_TYPE: CUSTOMER_TYPE,
       filter: filter
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
-      // Token:  localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       `${this.baseUrl}order/getServicesForWeb`,
       requestData,
       { headers }
     );
   }
-
   getCategorieservices(TERRITORY_ID: any, CUSTOMER_TYPE: any, CUSTOMER_ID: any, sortKey: string = '',
     sortValue: string = ''): Observable<any> {
     const requestData = {
@@ -688,25 +602,18 @@ export class ApiServiceService {
       sortKey,
       sortValue,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
-      // Token:  localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       `${this.baseUrl}app/ServiceCategory`,
       requestData,
       { headers }
     );
   }
-
-  ////////////////////////////////////////////
-
-
-
+  //////////////////////////////////////////
   getCategoriesServicesViewOnly(
     pageIndex: number,
     pageSize: number,
@@ -721,13 +628,11 @@ export class ApiServiceService {
       sortValue,
       filter,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
     });
-
     return this.httpClient
       .post<any>(
         `${this.baseUrl}serviceCategory/get`,
@@ -750,13 +655,11 @@ export class ApiServiceService {
       sortValue,
       filter,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
     });
-
     return this.httpClient
       .post<any>(
         `${this.baseUrl}serviceSubCategory/get`,
@@ -765,8 +668,6 @@ export class ApiServiceService {
       )
       .pipe();
   }
-
-
   getParentServicesViewOnly(
     pageIndex: number,
     pageSize: number,
@@ -781,13 +682,11 @@ export class ApiServiceService {
       sortValue,
       filter,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
     });
-
     return this.httpClient
       .post<any>(
         `${this.baseUrl}services/get`,
@@ -796,12 +695,7 @@ export class ApiServiceService {
       )
       .pipe();
   }
-
-
-
-
-  ////////////////////////////////////////////////////
-
+  //////////////////////////////////////////////////
   getCategoriesServices(
     pageIndex: number,
     pageSize: number,
@@ -822,13 +716,11 @@ export class ApiServiceService {
       CUSTOMER_ID,
       CUSTOMER_TYPE
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
     });
-
     return this.httpClient
       .post<any>(
         `${this.baseUrl}order/getCategories/`,
@@ -837,7 +729,6 @@ export class ApiServiceService {
       )
       .pipe();
   }
-
   getCategories(
     CUSTOMER_TYPE: string = '',
     PARENT_ID: number,
@@ -857,32 +748,25 @@ export class ApiServiceService {
       sortKey,
       sortValue,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
     });
-
     return this.httpClient.post<any>(
       `${this.baseUrl}order/getServices/`,
       requestData,
       { headers }
     );
   }
-
-  // imgUrl = appkeys.imgUrl;
-
   onUpload(folderName: any, selectedFile: any, filename: any): Observable<any> {
     this.onuploadheader();
     let params = new HttpParams();
-
     const options1 = {
       headers: this.httpHeaders1,
       params: params,
       reportProgress: true,
     };
-
     const fd = new FormData();
     fd.append('Image', selectedFile, filename);
     const req = new HttpRequest(
@@ -893,8 +777,6 @@ export class ApiServiceService {
     );
     return this.httpClient.request(req);
   }
-
-  // For Testing server
   onuploadheader() {
     this.httpHeaders1 = new HttpHeaders({
       Accept: 'application/json',
@@ -903,39 +785,10 @@ export class ApiServiceService {
       supportkey: this.cookie.get('supportKey'),
       Token: localStorage.getItem('token') || ' ',
     });
-
     this.options1 = {
       headers: this.httpHeaders,
     };
   }
-
-  // Shop Services
-
-  // Shop home page call
-
-  // getBrands(
-  //   pageIndex: number,
-  //   pageSize: number,
-  //   sortKey: string,
-  //   sortValue: string,
-  //   filter: string
-  // ): Observable<any> {
-  //   var data = {
-  //     pageIndex: pageIndex,
-  //     pageSize: pageSize,
-  //     sortKey: sortKey,
-  //     sortValue: sortValue,
-  //     filter: filter,
-  //   };
-  //   return this.httpClient.post<any>(
-  //     this.url + 'brand/get',
-  //     JSON.stringify(data),
-  //     { observe: 'response' }
-  //   );
-  // }
-
-  // inventory
-
   getinventoryData(
     pageIndex: number,
     pageSize: number,
@@ -964,8 +817,6 @@ export class ApiServiceService {
       }
     );
   }
-
-  // login
   CUSTOMER_TYPE: any = '';
   sendOTP(COUNTRY_CODE: any, TYPE_VALUE: any, TYPE: any, CUSTOMER_TYPE?: any): Observable<any> {
     const requestData: any = {
@@ -977,28 +828,22 @@ export class ApiServiceService {
       requestData.CUSTOMER_TYPE = CUSTOMER_TYPE;
       this.CUSTOMER_TYPE = CUSTOMER_TYPE;
     }
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: this.token,
-      // 'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOjF9LCJpYXQiOjE3MzcxMTY1MTB9.sWF2eNA8Q8Le-EypyPSjGW0CMRbI3N0YwpXRVvrDwJs',
     });
-
     return this.httpClient.post<any>(
       `${this.baseUrl}customer/sendOTP`,
       requestData,
       { headers }
     );
   }
-
   companyname = localStorage.getItem('organizationName');
   verifyOTP(
     TYPE: any, TYPE_VALUE: any, OTP: any, USER_ID: any, CUSTOMER_NAME: any, CUSTOMER_CATEGORY_ID: any, CLOUD_ID: any, CUSTOMER_TYPE: any, COMPANY_NAME: string
-
   ): Observable<any> {
-    // Uncomment if needed
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
@@ -1014,28 +859,23 @@ export class ApiServiceService {
       CLOUD_ID: CLOUD_ID,
       CUSTOMER_TYPE: this.CUSTOMER_TYPE,
       COMPANY_NAME: this.companyname
-
     };
-
     return this.httpClient.post<any[]>(
-
       this.baseUrl + 'customer/verifyOTP',
       JSON.stringify(data),
       {
         headers: headers,
         observe: 'response',
       }
-
     );
   }
   userRegistration(data: any): Observable<any> {
-    data.CLIENT_ID = this.clientId; // Uncomment if needed
+    data.CLIENT_ID = this.clientId;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
     });
-
     return this.httpClient.post<any>(
       this.baseUrl + 'customer/verifyOTP',
       JSON.stringify(data),
@@ -1045,15 +885,13 @@ export class ApiServiceService {
       }
     );
   }
-
   userRegistrationOTP(data: any): Observable<any> {
-    data.CLIENT_ID = this.clientId; // Uncomment if needed
+    data.CLIENT_ID = this.clientId;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
     });
-
     return this.httpClient.post<any>(
       this.baseUrl + 'customer/registerOtp',
       JSON.stringify(data),
@@ -1063,16 +901,14 @@ export class ApiServiceService {
       }
     );
   }
-
   RegistrationCustomerAddress(data: any): Observable<any> {
-    data.CLIENT_ID = this.clientId; // Uncomment if needed
+    data.CLIENT_ID = this.clientId;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       this.baseUrl + 'api/customerAddress/createAddress',
       JSON.stringify(data),
@@ -1082,7 +918,6 @@ export class ApiServiceService {
       }
     );
   }
-
   getPincodeData(
     pageIndex: number,
     pageSize: number,
@@ -1097,14 +932,12 @@ export class ApiServiceService {
       sortValue,
       filter,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       `${this.baseUrl}pincode/get`,
       requestData,
@@ -1113,7 +946,6 @@ export class ApiServiceService {
       }
     );
   }
-
   getTerretoryData(
     pageIndex: number,
     pageSize: number,
@@ -1128,14 +960,12 @@ export class ApiServiceService {
       sortValue,
       filter,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       `${this.baseUrl}territory/pincode/get`,
       requestData,
@@ -1144,7 +974,6 @@ export class ApiServiceService {
       }
     );
   }
-
   getStateData(
     pageIndex: number,
     pageSize: number,
@@ -1159,19 +988,16 @@ export class ApiServiceService {
       sortValue,
       filter,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(`${this.baseUrl}state/get`, requestData, {
       headers,
     });
   }
-
   getAppLanguageData(
     pageIndex: number,
     pageSize: number,
@@ -1186,14 +1012,12 @@ export class ApiServiceService {
       sortValue,
       filter,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       `${this.baseUrl}api/appLanguage/get`,
       requestData,
@@ -1216,19 +1040,16 @@ export class ApiServiceService {
       sortValue,
       filter,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(`${this.baseUrl}faq/get`, requestData, {
       headers,
     });
   }
-
   getUserData(
     pageIndex: number,
     pageSize: number,
@@ -1243,31 +1064,26 @@ export class ApiServiceService {
       sortValue,
       filter,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       `${this.baseUrl}api/customer/get`,
       requestData,
       {
         headers: headers,
-
       }
     );
   }
-
   updateUserData(data: any): Observable<any> {
-    data.CLIENT_ID = this.clientId; // Uncomment if needed
+    data.CLIENT_ID = this.clientId;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
-
       token: localStorage.getItem('token') || ' ',
     });
     return this.httpClient.put<any>(
@@ -1279,14 +1095,12 @@ export class ApiServiceService {
       }
     );
   }
-
   updateCustomerAddress(data: any): Observable<any> {
-    data.CLIENT_ID = this.clientId; // Uncomment if needed
+    data.CLIENT_ID = this.clientId;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
-
       token: localStorage.getItem('token') || ' ',
     });
     return this.httpClient.put<any>(
@@ -1298,7 +1112,6 @@ export class ApiServiceService {
       }
     );
   }
-
   updateticket(ticket: any): Observable<any> {
     ticket['ORG_ID'] = Number(this.cookie.get('orgId'));
     const headers = new HttpHeaders({
@@ -1313,27 +1126,6 @@ export class ApiServiceService {
       { headers: headers, observe: 'response' }
     );
   }
-
-  // updateCustomerAddress(data: any): Observable<any> {
-  //   data.CLIENT_ID = this.clientId; // Uncomment if needed
-  //   const headers = new HttpHeaders({
-  //     'Content-Type': 'application/json',
-  //     applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
-  //     apikey: this.commonFunction.encryptdatas(this.commonapikey),
-
-  //     token:  localStorage.getItem('token') || ' ',
-  //   });
-  //   return this.httpClient.put<any>(
-  //     this.baseUrl + 'api/customerAddress/update',
-  //     JSON.stringify(data),
-  //     {
-  //       headers: headers,
-  //       observe: 'response',
-  //     }
-  //   );
-  // }
-
-  // Shop Services
   CartGetforaddtocart1(
     customer_id: any,
     inventoryId: any,
@@ -1376,9 +1168,6 @@ export class ApiServiceService {
       }
     );
   }
-
-  // Shop home page call
-
   getBrands(
     pageIndex: number,
     pageSize: number,
@@ -1393,22 +1182,18 @@ export class ApiServiceService {
       sortValue: sortValue,
       filter: filter,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       this.url + 'brand/get',
       JSON.stringify(data),
       { observe: 'response', headers }
     );
   }
-
-
   InventoryCategoryget(
     pageIndex: number,
     pageSize: number,
@@ -1423,52 +1208,18 @@ export class ApiServiceService {
       sortValue: sortValue,
       filter: filter,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       this.url + 'app/getinventoryCategory',
       JSON.stringify(data),
       { observe: 'response', headers }
     );
   }
-  // inventory
-
-  // getinventoryData(
-  //   pageIndex: number,
-  //   pageSize: number,
-  //   sortKey: string,
-  //   sortValue: string,
-  //   filter: string): Observable<any> {
-  //   var data = {
-  //     pageIndex: pageIndex,
-  //     pageSize: pageSize,
-  //     sortKey: sortKey,
-  //     sortValue: sortValue,
-  //     filter: filter,
-  //   };
-  //   const headers = new HttpHeaders({
-  //     "Content-Type": "application/json",
-  //     applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
-  //     apikey: this.commonFunction.encryptdatas(this.commonapikey),
-  //     token: this.cookie.get("token"),
-  //   });
-  //   return this.httpClient.post<any>(
-  //     this.baseUrl + "inventory/get",
-  //     JSON.stringify(data),
-  //     {
-  //       headers,
-  //     }
-  //   );
-  // }
-
-  // inventory Mapping get
-
   getinventoryunitMapping(
     pageIndex: number,
     pageSize: number,
@@ -1497,9 +1248,6 @@ export class ApiServiceService {
       }
     );
   }
-
-  // inventory image Mapping
-
   inventoryImageMapping(
     pageIndex: number,
     pageSize: number,
@@ -1528,7 +1276,6 @@ export class ApiServiceService {
       }
     );
   }
-
   CartGet(
     customer_id: any,
     inventoryId: any,
@@ -1569,10 +1316,6 @@ export class ApiServiceService {
       }
     );
   }
-  // Address
-
-  // Address
-
   getAddress(
     pageIndex: number,
     pageSize: number,
@@ -1601,9 +1344,6 @@ export class ApiServiceService {
       }
     );
   }
-
-  // get address Details
-
   getAddressDetails(
     pageIndex: number,
     pageSize: number,
@@ -1634,7 +1374,6 @@ export class ApiServiceService {
       }
     );
   }
-
   Getterritory(
     pageIndex: number,
     pageSize: number,
@@ -1663,13 +1402,6 @@ export class ApiServiceService {
       }
     );
   }
-
-  // get address Details
-
-  // customer Details
-
-  // customer Details
-
   getAllServiceData(
     pageIndex: number,
     pageSize: number,
@@ -1684,14 +1416,12 @@ export class ApiServiceService {
       sortValue,
       filter,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       `${this.baseUrl}api/service/get`,
       requestData,
@@ -1700,7 +1430,6 @@ export class ApiServiceService {
       }
     );
   }
-
   getCoupanDetails(
     CUSTOMER_ID: number,
     CART_ID: number,
@@ -1729,7 +1458,6 @@ export class ApiServiceService {
       }
     );
   }
-
   getcustomer(
     pageIndex: number,
     pageSize: number,
@@ -1758,7 +1486,6 @@ export class ApiServiceService {
       }
     );
   }
-
   ApplyCoupan(data: any): Observable<any> {
     data.CLIENT_ID = this.clientId;
     const headers = new HttpHeaders({
@@ -1787,7 +1514,6 @@ export class ApiServiceService {
       { headers }
     );
   }
-
   BookOrder(data: any): Observable<any> {
     data.CLIENT_ID = this.clientId;
     const headers = new HttpHeaders({
@@ -1810,14 +1536,12 @@ export class ApiServiceService {
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.patch<any>(
       this.url + 'api/order/orderUpdateStatus',
       data,
       { headers }
     );
   }
-
   RemoveFromCart(data: any): Observable<any> {
     data.CLIENT_ID = this.clientId;
     const headers = new HttpHeaders({
@@ -1832,7 +1556,6 @@ export class ApiServiceService {
       { headers }
     );
   }
-
   CreateOrder(data: any): Observable<any> {
     data.CLIENT_ID = this.clientId;
     const headers = new HttpHeaders({
@@ -1847,7 +1570,6 @@ export class ApiServiceService {
       { headers }
     );
   }
-
   addPaymentTransactions(data: any): Observable<any> {
     data.CLIENT_ID = this.clientId;
     const headers = new HttpHeaders({
@@ -1862,7 +1584,6 @@ export class ApiServiceService {
       { headers }
     );
   }
-
   getorderData(
     pageIndex: number,
     pageSize: number,
@@ -1915,7 +1636,7 @@ export class ApiServiceService {
     pageSize: number,
     sortKey: string,
     sortValue: string,
-    filter: object, // Change from string to object
+    filter: object,
     ORDER_ID: number,
     IS_ORDER_OR_JOB: string
   ): Observable<any> {
@@ -1924,33 +1645,29 @@ export class ApiServiceService {
       pageSize,
       sortKey,
       sortValue,
-      filter, // Ensure this is an object, NOT a string
-      ORDER_ID: Number(ORDER_ID), // Ensure it's a number
+      filter,
+      ORDER_ID: Number(ORDER_ID),
       IS_ORDER_OR_JOB,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       this.baseUrl + 'api/technicianActionLogs/getorderLogsforCustomer',
-      data, // No need to JSON.stringify(data), Angular handles it automatically
+      data,
       { headers }
     );
   }
-
   getjoborderLogs(
     pageIndex: number,
     pageSize: number,
     sortKey: string,
     sortValue: string,
-    filter: object, // Change from string to object
+    filter: object,
     ORDER_ID: number,
-
     JOB_CARD_ID: number,
     IS_ORDER_OR_JOB: string
   ): Observable<any> {
@@ -1959,27 +1676,23 @@ export class ApiServiceService {
       pageSize,
       sortKey,
       sortValue,
-      filter, // Ensure this is an object, NOT a string
-      ORDER_ID: Number(ORDER_ID), // Ensure it's a number
-
-      JOB_CARD_ID: Number(JOB_CARD_ID), // Ensure it's a number
+      filter,
+      ORDER_ID: Number(ORDER_ID),
+      JOB_CARD_ID: Number(JOB_CARD_ID),
       IS_ORDER_OR_JOB,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       this.baseUrl + 'api/technicianActionLogs/getorderLogsforCustomer',
-      data, // No need to JSON.stringify(data), Angular handles it automatically
+      data,
       { headers }
     );
   }
-
   getCartDetails(CUSTOMER_ID: number): Observable<any> {
     var data = {
       CUSTOMER_ID: CUSTOMER_ID,
@@ -1998,7 +1711,6 @@ export class ApiServiceService {
       }
     );
   }
-
   getCartGetDetails(CART_ID: number): Observable<any> {
     var data = {
       CART_ID: CART_ID,
@@ -2017,7 +1729,6 @@ export class ApiServiceService {
       }
     );
   }
-
   RateUS(data: any): Observable<any> {
     data.CLIENT_ID = this.clientId;
     const headers = new HttpHeaders({
@@ -2061,9 +1772,6 @@ export class ApiServiceService {
       }
     );
   }
-
-  // get coupan for the shop
-
   getCoupanDetailsforshop(
     CUSTOMER_ID: number,
     CART_ID: number,
@@ -2090,9 +1798,6 @@ export class ApiServiceService {
       }
     );
   }
-
-  // For the Add to cart
-
   CartGetforaddtocart(
     customer_id: any,
     inventoryId: any,
@@ -2163,8 +1868,6 @@ export class ApiServiceService {
       }
     );
   }
-  // add to cart delete call
-
   Deletecart(
     TYPE: any,
     customer_id: any,
@@ -2184,7 +1887,6 @@ export class ApiServiceService {
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
-
     });
     return this.httpClient.post<any>(
       this.baseUrl + 'api/cart/product/delete',
@@ -2194,7 +1896,6 @@ export class ApiServiceService {
       }
     );
   }
-
   getfetchJobDetailsWithFeedback(
     CUSTOMER_ID: any,
     ORDER_ID: any,
@@ -2206,25 +1907,21 @@ export class ApiServiceService {
       CUSTOMER_ID: Number(CUSTOMER_ID),
       ORDER_ID: Number(ORDER_ID),
       JOB_CARD_ID: Number(JOB_CARD_ID),
-
       sortKey,
       sortValue,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       this.baseUrl + 'api/jobcard/getjobDetailsWithFeedback',
       JSON.stringify(data),
       { headers }
     );
   }
-
   getchat(
     pageIndex: number,
     pageSize: number,
@@ -2238,7 +1935,6 @@ export class ApiServiceService {
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     this.options = {
       headers: headers,
     };
@@ -2255,17 +1951,14 @@ export class ApiServiceService {
       this.options
     );
   }
-
   createchat(role: any): Observable<any> {
     role.CLIENT_ID = this.clientId;
-    // this.getHeader();
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     this.options = {
       headers: headers,
     };
@@ -2275,7 +1968,6 @@ export class ApiServiceService {
       this.options
     );
   }
-
   getShoporderData(
     pageIndex: number,
     pageSize: number,
@@ -2290,21 +1982,18 @@ export class ApiServiceService {
       sortValue: sortValue,
       filter: filter,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       this.url + 'api/shopOrder/get',
       JSON.stringify(data),
       { observe: 'response', headers }
     );
   }
-
   getAllTicketGroups(
     pageIndex: number,
     pageSize: number,
@@ -2319,22 +2008,18 @@ export class ApiServiceService {
       sortValue: sortValue,
       filter: filter,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       this.url + 'api/ticketGroup/get',
       JSON.stringify(data),
       { observe: 'response', headers }
     );
   }
-  // shopordercard data
-
   getshopeOrderData(filter: string): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -2342,7 +2027,6 @@ export class ApiServiceService {
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.get<any>(
       `${this.url}api/shopOrder/${filter}/orderDetails`,
       {
@@ -2368,21 +2052,18 @@ export class ApiServiceService {
       FEEDBACK_DATE_TIME: FEEDBACK_DATE_TIME,
       CLIENT_ID: 1,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       this.url + 'api/customerProductFeedback/addFeedback',
       JSON.stringify(data),
       { observe: 'response', headers }
     );
   }
-
   getFeedbackData(
     pageIndex: number,
     pageSize: number,
@@ -2397,21 +2078,18 @@ export class ApiServiceService {
       sortValue: sortValue,
       filter: filter,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       this.url + 'api/customerProductFeedback/get',
       JSON.stringify(data),
       { observe: 'response', headers }
     );
   }
-
   fetfedbackURL(
     AWBCODE: any
   ): Observable<any> {
@@ -2421,13 +2099,11 @@ export class ApiServiceService {
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.get<any>(
       this.url + `api/shopOrder/${AWBCODE}/trackThroughAwbCode`,
       { observe: 'response', headers }
     );
   }
-
   getShoporderStatusData(filter: any): Observable<any> {
     var data = {
       filter: { ORDER_ID: filter },
@@ -2435,14 +2111,12 @@ export class ApiServiceService {
     filter: {
       ORDER_ID: filter;
     }
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       this.url + 'api/shopOrderActionLog/get',
       JSON.stringify(data),
@@ -2467,7 +2141,6 @@ export class ApiServiceService {
       { headers: headers, observe: 'response' }
     );
   }
-
   getAllTickets(
     pageIndex: number,
     pageSize: number,
@@ -2482,7 +2155,6 @@ export class ApiServiceService {
       sortValue: sortValue,
       filter: filter,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
@@ -2492,10 +2164,9 @@ export class ApiServiceService {
     return this.httpClient.post<any>(
       this.url + 'api/ticket/get',
       JSON.stringify(data),
-      { headers: headers, observe: 'response' } // Correct placement of this.options
+      { headers: headers, observe: 'response' }
     );
   }
-
   createTicket(ticket: any): Observable<any> {
     ticket['ORG_ID'] = Number(this.cookie.get('orgId'));
     const headers = new HttpHeaders({
@@ -2526,7 +2197,6 @@ export class ApiServiceService {
       filter: filter,
       ID: ID,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
@@ -2536,7 +2206,7 @@ export class ApiServiceService {
     return this.httpClient.post<any>(
       this.url + 'api/ticketGroup/getTicketGroups',
       JSON.stringify(data),
-      { headers: headers, observe: 'response' } // Correct placement of this.options
+      { headers: headers, observe: 'response' }
     );
   }
   onUpload2(folderName: any, selectedFile: any, filename: any) {
@@ -2548,21 +2218,17 @@ export class ApiServiceService {
       supportkey: this.cookie.get('supportKey'),
       Token: localStorage.getItem('token') || ' ',
     });
-
     this.options1 = {
       headers: this.httpHeaders1,
     };
-
     const fd = new FormData();
     fd.append('Image', selectedFile, filename);
-
     return this.httpClient.post(
       this.commonimgUrl + folderName,
       fd,
       this.options1
     );
   }
-
   getKnowledgeBaseCategory(
     pageIndex: number,
     pageSize: number,
@@ -2576,7 +2242,6 @@ export class ApiServiceService {
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     this.options = {
       headers: headers,
     };
@@ -2606,7 +2271,6 @@ export class ApiServiceService {
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     this.options = {
       headers: headers,
     };
@@ -2636,7 +2300,6 @@ export class ApiServiceService {
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     this.options = {
       headers: headers,
     };
@@ -2653,9 +2316,6 @@ export class ApiServiceService {
       { observe: 'response', headers }
     );
   }
-
-  // shop order
-
   CreateshopOrder(data: any): Observable<any> {
     data.CLIENT_ID = this.clientId;
     const headers = new HttpHeaders({
@@ -2670,7 +2330,6 @@ export class ApiServiceService {
       { headers }
     );
   }
-
   addPaymentTransactionsshop(data: any): Observable<any> {
     data.CLIENT_ID = this.clientId;
     const headers = new HttpHeaders({
@@ -2685,7 +2344,6 @@ export class ApiServiceService {
       { headers }
     );
   }
-
   AddUpdatePartRequest(data: any): Observable<any> {
     data.CLIENT_ID = this.clientId;
     const headers = new HttpHeaders({
@@ -2728,7 +2386,6 @@ export class ApiServiceService {
       }
     );
   }
-
   getPaymentSummary(
     pageIndex: number,
     pageSize: number,
@@ -2757,7 +2414,6 @@ export class ApiServiceService {
       }
     );
   }
-
   CartslotGet(customer_id: any, teritory_id: any): Observable<any> {
     var data = {
       CUSTOMER_ID: customer_id,
@@ -2777,9 +2433,7 @@ export class ApiServiceService {
       }
     );
   }
-
   userLogout(USER_ID: any): Observable<any> {
-    // Uncomment if needed
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
@@ -2789,7 +2443,6 @@ export class ApiServiceService {
     var data = {
       USER_ID: USER_ID,
     };
-
     return this.httpClient.post<any[]>(
       this.baseUrl + 'api/customer/logout',
       JSON.stringify(data),
@@ -2799,17 +2452,13 @@ export class ApiServiceService {
       }
     );
   }
-
   deleteAccount(USER_DATA: any): Observable<any> {
-    // Uncomment if needed
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
-
     return this.httpClient.post<any[]>(
       this.baseUrl + 'api/customer/deleteProfile',
       JSON.stringify(USER_DATA),
@@ -2819,7 +2468,6 @@ export class ApiServiceService {
       }
     );
   }
-
   getAllticketDetails(
     pageIndex: number,
     pageSize: number,
@@ -2834,7 +2482,6 @@ export class ApiServiceService {
       sortValue: sortValue,
       filter: filter,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
@@ -2844,10 +2491,9 @@ export class ApiServiceService {
     return this.httpClient.post<any>(
       this.url + 'api/ticketDetails/get',
       JSON.stringify(data),
-      { headers: headers, observe: 'response' } // Correct placement of this.options
+      { headers: headers, observe: 'response' }
     );
   }
-
   AddChat(data: any): Observable<any> {
     data.CLIENT_ID = this.clientId;
     const headers = new HttpHeaders({
@@ -2876,7 +2522,6 @@ export class ApiServiceService {
       { headers }
     );
   }
-
   getAddressDetailsForshopcart(CART_ID: any): Observable<any> {
     var data = {
       CUSTOMER_ID: CART_ID,
@@ -2895,7 +2540,6 @@ export class ApiServiceService {
       }
     );
   }
-
   getDefaultAddress(filter: string): Observable<any> {
     var data = {
       filter: filter,
@@ -2914,7 +2558,6 @@ export class ApiServiceService {
       }
     );
   }
-
   getglobalServiceData(
     pageIndex: number,
     pageSize: number,
@@ -2936,14 +2579,12 @@ export class ApiServiceService {
       CUSTOMER_ID: CUSTOMER_ID,
       TERRITORY_ID: TERRITORY_ID,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       `${this.baseUrl}app/global/webSearch`,
       requestData,
@@ -2952,7 +2593,6 @@ export class ApiServiceService {
       }
     );
   }
-
   getnotifications(
     pageIndex: number,
     pageSize: number,
@@ -2966,7 +2606,6 @@ export class ApiServiceService {
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     this.options = {
       headers: headers,
     };
@@ -2983,7 +2622,6 @@ export class ApiServiceService {
       { observe: 'response', headers }
     );
   }
-
   getAppLanguageDataFilterwise(
     movementRequestMasterId: number
   ): Observable<any> {
@@ -2993,7 +2631,6 @@ export class ApiServiceService {
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.get<any[]>(
       `${this.url}api/appLanguage/${movementRequestMasterId}/getAppLanguageMaster`,
       { headers: headers, observe: 'response' }
@@ -3013,7 +2650,6 @@ export class ApiServiceService {
       CART_ID: CART_id,
       CART_ITEM_ID: CART_ITEM_ID,
       QUANTITY: QUANTITY,
-      // INVENTORY_ID: INVENTORY_ID,
       SERVICE_ID: SERVICE_ID,
     };
     const headers = new HttpHeaders({
@@ -3030,7 +2666,6 @@ export class ApiServiceService {
       }
     );
   }
-
   getcartinfo(
     pageIndex: number,
     pageSize: number,
@@ -3045,7 +2680,6 @@ export class ApiServiceService {
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     this.options = {
       headers: headers,
     };
@@ -3065,9 +2699,6 @@ export class ApiServiceService {
       }
     );
   }
-
-  // INVANTORY FOR CARD BUTTON
-
   getinventoryDatacart(
     pageIndex: number,
     pageSize: number,
@@ -3104,7 +2735,6 @@ export class ApiServiceService {
       }
     );
   }
-
   getchnageUnitcount(
     pageIndex: number,
     pageSize: number,
@@ -3130,7 +2760,6 @@ export class ApiServiceService {
       token: localStorage.getItem('token') || ' ',
     });
     return this.httpClient.post<any>(
-      // this.baseUrl + 'api/inventoryReports/getStocksForUnit',
       this.baseUrl + 'api/inventoryReports/getStocksforWeb',
       JSON.stringify(data),
       {
@@ -3138,7 +2767,6 @@ export class ApiServiceService {
       }
     );
   }
-  // simple inventory get
   getsimpleinventoryforcart(
     pageIndex: number,
     pageSize: number,
@@ -3155,7 +2783,6 @@ export class ApiServiceService {
       filter: filter,
       CUSTOMER_ID: userId,
     };
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
@@ -3170,7 +2797,6 @@ export class ApiServiceService {
       }
     );
   }
-
   getCancellationReason(
     pageIndex: number,
     pageSize: number,
@@ -3199,7 +2825,6 @@ export class ApiServiceService {
       }
     );
   }
-
   addOrderCancellationTransaction(data: any): Observable<any> {
     data.CLIENT_ID = this.clientId;
     const headers = new HttpHeaders({
@@ -3214,7 +2839,6 @@ export class ApiServiceService {
       { headers }
     );
   }
-
   getinventoryData1(
     pageIndex: number,
     pageSize: number,
@@ -3245,8 +2869,6 @@ export class ApiServiceService {
       }
     );
   }
-
-
   getAddressDetails123(
     pageIndex: number,
     pageSize: number,
@@ -3280,16 +2902,12 @@ export class ApiServiceService {
     );
   }
   downloadFile(url: string): Observable<Blob> {
-    // Construct the GET URL with query parameters
     const fullUrl = `${this.baseUrl}api/getFile/${url}`;
-
     return this.httpClient.get<Blob>(fullUrl, {
       ...this.options,
-      responseType: 'blob' as 'json', // Ensure response is Blob
+      responseType: 'blob' as 'json',
     });
   }
-
-
   createChannels(form: any): Observable<any> {
     form.CLIENT_ID = this.clientId;
     const headers = new HttpHeaders({
@@ -3306,18 +2924,14 @@ export class ApiServiceService {
   }
   updateChannels(form: any): Observable<any> {
     form.CLIENT_ID = this.clientId;
-
     return this.httpClient.post<any>(
       this.baseUrl + 'api/channelSubscribedUsers/updateSubscribedChannel',
       JSON.stringify(form),
       { headers: this.httpHeaders, observe: 'response' }
     );
   }
-
-
   subscribeToMultipleTopics(topics: string[]): Observable<any> {
     const fcmToken = this.cookie.get('CLOUD_ID');
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
@@ -3350,14 +2964,12 @@ export class ApiServiceService {
   }
   unsubscribeToMultipleTopics(topics: string[]): Observable<any> {
     const fcmToken = this.cookie.get('CLOUD_ID');
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     return this.httpClient.post<any>(
       this.url + 'api/notification/unsubscribeMultiple',
       { token: fcmToken, topics },
@@ -3369,17 +2981,12 @@ export class ApiServiceService {
         return throwError(() => new Error(error));
       })
     );
-
   }
-
-
   getInvoice(
     filter: any,
-
   ): Observable<any> {
     var data = {
       filter: filter,
-
     };
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -3395,9 +3002,6 @@ export class ApiServiceService {
       }
     );
   }
-
-
-
   addShopOrderCancellationTransaction(data: any): Observable<any> {
     data.CLIENT_ID = this.clientId;
     const headers = new HttpHeaders({
@@ -3412,9 +3016,8 @@ export class ApiServiceService {
       { headers }
     );
   }
-
-  private modalElementId = 'imageModal'; // ID of the modal
-  private imgSrc = ''; // Store image URL
+  private modalElementId = 'imageModal';
+  private imgSrc = '';
   openModal(imgUrl: string) {
     this.imgSrc = imgUrl;
     setTimeout(() => {
@@ -3424,25 +3027,17 @@ export class ApiServiceService {
       }
     }, 100);
   }
-
   getImageSrc(): string {
     return this.imgSrc;
   }
-
-
-  // Check if service feature should be disabled
   isServiceDisabled(): boolean {
     const pincodeFor = localStorage.getItem('pincodeFor');
-    return pincodeFor !== 'S'; // disable if not service
+    return pincodeFor !== 'S';
   }
-
-  // Check if shop feature should be disabled
   isShopDisabled(): boolean {
     const pincodeFor = localStorage.getItem('pincodeFor');
-    return pincodeFor !== 'I'; // disable if not shop
+    return pincodeFor !== 'I';
   }
-
-  // Generic method (optional, can handle more features)
   isFeatureDisabled(feature: 'service' | 'shop'): boolean {
     const pincodeFor = localStorage.getItem('pincodeFor');
     if (feature === 'service') {
@@ -3453,8 +3048,6 @@ export class ApiServiceService {
     }
     return true;
   }
-
-
   createRazorpayOrdertoRzp(data: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -3481,7 +3074,6 @@ export class ApiServiceService {
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
       token: localStorage.getItem('token') || ' ',
     });
-
     this.options = {
       headers: headers,
     };
@@ -3498,18 +3090,14 @@ export class ApiServiceService {
       { observe: 'response', headers }
     );
   }
-  // Shared Address Value so header auto-updates everywhere
   addressSubject = new BehaviorSubject<string | null>(null);
-  
   setAddress(value: string) {
     this.addressSubject.next(value);
   }
-  
   getAddressObservable() {
     return this.addressSubject.asObservable();
-}
-   
-checkconflictsMob(
+  }
+  checkconflictsMob(
     TYPE_VALUE: any,
   ): Observable<any> {
     var data = {
@@ -3527,6 +3115,39 @@ checkconflictsMob(
       {
         headers,
       }
+    );
+  }
+
+  getPendingRating(
+    CUSTOMER_ID: any
+  ): Observable<any> {
+    var data = {
+      CUSTOMER_ID
+    };
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
+      apikey: this.commonFunction.encryptdatas(this.commonapikey),
+      token: localStorage.getItem('token') || ' ',
+    });
+    return this.httpClient.post<any>(
+      this.url + 'api/customerServiceFeedback/checklatestfeedback', data,
+      { observe: 'response', headers }
+    );
+  }
+  creatependingRating(data: any): Observable<any> {
+    data.CLIENT_ID = this.clientId;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
+      apikey: this.commonFunction.encryptdatas(this.commonapikey),
+      token: localStorage.getItem('token') || ' ',
+    });
+    return this.httpClient.post<any>(
+      this.url +
+      'api/customertechnicianfeedback/technicianServiceFeedbackByCustomer',
+      JSON.stringify(data),
+      { headers }
     );
   }
 }

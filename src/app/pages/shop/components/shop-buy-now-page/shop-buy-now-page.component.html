@@ -1,40 +1,24 @@
 <div
   *ngIf="loadService"
-  class="container my-4"
-  style="
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50vw;
-    height: 50vw;
-  "
+  class="container my-4 flex-center-50vw"
 >
   <div *ngIf="loadService" class="spinner-border text-secondary" role="status">
     <span class="sr-only"></span>
   </div>
 </div>
-
-<!-- border: 1px solid #aeb6bf;  -->
 <div
   *ngIf="!loadService"
-  class="container my-4"
-  style="padding-top: 20px; border-radius: 4px"
+  class="container my-4 pt-20-br-4"
 >
   <div
-    class="row g-4 bg-white rounded-4 shadow"
-    style="
-      padding: 8px;
-      border-radius: 8px !important;
-      box-shadow: none !important;
-    "
+    class="row g-4 bg-white rounded-4 shadow unique-box"
   >
     <div class="col-12 col-lg-8 col-md-12">
       <div class="row">
         <div class="col-12 col-lg-6 col-md-12">
           <section
             id="hero"
-            class="hero section dark-background imageHeight"
-            style="background-color: white !important"
+            class="hero section dark-background imageHeight bg-white"
           >
             <div
               [ngStyle]="{
@@ -42,111 +26,71 @@
                                 'background-size': '100% 100%',
                                 'background-repeat': 'no-repeat',
                                  'background-image': 'url('+selectedImage+')',}"
-              class="carousel hero-carousel-container"
-              style="height: 243px !important"
+              class="carousel hero-carousel-container height-243px"
             ></div>
           </section>
-
-          <div class="d-flex" style="padding: 10px 0px !important">
+          <div class="d-flex padding-vertical-10">
             <div
               class="thumb me-2"
               *ngFor="let item of inventoryImageMappingdata"
             >
               <img
-                style="height: 100%; width: 100%; cursor: pointer"
                 [src]="IMAGEuRL + 'InventoryImages/' + item.IMAGE_URL"
                 alt="{{ item.IMAGE_URL }}"
-                class="carousel-image"
+                class="carousel-image full-size-clickable"
                 (click)="selectImage(item.IMAGE_URL)"
               />
             </div>
           </div>
         </div>
-
         <div
           *ngFor="let data of inventorydata"
           class="col-12 col-lg-6 col-md-12"
         >
           <h4
-            class="fw-bold"
-            style="
-              font-size: 15px !important;
-              font-weight: 500 !important;
-              margin-bottom: 3px !important;
-            "
+            class="fw-bold text-style-15-500"
           >
             {{ data.VARIANT_NAME }}
           </h4>
           <div>
             <p
               *ngIf="data.UNIT_STOCK != 0"
-              style="
-                font-weight: 500 !important;
-                color: #636363 !important;
-                margin-bottom: 10px !important;
-                font-size: 13px !important;
-              "
+              class="text-style-13-500-gray"
             >
               {{ data.UNIT_STOCK }} {{ "shop.leftInStock" | translate }}
             </p>
             <p
               *ngIf="data.UNIT_STOCK == 0"
-              style="
-                color: red;
-                font-weight: 500 !important;
-                color: #636363 !important;
-                margin-bottom: 10px !important;
-                font-size: 13px !important;
-              "
+              class="text-13-500-gray-red"
             >
               {{ data.UNIT_STOCK }} {{ "shop.leftInStock" | translate }}
             </p>
           </div>
-          <hr style="margin-top: 10px" />
+          <hr class="mt-10" />
           <div>
             <h3
               *ngIf="data.DISCOUNT_ALLOWED == 1"
-              style="
-                color: #2a3b8f;
-                font-weight: 600;
-                font-size: 14px !important;
-                margin-bottom: 3px !important;
-              "
+              class="text-14-600-blue"
             >
               ₹ {{ data.DISCOUNTED_PRICE | number }} &nbsp;&nbsp;
               <span
-                class="text-muted text-decoration-line-through"
-                style="font-weight: 600; font-size: 14px !important"
+                class="text-muted text-decoration-line-through text-14-600"
               >
                 ₹{{ data.SELLING_PRICE | number }}</span
               >
             </h3>
-
             <h3
               *ngIf="data.DISCOUNT_ALLOWED == 0"
-              style="
-                color: #2a3b8f;
-                font-weight: 600;
-                margin-bottom: 3px !important;
-                font-size: 14px !important;
-              "
+              class="text-14-600-blue"
             >
               ₹ {{ data.SELLING_PRICE | number }} &nbsp;&nbsp;
             </h3>
-
-            <p
-              style="
-                font-weight: 400 !important;
-                font-size: 11px !important;
-                margin-bottom: 10px !important;
-                color: gray;
-              "
+            <p class="text-11-400-gray"
             >
               ({{ "shop.Inclusive" | translate }})
             </p>
           </div>
           <hr />
-
           <div
             class="d-flex justify-content-between align-items-center border p-3 rounded text-center mb-3"
           >
@@ -155,104 +99,75 @@
               class="d-flex flex-column align-items-center text-center gap-2"
             >
               <div
-                class="icon rounded-circle overflow-hidden"
-                style="
-                  width: 50px;
-                  height: 50px;
-                  background-color: #e7e6e6;
-                  padding: 11px;
-                "
+                class="icon rounded-circle overflow-hidden box-50px"
               >
                 <img
                   src="assets/img/warranty.svg"
                   alt="Warranty Image"
-                  style="height: 25px !important; width: 25px !important"
-                  class="img-fluid rounded-circle w-100 h-100"
+                  class="img-fluid rounded-circle w-100 h-100 size-25px"
                 />
               </div>
               <p
                 *ngIf="data.WARRANTY_PERIOD != 0"
-                class="mb-0"
-                style="font-size: 10px !important; color: #0e0e0e !important"
+                class="mb-0 text-10-black"
               >
                 {{ formatPeriodCommon(data.WARRANTY_PERIOD) }} warranty
               </p>
               <p
                 *ngIf="data.WARRANTY_PERIOD == 0"
-                class="mb-0"
-                style="font-size: 10px !important; color: #0e0e0e !important"
+                class="mb-0 text-10-black"
               >
                 {{ "shop.Nowarrantyavailable" | translate }}
               </p>
             </div>
-
             <div
               *ngIf="data.GUARANTEE_ALLOWED == 1"
               class="d-flex flex-column align-items-center text-center gap-2"
             >
               <div
-                class="icon rounded-circle overflow-hidden"
-                style="
-                  width: 50px;
-                  height: 50px;
-                  background-color: #e7e6e6;
-                  padding: 11px;
-                "
+                class="icon rounded-circle overflow-hidden box-50px"
               >
                 <img
                   src="assets/img/safe.png"
                   alt="Safe Image"
-                  style="height: 25px !important; width: 25px !important"
-                  class="img-fluid rounded-circle w-100 h-100"
+                  class="img-fluid rounded-circle w-100 h-100 size-25px"
                 />
               </div>
               <p
                 *ngIf="data.GUARANTEE_PERIOD != 0"
-                class="mb-0"
-                style="font-size: 10px !important; color: #0e0e0e !important"
+                class="mb-0 text-10-black"
               >
                 {{ formatPeriodCommon(data.GUARANTEE_PERIOD) }} Guarantee
               </p>
               <p
                 *ngIf="data.GUARANTEE_PERIOD == 0"
-                class="mb-0"
-                style="font-size: 10px !important; color: #0e0e0e !important"
+                class="mb-0 text-10-black"
               >
                 {{ "shop.NoGuaranteeavailable" | translate }}
               </p>
             </div>
-
             <div
               class="d-flex flex-column align-items-center text-center gap-2"
             >
               <div
-                class="icon rounded-circle overflow-hidden"
-                style="
-                  width: 50px;
-                  height: 50px;
-                  background-color: #e7e6e6;
-                  padding: 11px;
-                "
+                class="icon rounded-circle overflow-hidden box-50px"
               >
                 <img
                   src="assets/img/delivery.svg"
                   alt="Delivery Image"
-                  style="height: 25px !important; width: 25px !important"
-                  class="img-fluid rounded-circle w-100 h-100"
+                  class="img-fluid rounded-circle w-100 h-100 size-25px"
                 />
               </div>
               <p
                 *ngIf="data.EXPECTED_DELIVERY_IN_DAYS != 0"
-                class="mb-0"
-                style="font-size: 10px !important; color: #0e0e0e !important"
+                class="mb-0 text-10-black"
               >
                 {{ "shop.ExpectedDelivery" | translate }}
                 {{ formatPeriodCommon(data.EXPECTED_DELIVERY_IN_DAYS) }}
               </p>
               <p
                 *ngIf="data.EXPECTED_DELIVERY_IN_DAYS == 0"
-                class="mb-0"
-                style="font-size: 10px !important; color: #0e0e0e !important"
+                class="mb-0 text-10-black"
               >
                 {{ "shop.ExpectedDeliveryNotAvailable" | translate }}
               </p>
@@ -260,15 +175,13 @@
           </div>
         </div>
       </div>
-
       <div class="row">
         <div
-          class="col-12 col-md-12"
+          class="col-12 col-md-12 pt-20"
           *ngIf="
             inventorydata !== undefined &&
             inventorydata[0]['INVENTORY_DETAILS_IMAGE']
           "
-          style="padding-top: 20px"
         >
           <img
             [src]="
@@ -276,61 +189,46 @@
               'InventoryDetailsImage/' +
               inventorydata[0]['INVENTORY_DETAILS_IMAGE']
             "
-            style="width: 100%; border-radius: 8px"
-            class="img-fluid"
+            class="img-fluid full-width-rounded"
             alt="{{ inventorydata[0]['INVENTORY_DETAILS_IMAGE'] }}"
             (error)="handleImageError($event)"
           />
         </div>
       </div>
     </div>
-
     <div class="col-12 col-lg-4 col-md-12">
       <div
         *ngFor="let data of inventorydata"
-        class="border p-3 rounded"
-        style="padding: 10px !important"
+        class="border p-3 rounded p-10"
       >
         <h5
-          class="fw-bold"
-          style="font-size: 15px !important; font-weight: 500 !important"
+          class="fw-bold text-15-500"
         >
           {{ "shop.Description" | translate }}
         </h5>
-        <hr style="margin-top: 5px; margin-bottom: 8px" />
+        <hr class="my-5-8" />
         <div>
           <p
-            [innerHTML]="gethtmlconent(data.DESCRIPTION)"
-            style="max-height: 280px; overflow-y: auto; display: block"
+            [innerHTML]="gethtmlconent(data.DESCRIPTION)" class="scrollable-max-280"
           ></p>
         </div>
-
         <hr />
-
         <div
-          class="container mt-3 mb-3"
-          style="margin-top: 19px !important; margin-bottom: 25px !important"
+          class="container mt-3 mb-3 my-19-25 "
         >
           <div class="quantity-container">
             <label
-              class="me-2 fw-bold"
-              style="font-size: 14px !important; font-weight: 500 !important"
+              class="me-2 fw-bold text-14-500"
               >{{ "shop.Quantity" | translate }}</label
             >&nbsp;
             <button
-              class="quantity-btn"
+              class="quantity-btn rounded-border-16"
               [disabled]="
                 teritory_id === 0 ||
                 teritory_id === null ||
                 teritory_id === undefined
               "
               (click)="decreaseQuantity()"
-              style="
-                border-radius: 8px;
-                border-width: 1px;
-                font-size: 16px;
-                border: 1px solid !important;
-              "
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -347,30 +245,18 @@
             </button>
             <input
               type="text"
-              class="quantity-input"
+              class="quantity-input text-20-500-gray"
               [(ngModel)]="quantity"
               readonly
-              style="
-                border: none;
-                font-size: 20px !important;
-                color: #605c5c;
-                font-weight: 500 !important;
-              "
             />
             <button
-              class="quantity-btn"
+              class="quantity-btn rounded-border-16"
               [disabled]="
                 teritory_id === 0 ||
                 teritory_id === null ||
                 teritory_id === undefined
               "
               (click)="increaseQuantity(data)"
-              style="
-                border-radius: 8px;
-                border-width: 1px;
-                font-size: 16px;
-                border: 1px solid !important;
-              "
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -387,45 +273,24 @@
             </button>
           </div>
         </div>
-
         <button
           *ngIf="data.IS_ALREADY_IN_CART == 1"
           [disabled]="data.UNIT_STOCK == 0"
-          class="btn w-100 mb-2"
+          class="btn w-100 mb-2 text-14-3170de"
           routerLink="/shop/cart"
-          style="
-            border-color: #3170de;
-            color: #3170de;
-            font-size: 14px !important;
-            margin-bottom: 16px !important;
-          "
         >
           {{ "shop.gotocart" | translate }}
         </button>
-
-        <!-- <button *ngIf="data.IS_ALREADY_IN_CART == 0" [disabled]="data.UNIT_STOCK == 0"
-                    class="btn w-100 mb-2 equal-height" (click)="addToCart(data)"
-                    style="border-color: #3170DE; color: #3170DE; font-size: 14px !important;   margin-bottom: 16px !important;">
-                    {{ 'shop.AddToCart' | translate }}
-                    <span *ngIf="loadingStatesforcart[data.ID]" class="spinner-border spinner-border-sm me-2"></span>
-                </button> -->
-
         <button
           *ngIf="data.IS_ALREADY_IN_CART == 0"
           [disabled]="data.UNIT_STOCK == 0"
-          class="btn w-100 mb-2 equal-height"
+          class="btn w-100 mb-2 equal-height text-14-3170de"
           (click)="
             teritory_id !== 0 &&
             teritory_id !== null &&
             teritory_id !== undefined
               ? addToCart(data)
               : openSuggestionModal()
-          "
-          style="
-            border-color: #3170de;
-            color: #3170de;
-            font-size: 14px !important;
-            margin-bottom: 16px !important;
           "
         >
           {{ "shop.AddToCart" | translate }}
@@ -434,31 +299,15 @@
             class="spinner-border spinner-border-sm me-2"
           ></span>
         </button>
-
-        <!-- <button [disabled]="data.UNIT_STOCK == 0" class="w-100 equal-height" (click)="buyNow(data)"
-                    style="background-color: #3170DE; font-size: 14px !important;   margin-bottom: 0px !important; border-radius: 5px; border-color: #3170DE; color: white; border: none">
-                    {{ 'shop.buyNow' | translate }}
-                    <span *ngIf="loadingStates[data.ID]" class="spinner-border spinner-border-sm me-2"></span>
-                </button> -->
-
         <button
           [disabled]="data.UNIT_STOCK == 0"
-          class="w-100 equal-height"
+          class="w-100 equal-height btn-3170de"
           (click)="
             teritory_id !== 0 &&
             teritory_id !== null &&
             teritory_id !== undefined
               ? buyNow(data)
               : openSuggestionModal()
-          "
-          style="
-            background-color: #3170de;
-            font-size: 14px !important;
-            margin-bottom: 0px !important;
-            border-radius: 5px;
-            border-color: #3170de;
-            color: white;
-            border: none;
           "
         >
           {{ "shop.buyNow" | translate }}
@@ -467,27 +316,18 @@
             class="spinner-border spinner-border-sm me-2"
           ></span>
         </button>
-
-        <!-- Coupon Code Link -->
         <div class="text-center mt-3">
           <a
             (click)="!isLoading && openCouponModal(data)"
             [style.cursor]="isLoading ? 'not-allowed' : 'pointer'"
             [style.opacity]="isLoading ? '0.6' : '1'"
             [style.pointerEvents]="isLoading ? 'none' : 'auto'"
-            style="
-              font-size: 13px;
-              color: #034a95;
-              text-decoration: none;
-              font-weight: 500;
-            "
-            class="d-inline-flex align-items-center gap-2 coupon-link"
+            class="d-inline-flex align-items-center gap-2 coupon-link text-13-500-blue"
           >
             <span>Have a coupon code?</span>
             <span
               *ngIf="isLoading"
-              class="spinner-border spinner-border-sm"
-              style="width: 14px; height: 14px;"
+              class="spinner-border spinner-border-sm size-14px"
             ></span>
           </a>
         </div>
@@ -495,7 +335,6 @@
     </div>
   </div>
 </div>
-
 <div
   class="modal fade"
   id="guestModal"
@@ -507,58 +346,36 @@
 >
   <div class="modal-dialog modal-dialog-centered">
     <div
-      class="modal-content"
-      style="
-        border-radius: 12px;
-        background: #fff;
-        color: #000;
-        text-align: center;
-        border: none;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        width: 100%;
-        padding: 20px;
-      "
+      class="modal-content card-style"
     >
       <div class="modal-header border-0">
-        <h5 class="fw-bold m-auto" style="color: #333; font-size: 20px">
+        <h5 class="fw-bold m-auto text-20-333" >
           <i class="bi bi-person-circle"></i> You are a Guest
         </h5>
         <button
-          style="margin-left: 0px"
           type="button"
-          class="btn-close mx-0 px-0"
+          class="btn-close mx-0 px-0 ml-0"
           data-bs-dismiss="modal"
           aria-label="Close"
         ></button>
       </div>
-
       <div class="modal-body">
-        <p style="font-size: 15px; color: #555; line-height: 1.5">
+        <p class="text-15-555" >
           Please <strong>login</strong> to add an item to your cart and enjoy
           seamless service.
         </p>
       </div>
-
       <div class="modal-footer border-0 d-flex justify-content-center">
         <button
           type="button"
-          class="btn btn-outline-dark px-4 py-2 rounded-pill border-black"
-          style="transition: 0.3s; font-weight: 500"
+          class="btn btn-outline-dark px-4 py-2 rounded-pill border-black transition-500"
           data-bs-dismiss="modal"
         >
           <i class="bi bi-x-circle"></i> Cancel
         </button>
-
         <button
           type="button"
-          class="btn btn-primary px-4 py-2 rounded-pill"
-          style="
-            background-color: #0052cc;
-            border-color: #0052cc;
-            color: #fff;
-            font-weight: 500;
-            transition: 0.3s;
-          "
+          class="btn btn-primary px-4 py-2 rounded-pill btn-0052cc"
           (click)="redirectToLogin()"
         >
           <i class="bi bi-box-arrow-in-right"></i> Login
@@ -567,7 +384,6 @@
     </div>
   </div>
 </div>
-
 <div
   class="modal fade"
   id="suggestionModal"
@@ -581,24 +397,20 @@
     <div
       class="modal-content text-center p-4 position-relative suggestion-modal-content"
     >
-      <!-- Custom Close Icon Button -->
       <button
         type="button"
-        class="btn-close position-absolute"
-        style="top: 10px; right: 10px"
+        class="btn-close position-absolute top-right-10"
         (click)="closeSuggestionModal()"
         aria-label="Close"
       ></button>
-
       <div class="modal-body mt-2 suggestion-modal-body">
         <h5
-          class="modal-title mb-3"
+          class="modal-title mb-3 text-16-600"
           id="suggestionModalLabel"
-          style="font-size: 16px; font-weight: 600"
         >
           Product Not Deliverable
         </h5>
-        <p class="text-muted mb-0" style="font-size: 14px">
+        <p class="text-muted mb-0 text-14">
           This product can’t be delivered to your location. Please select
           another location.
         </p>
@@ -606,55 +418,24 @@
     </div>
   </div>
 </div>
-
 <div
   *ngIf="guestuser"
-  class="modal fade show"
+  class="modal fade show fullscreen-overlay"
   id="guestModal"
   tabindex="-1"
   aria-labelledby="guestModalLabel"
   aria-hidden="false"
   data-bs-backdrop="static"
   data-bs-keyboard="false"
-  style="
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6);
-    z-index: 1055;
-    overflow-y: auto;
-  "
 >
   <div
-    class="modal-dialog modal-dialog-centered"
-    style="
-      max-width: 400px;
-      margin: auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-    "
+    class="modal-dialog modal-dialog-centered centered-container"
   >
     <div
-      class="modal-content"
-      style="
-        border-radius: 16px;
-        background: #fff;
-        color: #000;
-        text-align: center;
-        border: none;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-        width: 100%;
-        padding: 20px;
-        animation: fadeInUp 0.3s ease-in-out;
-      "
+      class="modal-content card-fadein"
     >
       <div class="modal-header border-0">
-        <h5 class="fw-bold m-auto" style="color: #333; font-size: 20px">
+        <h5 class="fw-bold m-auto text-20-333" >
           <i class="bi bi-person-circle"></i> You are a Guest
         </h5>
         <button
@@ -665,35 +446,24 @@
           (click)="closeloginmodal()"
         ></button>
       </div>
-
       <div class="modal-body">
-        <p style="font-size: 15px; color: #555; line-height: 1.5">
+        <p class="text-15-555" >
           Please <strong>login</strong> to add an item to your cart and enjoy
           seamless service.
         </p>
       </div>
-
       <div class="modal-footer border-0 d-flex justify-content-center">
         <button
           type="button"
-          class="btn btn-outline-dark px-4 py-2 rounded-pill border-black"
-          style="transition: 0.3s; font-weight: 500"
+          class="btn btn-outline-dark px-4 py-2 rounded-pill border-black transition-500"
           data-bs-dismiss="modal"
           (click)="closeloginmodal()"
         >
           <i class="bi bi-x-circle"></i> Cancel
         </button>
-
         <button
           type="button"
-          class="btn btn-primary px-4 py-2 rounded-pill"
-          style="
-            background-color: #0052cc;
-            border-color: #0052cc;
-            color: #fff;
-            font-weight: 500;
-            transition: 0.3s;
-          "
+          class="btn btn-primary px-4 py-2 rounded-pill btn-0052cc"
           (click)="redirectToLogin()"
         >
           <i class="bi bi-box-arrow-in-right"></i> Login
@@ -702,7 +472,6 @@
     </div>
   </div>
 </div>
-
 <style>
   @keyframes fadeInUp {
     from {
@@ -715,477 +484,6 @@
     }
   }
 </style>
-
-<!-- Map Location Modal Code Starts Here -->
-<!-- <div
-  class="modal fade"
-  id="addressmodalSubCatClick"
-  tabindex="-1"
-  aria-labelledby="addressmodalSubCatClickLabel"
-  aria-hidden="true"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
->
-  <div class="modal-dialog">
-    <div
-      class="modal-content p-1"
-      style="background-color: transparent !important; border: none !important"
-    > 
-
-      <div class="modal-body p-2">
-        <div *ngIf="modalVisible"> 
-          <div class="map-container">
-            <div
-              class="map-header"
-              style="
-                background-color: #007bff;
-                padding: 12px 16px;
-                color: #fff;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                border-radius: 6px;
-              "
-            >
-              <div
-                style="
-                  display: flex;
-                  align-items: center;
-                  /* justify-content: center; */
-                  /* flex-direction: column; */
-                  justify-content: space-between;
-                  width: 100%;
-                "
-              >
-                <div>
-                  <p
-                    class="mb-0"
-                    style="
-                      margin: 0;
-                      font-weight: bold;
-                      font-size: 16px;
-                      color: white !important;
-                    "
-                  >
-                    User Location (Place the marker at your order location)
-                  </p>
-                </div>
-                <div>
-                  <button
-                    type="button"
-                    style="
-                      color: white !important;
-                      border: none !important;
-                      background: transparent !important;
-                    "
-                    data-bs-dismiss="modal"
-                    (click)="closeaddressmodalSubCatClick()"
-                    aria-label="Close"
-                  >
-                    <i
-                      class="bi bi-x"
-                      style="font-size: 26px; padding: 0px !important"
-                    ></i>
-                  </button>
-                </div>
-              </div>
-              <div
-                style="text-align: end; padding: 6px"
-                *ngIf="gettruecondition()"
-              >
-                <button class="close-menu-btn">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                  </svg>
-                </button>
-              </div>
-            </div>
- 
-            <div id="map"></div>
-
-            <div class="location-details">
-              <p style="margin-left:650px">{{ locationAddress || "Fetching address..." }}</p>
-            </div>
-
-            <div class="map-footer">
-              <button
-                [disabled]="!locationAddress"
-                style="
-                  padding: 10px 20px;
-                  font-size: 14px;
-                  background-color: #007bff;
-                  color: #fff;
-                  border: none;
-                  border-radius: 6px;
-                  cursor: pointer;
-                  transition: background-color 0.3s;
-                "
-                (click)="confirmLocation()"
-              >
-                Confirm Location
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div *ngIf="showAddressDetailsForm" class="address-form-container">
-          <div class="card shadow-sm address-form-card" style="border: none">
-            <div
-              class="d-flex justify-content-center align-items-center card-header"
-              style="height: 80px; border-bottom: none"
-            >
-              <div class="icon-wrapper">
-                <svg
-                  width="66"
-                  height="67"
-                  viewBox="0 0 66 67"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle
-                    cx="33"
-                    cy="33.5"
-                    r="32.7988"
-                    stroke="#FFDFBE"
-                    stroke-width="0.402439"
-                  />
-                  <circle
-                    cx="33.0004"
-                    cy="33.5"
-                    r="26.3598"
-                    stroke="#FFDFBE"
-                    stroke-width="0.402439"
-                  />
-                  <path
-                    d="M20.6299 39.7112C16.1906 33.6198 16.8468 25.2031 22.1766 19.8733C28.154 13.8959 37.8454 13.8959 43.8228 19.8733C49.1526 25.2031 49.8088 33.6198 45.3695 39.7112L36.0195 52.541C34.5271 54.5888 31.4723 54.5888 29.9799 52.541L20.6299 39.7112Z"
-                    fill="#2A3B8F"
-                  />
-                  <circle
-                    cx="33.0137"
-                    cy="31.5595"
-                    r="5.97857"
-                    fill="#FDEEE9"
-                  />
-                </svg>
-              </div>
-              <div>
-                <button
-                  type="button"
-                  style="
-                    color: #2a3b8f !important;
-                    border: none !important;
-                    background: transparent !important;
-                  "
-                  data-bs-dismiss="modal"
-                  (click)="closeaddressmodalSubCatClick()"
-                  aria-label="Close"
-                >
-                  <i
-                    class="bi bi-x"
-                    style="font-size: 26px; padding: 0px !important"
-                  ></i>
-                </button>
-              </div>
-            </div>
-
-            <form
-              #addressSubmit="ngForm"
-              (ngSubmit)="saveAddressAdd(addressSubmit)"
-              class="p-3"
-            >
-              <div
-                style="
-                  background-color: #f4f7f9;
-                  padding: 15px;
-                  height: 70vh;
-                  overflow-y: scroll;
-                "
-              >
-                <h2
-                  class="form-title mb-0 ms-3"
-                  style="
-                    padding: 0px 0px 15px;
-                    margin-left: 0px !important;
-                    font-size: 17px;
-                  "
-                >
-                  Enter address details
-                </h2>
-                <div
-                  class="mb-3"
-                  style="border-radius: 8px; padding: 12px; background: #fdfdfd"
-                >
-                  <label
-                    class="form-label text-muted small"
-                    style="display: flex"
-                    >Save address as *</label
-                  >
-                  <div class="btn-group custom-btn-group">
-                    <button
-                      type="button"
-                      class="btn"
-                      style="margin-right: 10px !important"
-                      [ngClass]="{
-                        'btn-outline-primary': addressForm.TYPE !== 'H',
-                        'btn-primary': addressForm.TYPE === 'H',
-                        colorcodes: addressForm.TYPE === 'H'
-                      }"
-                      (click)="addressForm.TYPE = 'H'"
-                    >
-                      Home
-                    </button>
-                    <button
-                      type="button"
-                      class="btn"
-                      style="margin-right: 10px !important"
-                      [ngClass]="{
-                        'btn-outline-primary': addressForm.TYPE !== 'F',
-                        'btn-primary': addressForm.TYPE === 'F',
-                        colorcodes: addressForm.TYPE === 'F'
-                      }"
-                      (click)="addressForm.TYPE = 'F'"
-                    >
-                      Work
-                    </button>
-                    <button
-                      style="margin-left: 10px"
-                      style="margin-right: 10px !important"
-                      type="button"
-                      class="btn"
-                      [ngClass]="{
-                        'btn-outline-primary': addressForm.TYPE !== 'O',
-                        'btn-primary': addressForm.TYPE === 'O',
-                        colorcodes: addressForm.TYPE === 'O'
-                      }"
-                      (click)="addressForm.TYPE = 'O'"
-                    >
-                      Other
-                    </button>
-                  </div>
-                </div>
-
-                <div class="mb-3 contact-details" *ngIf="!asGuest">
-                  <label class="form-label" style="font-size: 13px"
-                    >Contact Person Details</label
-                  > 
-                </div>
-                <div
-                  style="border-radius: 8px; padding: 12px; background: #fdfdfd"
-                >
-                  <div
-                    class="form-group position-relative"
-                    style="padding: 10px"
-                  > 
-                    <button
-                      type="button"
-                      style="font-size: 13px"
-                      class="btn btn-link position-absolute end-0 top-50 translate-middle-y"
-                      (click)="onshowMap()"
-                    >
-                      Change Location
-                    </button>
-                  </div>
-
-                  <div class="row mt-2"> 
-                    <div class="col-md-6">
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="House number/flat no/floor no"
-                        [(ngModel)]="addressForm.ADDRESS_LINE_1"
-                        name="addressLine1"
-                        required
-                        #addressLine1="ngModel"
-                        autocomplete="off"
-                        maxlength="256"
-                      />
-                      <div
-                        *ngIf="(addressLine1.errors?.['required'] && (addressLine1.touched || addressSubmitted))"
-                        class="error-message"
-                      >
-                        Please enter house number/flat no/floor no.
-                      </div>
-                    </div>
- 
-                    <div class="col-md-6">
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Area/street/village"
-                        [(ngModel)]="addressForm.ADDRESS_LINE_2"
-                        name="addressLine2"
-                        autocomplete="off"
-                        required
-                        #addressLine2="ngModel"
-                        maxlength="256"
-                      />
-                      <div
-                        *ngIf="(addressLine2.errors?.['required'] && (addressLine2.touched || addressSubmitted))"
-                        class="error-message"
-                      >
-                        Please enter Area/street/village.
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row mt-2"> 
-                    <div class="col-md-6">
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Landmark (optional)"
-                        [(ngModel)]="addressForm.LANDMARK"
-                        name="landmark"
-                        autocomplete="off"
-                        maxlength="128"
-                      />
-                    </div>
- 
-                    <div class="col-md-6">
-                      <div class="position-relative"> 
-                        <div class="dropdown-wrapper">
-                          <input
-                            type="text"
-                            class="form-control"
-                            [(ngModel)]="selectedPincode"
-                            placeholder="Select pincode"
-                            name="pincode"
-                            #pincode="ngModel"
-                            required
-                            maxlength="64"
-                            readonly
-                            autocomplete="off"
-                          />
-                          <div
-                            *ngIf="false"
-                            class="loading-container1 spinner-inside"
-                          >
-                            <div
-                              style="text-align: center"
-                              class="spinner-border"
-                              role="status"
-                            >
-                              <span class="visually-hidden">Loading...</span>
-                            </div>
-                          </div> 
-                        </div> 
-                        <div
-                          style="font-size: 12px"
-                          *ngIf="
-                            pincode.invalid &&
-                            (pincode.touched || addressSubmitted)
-                          "
-                          class="text-danger mt-1"
-                        >
-                          <div *ngIf="pincode.errors?.['required']">
-                            Please select pincode.
-                          </div>
-                          <div *ngIf="pincode.errors?.['maxlength']">
-                            Max length exceeded.
-                          </div> 
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row mt-2"> 
-                    <div class="col-md-6">
-                      <input
-                        type="text"
-                        class="form-control"
-                        [(ngModel)]="addressForm.CITY_NAME"
-                        [placeholder]="'Enter City'"
-                        name="CITY_NAME"
-                        autocomplete="off"
-                        maxlength="128"
-                        required
-                        #CITY_NAME="ngModel"
-                      />
-                      <div
-                        *ngIf="(CITY_NAME.errors?.['required'] && (CITY_NAME.touched || addressSubmitted))"
-                        class="error-message"
-                      >
-                        Please enter City.
-                      </div>
-                    </div>
- 
-                    <div class="col-md-6">
-                      <div class="position-relative">
-                        <div
-                          class="dropdown-wrapper"
-                          (click)="
-                            toggleStatesDropdown(); $event.stopPropagation()
-                          "
-                        >
-                          <input
-                            type="text"
-                            class="form-control"
-                            [value]="selectedState || 'Select State...'"
-                            readonly
-                            autocomplete="off"
-                          />
-                          <span class="dropdown-icon"></span>
-                        </div>
-                        <div
-                          *ngIf="showStateDropdown"
-                          class="dropdown-menu show"
-                        >
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Search State..."
-                            [(ngModel)]="searchState"
-                            name="stateSearch"
-                            (input)="filterStates($event)"
-                            (click)="$event.stopPropagation()"
-                            autocomplete="off"
-                          />
-                          <div
-                            class="dropdown-item"
-                            *ngFor="let state of filteredStates"
-                            (click)="selectState(state)"
-                          >
-                            {{ state.NAME }}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="d-flex justify-content-center mt-3">
-                  <button
-                    [disabled]="isAddrssSaving"
-                    type="submit"
-                    class="btn btn-primary w-100"
-                  >
-                    <span
-                      *ngIf="isAddrssSaving"
-                      class="spinner-border spinner-border-sm me-2"
-                    ></span>
-                    Confirm
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
-
 <div
   class="modal fade"
   id="couponModal"
@@ -1197,62 +495,45 @@
 >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content p-2">
-      <!-- Modal Header -->
-      <!-- Modal Header -->
       <div
-        class="modal-header border-0 py-2 px-3 flex-column align-items-stretch"
+        class="modal-header border-0 py-2 px-3 flex-column align-items-stretch bg-light-rounded"
         *ngIf="!newcoupons"
-        style="background-color: #f8f9fa; border-radius: 6px"
       >
-        <!-- Top Row: Back + Close -->
         <div class="d-flex justify-content-between align-items-center mb-2">
-          <!-- Back Button -->
           <button
             type="button"
             class="btn-close"
             data-bs-dismiss="modal"
             aria-label="Close"
           ></button>
-
-          <!-- Close Button -->
         </div>
-
-        <!-- Bottom Row: Search Input -->
         <div class="d-flex align-items-center">
           <input
             type="text"
-            class="form-control form-control-sm"
+            class="form-control form-control-sm text-13-flex-1"
             *ngIf="couponcount > 0"
             [placeholder]="
               'order_review.coupon_modal.search_placeholder' | translate
             "
             [(ngModel)]="searchQuery"
-            style="font-size: 13px; flex: 1"
           />
         </div>
       </div>
-
       <div
-        class="border-0 p-3"
+        class="border-0 p-3 bg-light-rounded"
         *ngIf="newcoupons"
-        style="background-color: #f8f9fa; border-radius: 6px"
       >
-        <!-- Header Row -->
         <div
-          class="d-flex align-items-center justify-content-between mb-2"
-          style="border-bottom: 1px solid #eaeaea; padding-bottom: 4px"
+          class="d-flex align-items-center justify-content-between mb-2 border-bottom-light"
         >
-          <!-- Back Button -->
           <button
             type="button"
-            class="btn btn-sm d-flex align-items-center"
+            class="btn btn-sm d-flex align-items-center text-13"
             (click)="goBackFromCoupon()"
-            style="font-size: 13px"
           >
             ←
           </button>
-          <span style="margin-left: 10px">Coupon Code</span>
-          <!-- Close Button -->
+          <span class="ml-10">Coupon Code</span>
           <button
             type="button"
             class="btn-close"
@@ -1261,42 +542,34 @@
             aria-label="Close"
           ></button>
         </div>
-
-        <!-- Input Row -->
         <div class="d-flex align-items-center justify-content-between">
           <input
             type="text"
-            class="form-control form-control-sm me-2"
+            class="form-control form-control-sm me-2 text-13-w-70"
             placeholder="Enter your coupon code"
             [(ngModel)]="searchQuery"
             name="couponCode"
             pattern="^[A-Za-z0-9]+$"
             #couponCode="ngModel"
             required
-            style="font-size: 13px; width: 70%"
           />
-
           <button
             *ngIf="couponcount > 0 && !newcoupons"
-            class="btn btn-sm btn-primary"
+            class="btn btn-sm btn-primary text-13-minw-60"
             (click)="applySelectedCoupon()"
-            style="font-size: 13px; min-width: 60px"
             [disabled]="!couponCode.valid"
           >
             Apply
           </button>
           <button
             *ngIf="newcoupons"
-            class="btn btn-sm btn-primary"
+            class="btn btn-sm btn-primary text-13-minw-60"
             (click)="newcouponadd(couponCode.value)"
-            style="font-size: 13px; min-width: 60px"
             [disabled]="!couponCode.valid"
           >
             Apply
           </button>
         </div>
-
-        <!-- Optional small validation message -->
         <small
           class="text-danger mt-1 d-block"
           *ngIf="couponCode.invalid && couponCode.dirty"
@@ -1304,99 +577,58 @@
           Only letters and numbers are allowed.
         </small>
       </div>
-
       <span *ngIf="!newcoupons">
-        <a
-          style="
-            margin-left: 20px;
-            cursor: pointer;
-            font-size: 13px;
-            color: #034a95;
-          "
+        <a class="ml-20-pointer-text"
           (click)="addCoupon()"
         >
           Have a coupon code?
         </a></span
       >
-
-      <!-- Modal Body -->
       <div
-        style="cursor: pointer; padding: 8px 8px 0px !important"
-        class="modal-body text-center p-3"
+        class="modal-body text-center p-3 cursor-pointer-ptb"
       >
         <ng-container
           *ngIf="filteredCoupons.length > 0 && !newcoupons; else noCoupons"
         >
           <div
             *ngFor="let coupon of filteredCoupons"
-            class="coupon-item d-flex justify-content-between align-items-center p-2 border-bottom small"
+            class="coupon-item d-flex justify-content-between align-items-center p-2 border-bottom small card-rounded-light"
             (click)="selectCoupon(coupon)"
             [class.selected]="selectedCoupon?.COUPON_ID === coupon.COUPON_ID"
-            style="
-              border-radius: 10px;
-              margin-bottom: 12px;
-              background-color: #f8f9fa;
-              border: 0.5px solid #cbcbcb;
-              transition: transform 0.3s ease-in-out;
-            "
             onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.15)';"
             onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';"
           >
-            <div class="p-3" style="padding: 3px !important">
-              <!-- Coupon Details -->
-              <div class="text-start" style="line-height: 25px">
+            <div class="p-3 p3-3">
+              <div class="text-start line-25">
                 <h6
-                  class="m-0 fw-bold text-dark"
-                  style="
-                    font-weight: 600;
-                    font-size: 14px;
-                    color: black !important;
-                  "
+                  class="m-0 fw-bold text-dark text-14-600-black"
                 >
                   {{
                     coupon?.COUPON_NAME ? coupon?.COUPON_NAME : "Coupon Applied"
                   }}
                 </h6>
                 <span
-                  class="m-0 text-muted"
-                  style="margin-top: 0px !important; font-size: 12px"
+                  class="m-0 text-muted mt-0-text-12"
                   >Code : {{ coupon.COUPON_CODE }}</span
                 >
                 &nbsp; &nbsp;
                 <span
-                  *ngIf="coupon.COUPON_VALUE_TYPE == 'P'"
-                  style="
-                    background-color: #ebd1d1;
-                    border-radius: 5px;
-                    padding: 4px;
-                    font-size: 10px !important;
-                    border: 1px solid #d3a5a5;
-                  "
+                  *ngIf="coupon.COUPON_VALUE_TYPE == 'P'" class="badge-style"
                 >
                   {{ coupon.COUPON_VALUE }}%
                   {{ "order_review.coupons.discount" | translate }}
                 </span>
                 <span
-                  *ngIf="coupon.COUPON_VALUE_TYPE == 'A'"
-                  style="
-                    background-color: #ebd1d1;
-                    border-radius: 5px;
-                    padding: 4px;
-                    border: 1px solid #d3a5a5;
-                    font-size: 10px !important;
-                  "
+                  *ngIf="coupon.COUPON_VALUE_TYPE == 'A'" class="badge-style"
                 >
                   &#8377;{{ coupon.COUPON_VALUE | number }}
                   {{ "order_review.coupons.discount" | translate }}
                 </span>
               </div>
             </div>
-
             <div
-              style="cursor: pointer"
               class="d-flex align-items-center gap-2"
             >
-              <!-- Selection Indicator -->
               <i
                 class="bi"
                 [ngClass]="
@@ -1405,29 +637,15 @@
                     : 'bi-circle'
                 "
               ></i>
-
-              <!-- Delete Icon -->
-              <!-- <button class="btn btn-sm text-danger" (click)="removeCoupon($event, coupon)">
-                <i class="bi bi-trash"></i>
-              </button> -->
             </div>
           </div>
         </ng-container>
-
-        <!-- No Coupons Available -->
         <ng-template #noCoupons>
           <div class="no-coupons text-center" *ngIf="!newcoupons">
-            <!-- <img
-              src="assets/img/hand-drawn-no-data-concept.png"
-              style="width: 60px; height: 40px"
-              alt="No Coupons"
-              class="no-coupon-img mb-3"
-            /> -->
             <img
               src="assets/img/hand-drawn-no-data-concept.png"
-              style="width: 60px; height: 40px"
               alt="No Coupons"
-              class="no-coupon-img mb-3"
+              class="no-coupon-img mb-3 size-60x40"
             />
             <h6 class="fw-bold">
               {{ "order_review.coupon_modal.no_coupons" | translate }}
@@ -1438,14 +656,11 @@
           </div>
         </ng-template>
       </div>
-
-      <!-- Modal Footer with Apply Button for Available Coupons -->
       <div class="modal-footer border-0 p-3" *ngIf="filteredCoupons.length > 0 && !newcoupons">
         <button
-          class="btn btn-primary w-100"
+          class="btn btn-primary w-100 p-10-text-14-600"
           (click)="applySelectedCoupon()"
           [disabled]="!selectedCoupon"
-          style="padding: 10px; font-size: 14px; font-weight: 600"
         >
           {{ "order_review.coupon_modal.apply" | translate }}
         </button>
@@ -1453,19 +668,4 @@
     </div>
   </div>
 </div>
-
-<style>
-  .custom-shadow {
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
-    border-radius: 8px;
-  }
-
-  .coupon-link:hover {
-    text-decoration: underline !important;
-  }
-
-  .coupon-link:not(:hover) {
-    text-decoration: none;
-  }
-</style>
 <app-commonmap></app-commonmap>  

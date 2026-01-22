@@ -1,51 +1,43 @@
-<!-- <app-flastscreen *ngIf="loadepage" class="overlay-loader"></app-flastscreen> -->
-
-<!-- Fullscreen Overlay Spinner -->
 <div *ngIf="loadepage" class="spinner-overlay">
   <div class="spinner-border text-primary spinner-size" role="status">
     <span class="sr-only"></span>
   </div>
 </div>
-
-<!-- <label for="">{{DemoCartDetails.length }} {{DemoCartDetails}} {{PincodeFor}}</label> -->
-
-
-<div *ngIf="DemoCartDetails.length == 0" style="height: 55vh; align-content: center">
+<div *ngIf="DemoCartDetails.length == 0" class="height-55vh-center" >
   <div class="no-cart-items text-center">
-    <img src="assets/img/hand-drawn-no-data-concept.png" style="width: 100px; height: 80px" alt="Empty Cart"
-      class="no-cart-img mb-2" />
+    <img src="assets/img/hand-drawn-no-data-concept.png"  alt="Empty Cart"
+      class="no-cart-img mb-2 size-100x80" />
     <h6 class="fw-bold">Your Cart is Empty</h6>
     <p class="text-muted small">
       You have no items in your cart. Start adding items now!
     </p>
   </div>
 </div>
-<div *ngIf="DemoCartDetails == 'P' && (PincodeFor !== 'B' && PincodeFor !== 'I')" style="height: 55vh; align-content: center">
+<div *ngIf="DemoCartDetails == 'P' && (PincodeFor !== 'B' && PincodeFor !== 'I')" class="height-55vh-center" >
   <div class="no-cart-items text-center">
-    <img src="assets/img/hand-drawn-no-data-concept.png" style="width: 100px; height: 80px" alt="Empty Cart"
-      class="no-cart-img mb-2" />
+    <img src="assets/img/hand-drawn-no-data-concept.png"  alt="Empty Cart"
+      class="no-cart-img mb-2 size-100x80" />
     <h6 class="fw-bold">Your Cart is Empty</h6>
     <p class="text-muted small">
       You have no items in your cart. Start adding items now!
     </p>
   </div>
 </div>
-<div *ngIf="DemoCartDetails == 'S' && (PincodeFor !== 'B' && PincodeFor !== 'S')" style="height: 55vh; align-content: center">
+<div *ngIf="DemoCartDetails == 'S' && (PincodeFor !== 'B' && PincodeFor !== 'S')" class="height-55vh-center" >
   <div class="no-cart-items text-center">
-    <img src="assets/img/hand-drawn-no-data-concept.png" style="width: 100px; height: 80px" alt="Empty Cart"
-      class="no-cart-img mb-2" />
+    <img src="assets/img/hand-drawn-no-data-concept.png"  alt="Empty Cart"
+      class="no-cart-img mb-2 size-100x80" />
     <h6 class="fw-bold">Your Cart is Empty</h6>
     <p class="text-muted small">
       You have no items in your cart. Start adding items now!
     </p>
   </div>
 </div>
-
 <ng-template #shownodata>
-  <div style="height: 55vh; align-content: center " >
+  <div class="height-55vh-center" >
   <div class="no-cart-items text-center">
-    <img src="assets/img/hand-drawn-no-data-concept.png" style="width: 100px; height: 80px" alt="Empty Cart"
-      class="no-cart-img mb-2" />
+    <img src="assets/img/hand-drawn-no-data-concept.png"  alt="Empty Cart"
+      class="no-cart-img mb-2 size-100x80" />
     <h6 class="fw-bold">Your Cart is Empty</h6>
     <p class="text-muted small">
       You have no items in your cart. Start adding items now!
@@ -53,59 +45,40 @@
   </div>
 </div>
 </ng-template>
-
 <div *ngIf=" DemoCartDetails.length > 0  && DemoCartDetails == 'P' && (PincodeFor == 'B' || PincodeFor == 'I');  " class="container">
   <h3 class="mb-3">Cart</h3>
   <div class="row">
     <div *ngFor="let data of CartDetails; let i=index" class="col-lg-3 col-md-6 col-12 mb-4">
-      <div class="cart-item border rounded" style="padding: 10px;">
+      <div class="cart-item border rounded padding-10">
         <div class="product-img">
           <img
             [src]="data.INVENTORY_IMAGE ? IMAGEuRL + 'InventoryImages/' + data.INVENTORY_IMAGE : 'assets/img/services/no-image.png'"
-            class="img-fluid rounded" style="height: 170px; width: 100%;" alt="{{ data.BRAND_NAME }}"
+            class="img-fluid rounded height-170-full-width" alt="{{ data.BRAND_NAME }}"
             (error)="handleImageError($event)" />
         </div>
-       
-        <h5 class="mt-1 font-weight-bold variant-name" style="
-        font-weight: 500;font-size: 15px;margin-top: 10px !important;" [attr.title]="data.VARIANT_NAME || 'N/A'">
+        <h5 class="mt-1 font-weight-bold variant-name font-15-500-mt10" [attr.title]="data.VARIANT_NAME || 'N/A'">
           {{data.VARIANT_NAME}}</h5>
-
         <div class="d-flex align-items-center justify-content-between">
-          <p class="mb-0" style="font-weight: 400; font-size: 13px;">{{'shop.Quantity'| translate}}:</p>
+          <p class="mb-0 font-13-400">{{'shop.Quantity'| translate}}:</p>
           <div class="quantity-box d-flex align-items-center">
             <button (click)="decreaseQuantity(data)">-</button>
-            <span class="mx-2" style="    font-size: 13px;">{{ data.QUANTITY }}</span>
+            <span class="mx-2 font-13" >{{ data.QUANTITY }}</span>
             <button (click)="increaseQuantity(data)">+</button>
           </div>
         </div>
-
-        <p style="    margin: 10px 0px 10px !important;" class="mt-1 d-flex justify-content-between">
-
-          <span style="font-weight: 500;font-size: 13px;"> {{'shop.Price'| translate}} </span>
-      
-          <span style="    font-weight: 600;font-size: 13px;">₹ {{ data.DISCOUNT_ALLOWED == 1 ? (data.DISCOUNTED_PRICE | number): (data.SELLING_PRICE| number) }}</span>
+        <p class="mt-1 d-flex justify-content-between my-10-important">
+          <span class="font-13-500"> {{'shop.Price'| translate}} </span>
+          <span class="font-13-600">₹ {{ data.DISCOUNT_ALLOWED == 1 ? (data.DISCOUNTED_PRICE | number): (data.SELLING_PRICE| number) }}</span>
         </p>
-
         <div class="d-flex justify-content-between">
-          <button class="btn btn-outline-primary" style="width: 47%;    font-weight: 600;
-    font-size: 13px;" (click)="removeItem(data)">{{'shop.Remove'| translate}}</button>
-          <!-- <button class="btn btn-primary" style="width: 47%;" (click)="buyNow(data)">Checkout</button> -->
-          <button class="btn btn-primary" style="width: 47%;    font-weight: 600;
-    font-size: 13px;" (click)="checkoutHandler(data)">{{'shop.Checkout'| translate}}</button>
-
+          <button class="btn btn-outline-primary width-47-font-13-600"  (click)="removeItem(data)">{{'shop.Remove'| translate}}</button>
+          <button class="btn btn-primary width-47-font-13-600"  (click)="checkoutHandler(data)">{{'shop.Checkout'| translate}}</button>
         </div>
-
       </div>
-
     </div>
-
     <div class="summary-box mt-3 border p-3 rounded" *ngIf="CartDetails.length > 1">
-      <p style="    margin-bottom: 5px;
-    font-weight: 500;
-    font-size: 14px;"><strong> Total Items:</strong> {{ CartInfo[0]?.SERVICE_COUNT }}</p>
-      <p style="
-    font-weight: 500;
-    font-size: 14px;"><strong> Total Amount:</strong> ₹ {{ CartInfo[0]?.TOTAL_AMOUNT| number }}</p>
+      <p class="mb-5-font-14-500"><strong> Total Items:</strong> {{ CartInfo[0]?.SERVICE_COUNT }}</p>
+      <p class="font-14-500"><strong> Total Amount:</strong> ₹ {{ CartInfo[0]?.TOTAL_AMOUNT| number }}</p>
       <button class="btn btn-primary w-100" (click)="buyNowforcommonbutton123(CartDetails)" [disabled]="loadalldata">
         <ng-container *ngIf="loadalldata; else buttonText">
           <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...
@@ -115,38 +88,19 @@
     </div>
   </div>
 </div>
-
 <div *ngIf="DemoCartDetails.length > 0  &&  DemoCartDetails == 'S'  && (PincodeFor == 'B' || PincodeFor == 'S') && !loadepage ; " class="cart-container">
   <h5 class="cart-title">Cart</h5>
-  <!-- <div  class="spinner-border text-secondary" role="status">
-    <span class="sr-only"></span>
-  </div> -->
   <div *ngIf="isLoading" class="d-flex justify-content-center">
     <div class="spinner-border text-primary" role="status">
       <span class="sr-only"></span>
     </div>
   </div>
-
   <div *ngIf="!isLoading" class="outer-container">
     <ng-container *ngIf="cartItems.length > 0; else noData">
-      <div *ngFor="let item of cartItems" class="cart-item" style="margin-bottom: 20px">
-        <!-- Top Row: Icon, Title & Delete -->
+      <div *ngFor="let item of cartItems" class="cart-item mb-20">
         <div class="cart-top">
-          <!-- <div class="cart-icon-service">
-            <img [src]="
-                item.SERVICE_IMAGE
-                  ? IMAGEuRL + 'Item/' + item.SERVICE_IMAGE
-                  : 'assets/img/services/no-image.png'
-              " alt="" style="
-                width: 40px;
-                height: 40px;
-                object-fit: cover;
-                border-radius: 50%;
-              " />
-          </div> -->
           <div
-  class="cart-icon-service d-flex align-items-center justify-content-center bg-light rounded-circle"
-  style="width: 50px; height: 50px;"
+  class="cart-icon-service d-flex align-items-center justify-content-center bg-light rounded-circle size-50x50"
 >
   <img
     [src]="
@@ -154,60 +108,50 @@
         ? IMAGEuRL + 'Item/' + item.SERVICE_IMAGE
         : 'assets/img/services/no-image.png'
     "
-    alt="Service Icon"
-    style="width: 36px; height: 36px; object-fit: contain;"
+    alt="Service Icon" class="img-36-contain"
   />
 </div>
-
-          <h6 class="cart-title-text" style="font-size: 14px;">{{ item.SERVICE_NAME }}</h6>
+          <h6 class="cart-title-text font-14" >{{ item.SERVICE_NAME }}</h6>
           <button class="cart-delete"  (click)="removeItem1(item)">
             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="16" viewBox="0 0 13 16" fill="none">
 <path d="M0.888889 14.2222C0.888889 15.2 1.68889 16 2.66667 16H9.77778C10.7556 16 11.5556 15.2 11.5556 14.2222V5.33333C11.5556 4.35556 10.7556 3.55556 9.77778 3.55556H2.66667C1.68889 3.55556 0.888889 4.35556 0.888889 5.33333V14.2222ZM3.55556 5.33333H8.88889C9.37778 5.33333 9.77778 5.73333 9.77778 6.22222V13.3333C9.77778 13.8222 9.37778 14.2222 8.88889 14.2222H3.55556C3.06667 14.2222 2.66667 13.8222 2.66667 13.3333V6.22222C2.66667 5.73333 3.06667 5.33333 3.55556 5.33333ZM9.33333 0.888889L8.70222 0.257778C8.54222 0.0977777 8.31111 0 8.08 0H4.36444C4.13333 0 3.90222 0.0977777 3.74222 0.257778L3.11111 0.888889H0.888889C0.4 0.888889 0 1.28889 0 1.77778C0 2.26667 0.4 2.66667 0.888889 2.66667H11.5556C12.0444 2.66667 12.4444 2.26667 12.4444 1.77778C12.4444 1.28889 12.0444 0.888889 11.5556 0.888889H9.33333Z" fill="#1F5CC7"/>
 </svg>
           </button>
         </div>
-
         <hr />
-
-        <!-- Middle Section: Price, Time, Qty -->
-        <div class="cart-details" style="    padding-top: 0px;">
+        <div class="cart-details pt-0">
           <div  *ngIf="customertype !== 'B'"  class="d-flex justify-content-between">
-            <p style="font-size: 12px" class="mb-1 cart-label">Base price</p>
-            <p style="font-size: 12px" class="mb-1 cart-value">
+            <p  class="mb-1 cart-label font-12">Base price</p>
+            <p  class="mb-1 cart-value font-12">
               ₹ {{ item.TOTAL_PRICE| number }}
             </p>
           </div>
           <div class="d-flex justify-content-between">
-            <p style="font-size: 12px" class="mb-1 cart-label">
+            <p  class="mb-1 cart-label font-12">
               Estimated Duration
             </p>
-            <p style="font-size: 12px" class="mb-1 cart-value">
-              <!-- {{ item?.DURARTION_HOUR || 0 }}h
-              {{ item?.DURARTION_MIN   || 0 }}m -->
+            <p  class="mb-1 cart-value font-12">
                                     {{(item?.DURARTION_HOUR || 0) * 60 + (item?.DURARTION_MIN || 0)}} min
-
             </p>
           </div>
           <div class="d-flex justify-content-between">
-            <p style="font-size: 12px" class="mb-1 cart-label">Qty.</p>
-            <p style="font-size: 12px" class="mb-1 cart-value">
+            <p  class="mb-1 cart-label font-12">Qty.</p>
+            <p  class="mb-1 cart-value font-12">
               {{ item.QUANTITY }}
             </p>
           </div>
           <div *ngIf="item.IS_EXPRESS == 1" class="d-flex justify-content-between align-items-center">
-            <p style="font-size: 12px" class="fw-bold mb-1">Priority:</p>
-            <p style="font-size: 12px" class="mb-1 text-primary">
+            <p  class="fw-bold mb-1 font-12">Priority:</p>
+            <p  class="mb-1 text-primary font-12">
               <i class="bi bi-lightning-charge"></i> High (Express service)
             </p>
           </div>
         </div>
-
-        <!-- Bottom Row: Clock Icon, Date & Time -->
-        <div class="cart-bottom" style="padding-top: 0px;padding-bottom: 0px;">
-          <div class="cart-icon" style="width: 30px;height: 30px;">
-            <i class="bi bi-clock" style="font-size: 13px;"></i>
+        <div class="cart-bottom py-0">
+          <div class="cart-icon size-30x30">
+            <i class="bi bi-clock font-13" ></i>
           </div>
-          <span style="font-weight: 400;font-size: 12px;">
+          <span class="font-12-400">
             {{ item.CREATED_MODIFIED_DATE | date : "EEE, dd MMM" }} |
             {{ item.START_TIME }} - {{ item.END_TIME }}
           </span>
@@ -216,8 +160,8 @@
     </ng-container>
     <ng-template #noData>
       <div class="no-cart-items text-center">
-        <img src="assets/img/hand-drawn-no-data-concept.png" style="width: 60px; height: 40px" alt="Empty Cart"
-          class="no-cart-img mb-2" />
+        <img src="assets/img/hand-drawn-no-data-concept.png" alt="Empty Cart"
+          class="no-cart-img mb-2 size-60x40 " />
         <h6 class="fw-bold">Your Cart is Empty</h6>
         <p class="text-muted small">
           You have no items in your cart. Start adding items now!
@@ -225,29 +169,22 @@
       </div>
     </ng-template>
   </div>
-
-  <button *ngIf="!isLoading && cartItems.length > 0" (click)="openNextDrawer(cartItems)" class="checkout-btn" style="    padding: 7px !important;font-size: 13px;">
+  <button *ngIf="!isLoading && cartItems.length > 0" (click)="openNextDrawer(cartItems)" class="checkout-btn padding-7-font-13">
     Checkout
   </button>
 </div>
-
-<!-- Cart Component open -->
-
-<div  style="width: 640px" class="offcanvas offcanvas-end" data-bs-backdrop="static" tabindex="-1"
+<div class="offcanvas offcanvas-end width-640" data-bs-backdrop="static" tabindex="-1"
   id="offcanvasRightMultiple" aria-labelledby="offcanvasRightLabel" [class.show]="isDrawerVisible">
-  <!-- <div *ngIf="!loadepage"> -->
   <div class="offcanvas-header border-bottom">
-    <h5 class="offcanvas-title fw-bold" style="font-size: 14px">
+    <h5 class="offcanvas-title fw-bold text-14">
       Select Date and Time
     </h5>
     <button type="button" class="btn-close" (click)="drawerClose()"></button>
   </div>
-
   <div class="demodash offcanvas-body d-flex flex-column">
     <app-multiple-checkout-order-drawer *ngIf="isDrawerVisible && !loadepage" [CartID]="CartID" [isDrawerVisible]="isDrawerVisible"
       [isExpressOn]="isExpressOn" [drawerData]="drawerData" [updatedselectedService]="updatedselectedService"
       (closeDrawerEvent)="drawerClose()">
     </app-multiple-checkout-order-drawer>
   </div>
-<!-- </div> -->
 </div>
