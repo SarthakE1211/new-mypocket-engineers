@@ -374,11 +374,17 @@ export class HomeComponent {
       .getPendingRating(this.userID)
       .subscribe((res: any) => {
         if (res?.status === 200) {
-          this.data = res.body.data[0];
-          this.HAS_FEEDBACK = this.data.HAS_FEEDBACK;
-          this.selectedJob = res.body.data[0]
-          if (this.HAS_FEEDBACK === 0) {
-            this.openPopup()
+          if (res.data != undefined) {
+            this.data = res.body.data[0];
+            this.HAS_FEEDBACK = this.data.HAS_FEEDBACK;
+            this.selectedJob = res.body.data[0]
+            if (this.HAS_FEEDBACK === 0) {
+              this.openPopup()
+            }
+          }
+          else {
+            this.HAS_FEEDBACK = 0;
+            this.selectedJob = null;
           }
         }
       });
