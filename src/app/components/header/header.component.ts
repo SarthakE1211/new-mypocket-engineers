@@ -150,7 +150,7 @@ export class HeaderComponent {
   addressline1: any = '';
   mainaddress: any = '';
   addressCity: any = '';
-  locationName:string='';
+  locationName: string = '';
   currentLang = 'en';
   toggleProfileMenu() {
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
@@ -197,7 +197,7 @@ export class HeaderComponent {
   loadData() {
     this.loaderService.showLoader();
     setTimeout(() => {
-      this.loaderService.hideLoader(); 
+      this.loaderService.hideLoader();
     }, 3000);
   }
   openModal() {
@@ -207,20 +207,21 @@ export class HeaderComponent {
     const imgElement = event.target as HTMLImageElement;
     imgElement.src = 'assets/img/blueEmpImage.png';
   }
-  cityOnly:string="";
+  cityOnly: string = "";
   ngOnInit(): void {
-     this.apiservice.getAddressObservable().subscribe((city: any) => {
+    this.apiservice.getAddressObservable().subscribe((city: any) => {
       if (city) {
         this.mainaddress = city;
       }
-       });
+    });
     this.locationName =
       this.apiservice.getUserAddressLocal() ||
       this.apiservice.getUserAddress() ||
       this.apiservice.getSessionAddress() ||
       '';
     this.router.events.subscribe(() => {
-      this.isActive = this.router.url.includes('service') ? true : false;
+      // this.isActive = this.router.url.includes('service') ? true : false;
+      this.isActive = true;
     });
     this.userID = this.apiservice.getUserId();
     this.userNAME = this.apiservice.getUserName();
@@ -302,13 +303,13 @@ export class HeaderComponent {
             ) {
             } else {
               setTimeout(() => {
-                let targetRoute = '/service'; 
+                let targetRoute = '/service';
                 if (pincodeFor === 'S') {
                   targetRoute = '/service';
                 } else if (pincodeFor === 'I') {
                   targetRoute = '/shop/home';
                 } else if (pincodeFor === 'B') {
-                  targetRoute = '/service'; 
+                  targetRoute = '/service';
                 }
                 if (this.router.url !== targetRoute) {
                   this.router.navigate([targetRoute]);
@@ -343,16 +344,16 @@ export class HeaderComponent {
   }
   onShopClick1(event: Event) {
     if (this.isShopDisabled) {
-      this.handleNavClick('I', event); 
+      this.handleNavClick('I', event);
     } else {
-      this.closemodelllllll(); 
+      this.closemodelllllll();
     }
   }
   onNavClick(event: Event) {
     if (this.isServiceDisabled) {
-      this.handleNavClick('S', event); 
+      this.handleNavClick('S', event);
     } else {
-      this.closemodelllllll(); 
+      this.closemodelllllll();
     }
   }
   handleNavClick(expected: 'S' | 'I', event: Event) {
@@ -389,7 +390,7 @@ export class HeaderComponent {
   LANGUAGES: any;
   isMobile = false;
   checkScreenSize() {
-    this.isMobile = window.innerWidth <= 768; 
+    this.isMobile = window.innerWidth <= 768;
   }
   isLoggingOut: boolean = false;
   onLogout() {
@@ -409,7 +410,7 @@ export class HeaderComponent {
       this.router.navigate(['/login']).then(() => {
         window.location.reload();
       });
-      this.isLoggingOut = false; 
+      this.isLoggingOut = false;
     } else {
       const subscribedChannels = JSON.parse(this.subscribedChannels);
       var channelNames = subscribedChannels.map(
@@ -460,7 +461,7 @@ export class HeaderComponent {
                       window.location.reload();
                     });
                   }
-                  this.isLoggingOut = false; 
+                  this.isLoggingOut = false;
                 },
                 error: (errorResponse) => {
                   this.toastr.error('Something went wrong. Please try again.');
@@ -482,7 +483,7 @@ export class HeaderComponent {
                   this.router.navigate(['/login']).then(() => {
                     window.location.reload();
                   });
-                  this.isLoggingOut = false; 
+                  this.isLoggingOut = false;
                 },
               });
             } else {
@@ -504,7 +505,7 @@ export class HeaderComponent {
               this.router.navigate(['/login']).then(() => {
                 window.location.reload();
               });
-              this.isLoggingOut = false; 
+              this.isLoggingOut = false;
             }
           },
           (err: HttpErrorResponse) => {
@@ -526,7 +527,7 @@ export class HeaderComponent {
             this.router.navigate(['/login']).then(() => {
               window.location.reload();
             });
-            this.isLoggingOut = false; 
+            this.isLoggingOut = false;
           }
         );
       } else {
@@ -548,7 +549,7 @@ export class HeaderComponent {
         this.router.navigate(['/login']).then(() => {
           window.location.reload();
         });
-        this.isLoggingOut = false; 
+        this.isLoggingOut = false;
       }
     }
   }
@@ -564,7 +565,7 @@ export class HeaderComponent {
   editProfilePhoto() { }
   fileChangeEvent(event: any) {
     const file = event.target.files[0];
-    const maxFileSize = 1 * 1024 * 1024; 
+    const maxFileSize = 1 * 1024 * 1024;
     if (!file) return;
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
     if (!allowedTypes.includes(file.type)) {
@@ -582,7 +583,7 @@ export class HeaderComponent {
     const randomNum = Math.floor(100000 + Math.random() * 900000);
     const dateStr = this.datePipe.transform(new Date(), 'yyyyMMdd');
     const filename = `${dateStr}${randomNum}.${fileExt}`;
-    this.userData.PROFILE_PHOTO = filename; 
+    this.userData.PROFILE_PHOTO = filename;
     this.uploadImage(file, filename);
   }
   isUploading: boolean = false;
@@ -657,8 +658,8 @@ export class HeaderComponent {
   addressData: any = [];
   loadAddresses: boolean = false;
   getAddressList() {
-    const filter = ''; 
-    const likeQuery = ''; 
+    const filter = '';
+    const likeQuery = '';
     this.loadAddresses = true;
     this.apiservice
       .getAddresses1data(
@@ -776,8 +777,8 @@ export class HeaderComponent {
   }
   demochange(data: any) { }
   getuserList() {
-    const filter = ''; 
-    const likeQuery = ''; 
+    const filter = '';
+    const likeQuery = '';
     this.apiservice
       .getUserData(0, 0, '', '', ' AND ID =' + this.userID)
       .subscribe({
@@ -966,11 +967,11 @@ export class HeaderComponent {
           this.loadMap(this.latitude, this.longitude);
         },
         () => {
-          this.loadMap(28.6139, 77.209); 
+          this.loadMap(28.6139, 77.209);
         }
       );
     } else {
-      this.loadMap(28.6139, 77.209); 
+      this.loadMap(28.6139, 77.209);
     }
   }
   loadMap(lat: number, lng: number) {
@@ -1058,10 +1059,10 @@ export class HeaderComponent {
         const filteredAddress = addressComponents
           .filter(
             (comp: any) =>
-              comp.types.includes('route') || 
-              comp.types.includes('sublocality_level_1') || 
+              comp.types.includes('route') ||
+              comp.types.includes('sublocality_level_1') ||
               comp.types.includes('sublocality') ||
-              comp.types.includes('neighborhood') 
+              comp.types.includes('neighborhood')
           )
           .map((comp: any) => comp.long_name)
           .join(', ');
@@ -1070,7 +1071,7 @@ export class HeaderComponent {
         const postalCode =
           addressComponents.find((comp: any) =>
             comp.types.includes('postal_code')
-          )?.long_name || '416310'; 
+          )?.long_name || '416310';
         if (results[0].plus_code && results[0].plus_code.global_code) {
           this.locationCode = results[0].plus_code.global_code.split(' ').pop();
         }
@@ -1083,8 +1084,8 @@ export class HeaderComponent {
     return component ? component.long_name : '';
   }
   confirmLocation(): void {
-    const defaultLatitude = 28.6139; 
-    const defaultLongitude = 77.209; 
+    const defaultLatitude = 28.6139;
+    const defaultLongitude = 77.209;
     if (this.currentMarker) {
       const position = this.currentMarker.getPosition();
       if (position) {
@@ -1125,7 +1126,7 @@ export class HeaderComponent {
           );
           const postalCode = addressComponents.find((comp: any) =>
             comp.types.includes('postal_code')
-          )?.long_name; 
+          )?.long_name;
           this.addressForm.CITY_NAME = city ? city.long_name : '';
           this.selectedState = state ? state.long_name : '';
           this.selectedPincode = '';
@@ -1188,7 +1189,7 @@ export class HeaderComponent {
   };
   getpincode(pincodeeeee: any) {
     let rawPincode: string = this.addressForm.PINCODE || '';
-    let pincodeMatch = rawPincode.match(/^\d+/); 
+    let pincodeMatch = rawPincode.match(/^\d+/);
     let pincode: string = pincodeMatch ? pincodeMatch[0] : '';
     if (pincode || pincodeeeee) {
       if (pincode != null && pincode != null && pincode != '') {
@@ -1212,18 +1213,18 @@ export class HeaderComponent {
             const data = await response.json();
             pincode = data.address.postcode || '';
             if (this.addressForm.PINCODE) {
-              this.fetchPincodeData(this.addressForm.PINCODE); 
+              this.fetchPincodeData(this.addressForm.PINCODE);
             } else {
-              this.fetchPincodeData(pincode); 
+              this.fetchPincodeData(pincode);
             }
           } catch (error: any) {
-            this.pincodeData = []; 
-            this.pincodeloading = false; 
+            this.pincodeData = [];
+            this.pincodeloading = false;
           }
         },
         (error) => {
-          this.pincodeData = []; 
-          this.pincodeloading = false; 
+          this.pincodeData = [];
+          this.pincodeloading = false;
         }
       );
     }
@@ -1252,14 +1253,14 @@ export class HeaderComponent {
             this.addressForm.PINCODE_ID = this.pincodeData[0].ID;
             this.getStateData();
             this.loadpincodes = false;
-            this.pincodeloading = false; 
+            this.pincodeloading = false;
             this.isLoading = false;
           },
           error: (error: any) => {
-            this.pincodeData = []; 
+            this.pincodeData = [];
             this.loadpincodes = false;
             this.isLoading = false;
-            this.pincodeloading = false; 
+            this.pincodeloading = false;
           },
         });
     }
@@ -1277,11 +1278,11 @@ export class HeaderComponent {
       .subscribe({
         next: (data: any) => {
           this.stateData = data.data;
-          this.pincodeloading = false; 
+          this.pincodeloading = false;
         },
         error: (error: any) => {
-          this.stateData = []; 
-          this.pincodeloading = false; 
+          this.stateData = [];
+          this.pincodeloading = false;
         },
       });
   }
@@ -1300,13 +1301,19 @@ export class HeaderComponent {
             .subscribe({
               next: (dataaaaa: any) => {
                 this.optionsList = dataaaaa.data;
-                this.filteredOptions = this.optionsList;
+                // this.filteredOptions = this.optionsList;
+                this.filteredOptions = this.optionsList.filter(
+                  (item: any) =>
+                    item['CATEGORY'] == 'Category' ||
+                    item['CATEGORY'] == 'Service' ||
+                    item['CATEGORY'] == 'SubCategory'
+                );
                 this.searchloading = false;
-                this.pincodeloading = false; 
+                this.pincodeloading = false;
               },
               error: (error: any) => {
-                this.optionsList = []; 
-                this.pincodeloading = false; 
+                this.optionsList = [];
+                this.pincodeloading = false;
               },
             });
         } else {
@@ -1341,22 +1348,29 @@ export class HeaderComponent {
                       item['CATEGORY'] == 'Service' ||
                       item['CATEGORY'] == 'SubCategory'
                   );
-                  this.filteredOptions = this.optionsList;
-                } else if (this.pincodeforrkey == 'SP') {
-                  this.optionsList = this.optionsList.filter(
+                  // this.filteredOptions = this.optionsList;
+                  this.filteredOptions = this.optionsList.filter(
                     (item: any) =>
-                      item['CATEGORY'] == 'Items' ||
-                      item['CATEGORY'] == 'ItemBrands'
+                      item['CATEGORY'] == 'Category' ||
+                      item['CATEGORY'] == 'Service' ||
+                      item['CATEGORY'] == 'SubCategory'
                   );
-                  this.filteredOptions = this.optionsList;
-                } else {
-                  this.filteredOptions = this.optionsList;
                 }
-                this.searchloading = false; 
+                // else if (this.pincodeforrkey == 'SP') {
+                //   this.optionsList = this.optionsList.filter(
+                //     (item: any) =>
+                //       item['CATEGORY'] == 'Items' ||
+                //       item['CATEGORY'] == 'ItemBrands'
+                //   );
+                //   this.filteredOptions = this.optionsList;
+                // } else {
+                //   this.filteredOptions = this.optionsList;
+                // }
+                this.searchloading = false;
               },
               error: (error: any) => {
-                this.optionsList = []; 
-                this.searchloading = false; 
+                this.optionsList = [];
+                this.searchloading = false;
               },
             });
         } else {
@@ -1381,22 +1395,30 @@ export class HeaderComponent {
                       item['CATEGORY'] == 'Service' ||
                       item['CATEGORY'] == 'SubCategory'
                   );
-                  this.filteredOptions = this.optionsList;
-                } else if (this.pincodeforrkey == 'SP') {
-                  this.optionsList = this.optionsList.filter(
+                  // this.filteredOptions = this.optionsList;
+                  this.filteredOptions = this.optionsList.filter(
                     (item: any) =>
-                      item['CATEGORY'] == 'Items' ||
-                      item['CATEGORY'] == 'ItemBrands'
+                      item['CATEGORY'] == 'Category' ||
+                      item['CATEGORY'] == 'Service' ||
+                      item['CATEGORY'] == 'SubCategory'
                   );
-                  this.filteredOptions = this.optionsList;
-                } else {
-                  this.filteredOptions = this.optionsList;
                 }
-                this.searchloading = false; 
+                // else if (this.pincodeforrkey == 'SP') {
+                //   this.optionsList = this.optionsList.filter(
+                //     (item: any) =>
+                //       item['CATEGORY'] == 'Items' ||
+                //       item['CATEGORY'] == 'ItemBrands'
+                //   );
+                //   this.filteredOptions = this.optionsList;
+                // }
+                //  else {
+                //   this.filteredOptions = this.optionsList;
+                // }
+                this.searchloading = false;
               },
               error: (error: any) => {
-                this.optionsList = []; 
-                this.searchloading = false; 
+                this.optionsList = [];
+                this.searchloading = false;
               },
             });
         }
@@ -1407,11 +1429,11 @@ export class HeaderComponent {
     this.apiservice.getBrands(0, 0, 'SEQUENCE_NO', 'asc', ' AND STATUS =1 ').subscribe({
       next: (data: any) => {
         this.optionsList = data.data;
-        this.pincodeloading = false; 
+        this.pincodeloading = false;
       },
       error: (error: any) => {
-        this.optionsList = []; 
-        this.pincodeloading = false; 
+        this.optionsList = [];
+        this.pincodeloading = false;
       },
     });
   }
@@ -1515,10 +1537,10 @@ export class HeaderComponent {
           this.addressForm.TERRITORY_ID = data['data'][0]?.TERRITORY_ID
             ? data['data'][0]?.TERRITORY_ID
             : 0;
-          this.pincodeloading = false; 
+          this.pincodeloading = false;
         },
         error: (error: any) => {
-          this.pincodeloading = false; 
+          this.pincodeloading = false;
         },
       });
   }
@@ -1543,11 +1565,11 @@ export class HeaderComponent {
           if (englishLanguage) {
             this.selectedLanguage = englishLanguage.ID;
           }
-          this.appLanguageLoading = false; 
+          this.appLanguageLoading = false;
         },
         error: (error: any) => {
-          this.appLanguageData = []; 
-          this.appLanguageLoading = false; 
+          this.appLanguageData = [];
+          this.appLanguageLoading = false;
         },
       });
   }
@@ -1560,11 +1582,11 @@ export class HeaderComponent {
       .subscribe({
         next: (data: any) => {
           this.faqData = data.data;
-          this.faqLoading = false; 
+          this.faqLoading = false;
         },
         error: (error: any) => {
-          this.faqData = []; 
-          this.faqLoading = false; 
+          this.faqData = [];
+          this.faqLoading = false;
         },
       });
   }
@@ -2253,10 +2275,10 @@ export class HeaderComponent {
     }
     return 'icon-default';
   }
-  orders: any = []; 
+  orders: any = [];
   selectedTab: 'current' | 'past' = 'current';
-  loading: boolean = false; 
-  Shoporders: any[] = []; 
+  loading: boolean = false;
+  Shoporders: any[] = [];
   openOrdersModal() {
     this.showContent = 'myorder';
     this.switchTab('current');
@@ -2275,9 +2297,9 @@ export class HeaderComponent {
     this.isMobileMenuOpen = false;
     this.gotoProfile();
     setTimeout(() => {
-      document.body.classList.remove('modal-open'); 
+      document.body.classList.remove('modal-open');
       this.router.navigate(['/order-details', orderId]);
-    }, 200); 
+    }, 200);
   }
   openIndex: number | null = null;
   toggleFAQ(index: number): void {
@@ -2292,7 +2314,7 @@ export class HeaderComponent {
   updateScreenSize() {
     this.isLargeScreen = window.innerWidth >= 768;
     if (this.isLargeScreen) {
-      this.showMobileSearch = false; 
+      this.showMobileSearch = false;
     }
   }
   @HostListener('document:click', ['$event'])
@@ -2304,13 +2326,13 @@ export class HeaderComponent {
     this.isMobileMenuOpen = false;
     this.gotoProfile();
     setTimeout(() => {
-      document.body.classList.remove('modal-open'); 
+      document.body.classList.remove('modal-open');
       this.router.navigate(['/shop/order_details', orderId]);
-    }, 200); 
+    }, 200);
   }
   switchTab(tab: 'current' | 'past') {
     this.selectedTab = tab;
-    this.loading = true; 
+    this.loading = true;
     if (tab === 'current') {
       this.apiservice
         .getorderData(0, 0, 'id', 'desc', ` AND CUSTOMER_ID = ${this.userID}`)
@@ -2350,14 +2372,14 @@ export class HeaderComponent {
                 }
               }
             }
-            this.loading = false; 
+            this.loading = false;
           },
           (error) => {
-            this.loading = false; 
+            this.loading = false;
           }
         );
     } else {
-      this.orders = []; 
+      this.orders = [];
       this.apiservice
         .getShoporderData(
           0,
@@ -2525,7 +2547,7 @@ export class HeaderComponent {
       mp4: 'video/mp4',
       json: 'application/json',
     };
-    return mimeTypes[extension] || 'application/octet-stream'; 
+    return mimeTypes[extension] || 'application/octet-stream';
   }
   getAllKB(data: any) {
     this.apiservice
@@ -2645,7 +2667,7 @@ export class HeaderComponent {
   openprofileModal() {
     const modal = document.getElementById('photoModal')!;
     modal.style.display = 'block';
-    this.renderer.addClass(document.body, 'modal-open'); 
+    this.renderer.addClass(document.body, 'modal-open');
   }
   closeModal() {
     const modal = document.getElementById('photoModal')!;
@@ -2662,12 +2684,12 @@ export class HeaderComponent {
   isCapturePhotoModalOpen: boolean = false;
   private stream!: MediaStream;
   openCamera() {
-    this.isCapturePhotoModalOpen = true; 
+    this.isCapturePhotoModalOpen = true;
     const modal = document.getElementById('CapturePhotoModal')!;
     modal.style.display = 'block';
     this.renderer.addClass(document.body, 'modal-open');
     navigator.mediaDevices
-      .getUserMedia({ video: { facingMode: 'user' } }) 
+      .getUserMedia({ video: { facingMode: 'user' } })
       .then((stream) => {
         this.stream = stream;
         const video = this.videoElement.nativeElement;
@@ -2695,10 +2717,10 @@ export class HeaderComponent {
       }
     }, 'image/png');
     this.stream.getTracks().forEach((track) => track.stop());
-    this.isCapturePhotoModalOpen = false; 
+    this.isCapturePhotoModalOpen = false;
   }
   base64ToBlob(base64: string, contentType: string): Blob {
-    const byteCharacters = atob(base64.split(',')[1]); 
+    const byteCharacters = atob(base64.split(',')[1]);
     const byteNumbers = new Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {
       byteNumbers[i] = byteCharacters.charCodeAt(i);
@@ -2742,13 +2764,13 @@ export class HeaderComponent {
   }
   sanitizeDescription(description: string): SafeHtml {
     if (description.startsWith('"') && description.endsWith('"')) {
-      description = description.slice(1, -1); 
+      description = description.slice(1, -1);
     }
     return this.sanitizer.bypassSecurityTrustHtml(description);
   }
   onKeyDown(event: KeyboardEvent): void {
     if (event.key === 'Enter') {
-      event.preventDefault(); 
+      event.preventDefault();
     }
   }
   togglePincodeDropdown123(pincode: string) {
@@ -2851,9 +2873,9 @@ export class HeaderComponent {
     const UNIT_ID = product.UNIT_ID;
     const QUANTITY_PER_UNIT = product.QUANTITY_PER_UNIT;
     sessionStorage.setItem('brandid', '');
-    sessionStorage.setItem('InventoryID', ID.toString()); 
-    sessionStorage.setItem('UNIT_ID', UNIT_ID.toString()); 
-    sessionStorage.setItem('QUANTITY_PER_UNIT', QUANTITY_PER_UNIT.toString()); 
+    sessionStorage.setItem('InventoryID', ID.toString());
+    sessionStorage.setItem('UNIT_ID', UNIT_ID.toString());
+    sessionStorage.setItem('QUANTITY_PER_UNIT', QUANTITY_PER_UNIT.toString());
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['/shop/buy_now', ID]);
     });
@@ -2896,14 +2918,14 @@ export class HeaderComponent {
                     window.location.reload();
                   });
                 } else {
-                  this.isdeleteAccount = false; 
+                  this.isdeleteAccount = false;
                   this.toastr.error('Something went wrong. Please try again.');
                 }
-                this.isdeleteAccount = false; 
+                this.isdeleteAccount = false;
               },
               error: (errorResponse) => {
                 this.toastr.error('Something went wrong. Please try again.');
-                this.isdeleteAccount = false; 
+                this.isdeleteAccount = false;
               },
             });
           } else {
@@ -2929,17 +2951,17 @@ export class HeaderComponent {
                     window.location.reload();
                   });
                 } else {
-                  this.isdeleteAccount = false; 
+                  this.isdeleteAccount = false;
                   this.toastr.error('Something went wrong. Please try again.');
                 }
-                this.isdeleteAccount = false; 
+                this.isdeleteAccount = false;
               },
               error: (errorResponse) => {
                 this.toastr.error('Something went wrong. Please try again.');
-                this.isdeleteAccount = false; 
+                this.isdeleteAccount = false;
               },
             });
-            this.isdeleteAccount = false; 
+            this.isdeleteAccount = false;
           }
         },
         (err: HttpErrorResponse) => {
@@ -2961,17 +2983,17 @@ export class HeaderComponent {
                   window.location.reload();
                 });
               } else {
-                this.isdeleteAccount = false; 
+                this.isdeleteAccount = false;
                 this.toastr.error('Something went wrong. Please try again.');
               }
-              this.isdeleteAccount = false; 
+              this.isdeleteAccount = false;
             },
             error: (errorResponse) => {
               this.toastr.error('Something went wrong. Please try again.');
-              this.isdeleteAccount = false; 
+              this.isdeleteAccount = false;
             },
           });
-          this.isdeleteAccount = false; 
+          this.isdeleteAccount = false;
         }
       );
     } else {

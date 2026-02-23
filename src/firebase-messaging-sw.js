@@ -70,7 +70,7 @@ self.addEventListener("push", (event) => {
       self.registration.showNotification(title, {
         body: data.body,
         icon: data.icon || "./assets/img/Logo111.png",
-        tag: "PockIT",
+        tag: "Pockit",
       }),
 
       // Send message to all open windows

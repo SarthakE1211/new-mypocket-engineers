@@ -220,25 +220,25 @@ export class HomeComponent {
     this.generateDates();
   }
   updateSEO() {
-    this.titleService.setTitle('PockIT - Your Digital Service Marketplace');
+    this.titleService.setTitle('Pockit - Your Digital Service Marketplace');
     this.metaService.updateTag({
       name: 'description',
       content:
-        'PockIT Web is a digital platform that connects customers with service providers for seamless transactions, service tracking, and payments.',
+        'Pockit Web is a digital platform that connects customers with service providers for seamless transactions, service tracking, and payments.',
     });
     this.metaService.updateTag({
       name: 'keywords',
       content:
-        'PockIT Web, service marketplace, digital services, e-commerce platform, online bookings',
+        'Pockit Web, service marketplace, digital services, e-commerce platform, online bookings',
     });
     this.metaService.updateTag({
       property: 'og:title',
-      content: 'PockIT Web - Your Digital Service Marketplace',
+      content: 'Pockit Web - Your Digital Service Marketplace',
     });
     this.metaService.updateTag({
       property: 'og:description',
       content:
-        'Find, book, and manage services effortlessly with PockIT Web, the ultimate digital service marketplace.',
+        'Find, book, and manage services effortlessly with Pockit Web, the ultimate digital service marketplace.',
     });
     this.metaService.updateTag({
       property: 'og:url',
@@ -246,12 +246,12 @@ export class HomeComponent {
     });
     this.metaService.updateTag({
       name: 'twitter:title',
-      content: 'PockIT Web - Your Digital Service Marketplace',
+      content: 'Pockit Web - Your Digital Service Marketplace',
     });
     this.metaService.updateTag({
       name: 'twitter:description',
       content:
-        'Find, book, and manage services effortlessly with PockIT Web, the ultimate digital service marketplace.',
+        'Find, book, and manage services effortlessly with Pockit Web, the ultimate digital service marketplace.',
     });
     this.metaService.updateTag({
       name: 'twitter:card',

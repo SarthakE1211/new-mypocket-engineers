@@ -28,11 +28,11 @@ export class CartComponent {
   DemoCartDetails: any = [];
   CartInfo: any = [];
   updateSEO() {
-    this.titleService.setTitle('Your Shopping Cart - PockIT Web');
+    this.titleService.setTitle('Your Shopping Cart - Pockit Web');
     this.metaService.updateTag({
       name: 'description',
       content:
-        'Review and manage your shopping cart at PockIT Web. Secure checkout for laptop parts, computer accessories, SSDs, RAM, and more.',
+        'Review and manage your shopping cart at Pockit Web. Secure checkout for laptop parts, computer accessories, SSDs, RAM, and more.',
     });
     this.metaService.updateTag({
       name: 'keywords',
@@ -41,12 +41,12 @@ export class CartComponent {
     });
     this.metaService.updateTag({
       property: 'og:title',
-      content: 'Your Shopping Cart - PockIT Web',
+      content: 'Your Shopping Cart - Pockit Web',
     });
     this.metaService.updateTag({
       property: 'og:description',
       content:
-        'Check your cart before checkout at PockIT Web. Buy SSDs, RAM, motherboards, and laptop accessories securely online.',
+        'Check your cart before checkout at Pockit Web. Buy SSDs, RAM, motherboards, and laptop accessories securely online.',
     });
     this.metaService.updateTag({
       property: 'og:url',
@@ -54,12 +54,12 @@ export class CartComponent {
     });
     this.metaService.updateTag({
       name: 'twitter:title',
-      content: 'Your Shopping Cart - PockIT Web',
+      content: 'Your Shopping Cart - Pockit Web',
     });
     this.metaService.updateTag({
       name: 'twitter:description',
       content:
-        'Manage your shopping cart and proceed to checkout. Buy laptop parts and computer accessories securely online at PockIT Web.',
+        'Manage your shopping cart and proceed to checkout. Buy laptop parts and computer accessories securely online at Pockit Web.',
     });
     this.metaService.updateTag({
       name: 'twitter:card',

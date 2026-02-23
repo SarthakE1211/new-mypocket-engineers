@@ -36,7 +36,7 @@ export class OrderReviewPageComponent {
     paymentSummary: false,
   };
   updateSEO() {
-    this.titleService.setTitle('Review Your Order - PockIT Web');
+    this.titleService.setTitle('Review Your Order - Pockit Web');
     this.metaService.updateTag({
       name: 'description',
       content:
@@ -49,12 +49,12 @@ export class OrderReviewPageComponent {
     });
     this.metaService.updateTag({
       property: 'og:title',
-      content: 'Review Your Order - PockIT Web',
+      content: 'Review Your Order - Pockit Web',
     });
     this.metaService.updateTag({
       property: 'og:description',
       content:
-        'Verify your cart items and confirm your order details at PockIT Web before secure checkout.',
+        'Verify your cart items and confirm your order details at Pockit Web before secure checkout.',
     });
     this.metaService.updateTag({
       property: 'og:url',
@@ -62,12 +62,12 @@ export class OrderReviewPageComponent {
     });
     this.metaService.updateTag({
       name: 'twitter:title',
-      content: 'Review Your Order - PockIT Web',
+      content: 'Review Your Order - Pockit Web',
     });
     this.metaService.updateTag({
       name: 'twitter:description',
       content:
-        'Check your order details before completing the purchase at PockIT Web. Fast and secure checkout.',
+        'Check your order details before completing the purchase at Pockit Web. Fast and secure checkout.',
     });
     this.metaService.updateTag({
       name: 'twitter:card',

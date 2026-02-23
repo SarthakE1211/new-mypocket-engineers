@@ -8,14 +8,14 @@ import { Meta, Title } from '@angular/platform-browser';
 export class TermsAndConditionWithoutLoginComponent  {
  constructor(private titleService: Title,private metaService: Meta) { this.updateSEO() }
   updateSEO() {
-    this.titleService.setTitle('Terms and Conditions - PockIT');
-    this.metaService.updateTag({ name: 'description', content: 'Read the Terms and Conditions of PockIT Web to understand our policies on IT services, hardware sales, payments, returns, and user responsibilities.' });
-    this.metaService.updateTag({ name: 'keywords', content: 'terms and conditions, PockIT Web policies, IT services terms, hardware sales policy, return policy, warranty, user agreement' });
-    this.metaService.updateTag({ property: 'og:title', content: 'Terms and Conditions - PockIT Web' });
-    this.metaService.updateTag({ property: 'og:description', content: 'Review the Terms and Conditions of PockIT Web, covering IT services, hardware sales, payments, shipping, refunds, and warranties.' });
+    this.titleService.setTitle('Terms and Conditions - Pockit');
+    this.metaService.updateTag({ name: 'description', content: 'Read the Terms and Conditions of Pockit Web to understand our policies on IT services, hardware sales, payments, returns, and user responsibilities.' });
+    this.metaService.updateTag({ name: 'keywords', content: 'terms and conditions, Pockit Web policies, IT services terms, hardware sales policy, return policy, warranty, user agreement' });
+    this.metaService.updateTag({ property: 'og:title', content: 'Terms and Conditions - Pockit Web' });
+    this.metaService.updateTag({ property: 'og:description', content: 'Review the Terms and Conditions of Pockit Web, covering IT services, hardware sales, payments, shipping, refunds, and warranties.' });
     this.metaService.updateTag({ property: 'og:url', content: 'https://my.pockitengineers.com/terms-and-conditions' });
-    this.metaService.updateTag({ name: 'twitter:title', content: 'Terms and Conditions - PockIT Web' });
-    this.metaService.updateTag({ name: 'twitter:description', content: 'Understand the policies of PockIT Web regarding IT services, hardware sales, payment terms, shipping, and returns.' });
+    this.metaService.updateTag({ name: 'twitter:title', content: 'Terms and Conditions - Pockit Web' });
+    this.metaService.updateTag({ name: 'twitter:description', content: 'Understand the policies of Pockit Web regarding IT services, hardware sales, payment terms, shipping, and returns.' });
     this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
     let link: HTMLLinkElement = document.querySelector("link[rel='canonical']") || document.createElement('link');
     link.setAttribute('rel', 'canonical');
@@ -45,7 +45,7 @@ export class TermsAndConditionWithoutLoginComponent  {
     {
       title: 'Orders and Payments',
       points: [
-        'All orders for products or services are subject to acceptance by PockIT Engineers.',
+        'All orders for products or services are subject to acceptance by Pockit Engineers.',
         'Prices for products and services may change without prior notice.',
         'Payment is due at the time of order placement unless otherwise agreed upon.'
       ]
@@ -72,11 +72,11 @@ export class TermsAndConditionWithoutLoginComponent  {
     },
     {
       title: 'Limitation of Liability',
-      description: 'PockIT Engineers is not liable for indirect or consequential damages. Total liability is limited to the amount paid for the product or service.'
+      description: 'Pockit Engineers is not liable for indirect or consequential damages. Total liability is limited to the amount paid for the product or service.'
     },
     {
       title: 'Intellectual Property',
-      description: 'All content, trademarks, and data on our website are the property of PockIT Engineers or its licensors.'
+      description: 'All content, trademarks, and data on our website are the property of Pockit Engineers or its licensors.'
     },
     {
       title: 'Privacy Policy',

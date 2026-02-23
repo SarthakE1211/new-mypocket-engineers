@@ -82,11 +82,11 @@ export class ShopHomeComponent {
     this.updateSEO();
   }
   updateSEO() {
-    this.titleService.setTitle('Shop - PockIT Web');
+    this.titleService.setTitle('Shop - Pockit Web');
     this.metaService.updateTag({
       name: 'description',
       content:
-        'Shop the best laptop and computer parts at PockIT Web. Find high-quality SSDs, RAM, processors, and accessories at unbeatable prices.',
+        'Shop the best laptop and computer parts at Pockit Web. Find high-quality SSDs, RAM, processors, and accessories at unbeatable prices.',
     });
     this.metaService.updateTag({
       name: 'keywords',
@@ -95,12 +95,12 @@ export class ShopHomeComponent {
     });
     this.metaService.updateTag({
       property: 'og:title',
-      content: 'Buy Laptop & Computer Parts Online - PockIT Web',
+      content: 'Buy Laptop & Computer Parts Online - Pockit Web',
     });
     this.metaService.updateTag({
       property: 'og:description',
       content:
-        'Find top-quality laptop parts, computer accessories, SSDs, RAM, and processors at the best prices only at PockIT Web.',
+        'Find top-quality laptop parts, computer accessories, SSDs, RAM, and processors at the best prices only at Pockit Web.',
     });
     this.metaService.updateTag({
       property: 'og:url',
@@ -108,12 +108,12 @@ export class ShopHomeComponent {
     });
     this.metaService.updateTag({
       name: 'twitter:title',
-      content: 'Buy Laptop & Computer Parts Online - PockIT Web',
+      content: 'Buy Laptop & Computer Parts Online - Pockit Web',
     });
     this.metaService.updateTag({
       name: 'twitter:description',
       content:
-        'Shop high-quality laptop and PC components at PockIT Web. Best prices on SSDs, RAM, motherboards, and accessories.',
+        'Shop high-quality laptop and PC components at Pockit Web. Best prices on SSDs, RAM, motherboards, and accessories.',
     });
     this.metaService.updateTag({
       name: 'twitter:card',

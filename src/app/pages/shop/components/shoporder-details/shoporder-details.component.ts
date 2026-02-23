@@ -17,11 +17,11 @@ export class ShoporderDetailsComponent {
     private metaService: Meta,
     private titleService: Title) { this.updateSEO() }
   updateSEO() {
-    this.titleService.setTitle('Order Details & Tracking - PockIT Web');
+    this.titleService.setTitle('Order Details & Tracking - Pockit Web');
     this.metaService.updateTag({
       name: 'description',
       content:
-        'Track your order details at PockIT Web. View order summary, estimated delivery time, and payment details for your purchased items.',
+        'Track your order details at Pockit Web. View order summary, estimated delivery time, and payment details for your purchased items.',
     });
     this.metaService.updateTag({
       name: 'keywords',
@@ -30,21 +30,21 @@ export class ShoporderDetailsComponent {
     });
     this.metaService.updateTag({
       property: 'og:title',
-      content: 'Order Details & Tracking - PockIT Web',
+      content: 'Order Details & Tracking - Pockit Web',
     });
     this.metaService.updateTag({
       property: 'og:description',
       content:
-        'Check your order status and delivery details at PockIT Web. Secure shopping and real-time order tracking for your purchases.',
+        'Check your order status and delivery details at Pockit Web. Secure shopping and real-time order tracking for your purchases.',
     });
     this.metaService.updateTag({
       name: 'twitter:title',
-      content: 'Order Details & Tracking - PockIT Web',
+      content: 'Order Details & Tracking - Pockit Web',
     });
     this.metaService.updateTag({
       name: 'twitter:description',
       content:
-        'Track your order details and check delivery status for your PockIT Web purchases.',
+        'Track your order details and check delivery status for your Pockit Web purchases.',
     });
     this.metaService.updateTag({
       name: 'twitter:card',

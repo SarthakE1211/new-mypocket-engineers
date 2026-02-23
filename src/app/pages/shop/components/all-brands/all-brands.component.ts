@@ -15,11 +15,11 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class AllBrandsComponent {
   updateSEO() {
-    this.titleService.setTitle('Top Laptop & Computer Brands - PockIT Web');
+    this.titleService.setTitle('Top Laptop & Computer Brands - Pockit Web');
     this.metaService.updateTag({
       name: 'description',
       content:
-        'Explore the best laptop and computer brands at PockIT Web. Find top-quality products from Dell, HP, Lenovo, ASUS, Acer, and more.',
+        'Explore the best laptop and computer brands at Pockit Web. Find top-quality products from Dell, HP, Lenovo, ASUS, Acer, and more.',
     });
     this.metaService.updateTag({
       name: 'keywords',
@@ -28,12 +28,12 @@ export class AllBrandsComponent {
     });
     this.metaService.updateTag({
       property: 'og:title',
-      content: 'Top Laptop & Computer Brands - PockIT Web',
+      content: 'Top Laptop & Computer Brands - Pockit Web',
     });
     this.metaService.updateTag({
       property: 'og:description',
       content:
-        'Find top-quality products from leading laptop and computer brands like Dell, HP, Lenovo, ASUS, Acer, and more at PockIT Web.',
+        'Find top-quality products from leading laptop and computer brands like Dell, HP, Lenovo, ASUS, Acer, and more at Pockit Web.',
     });
     this.metaService.updateTag({
       property: 'og:url',
@@ -41,7 +41,7 @@ export class AllBrandsComponent {
     });
     this.metaService.updateTag({
       name: 'twitter:title',
-      content: 'Top Laptop & Computer Brands - PockIT Web',
+      content: 'Top Laptop & Computer Brands - Pockit Web',
     });
     this.metaService.updateTag({
       name: 'twitter:description',

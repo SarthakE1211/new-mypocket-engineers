@@ -43,11 +43,11 @@ export class ServiceComponent {
   }
   customertype: any = this.apiservice.getCustomerType();
   updateSEO() {
-    this.titleService.setTitle('Services - PockIT Web');
+    this.titleService.setTitle('Services - Pockit Web');
     this.metaService.updateTag({
       name: 'description',
       content:
-        'PockIT Web provides IT network solutions, cybersecurity, cloud services, and high-quality laptop & computer parts. Secure and reliable IT solutions for businesses.',
+        'Pockit Web provides IT network solutions, cybersecurity, cloud services, and high-quality laptop & computer parts. Secure and reliable IT solutions for businesses.',
     });
     this.metaService.updateTag({
       name: 'keywords',
@@ -56,12 +56,12 @@ export class ServiceComponent {
     });
     this.metaService.updateTag({
       property: 'og:title',
-      content: 'IT Network Services & Computer Parts - PockIT Web',
+      content: 'IT Network Services & Computer Parts - Pockit Web',
     });
     this.metaService.updateTag({
       property: 'og:description',
       content:
-        'Get professional IT network services and shop high-quality computer parts at PockIT Web. Secure, fast, and reliable solutions.',
+        'Get professional IT network services and shop high-quality computer parts at Pockit Web. Secure, fast, and reliable solutions.',
     });
     this.metaService.updateTag({
       property: 'og:url',
@@ -69,12 +69,12 @@ export class ServiceComponent {
     });
     this.metaService.updateTag({
       name: 'twitter:title',
-      content: 'IT Network Services & Computer Parts - PockIT Web',
+      content: 'IT Network Services & Computer Parts - Pockit Web',
     });
     this.metaService.updateTag({
       name: 'twitter:description',
       content:
-        'Find expert IT network solutions and high-quality computer parts at PockIT Web. Secure & reliable solutions for businesses.',
+        'Find expert IT network solutions and high-quality computer parts at Pockit Web. Secure & reliable solutions for businesses.',
     });
     this.metaService.updateTag({
       name: 'twitter:card',

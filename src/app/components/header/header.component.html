@@ -1,11 +1,11 @@
 <header id="header" class="header d-flex align-items-center">
   <div class="header-root container-fluid d-flex align-items-center justify-content-between">
-    <div class="d-flex align-items-center">
+    <div class="d-flex align-items-center h-48">
       <a href="/" class="logo">
-        <img src="assets/img/PockIT_Logo.png" alt="PockIT Engineers Logo" />
+        <img src="assets/img/PockIT_Logo.png" alt="Pockit Engineers Logo" />
       </a>
       <div class="nav-links d-none-mobile nav-links-flex">
-        <a class="d-flex align-items-center ms-2 d-none d-md-block nav-link-pointer nav-link-text"
+        <!-- <a class="d-flex align-items-center ms-2 d-none d-md-block nav-link-pointer nav-link-text"
           routerLinkActive="active" [routerLink]="isShopDisabled ? null : '/shop/home'"
           (click)="handleNavClick('I', $event)" [class.disabled]="isShopDisabled">
           <svg width="22" height="22" viewBox="0 0 26 23" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -14,7 +14,7 @@
               stroke="#333333" stroke-width="1.5" stroke-linecap="round" />
           </svg>
           {{ "header.shop" | translate }}
-        </a>
+        </a> -->
         <a class="d-flex align-items-center ms-2 d-none d-md-block nav-link-pointer nav-link-text"
           routerLinkActive="active" [routerLink]="isServiceDisabled ? null : '/service'"
           (click)="handleNavClick('S', $event)" [class.disabled]="isServiceDisabled">
@@ -51,9 +51,16 @@
             <div class="search-header-dropdown" *ngIf="showOptionsList && filteredOptions?.length"
               (click)="$event.stopPropagation()">
               <div class="header-root" *ngFor="let option of filteredOptions">
-                <strong class="font-small-important">{{
+                <!-- <strong class="font-small-important">{{
                   option.CATEGORY == "ItemBrands" ? "Brands" : option.CATEGORY
-                  }}</strong>
+                  }}</strong> -->
+                <div>
+                  <div *ngIf="option.CATEGORY !== 'ItemBrands' && option.CATEGORY !== 'Items'">
+                    <strong class="font-small-important">{{
+                      option.CATEGORY
+                      }}</strong>
+                  </div>
+                </div>
                 <div *ngFor="let record2 of option['MATCHED_RECORDS']">
                   <div *ngIf="record2['CATEGORY'] == 'Category'" class="row search-header-option full-width"
                     (click)="selectOption(record2)">
@@ -112,7 +119,7 @@
                       <strong class="text-ellipsis-nowrap">{{ record2.TITLE }}</strong>
                     </div>
                   </div>
-                  <div *ngIf="record2['CATEGORY'] == 'ItemBrands'" class="row search-header-option full-width"
+                  <!-- <div *ngIf="record2['CATEGORY'] == 'ItemBrands'" class="row search-header-option full-width"
                     (click)="clickonbrand(record2)">
                     <div class="col-2">
                       <img height="100%" width="100%" [src]="
@@ -150,7 +157,7 @@
                       </p>
                       <strong class="text-ellipsis-nowrap">{{ record2.TITLE }}</strong>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -182,9 +189,14 @@
               <div class="search-header-dropdown" *ngIf="showOptionsList && filteredOptions?.length"
                 (click)="$event.stopPropagation()">
                 <div class="header-root" *ngFor="let option of filteredOptions">
-                  <strong class="font-small-important">{{
+                  <!-- <strong class="font-small-important">{{
                     option.CATEGORY == "ItemBrands" ? "Brands" : option.CATEGORY
-                    }}</strong>
+                    }}</strong> -->
+                  <div *ngIf="option.CATEGORY !== 'ItemBrands' && option.CATEGORY !== 'Items'">
+                    <strong class="font-small-important">{{
+                      option.CATEGORY
+                      }}</strong>
+                  </div>
                   <div *ngFor="let record2 of option['MATCHED_RECORDS']">
                     <div *ngIf="record2['CATEGORY'] == 'Category'" class="row search-header-option full-width"
                       (click)="selectOption(record2)">
@@ -243,7 +255,7 @@
                         <strong class="text-ellipsis-nowrap">{{ record2.TITLE }}</strong>
                       </div>
                     </div>
-                    <div *ngIf="record2['CATEGORY'] == 'ItemBrands'" class="row search-header-option full-width"
+                    <!-- <div *ngIf="record2['CATEGORY'] == 'ItemBrands'" class="row search-header-option full-width"
                       (click)="clickonbrand(record2)">
                       <div class="col-2">
                         <img height="100%" width="100%" [src]="
@@ -260,7 +272,7 @@
                       <div class="col-10">
                         <strong class="text-ellipsis-nowrap">{{ record2.TITLE }}</strong>
                       </div>
-                    </div>
+                    </div> 
                     <div *ngIf="record2['CATEGORY'] == 'Items'" class="row search-header-option full-width"
                       (click)="InventoryId(record2)">
                       <div class="col-2">
@@ -281,7 +293,7 @@
                         </p>
                         <strong class="text-ellipsis-nowrap">{{ record2.TITLE }}</strong>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
@@ -541,7 +553,7 @@
               <span (click)="openLanguage()"><i class="bi bi-chevron-right"></i></span>
             </a>
           </div>
-          <div class="bg-light-border-mt10-unique">
+          <!-- <div class="bg-light-border-mt10-unique">
             <a class="mobile-nav-item flex-between-center-cursor-unique"
               [routerLink]="isShopDisabled ? null : '/shop/home'" [class.disabled]="isShopDisabled"
               (click)="onShopClick1($event)">
@@ -555,7 +567,7 @@
               </div>
               <span><i class="bi bi-chevron-right"></i></span>
             </a>
-          </div>
+          </div> -->
           <div class="bg-light-border-mt10-unique">
             <a class="mobile-nav-item flex-between-center-cursor-unique"
               [routerLink]="isServiceDisabled ? null : '/service'" (click)="onNavClick($event)"
@@ -1189,7 +1201,7 @@
       </div>
       <div class="mobile-menu-content">
         <div>
-          <div class="order-tabs d-flex justify-content-center mb-2">
+          <!-- <div class="order-tabs d-flex justify-content-center mb-2">
             <button class="btn small-btn me-2" [class.active]="selectedTab === 'current'"
               (click)="switchTab('current')">
               {{ "menu.orders.serviceOrders" | translate }}
@@ -1197,7 +1209,7 @@
             <button class="btn small-btn" [class.active]="selectedTab === 'past'" (click)="switchTab('past')">
               {{ "menu.orders.shopOrders" | translate }}
             </button>
-          </div>
+          </div> -->
           <div *ngIf="loading" class="text-center my-4">
             <div class="spinner-border text-primary" role="status"></div>
           </div>
@@ -1616,8 +1628,8 @@
             (click)="filterNotifications('All')">All</button>
           <button class="btn btn-outline-primary btn-sm tab-btn" [class.active]="selectedType === 'O'"
             (click)="filterNotifications('O')">Order</button>
-          <button class="btn btn-outline-primary btn-sm tab-btn" [class.active]="selectedType === 'SH'"
-            (click)="filterNotifications('SH')">Shop</button>
+          <!-- <button class="btn btn-outline-primary btn-sm tab-btn" [class.active]="selectedType === 'SH'"
+            (click)="filterNotifications('SH')">Shop</button> -->
           <button class="btn btn-outline-primary btn-sm tab-btn" [class.active]="selectedType === 'IR'"
             (click)="filterNotifications('IR')">Inventory Requests</button>
           <button class="btn btn-outline-primary btn-sm tab-btn" [class.active]="selectedType === 'J'"
