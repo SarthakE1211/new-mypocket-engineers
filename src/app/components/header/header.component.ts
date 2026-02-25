@@ -25,6 +25,7 @@ import { LoaderService } from 'src/app/Service/loader.service';
 import { CartService } from 'src/app/Service/cart.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
+import { AddressUpdateServiceService } from 'src/app/Service/address-update.service.service';
 class User {
   ID?: number;
   MOBILE_NO?: string;
@@ -185,7 +186,8 @@ export class HeaderComponent {
     private cartService: CartService,
     private cdRef: ChangeDetectorRef,
     private sanitizer: DomSanitizer,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private addressUpdateService: AddressUpdateServiceService
   ) {
     translate.addLangs(['en', 'mr']);
     translate.setDefaultLang('en');
@@ -220,7 +222,6 @@ export class HeaderComponent {
       this.apiservice.getSessionAddress() ||
       '';
     this.router.events.subscribe(() => {
-      // this.isActive = this.router.url.includes('service') ? true : false;
       this.isActive = true;
     });
     this.userID = this.apiservice.getUserId();
@@ -690,7 +691,7 @@ export class HeaderComponent {
   selectAddress(addressId: any): void {
     this.selectedAddress = addressId;
   }
-  confirmAddress() {
+  confirmAddressold() {
     if (!this.selectedAddress) {
       alert('Please select an address before confirming.');
       return;
@@ -770,10 +771,169 @@ export class HeaderComponent {
       }
     );
   }
-  navigateToServicePage() {
+  confirmAddress() {
+    if (!this.selectedAddress) {
+      alert('Please select an address before confirming.');
+      return;
+    }
+    const updateDefaultData = {
+      CUSTOMER_ID: this.userID,
+      ID: this.selectedAddress,
+    };
+    const defaultaddress = this.addressData.filter(
+      (data: any) => data.ID == this.selectedAddress
+    );
+    this.apiservice.updateAddressDefault(updateDefaultData).subscribe(
+      (res) => {
+        if (res.code !== 200) {
+          this.message.error('Default address not updated.', '');
+          this.settingDefaultAddressId = null;
+          return;
+        }
+        this.message.success('Default address updated successfully.', '');
+        this.apiservice.getCartDetails(this.userID).subscribe(
+          (cartRes: any) => {
+            const cartDetails = cartRes.data?.CART_DETAILS;
+            const cartInfo = cartRes.data?.CART_INFO;
+            if (cartDetails?.length > 0 && cartInfo?.length > 0) {
+              const condition = ` AND CUSTOMER_ID=${this.userID} `;
+              this.apiservice
+                .getAddresses1data(0, 0, 'IS_DEFAULT', 'desc', condition)
+                .subscribe({
+                  next: (addressRes: any) => {
+                    this.addressData = addressRes.data;
+                    const defaultAddress = this.addressData.find(
+                      (addr: any) => addr.IS_DEFAULT === 1
+                    );
+                    localStorage.setItem(
+                      'pincodeFor',
+                      defaultAddress?.PINCODE_FOR
+                    );
+                    if (!defaultAddress) return;
+                    const updateCartData = {
+                      CART_ID: cartDetails[0].CART_ID,
+                      ADDRESS_ID: cartInfo[0].ADDRESS_ID,
+                      TYPE: cartInfo[0].TYPE,
+                      OLD_TERRITORY_ID: sessionStorage.getItem('CurrentTerritory'),
+                      NEW_TERRITORY_ID: defaultAddress.TERRITORY_ID,
+                      CUSTOMER_ID: cartInfo[0].CUSTOMER_ID,
+                    };
+                    this.apiservice
+                      .updateAddressToUpdateCart(updateCartData)
+                      .subscribe(
+                        (successCode: any) => {
+                          if (successCode.body.code === 200) {
+                            sessionStorage.setItem(
+                              'CurrentTerritory',
+                              defaultAddress.TERRITORY_ID.toString()
+                            );
+                            this.cartService.fetchAndUpdateCartDetails(this.userID);
+                            this.refreshHeaderData();
+                            this.getAddressList();
+                            this.showContent = 'addressTab';
+                            this.settingDefaultAddressId = null;
+                          }
+                        },
+                        (error) => { }
+                      );
+                  },
+                  error: (err) => { },
+                });
+            } else {
+              this.refreshHeaderData();
+              this.getAddressList();
+              this.showContent = 'addressTab';
+              this.settingDefaultAddressId = null;
+            }
+          },
+          (error) => { }
+        );
+      },
+      (error) => {
+        this.message.error('Failed to save information.', '');
+      }
+    );
+  }
+  navigateToServicePageold() {
     this.router.navigateByUrl('/service').then(() => {
       window.location.reload();
     });
+  }
+  navigateToServicePage() {
+    this.refreshHeaderData();
+    this.getAddressList();
+    this.showContent = 'addressTab';
+  }
+  refreshHeaderData() {
+    this.apiservice
+      .getAddresses12data(
+        0,
+        0,
+        'IS_DEFAULT',
+        'desc',
+        ' AND CUSTOMER_ID = ' + this.userID + ' AND IS_DEFAULT = 1',
+        localStorage.getItem('token') || ' '
+      )
+      .subscribe((data) => {
+        if (data['code'] === 200) {
+          if (data['data'].length > 0) {
+            const address = data['data'][0];
+            localStorage.setItem('AddressLine1', address['ADDRESS_LINE_1']);
+            localStorage.setItem('AddressLine2', address['ADDRESS_LINE_2']);
+            localStorage.setItem('addressCity', address['CITY_NAME']);
+            this.addressline1 = localStorage.getItem('AddressLine1');
+            this.addressline2 = localStorage.getItem('AddressLine2');
+            this.addressCity = localStorage.getItem('addressCity');
+            this.mainaddress = this.addressCity
+              ? this.addressCity
+              : this.addressline1;
+            const pincodeFor = address.PINCODE_FOR;
+            localStorage.setItem('pincodeFor', pincodeFor);
+            if (address.TERRITORY_ID) {
+              sessionStorage.setItem('CurrentTerritory', address.TERRITORY_ID.toString());
+            }
+            if (!this.addressline1) {
+              this.isShopDisabled = false;
+              this.isServiceDisabled = false;
+            } else {
+              this.isShopDisabled = !(pincodeFor == 'I' || pincodeFor == 'B');
+              this.isServiceDisabled = !(pincodeFor == 'S' || pincodeFor == 'B');
+            }
+            this.TERRITORY_IDssss = data.data.map(
+              (addressssss: any) => addressssss['TERRITORY_ID']
+            );
+            this.pincodeforrkey =
+              pincodeFor == 'B'
+                ? 'B'
+                : pincodeFor == 'I'
+                  ? 'SP'
+                  : pincodeFor == 'S'
+                    ? 'S'
+                    : 'B';
+            this.cartService.cartDetails$.subscribe((cartDetails) => {
+              const itemType = cartDetails[0]?.ITEM_TYPE;
+              if (!itemType) {
+                this.cartCount = 0;
+              } else if (
+                (pincodeFor === 'S' && itemType !== 'S' && itemType !== 'B') ||
+                (pincodeFor === 'I' && itemType !== 'P' && itemType !== 'B')
+              ) {
+                this.cartCount = 0;
+              }
+            });
+          }
+          this.cartService.fetchAndUpdateCartDetails(this.userID);
+          this.getuserList();
+          this.addressUpdateService.notifyAddressChanged();
+        }
+      });
+  }
+  settingDefaultAddressId: any = null;
+  setAsDefault(addressId: any) {
+    if (this.settingDefaultAddressId) return;
+    this.settingDefaultAddressId = addressId;
+    this.selectedAddress = addressId;
+    this.confirmAddress();
   }
   demochange(data: any) { }
   getuserList() {
@@ -1301,7 +1461,6 @@ export class HeaderComponent {
             .subscribe({
               next: (dataaaaa: any) => {
                 this.optionsList = dataaaaa.data;
-                // this.filteredOptions = this.optionsList;
                 this.filteredOptions = this.optionsList.filter(
                   (item: any) =>
                     item['CATEGORY'] == 'Category' ||
@@ -1348,7 +1507,6 @@ export class HeaderComponent {
                       item['CATEGORY'] == 'Service' ||
                       item['CATEGORY'] == 'SubCategory'
                   );
-                  // this.filteredOptions = this.optionsList;
                   this.filteredOptions = this.optionsList.filter(
                     (item: any) =>
                       item['CATEGORY'] == 'Category' ||
@@ -1356,16 +1514,6 @@ export class HeaderComponent {
                       item['CATEGORY'] == 'SubCategory'
                   );
                 }
-                // else if (this.pincodeforrkey == 'SP') {
-                //   this.optionsList = this.optionsList.filter(
-                //     (item: any) =>
-                //       item['CATEGORY'] == 'Items' ||
-                //       item['CATEGORY'] == 'ItemBrands'
-                //   );
-                //   this.filteredOptions = this.optionsList;
-                // } else {
-                //   this.filteredOptions = this.optionsList;
-                // }
                 this.searchloading = false;
               },
               error: (error: any) => {
@@ -1395,7 +1543,6 @@ export class HeaderComponent {
                       item['CATEGORY'] == 'Service' ||
                       item['CATEGORY'] == 'SubCategory'
                   );
-                  // this.filteredOptions = this.optionsList;
                   this.filteredOptions = this.optionsList.filter(
                     (item: any) =>
                       item['CATEGORY'] == 'Category' ||
@@ -1403,17 +1550,6 @@ export class HeaderComponent {
                       item['CATEGORY'] == 'SubCategory'
                   );
                 }
-                // else if (this.pincodeforrkey == 'SP') {
-                //   this.optionsList = this.optionsList.filter(
-                //     (item: any) =>
-                //       item['CATEGORY'] == 'Items' ||
-                //       item['CATEGORY'] == 'ItemBrands'
-                //   );
-                //   this.filteredOptions = this.optionsList;
-                // }
-                //  else {
-                //   this.filteredOptions = this.optionsList;
-                // }
                 this.searchloading = false;
               },
               error: (error: any) => {
@@ -1593,7 +1729,7 @@ export class HeaderComponent {
   isConfirmLoading: boolean = false;
   addressSubmitted: boolean = false;
   isAddrssSaving: boolean = false;
-  saveAddress(form: NgForm): void {
+  saveAddressold(form: NgForm): void {
     this.addressSubmitted = true;
     if (form.invalid) {
       return;
@@ -1630,6 +1766,7 @@ export class HeaderComponent {
               ''
             );
             this.showAddressDetailsForm = false;
+            this.getAddressList();
             if (successCode.body?.SUBSCRIBED_CHANNELS?.length > 0) {
               const channelNames = successCode.body.SUBSCRIBED_CHANNELS.map(
                 (channel: any) => channel.CHANNEL_NAME
@@ -1698,13 +1835,87 @@ export class HeaderComponent {
                                   this.cartService.fetchAndUpdateCartDetails(
                                     this.userID
                                   );
-                                  setTimeout(() => {
-                                    this.router
-                                      .navigate(['/service'])
-                                      .then(() => {
-                                        window.location.reload();
+                                  if (this.userID != 0 && this.userID != null && this.userID != undefined) {
+                                    this.cartService.cartCount$.subscribe((count) => {
+                                      this.cartCount = count;
+                                    });
+                                    this.cartService.fetchAndUpdateCartDetails(this.userID);
+                                    this.getuserList();
+                                    this.apiservice
+                                      .getAddresses12data(
+                                        0,
+                                        0,
+                                        'IS_DEFAULT',
+                                        'desc',
+                                        ' AND CUSTOMER_ID = ' + this.userID + ' AND IS_DEFAULT = 1',
+                                        localStorage.getItem('token') || ' '
+                                      )
+                                      .subscribe((data) => {
+                                        if (data['code'] === 200) {
+                                          if (data['data'].length > 0) {
+                                            const address = data['data'][0];
+                                            localStorage.setItem('AddressLine1', address['ADDRESS_LINE_1']);
+                                            localStorage.setItem('AddressLine2', address['ADDRESS_LINE_2']);
+                                            localStorage.setItem('addressCity', address['CITY_NAME']);
+                                            this.addressline1 = localStorage.getItem('AddressLine1');
+                                            this.addressline2 = localStorage.getItem('AddressLine2');
+                                            this.addressCity = localStorage.getItem('addressCity');
+                                            this.mainaddress = this.addressCity
+                                              ? this.addressCity
+                                              : this.addressline1;
+                                            var pincodeFor = address.PINCODE_FOR
+                                            localStorage.setItem('pincodeFor', pincodeFor);
+                                          }
+                                          if (!this.addressline1) {
+                                            this.isShopDisabled = false;
+                                            this.isServiceDisabled = false;
+                                          } else {
+                                            this.isShopDisabled = !(pincodeFor == 'I' || pincodeFor == 'B');
+                                            this.isServiceDisabled = !(pincodeFor == 'S' || pincodeFor == 'B');
+                                          }
+                                          this.TERRITORY_IDssss = data.data.map(
+                                            (addressssss: any) => addressssss['TERRITORY_ID']
+                                          );
+                                          this.pincodeforrkey =
+                                            pincodeFor == 'B'
+                                              ? 'B'
+                                              : pincodeFor == 'I'
+                                                ? 'SP'
+                                                : pincodeFor == 'S'
+                                                  ? 'S'
+                                                  : 'B';
+                                          this.cartService.cartDetails$.subscribe((cartDetails) => {
+                                            const itemType = cartDetails[0]?.ITEM_TYPE;
+                                            if (!itemType) {
+                                              this.cartCount = 0;
+                                            } else if (
+                                              (pincodeFor === 'S' && itemType !== 'S' && itemType !== 'B') ||
+                                              (pincodeFor === 'I' && itemType !== 'P' && itemType !== 'B')
+                                            ) {
+                                              this.cartCount = 0;
+                                            } else {
+                                            }
+                                          });
+                                          if (
+                                            window.location.href.split('/')[3] == 'privacy-policy' ||
+                                            window.location.href.split('/')[3] == 'terms-and-conditions' ||
+                                            window.location.href.split('/')[3] == 'contact-us'
+                                          ) {
+                                          } else {
+                                            setTimeout(() => {
+                                              let targetRoute = '/service';
+                                              if (pincodeFor === 'S') {
+                                              } else if (pincodeFor === 'I') {
+                                              } else if (pincodeFor === 'B') {
+                                              }
+                                              if (this.router.url !== targetRoute) {
+                                                this.router.navigate([targetRoute]);
+                                              }
+                                            }, 100);
+                                          }
+                                        }
                                       });
-                                  }, 200);
+                                  }
                                 } else if (successCode.body.code === 300) {
                                 }
                               },
@@ -1737,10 +1948,78 @@ export class HeaderComponent {
                       'CurrentTerritory',
                       this.addressForm?.TERRITORY_ID?.toString()
                     );
+                    if (this.userID != 0 && this.userID != null && this.userID != undefined) {
+                      this.cartService.cartCount$.subscribe((count) => {
+                        this.cartCount = count;
+                      });
+                      this.cartService.fetchAndUpdateCartDetails(this.userID);
+                      this.getuserList();
+                      this.apiservice
+                        .getAddresses12data(
+                          0,
+                          0,
+                          'IS_DEFAULT',
+                          'desc',
+                          ' AND CUSTOMER_ID = ' + this.userID + ' AND IS_DEFAULT = 1',
+                          localStorage.getItem('token') || ' '
+                        )
+                        .subscribe((data) => {
+                          if (data['code'] === 200) {
+                            if (data['data'].length > 0) {
+                              const address = data['data'][0];
+                              localStorage.setItem('AddressLine1', address['ADDRESS_LINE_1']);
+                              localStorage.setItem('AddressLine2', address['ADDRESS_LINE_2']);
+                              localStorage.setItem('addressCity', address['CITY_NAME']);
+                              this.addressline1 = localStorage.getItem('AddressLine1');
+                              this.addressline2 = localStorage.getItem('AddressLine2');
+                              this.addressCity = localStorage.getItem('addressCity');
+                              this.mainaddress = this.addressCity
+                                ? this.addressCity
+                                : this.addressline1;
+                              var pincodeFor = address.PINCODE_FOR
+                              localStorage.setItem('pincodeFor', pincodeFor);
+                            }
+                            if (!this.addressline1) {
+                              this.isShopDisabled = false;
+                              this.isServiceDisabled = false;
+                            } else {
+                              this.isShopDisabled = !(pincodeFor == 'I' || pincodeFor == 'B');
+                              this.isServiceDisabled = !(pincodeFor == 'S' || pincodeFor == 'B');
+                            }
+                            this.TERRITORY_IDssss = data.data.map(
+                              (addressssss: any) => addressssss['TERRITORY_ID']
+                            );
+                            this.pincodeforrkey =
+                              pincodeFor == 'B'
+                                ? 'B'
+                                : pincodeFor == 'I'
+                                  ? 'SP'
+                                  : pincodeFor == 'S'
+                                    ? 'S'
+                                    : 'B';
+                            this.cartService.cartDetails$.subscribe((cartDetails) => {
+                              const itemType = cartDetails[0]?.ITEM_TYPE;
+                              if (!itemType) {
+                                this.cartCount = 0;
+                              } else if (
+                                (pincodeFor === 'S' && itemType !== 'S' && itemType !== 'B') ||
+                                (pincodeFor === 'I' && itemType !== 'P' && itemType !== 'B')
+                              ) {
+                                this.cartCount = 0;
+                              } else {
+                              }
+                            });
+                            if (
+                              window.location.href.split('/')[3] == 'privacy-policy' ||
+                              window.location.href.split('/')[3] == 'terms-and-conditions' ||
+                              window.location.href.split('/')[3] == 'contact-us'
+                            ) {
+                            } else {
+                            }
+                          }
+                        });
+                    }
                     this.showContent = 'addressTab';
-                    this.router.navigate(['/service']).then(() => {
-                      window.location.reload();
-                    });
                   }
                 },
                 (error) => { }
@@ -1872,13 +2151,77 @@ export class HeaderComponent {
                                   this.cartService.fetchAndUpdateCartDetails(
                                     this.userID
                                   );
-                                  setTimeout(() => {
-                                    this.router
-                                      .navigate(['/service'])
-                                      .then(() => {
-                                        window.location.reload();
+                                  if (this.userID != 0 && this.userID != null && this.userID != undefined) {
+                                    this.cartService.cartCount$.subscribe((count) => {
+                                      this.cartCount = count;
+                                    });
+                                    this.cartService.fetchAndUpdateCartDetails(this.userID);
+                                    this.getuserList();
+                                    this.apiservice
+                                      .getAddresses12data(
+                                        0,
+                                        0,
+                                        'IS_DEFAULT',
+                                        'desc',
+                                        ' AND CUSTOMER_ID = ' + this.userID + ' AND IS_DEFAULT = 1',
+                                        localStorage.getItem('token') || ' '
+                                      )
+                                      .subscribe((data) => {
+                                        if (data['code'] === 200) {
+                                          if (data['data'].length > 0) {
+                                            const address = data['data'][0];
+                                            localStorage.setItem('AddressLine1', address['ADDRESS_LINE_1']);
+                                            localStorage.setItem('AddressLine2', address['ADDRESS_LINE_2']);
+                                            localStorage.setItem('addressCity', address['CITY_NAME']);
+                                            this.addressline1 = localStorage.getItem('AddressLine1');
+                                            this.addressline2 = localStorage.getItem('AddressLine2');
+                                            this.addressCity = localStorage.getItem('addressCity');
+                                            this.mainaddress = this.addressCity
+                                              ? this.addressCity
+                                              : this.addressline1;
+                                            var pincodeFor = address.PINCODE_FOR
+                                            localStorage.setItem('pincodeFor', pincodeFor);
+                                          }
+                                          if (!this.addressline1) {
+                                            this.isShopDisabled = false;
+                                            this.isServiceDisabled = false;
+                                          } else {
+                                            this.isShopDisabled = !(pincodeFor == 'I' || pincodeFor == 'B');
+                                            this.isServiceDisabled = !(pincodeFor == 'S' || pincodeFor == 'B');
+                                          }
+                                          this.TERRITORY_IDssss = data.data.map(
+                                            (addressssss: any) => addressssss['TERRITORY_ID']
+                                          );
+                                          this.pincodeforrkey =
+                                            pincodeFor == 'B'
+                                              ? 'B'
+                                              : pincodeFor == 'I'
+                                                ? 'SP'
+                                                : pincodeFor == 'S'
+                                                  ? 'S'
+                                                  : 'B';
+                                          this.cartService.cartDetails$.subscribe((cartDetails) => {
+                                            const itemType = cartDetails[0]?.ITEM_TYPE;
+                                            if (!itemType) {
+                                              this.cartCount = 0;
+                                            } else if (
+                                              (pincodeFor === 'S' && itemType !== 'S' && itemType !== 'B') ||
+                                              (pincodeFor === 'I' && itemType !== 'P' && itemType !== 'B')
+                                            ) {
+                                              this.cartCount = 0;
+                                            } else {
+                                            }
+                                          });
+                                          if (
+                                            window.location.href.split('/')[3] == 'privacy-policy' ||
+                                            window.location.href.split('/')[3] == 'terms-and-conditions' ||
+                                            window.location.href.split('/')[3] == 'contact-us'
+                                          ) {
+                                          } else {
+                                          }
+                                        }
                                       });
-                                  }, 200);
+                                  }
                                 } else if (successCode.body.code === 300) {
                                 }
                               },
@@ -1913,9 +2256,77 @@ export class HeaderComponent {
                       this.addressForm?.TERRITORY_ID?.toString()
                     );
                     this.showContent = 'addressTab';
-                    this.router.navigate(['/service']).then(() => {
-                      window.location.reload();
-                    });
+                    if (this.userID != 0 && this.userID != null && this.userID != undefined) {
+                      this.cartService.cartCount$.subscribe((count) => {
+                        this.cartCount = count;
+                      });
+                      this.cartService.fetchAndUpdateCartDetails(this.userID);
+                      this.getuserList();
+                      this.apiservice
+                        .getAddresses12data(
+                          0,
+                          0,
+                          'IS_DEFAULT',
+                          'desc',
+                          ' AND CUSTOMER_ID = ' + this.userID + ' AND IS_DEFAULT = 1',
+                          localStorage.getItem('token') || ' '
+                        )
+                        .subscribe((data) => {
+                          if (data['code'] === 200) {
+                            if (data['data'].length > 0) {
+                              const address = data['data'][0];
+                              localStorage.setItem('AddressLine1', address['ADDRESS_LINE_1']);
+                              localStorage.setItem('AddressLine2', address['ADDRESS_LINE_2']);
+                              localStorage.setItem('addressCity', address['CITY_NAME']);
+                              this.addressline1 = localStorage.getItem('AddressLine1');
+                              this.addressline2 = localStorage.getItem('AddressLine2');
+                              this.addressCity = localStorage.getItem('addressCity');
+                              this.mainaddress = this.addressCity
+                                ? this.addressCity
+                                : this.addressline1;
+                              var pincodeFor = address.PINCODE_FOR
+                              localStorage.setItem('pincodeFor', pincodeFor);
+                            }
+                            if (!this.addressline1) {
+                              this.isShopDisabled = false;
+                              this.isServiceDisabled = false;
+                            } else {
+                              this.isShopDisabled = !(pincodeFor == 'I' || pincodeFor == 'B');
+                              this.isServiceDisabled = !(pincodeFor == 'S' || pincodeFor == 'B');
+                            }
+                            this.TERRITORY_IDssss = data.data.map(
+                              (addressssss: any) => addressssss['TERRITORY_ID']
+                            );
+                            this.pincodeforrkey =
+                              pincodeFor == 'B'
+                                ? 'B'
+                                : pincodeFor == 'I'
+                                  ? 'SP'
+                                  : pincodeFor == 'S'
+                                    ? 'S'
+                                    : 'B';
+                            this.cartService.cartDetails$.subscribe((cartDetails) => {
+                              const itemType = cartDetails[0]?.ITEM_TYPE;
+                              if (!itemType) {
+                                this.cartCount = 0;
+                              } else if (
+                                (pincodeFor === 'S' && itemType !== 'S' && itemType !== 'B') ||
+                                (pincodeFor === 'I' && itemType !== 'P' && itemType !== 'B')
+                              ) {
+                                this.cartCount = 0;
+                              } else {
+                              }
+                            });
+                            if (
+                              window.location.href.split('/')[3] == 'privacy-policy' ||
+                              window.location.href.split('/')[3] == 'terms-and-conditions' ||
+                              window.location.href.split('/')[3] == 'contact-us'
+                            ) {
+                            } else {
+                            }
+                          }
+                        });
+                    }
                   }
                 },
                 (error) => { }
@@ -1946,6 +2357,277 @@ export class HeaderComponent {
               'An unknown error occurred. Please try again later.',
               ''
             );
+          }
+        }
+      );
+    }
+  }
+  saveAddress(form: NgForm): void {
+    this.addressSubmitted = true;
+    if (form.invalid) {
+      return;
+    }
+    if (this.latitude && this.longitude) {
+      this.addressForm.GEO_LOCATION = `${this.latitude},${this.longitude}`;
+    }
+    this.isConfirmLoading = true;
+    this.addressForm.CUSTOMER_TYPE = 1;
+    this.addressForm.CUSTOMER_ID = this.userID;
+    this.addressForm.MOBILE_NO = this.userMobile;
+    this.addressForm.ADDRESS_LINE_1 = this.addressForm.ADDRESS_LINE_1;
+    this.addressForm.CUSTOMER_TYPE = 1;
+    this.addressForm.CONTACT_PERSON_NAME = this.userNAME;
+    this.addressForm.STATUS = true;
+    if (this.addressForm.TYPE == 'Home') {
+      this.addressForm.TYPE = 'H';
+    } else if (this.addressForm.TYPE == 'Work') {
+      this.addressForm.TYPE = 'F';
+    } else if (this.addressForm.TYPE == 'Other') {
+      this.addressForm.TYPE = 'O';
+    }
+    if (this.addressForm.ID) {
+      this.isConfirmLoading = true;
+      this.addressForm.TERRITORY_ID = this.addressForm.TERRITORY_ID
+        ? this.addressForm.TERRITORY_ID
+        : 0;
+      this.apiservice.updateCustomerAddress(this.addressForm).subscribe(
+        (successCode: any) => {
+          if (successCode.body.code === 200) {
+            this.isConfirmLoading = false;
+            this.toastr.success('Address has been updated successfully', '');
+            this.showAddressDetailsForm = false;
+            this.getAddressList();
+            if (successCode.body?.SUBSCRIBED_CHANNELS?.length > 0) {
+              const channelNames = successCode.body.SUBSCRIBED_CHANNELS.map(
+                (channel: any) => channel.CHANNEL_NAME
+              );
+              this.apiservice.subscribeToMultipleTopics(channelNames).subscribe(
+                (successCode: any) => { },
+                (error) => {
+                  if (error.status === 500) {
+                    this.toastr.error('An unexpected error occurred. Please try again later.', '');
+                  } else {
+                    this.isConfirmLoading = false;
+                    this.toastr.error('An unknown error occurred. Please try again later.', '');
+                  }
+                }
+              );
+            }
+            if (this.addressForm.IS_DEFAULT) {
+              this.apiservice.getCartDetails(this.userID).subscribe(
+                (cartRes: any) => {
+                  if (cartRes.data?.CART_DETAILS.length > 0) {
+                    this.apiservice
+                      .getAddresses1data(0, 0, 'IS_DEFAULT', 'desc',
+                        ' AND CUSTOMER_ID=' + this.userID + ' AND STATUS = 1')
+                      .subscribe({
+                        next: (data1: any) => {
+                          this.addressData = data1.data;
+                          const defaultAddress = this.addressData.find(
+                            (addr: any) => addr.IS_DEFAULT === 1
+                          );
+                          localStorage.setItem('pincodeFor', defaultAddress?.PINCODE_FOR);
+                          const cartUpdateData = {
+                            CART_ID: cartRes.data?.CART_DETAILS[0].CART_ID,
+                            ADDRESS_ID: cartRes.data?.CART_INFO[0].ADDRESS_ID,
+                            TYPE: cartRes.data?.CART_INFO[0].TYPE,
+                            OLD_TERRITORY_ID: sessionStorage.getItem('CurrentTerritory'),
+                            NEW_TERRITORY_ID: defaultAddress?.TERRITORY_ID
+                              ? defaultAddress?.TERRITORY_ID : 0,
+                            CUSTOMER_ID: cartRes.data?.CART_INFO[0].CUSTOMER_ID,
+                          };
+                          this.apiservice.updateAddressToUpdateCart(cartUpdateData).subscribe(
+                            (successCode: any) => {
+                              if (successCode.body.code === 200) {
+                                sessionStorage.setItem(
+                                  'CurrentTerritory',
+                                  defaultAddress?.TERRITORY_ID?.toString()
+                                );
+                                this.cartService.fetchAndUpdateCartDetails(this.userID);
+                                this.refreshHeaderData();
+                                this.getAddressList();
+                                this.showContent = 'addressTab';
+                              }
+                            },
+                            (error) => {
+                              this.isConfirmLoading = false;
+                              if (error.status === 500) {
+                                this.toastr.error('An unexpected error occurred. Please try again later.', '');
+                              } else {
+                                this.isConfirmLoading = false;
+                                this.toastr.error('An unknown error occurred. Please try again later.', '');
+                              }
+                            }
+                          );
+                          this.loadAddresses = false;
+                        },
+                        error: (err) => {
+                          this.loadAddresses = false;
+                        },
+                      });
+                  } else {
+                    sessionStorage.setItem(
+                      'CurrentTerritory',
+                      this.addressForm?.TERRITORY_ID?.toString()
+                    );
+                    this.cartService.fetchAndUpdateCartDetails(this.userID);
+                    this.refreshHeaderData();
+                    this.getAddressList();
+                    this.showContent = 'addressTab';
+                  }
+                },
+                (error) => { }
+              );
+            } else {
+              this.showContent = 'addressTab';
+            }
+            this.addressForm = {
+              CUSTOMER_ID: 0,
+              TERRITORY_ID: 0,
+              IS_MAPPED_TO_TERRITORY: false,
+              CUSTOMER_TYPE: 1,
+              CONTACT_PERSON_NAME: '',
+              MOBILE_NO: '',
+              EMAIL_ID: '',
+              ADDRESS_LINE_1: '',
+              ADDRESS_LINE_2: '',
+              COUNTRY_ID: 0,
+              STATE_ID: 0,
+              LANDMARK: '',
+              CITY_ID: 0,
+              CITY_NAME: '',
+              PINCODE_ID: 0,
+              ID: 0,
+              PINCODE: '',
+              DISTRICT_ID: 0,
+              GEO_LOCATION: '',
+              TYPE: 'H',
+              IS_DEFAULT: false,
+              CLIENT_ID: 0,
+              STATUS: true,
+              PINCODE_FOR: '',
+            };
+          } else if (successCode.body.code === 300) {
+            this.isConfirmLoading = false;
+          }
+          this.isConfirmLoading = false;
+        },
+        (error) => {
+          this.isConfirmLoading = false;
+          if (error.status === 500) {
+            this.toastr.error('An unexpected error occurred. Please try again later.', '');
+          } else {
+            this.isConfirmLoading = false;
+            this.toastr.error('An unknown error occurred. Please try again later.', '');
+          }
+        }
+      );
+    } else {
+      this.isConfirmLoading = true;
+      this.apiservice.RegistrationCustomerAddress(this.addressForm).subscribe(
+        (successCode: any) => {
+          if (successCode.body.code === 200) {
+            this.isConfirmLoading = false;
+            this.toastr.success('Address has been saved successfully.', '');
+            this.showAddressDetailsForm = false;
+            if (successCode.body?.SUBSCRIBED_CHANNELS?.length > 0) {
+              const channelNames = successCode.body.SUBSCRIBED_CHANNELS.map(
+                (channel: any) => channel.CHANNEL_NAME
+              );
+              this.apiservice.subscribeToMultipleTopics(channelNames).subscribe(
+                (successCode: any) => { },
+                (error) => {
+                  if (error.status === 500) {
+                    this.toastr.error('An unexpected error occurred. Please try again later.', '');
+                  } else {
+                    this.isConfirmLoading = false;
+                    this.toastr.error('An unknown error occurred. Please try again later.', '');
+                  }
+                }
+              );
+            }
+            if (this.addressForm.IS_DEFAULT) {
+              this.apiservice.getCartDetails(this.userID).subscribe(
+                (cartRes: any) => {
+                  if (cartRes.data?.CART_DETAILS.length > 0) {
+                    this.apiservice
+                      .getAddresses1data(0, 0, 'IS_DEFAULT', 'desc',
+                        ' AND CUSTOMER_ID=' + this.userID + ' AND STATUS = 1')
+                      .subscribe({
+                        next: (data1: any) => {
+                          this.addressData = data1.data;
+                          const defaultAddress = this.addressData.find(
+                            (addr: any) => addr.IS_DEFAULT === 1
+                          );
+                          const cartUpdateData = {
+                            CART_ID: cartRes.data?.CART_DETAILS[0].CART_ID
+                              ? cartRes.data?.CART_DETAILS[0].CART_ID : 0,
+                            ADDRESS_ID: cartRes.data?.CART_INFO[0].ADDRESS_ID,
+                            TYPE: cartRes.data?.CART_INFO[0].TYPE,
+                            OLD_TERRITORY_ID: sessionStorage.getItem('CurrentTerritory'),
+                            NEW_TERRITORY_ID: defaultAddress?.TERRITORY_ID
+                              ? defaultAddress?.TERRITORY_ID : 0,
+                            CUSTOMER_ID: cartRes.data?.CART_INFO[0].CUSTOMER_ID,
+                          };
+                          this.apiservice.updateAddressToUpdateCart(cartUpdateData).subscribe(
+                            (successCode: any) => {
+                              if (successCode.body.code === 200) {
+                                sessionStorage.setItem(
+                                  'CurrentTerritory',
+                                  defaultAddress?.TERRITORY_ID?.toString()
+                                );
+                                this.cartService.fetchAndUpdateCartDetails(this.userID);
+                                this.refreshHeaderData();
+                                this.getAddressList();
+                                this.showContent = 'addressTab';
+                              }
+                            },
+                            (error) => {
+                              this.isConfirmLoading = false;
+                              if (error.status === 500) {
+                                this.toastr.error('An unexpected error occurred. Please try again later.', '');
+                              } else {
+                                this.isConfirmLoading = false;
+                                this.toastr.error('An unknown error occurred. Please try again later.', '');
+                              }
+                            }
+                          );
+                          this.loadAddresses = false;
+                        },
+                        error: (err) => {
+                          this.loadAddresses = false;
+                        },
+                      });
+                  } else {
+                    sessionStorage.setItem(
+                      'CurrentTerritory',
+                      this.addressForm?.TERRITORY_ID?.toString()
+                    );
+                    this.cartService.fetchAndUpdateCartDetails(this.userID);
+                    this.refreshHeaderData();
+                    this.getAddressList();
+                    this.showContent = 'addressTab';
+                  }
+                },
+                (error) => { }
+              );
+            } else {
+              this.showContent = 'addressTab';
+            }
+            this.getAddressList();
+          } else if (successCode.body.code === 300) {
+            this.isConfirmLoading = false;
+          }
+          this.isConfirmLoading = false;
+        },
+        (error) => {
+          this.isConfirmLoading = false;
+          if (error.status === 500) {
+            this.isConfirmLoading = false;
+            this.toastr.error('An unexpected error occurred. Please try again later.', '');
+          } else {
+            this.isConfirmLoading = false;
+            this.toastr.error('An unknown error occurred. Please try again later.', '');
           }
         }
       );

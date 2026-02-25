@@ -517,7 +517,7 @@
             </div>
           </div>
         </div>
-        <p class="text-muted-center-12-unique">Version 2.2.3</p>
+        <p class="text-muted-center-12-unique">Version 2.3.1</p>
         <div class="mobile-action-buttons mobile-profile-section mt-5px-unique">
           <div *ngIf="userID" class="bg-light-border-unique">
             <a class="mobile-nav-item flex-space-between-cursor-unique" (click)="openAddress()">
@@ -891,6 +891,21 @@
             </div>
             <div class="default-badge" *ngIf="address.IS_DEFAULT">
               {{ "menu.addressBook.labels.defaultAddress" | translate }}
+            </div>
+            <div *ngIf="!address.IS_DEFAULT && customertype1 == 'I'" class="mt-1">
+              <span [class.text-primary]="settingDefaultAddressId !== address.ID"
+                [class.text-muted]="settingDefaultAddressId === address.ID" class="default-add-text"
+                [style.cursor]="settingDefaultAddressId ? 'not-allowed' : 'pointer'"
+                [style.pointer-events]="settingDefaultAddressId ? 'none' : 'auto'"
+                (click)="setAsDefault(address.ID); $event.stopPropagation()">
+                <span *ngIf="settingDefaultAddressId === address.ID">
+                  <span class="spinner-border spinner-border-sm me-1 spinneer-setting"></span>
+                  setting...
+                </span>
+                <span *ngIf="settingDefaultAddressId !== address.ID">
+                  Set as Default
+                </span>
+              </span>
             </div>
           </div>
           <div *ngIf="customertype1 == 'I'; else otherCode2" class="add-address font-15px-unique"

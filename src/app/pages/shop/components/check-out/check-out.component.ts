@@ -28,7 +28,7 @@ export class CheckOutComponent {
     this.customerAddress();
   }
   handleImageError(event: any) {
-    event.target.src = 'assets/img/services/no-image.png'; 
+    event.target.src = 'assets/img/services/no-image.png';
   }
   serviceId: any | null = null;
   accordionState: { [key: string]: boolean } = {};
@@ -42,7 +42,7 @@ export class CheckOutComponent {
     window.addEventListener('resize', this.setMaxCharLength);
     this.serviceId = this.route.snapshot.paramMap.get('sid');
     this.status = this.route.snapshot.paramMap.get('status');
-    this.details(this.serviceId, this.status); 
+    this.details(this.serviceId, this.status);
     const unitId = sessionStorage.getItem("unit_id");
     const unitName = sessionStorage.getItem("unit_name");
     const quantityPerUnit = sessionStorage.getItem("quantity_per_unit");
@@ -257,7 +257,7 @@ export class CheckOutComponent {
       .subscribe(
         (response) => {
           if (response?.code === 200) {
-            this.coupons = response.data || []; 
+            this.coupons = response.data || [];
             this.couponcount = this.coupons.length;
           } else {
             this.couponcount = 0;
@@ -425,25 +425,27 @@ export class CheckOutComponent {
       }
     );
   }
-  selectedPaymentMethod: string = 'ONLINE'; 
-  RAZOR_PAY_KEY = 'rzp_test_SO1E5ovbNuNP0B'; 
+  selectedPaymentMethod: string = 'ONLINE';
+  RAZOR_PAY_KEY = 'rzp_test_SJw4Sq4w5kXdZn';
+  // RAZOR_PAY_KEY = 'rzp_live_UOLu84DuvGULjK'; // Razorpay API Key live
+
   user: any;
   getFinalAmount(): number {
     const cartInfo = this.CartInfo;
     if (!cartInfo || cartInfo.length === 0) {
-      return 0; 
+      return 0;
     }
-    const cart = cartInfo[0]; 
+    const cart = cartInfo[0];
     const totalTaxableAmount = parseFloat(cart.TOTAL_TAXABLE_AMOUNT) || 0;
     const expectedDeliveryCharges = parseFloat(cart.EXPECTED_DELIVERY_CHARGES) || 0;
     const discountAmount = parseFloat(cart.COUPON_AMOUNT) || 0;
-    const totalAmount = totalTaxableAmount + expectedDeliveryCharges - discountAmount + parseFloat(cart.TAX_AMOUNT) ;
+    const totalAmount = totalTaxableAmount + expectedDeliveryCharges - discountAmount + parseFloat(cart.TAX_AMOUNT);
     return totalAmount;
   }
   isLoading: boolean = false;
   proceedToPay() {
     const USERID = this.apiservice.getUserId();
-    this.isLoading = true; 
+    this.isLoading = true;
     const cartInfo = this.CartInfo[0];
     if (!cartInfo || !this.user) {
       this.message.error('Cart or user details are missing. Please try again.');
@@ -463,14 +465,14 @@ export class CheckOutComponent {
         TYPE: 'P',
       };
       this.apiservice.CreateshopOrder(payload).subscribe((response: any) => {
-        this.isLoading = false; 
+        this.isLoading = false;
         if (response?.code === 200) {
           this.message.success('Order placed successfully.', '');
           this.cartService.fetchAndUpdateCartDetails(this.customer_id);
           setTimeout(() => {
             this.router.navigate(['/shop/home']);
           }, 2000);
-          this.cartService.fetchAndUpdateCartDetails(USERID); 
+          this.cartService.fetchAndUpdateCartDetails(USERID);
         } else {
           this.message.error('Failed to place order. Please try again.', '');
         }
@@ -516,7 +518,7 @@ export class CheckOutComponent {
                 CLIENT_ID: 1,
               };
               this.apiservice.addPaymentTransactionsshop(body).subscribe((response: any) => {
-                this.isLoading = false; 
+                this.isLoading = false;
                 if (response?.code === 200) {
                   const payload = {
                     CART_ID: cartId,
@@ -529,13 +531,13 @@ export class CheckOutComponent {
                     TYPE: 'P',
                   };
                   this.apiservice.CreateshopOrder(payload).subscribe((response: any) => {
-                    this.isLoading = false; 
+                    this.isLoading = false;
                     if (response?.code === 200) {
                       this.cartService.fetchAndUpdateCartDetails(this.customer_id);
                       setTimeout(() => {
                         this.router.navigate(['/shop/home']);
                       }, 2000);
-                      this.cartService.fetchAndUpdateCartDetails(USERID); 
+                      this.cartService.fetchAndUpdateCartDetails(USERID);
                     } else {
                       this.message.error('Failed to place order. Please try again.', '');
                     }
@@ -548,7 +550,7 @@ export class CheckOutComponent {
                   setTimeout(() => {
                     this.router.navigate(['/shop/home']);
                   }, 2000);
-                  this.cartService.fetchAndUpdateCartDetails(USERID); 
+                  this.cartService.fetchAndUpdateCartDetails(USERID);
                 } else {
                   this.message.error('Payment successful, but order processing failed. Please contact support.', '');
                 }
@@ -568,9 +570,9 @@ export class CheckOutComponent {
           };
           const razorpay = new Razorpay(options);
           razorpay.open();
-          this.isLoading = false; 
+          this.isLoading = false;
           razorpay.on('payment.failed', () => {
-            this.isLoading = false; 
+            this.isLoading = false;
           });
         } else {
           this.isLoading = false;

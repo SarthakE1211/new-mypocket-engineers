@@ -119,7 +119,7 @@ export class ServiceOrderPageComponent {
     if (rawValue && !isNaN(Number(rawValue))) {
       this.currentterritory = Number(rawValue);
     } else {
-      this.currentterritory = 0; 
+      this.currentterritory = 0;
     }
     this.orderDetailsVisible = { paymentSummary: true };
     this.IMAGEuRL = this.apiservice.retriveimgUrl2();
@@ -132,11 +132,11 @@ export class ServiceOrderPageComponent {
     }
     setTimeout(() => {
       if (document.documentElement.scrollHeight <= window.innerHeight) {
-        document.body.style.overflowY = 'auto'; 
+        document.body.style.overflowY = 'auto';
       } else {
-        document.body.style.overflowY = ''; 
+        document.body.style.overflowY = '';
       }
-    }, 300); 
+    }, 300);
     sessionStorage.setItem('chatopen', 'false');
   }
   setMaxCharLengthBasedOnScreen(): void {
@@ -187,7 +187,7 @@ export class ServiceOrderPageComponent {
       const rescheduleDrawer = new bootstrap.Offcanvas('#rescheduleDrawer');
       rescheduleDrawer.show();
     } else if (type === 'cancel') {
-      this.reasonsisLoading = true; 
+      this.reasonsisLoading = true;
       this.apiservice
         .getCancellationReason(
           0,
@@ -205,10 +205,10 @@ export class ServiceOrderPageComponent {
                 selected: false,
               }));
             }
-            this.reasonsisLoading = false; 
+            this.reasonsisLoading = false;
           },
           error: (err) => {
-            this.reasonsisLoading = false; 
+            this.reasonsisLoading = false;
           },
         });
       const cancelDrawer = new bootstrap.Offcanvas('#cancelDrawer');
@@ -225,7 +225,7 @@ export class ServiceOrderPageComponent {
       '#confirmCancelModal'
     );
     confirmModal.hide();
-    this.loading = true; 
+    this.loading = true;
     const selectedReasons = this.cancelReasons
       .filter((r: any) => r.selected)
       .map((r: any) => r.label);
@@ -320,8 +320,8 @@ export class ServiceOrderPageComponent {
   }
   getCombinedDateTime(job: any): string {
     if (job.SCHEDULED_DATE_TIME && job.JOB_START_TIME) {
-      const datePart = job.SCHEDULED_DATE_TIME.split(' ')[0]; 
-      const timePart = job.JOB_START_TIME; 
+      const datePart = job.SCHEDULED_DATE_TIME.split(' ')[0];
+      const timePart = job.JOB_START_TIME;
       const combined = `${datePart}T${timePart}Z`;
       return new Date(combined).toLocaleString('en-US', { timeZone: 'UTC' });
     } else {
@@ -367,7 +367,7 @@ export class ServiceOrderPageComponent {
       .subscribe({
         next: (data) => {
           if (data?.code === 200 && Array.isArray(data?.data)) {
-            this.orderData = data?.data; 
+            this.orderData = data?.data;
             this.orderid = this.orderData[0]['ID'];
           } else {
           }
@@ -415,16 +415,16 @@ export class ServiceOrderPageComponent {
         },
       });
   }
-  isLoading: boolean = false; 
+  isLoading: boolean = false;
   latitude: any;
   longitude: any;
   showToast() {
-    this.message.error('Order is rejected', ''); 
+    this.message.error('Order is rejected', '');
   }
   ordernumber = "";
   jobcardnumber = "";
   fetchOrderDetails(serviceId: string) {
-    this.isLoading = true; 
+    this.isLoading = true;
     this.apiservice.getOrderDetails(this.userID, serviceId).subscribe({
       next: (data) => {
         if (data?.code === 200) {
@@ -437,10 +437,10 @@ export class ServiceOrderPageComponent {
           this.latitude = data.data[0]['LATITUDE'];
           this.longitude = data.data[0]['LONGITUDE'];
         }
-        this.isLoading = false; 
+        this.isLoading = false;
       },
       error: (error) => {
-        this.isLoading = false; 
+        this.isLoading = false;
       },
     });
   }
@@ -484,7 +484,7 @@ export class ServiceOrderPageComponent {
   }
   isDownloading: boolean = false;
   onDownloadInvoice() {
-    this.isDownloading = true; 
+    this.isDownloading = true;
     this.setDownloadProgress({
       show: true,
       progress: 0,
@@ -512,14 +512,14 @@ export class ServiceOrderPageComponent {
     });
   }
   openInvoice(url: string) {
-    window.open(url, '_blank'); 
+    window.open(url, '_blank');
     this.setDownloadProgress({
       show: false,
       progress: 100,
       error: false,
       errorMessage: '',
     });
-    this.isDownloading = false; 
+    this.isDownloading = false;
   }
   handleDownloadError(error: any) {
     this.setDownloadProgress({
@@ -552,7 +552,7 @@ export class ServiceOrderPageComponent {
   selectedJobLogs: any;
   loadjobdetails: boolean = false;
   isAccordionOpenStatus = false;
-  isAccordionOpen2: boolean = true; 
+  isAccordionOpen2: boolean = true;
   getJobStatusTitle(): string {
     return this.selectedJobLogs?.length
       ? this.selectedJobLogs[0].title
@@ -718,22 +718,22 @@ export class ServiceOrderPageComponent {
             }
             this.getPartData(jobItem.JOB_CARD_ID);
             if (this.selectedJob?.techData?.trackStatus === 'ST') {
-              this.isMapLoaded = false; 
+              this.isMapLoaded = false;
               const retryInterval = setInterval(() => {
                 if (this.mapElement?.nativeElement) {
-                  this.isMapLoaded = true; 
+                  this.isMapLoaded = true;
                   this.getUserLocation();
                   clearInterval(retryInterval);
                 } else {
                 }
-              }, 100); 
+              }, 100);
             }
             jobItem.techData = this.selectedJob.techData;
             jobItem.isPartAdd = this.selectedJob.isPartAdd;
             jobItem.isPaymentReq = this.selectedJob.isPaymentReq;
             jobItem.pendingPaymentsData = this.selectedJob.pendingPaymentsData;
             jobItem.partData = this.selectedJob.partData;
-            this.jobItem = jobItem; 
+            this.jobItem = jobItem;
           }
           this.loadjobdetails = false;
           this.loadingOrderStatus = null;
@@ -819,10 +819,12 @@ export class ServiceOrderPageComponent {
       0
     );
   }
-  RAZOR_PAY_KEY = 'rzp_test_SO1E5ovbNuNP0B'; 
-  selectedPaymentMethod: string = 'ONLINE'; 
+  RAZOR_PAY_KEY = 'rzp_test_SJw4Sq4w5kXdZn';
+  // RAZOR_PAY_KEY = 'rzp_live_UOLu84DuvGULjK'; // Razorpay API Key live
+
+  selectedPaymentMethod: string = 'ONLINE';
   proceedToPay(selectedjob: any, PaymentSummary: any) {
-    this.isLoadingPartPay = true; 
+    this.isLoadingPartPay = true;
     const finalAmount = this.getTotalAmount();
     if (this.selectedPaymentMethod === 'COD') {
       const payload = {
@@ -833,7 +835,7 @@ export class ServiceOrderPageComponent {
         VENDOR_ID: selectedjob?.VENDOR_ID,
         MOBILE_NUMBER: this.userName,
         PAYMENT_FOR: 'P',
-        PAYMENT_MODE: 'C', 
+        PAYMENT_MODE: 'C',
         PAYMENT_TYPE: 'C',
         TRANSACTION_DATE: moment().format('YYYY-MM-DD'),
         TRANSACTION_ID: null,
@@ -848,7 +850,7 @@ export class ServiceOrderPageComponent {
       };
       this.apiservice.addPaymentTransactions(payload).subscribe(
         (response: any) => {
-          this.isLoadingPartPay = false; 
+          this.isLoadingPartPay = false;
           if (response?.code === 200) {
             this.message.success(
               'Payment successful. Your order has been placed!',
@@ -882,7 +884,7 @@ export class ServiceOrderPageComponent {
           if (responserzp?.code === 200 && responserzp.data.amount) {
             const options = {
               key: this.RAZOR_PAY_KEY,
-              amount: finalAmount * 100, 
+              amount: finalAmount * 100,
               currency: 'INR',
               name: this.userName,
               order_id: responserzp.data.id,
@@ -896,7 +898,7 @@ export class ServiceOrderPageComponent {
                   VENDOR_ID: selectedjob?.VENDOR_ID,
                   MOBILE_NUMBER: this.userName,
                   PAYMENT_FOR: 'P',
-                  PAYMENT_MODE: 'O', 
+                  PAYMENT_MODE: 'O',
                   PAYMENT_TYPE: 'O',
                   TRANSACTION_DATE: moment().format('YYYY-MM-DD'),
                   TRANSACTION_ID: data.razorpay_payment_id,
@@ -973,7 +975,7 @@ export class ServiceOrderPageComponent {
   }
   acceptPartRequest(status: string) {
     try {
-      this.loadingParts = true; 
+      this.loadingParts = true;
       if (!this.selectedJob || !this.PartDetails.length) {
         this.loadingParts = false;
         this.message.warning('No parts available to process.');
@@ -1032,8 +1034,8 @@ export class ServiceOrderPageComponent {
     }
   }
   denyPartRequest() { }
-  trackingInterval: any; 
-  distanceDiv: HTMLDivElement | null = null; 
+  trackingInterval: any;
+  distanceDiv: HTMLDivElement | null = null;
   getUserLocation() {
     if (!navigator.geolocation) {
       return;
@@ -1089,8 +1091,8 @@ export class ServiceOrderPageComponent {
       this.customerCoords.longitude
     );
     this.map = new google.maps.Map(this.mapElement.nativeElement, {
-      zoom: 15, 
-      center: centerLatLng, 
+      zoom: 15,
+      center: centerLatLng,
     });
     this.polyline = new google.maps.Polyline({
       strokeColor: '#FF0000',
@@ -1179,7 +1181,7 @@ export class ServiceOrderPageComponent {
           const distanceMeters = data.routes[0].distanceMeters;
           const distanceKm = (distanceMeters / 1000).toFixed(2);
           this.distanceText = `Total Distance: ${distanceKm} km`;
-          this.clearDistanceDisplay(); 
+          this.clearDistanceDisplay();
           this.drawPolyline(encodedPolyline);
           this.showDistance();
           this.updateTechnicianMarker();
@@ -1204,7 +1206,7 @@ export class ServiceOrderPageComponent {
     }
   }
   showDistance() {
-    this.clearDistanceDisplay(); 
+    this.clearDistanceDisplay();
     this.distanceDiv = document.createElement('div');
     this.distanceDiv.style.position = 'absolute';
     this.distanceDiv.style.bottom = '20px';
@@ -1312,7 +1314,7 @@ export class ServiceOrderPageComponent {
     const remainingDaysAfterYears = days % 365;
     const months = Math.floor(remainingDaysAfterYears / 30);
     const remainingDays = remainingDaysAfterYears % 30;
-    let result: string[] = []; 
+    let result: string[] = [];
     if (years > 0) {
       result.push(`${years} ${years > 1 ? 'yrs' : 'year'}`);
     }
@@ -1325,8 +1327,8 @@ export class ServiceOrderPageComponent {
     return result.length > 0 ? result.join(' ') : '-';
   }
   getStars(rating: string | number): string[] {
-    const fullStars = Math.floor(Number(rating)); 
-    const emptyStars = 5 - fullStars; 
+    const fullStars = Math.floor(Number(rating));
+    const emptyStars = 5 - fullStars;
     return [
       ...Array(fullStars).fill('bi-star-fill text-warning fs-6'),
       ...Array(emptyStars).fill('bi-star text-secondary fs-6'),
@@ -1339,10 +1341,10 @@ export class ServiceOrderPageComponent {
         CUSTOMER_ID: this.userID,
         SERVICE_ID: this.selectedJob.SERVICE_ITEM_ID,
         JOB_CARD_ID: this.selectedJob.JOB_CARD_ID,
-        SERVICE_RATING: this.feedback.serviceRating, 
-        TECHNICIAN_RATING: this.feedback.technicianRating, 
-        TECHNICIAN_COMMENTS: this.feedback.comment1, 
-        SERVICE_COMMENTS: this.feedback.comment, 
+        SERVICE_RATING: this.feedback.serviceRating,
+        TECHNICIAN_RATING: this.feedback.technicianRating,
+        TECHNICIAN_COMMENTS: this.feedback.comment1,
+        SERVICE_COMMENTS: this.feedback.comment,
         TECHNICIAN_ID: this.selectedJob.TECHNICIAN_ID,
         TECHNICIAN_NAME: this.selectedJob.TECHNICIAN_NAME,
         CUSTOMER_NAME: this.userName,
@@ -1353,7 +1355,7 @@ export class ServiceOrderPageComponent {
           if (response?.code === 200) {
             this.message.success('Feedback submitted successfully', '');
             this.fetchJobDetailsWithFeedback(this.selectedJob);
-            this.closeFeedbackModal(); 
+            this.closeFeedbackModal();
           } else {
             this.message.error('Failed to submit feedback', '');
           }
@@ -1526,16 +1528,16 @@ export class ServiceOrderPageComponent {
     }, {});
   }
   getMediaType(url: string): string {
-    if (!url) return ''; 
+    if (!url) return '';
     const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
     const videoExtensions = ['mp4', 'avi', 'mov', 'mkv', 'webm'];
-    const extension = url.split('.').pop()?.toLowerCase(); 
+    const extension = url.split('.').pop()?.toLowerCase();
     if (extension && imageExtensions.includes(extension)) {
-      return 'I'; 
+      return 'I';
     } else if (extension && videoExtensions.includes(extension)) {
-      return 'V'; 
+      return 'V';
     }
-    return ''; 
+    return '';
   }
   public commonFunction = new CommonFunctionService();
   sendmessage() {
@@ -1556,7 +1558,7 @@ export class ServiceOrderPageComponent {
         this.BODY_TEXT === null
       ) {
       } else {
-        const boldPattern = /\*(.*?)\*/g; 
+        const boldPattern = /\*(.*?)\*/g;
         this.BODY_TEXT = this.BODY_TEXT.replace(boldPattern, '<b>$1</b>');
       }
     }
@@ -1729,7 +1731,7 @@ export class ServiceOrderPageComponent {
       this.BODY_TEXT =
         this.BODY_TEXT.slice(0, start) + boldText + this.BODY_TEXT.slice(end);
       textarea.value = this.BODY_TEXT;
-      textarea.selectionStart = textarea.selectionEnd = end + 7; 
+      textarea.selectionStart = textarea.selectionEnd = end + 7;
     }
   }
   jobcardid: any;
