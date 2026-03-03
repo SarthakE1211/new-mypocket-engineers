@@ -20,7 +20,7 @@
           (click)="handleNavClick('S', $event)" [class.disabled]="isServiceDisabled">
           <img *ngIf="!isActive" class="imageee" src="assets/img/blackService.svg" alt="Inactive Image" width="24"
             height="24" />
-          <img *ngIf="isActive" src="assets/img/orangeService.svg" alt="Active Image" width="24" height="24" />
+          <!-- <img *ngIf="isActive" src="assets/img/orangeService.svg" alt="Active Image" width="24" height="24" /> -->
           {{ "header.services" | translate }}
         </a>
       </div>
@@ -517,7 +517,7 @@
             </div>
           </div>
         </div>
-        <p class="text-muted-center-12-unique">Version 2.3.1</p>
+        <p class="text-muted-center-12-unique">Version 2.3.2</p>
         <div class="mobile-action-buttons mobile-profile-section mt-5px-unique">
           <div *ngIf="userID" class="bg-light-border-unique">
             <a class="mobile-nav-item flex-space-between-cursor-unique" (click)="openAddress()">
