@@ -18,8 +18,8 @@
         <a class="d-flex align-items-center ms-2 d-none d-md-block nav-link-pointer nav-link-text"
           routerLinkActive="active" [routerLink]="isServiceDisabled ? null : '/service'"
           (click)="handleNavClick('S', $event)" [class.disabled]="isServiceDisabled">
-          <img *ngIf="!isActive" class="imageee" src="assets/img/blackService.svg" alt="Inactive Image" width="24"
-            height="24" />
+          <!-- <img *ngIf="!isActive" class="imageee" src="assets/img/blackService.svg" alt="Inactive Image" width="24"
+            height="24" /> -->
           <!-- <img *ngIf="isActive" src="assets/img/orangeService.svg" alt="Active Image" width="24" height="24" /> -->
           {{ "header.services" | translate }}
         </a>

@@ -622,11 +622,14 @@ export class HomeComponent {
   getpendinnglastfeedback() {
     this.apiservice.getPendingRating(this.userID).subscribe((res: any) => {
       if (res?.status === 200) {
-        if (res.data != undefined) {
-          this.data = res.body.data[0];
+        const responseData = res.body?.data;
+        if (responseData && responseData.length > 0) {
+          this.data = responseData[0];
           this.HAS_FEEDBACK = this.data.HAS_FEEDBACK;
-          this.selectedJob = res.body.data[0];
-          if (this.HAS_FEEDBACK === 0) { this.openPopup(); }
+          this.selectedJob = responseData[0];
+          if (this.HAS_FEEDBACK === 0) {
+            this.openPopup();
+          }
         } else {
           this.HAS_FEEDBACK = 0;
           this.selectedJob = null;
@@ -1108,10 +1111,10 @@ export class HomeComponent {
     }));
     this.defaultAddress = defaultAddress;
     this.DefaultAddressArray = defaultAddress;
-    this.getProjectData();       
-    this.geServiceCategories();  
-    this.getOfferData();         
-    this.getBannerData();        
+    this.getProjectData();
+    this.geServiceCategories();
+    this.getOfferData();
+    this.getBannerData();
     this.addressUpdateService.notifyAddressChanged();
     this.closeAddressModal();
   }

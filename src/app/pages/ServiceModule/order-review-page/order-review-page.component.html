@@ -2,25 +2,17 @@
   <div class="spinner-border" role="status">
     <span class="visually-hidden">{{
       "order_review.loading" | translate
-    }}</span>
+      }}</span>
   </div>
 </div>
 <div class="container mt-4" *ngIf="OrderReviewDetails && loadFullPage == false">
-  <div
-    class="card p-3 shadow no-border-no-shadow"
-  >
-    <div
-      class="d-flex align-items-center mt-3 justify-content-between p-2 p-lg-3 no-margin-top-no-padding-left"
-    >
+  <div class="card p-3 shadow no-border-no-shadow">
+    <div class="d-flex align-items-center mt-3 justify-content-between p-2 p-lg-3 no-margin-top-no-padding-left">
       <div class="d-flex align-items-center">
-        <a
-          [routerLink]="'/service'"
-          class="back-button d-flex align-items-center justify-content-center"
-        >
+        <a [routerLink]="'/service'" class="back-button d-flex align-items-center justify-content-center">
           <i class="bi bi-arrow-left text-white font-size-14"></i>
         </a>
-        <h2 class="fs-4 fs-lg-3 fw-bold order-title mb-0-font-18"
-        >
+        <h2 class="fs-4 fs-lg-3 fw-bold order-title mb-0-font-18">
           &nbsp;&nbsp; {{ "order_review.title" | translate }}
         </h2>
       </div>
@@ -28,6 +20,7 @@
     </div>
     <style>
       @media (min-width: 992px) {
+
         /* Large screens */
         .order-title {
           font-size: 28px !important;
@@ -36,51 +29,33 @@
     </style>
     <div class="row">
       <div class="col-md-6">
-        <div
-          *ngFor="let item of OrderReviewDetails?.CART_DETAILS"
-          class="card border rounded p-3 mb-3 shadow-sm rounded-16-padding-10"
-        >
+        <div *ngFor="let item of OrderReviewDetails?.CART_DETAILS"
+          class="card border rounded p-3 mb-3 shadow-sm rounded-16-padding-10">
           <div class="card-body padding-2">
-            <div
-              *ngIf="item.IS_EXPRESS == 1"
-              class="express-badge absolute-right-action-badge"
-            >
+            <div *ngIf="item.IS_EXPRESS == 1" class="express-badge absolute-right-action-badge">
               <i class="bi bi-lightning me-1"></i>
               <span class="full-text">Express service</span>
             </div>
-            <div
-              class="d-flex align-items-center gap-3 position-relative"
-            >
+            <div class="d-flex align-items-center gap-3 position-relative">
               <div
-                class="service-icon d-flex align-items-center justify-content-center rounded-circle bg-light size-50"
-              >
-                <img
-                  [src]="
+                class="service-icon d-flex align-items-center justify-content-center rounded-circle bg-light size-50">
+                <img [src]="
                     item.SERVICE_IMAGE
                       ? IMAGEuRL + 'Item/' + item.SERVICE_IMAGE
                       : 'assets/img/services/no-image.png'
-                  "
-                  alt="Service Icon" class="size-36-contain"
-                />
+                  " alt="Service Icon" class="size-36-contain" />
               </div>
               <div>
-                <h6
-                  class="fw-bold mb-0 font-16-weight-600"
-                  [title]="item.SERVICE_NAME"
-                  [attr.title]="item.SERVICE_NAME"
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="top"
-                >
+                <h6 class="fw-bold mb-0 font-16-weight-600" [title]="item.SERVICE_NAME" [attr.title]="item.SERVICE_NAME"
+                  data-bs-toggle="tooltip" data-bs-placement="top">
                   {{ item.SERVICE_NAME }}
                 </h6>
               </div>
             </div>
-            <hr class="border-light-margin-11"  />
+            <hr class="border-light-margin-11" />
             <div class="cart-bottom padding-0">
               <div class="cart-icon">
-                <i
-                  class="bi bi-clock text-blue-12"
-                ></i>
+                <i class="bi bi-clock text-blue-12"></i>
               </div>
               <span class="font-weight-500">
                 {{ item.CREATED_MODIFIED_DATE | date : "EEE, MMM d" }} |
@@ -89,79 +64,56 @@
               </span>
             </div>
             <div class="mt-3">
-              <hr class="border-light-margin-11"  />
+              <hr class="border-light-margin-11" />
               <button
                 class="btn w-100 text-start d-flex justify-content-between align-items-center transparent-btn-reset"
-                (click)="item.isOpen = !item.isOpen"
-              >
-                <span
-                  class="fw-bold font-15-weight-600"
-                  >{{ "order_review.details" | translate }}</span
-                >
-                <i
-                  class="bi"
-                  [ngClass]="{
+                (click)="item.isOpen = !item.isOpen">
+                <span class="fw-bold font-15-weight-600">{{ "order_review.details" | translate }}</span>
+                <i class="bi" [ngClass]="{
                     'bi-chevron-down': !item.isOpen,
                     'bi-chevron-up': item.isOpen
-                  }"
-                  class="text-primary text-dark-18"
-                ></i>
+                  }" class="text-primary text-dark-18"></i>
               </button>
               <div *ngIf="item.isOpen" class="mt-2">
                 <hr class="my-2" />
                 <div class="d-flex justify-content-between">
-                  <p class="mb-1 text-muted text-gray-636" >
+                  <p class="mb-1 text-muted text-gray-636">
                     {{ "order_review.device" | translate }}
                   </p>
-                  <p
-                    class="mb-1 fw-bold text-black-500"
-                  >
+                  <p class="mb-1 fw-bold text-black-500">
                     {{ item.CATEGORY_NAME | slice : 0 : maxCharData }}
                   </p>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <p class="mb-1 text-muted text-gray-636" >
+                  <p class="mb-1 text-muted text-gray-636">
                     {{ "order_review.service" | translate }}
                   </p>
-                  <p
-                    class="mb-1 fw-bold text-black-500"
-                  >
+                  <p class="mb-1 fw-bold text-black-500">
                     {{ item.SUB_CATEGORY_NAME | slice : 0 : maxCharData }}
                   </p>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <p class="mb-0 text-muted text-gray-636" >
+                  <p class="mb-0 text-muted text-gray-636">
                     {{ "order_review.quantity" | translate }}
                   </p>
-                  <p
-                    class="mb-0 fw-bold text-black-500"
-                  >
+                  <p class="mb-0 fw-bold text-black-500">
                     {{ item.QUANTITY }}
                   </p>
                 </div>
-                <div
-                  *ngIf="item.GUARANTEE_ALLOWED == 1 && customertype === 'I'"
-                  class="d-flex justify-content-between my-4"
-                >
-                  <p class="mb-0 text-muted text-gray-636" >
+                <div *ngIf="item.GUARANTEE_ALLOWED == 1 && customertype === 'I'"
+                  class="d-flex justify-content-between my-4">
+                  <p class="mb-0 text-muted text-gray-636">
                     Guarantee Period
                   </p>
-                  <p
-                    class="mb-0 fw-bold text-black-500"
-                  >
+                  <p class="mb-0 fw-bold text-black-500">
                     {{ formatPeriodCommon(item.GUARANTEE_PERIOD) }}
                   </p>
                 </div>
-                <div
-                  *ngIf="item.WARRANTY_ALLOWED == 1 && customertype === 'I'"
-                  class="d-flex justify-content-between"
-                >
-                  <p class="mb-0 text-muted text-gray-636" >
+                <div *ngIf="item.WARRANTY_ALLOWED == 1 && customertype === 'I'" class="d-flex justify-content-between">
+                  <p class="mb-0 text-muted text-gray-636">
                     Warranty Period
                   </p>
-                  <p
-                    class="mb-0 fw-bold text-black-500"
-                  >
+                  <p class="mb-0 fw-bold text-black-500">
                     {{ formatPeriodCommon(item.WARRANTY_PERIOD) }}
                   </p>
                 </div>
@@ -171,43 +123,26 @@
         </div>
         <div class="accordion">
           <div class="accordion-item mb-3 shadow-sm rounded">
-            <h2
-              class="accordion-header"
-              (click)="toggleAccordion('contactDetails')"
-            >
-              <button
-                class="accordion-button fw-bold d-flex align-items-center gap-2"
-                [class.collapsed]="!orderDetailsVisible['contactDetails']"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="17"
-                  viewBox="0 0 16 17"
-                  fill="none"
-                >
+            <h2 class="accordion-header" (click)="toggleAccordion('contactDetails')">
+              <button class="accordion-button fw-bold d-flex align-items-center gap-2"
+                [class.collapsed]="!orderDetailsVisible['contactDetails']">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
                   <path
                     d="M11.1308 16.4998C9.61051 16.4811 8.15971 15.859 7.09605 14.7722L1.73154 9.40768C-0.404648 7.28129 -0.58443 4.0058 1.3043 2.10635L2.52014 0.92966C2.81921 0.634149 3.22954 0.478383 3.64965 0.502423C4.06709 0.534464 4.45784 0.716041 4.75067 1.01511L7.43782 3.70226V3.70137C8.08223 4.30306 8.12051 5.31241 7.52327 5.96129L6.93493 6.54962C6.93493 6.54962 6.93493 6.69204 7.01059 6.80597L9.69775 9.49312C9.81168 9.59726 9.9354 9.59726 9.95409 9.56878L10.5424 8.98044C11.1913 8.3832 12.2006 8.42148 12.8023 9.06589L15.4895 11.753H15.4886C16.1099 12.3538 16.1481 13.3374 15.5741 13.9836L14.3965 15.1612H14.3974C13.5322 16.0272 12.3555 16.5096 11.1308 16.4998ZM2.32079 3.11304C0.972311 4.49 1.16191 6.82557 2.73823 8.40099L8.10274 13.7655C9.67908 15.3418 12.052 15.5314 13.3907 14.1829L14.5683 13.0347C14.5683 13.0347 14.5683 12.8923 14.4828 12.7784L11.7957 10.0912C11.7387 10.0343 11.6061 9.94882 11.5491 10.0156L10.9608 10.595L10.9599 10.5941C10.6493 10.8852 10.2354 11.0409 9.80991 11.0267C9.38445 11.0125 8.98214 10.83 8.69107 10.5185L6.00392 7.81262C5.69328 7.52158 5.50992 7.11925 5.49568 6.69379C5.48144 6.26833 5.6372 5.85444 5.92825 5.5438L6.50769 4.95546C6.50769 4.95546 6.50769 4.81305 6.43204 4.70892L3.74488 2.02085C3.67813 1.9541 3.5553 1.87844 3.48854 1.9354L2.32079 3.11304Z"
-                    fill="#2A3B8F"
-                  />
+                    fill="#2A3B8F" />
                 </svg>
                 {{ "order_review.contact_details.title" | translate }}
               </button>
             </h2>
-            <div
-              class="accordion-collapse"
-              [class.show]="orderDetailsVisible['contactDetails']"
-            >
+            <div class="accordion-collapse" [class.show]="orderDetailsVisible['contactDetails']">
               <div class="accordion-body text-muted">
                 <div class="d-flex justify-content-between">
                   <p class="mb-1 text-muted">
                     {{
-                      "order_review.contact_details.mobile_number" | translate
+                    "order_review.contact_details.mobile_number" | translate
                     }}
                   </p>
-                  <p
-                    class="mb-1 fw-bold text-black-500"
-                  >
+                  <p class="mb-1 fw-bold text-black-500">
                     {{ OrderReviewDetails?.CART_INFO[0]?.MOBILE_NO }}
                   </p>
                 </div>
@@ -215,13 +150,11 @@
                   <p class="mb-1 text-muted">
                     {{ "order_review.contact_details.name" | translate }}
                   </p>
-                  <p
-                    class="mb-1 fw-bold text-black-500"
-                  >
+                  <p class="mb-1 fw-bold text-black-500">
                     {{
-                      customertype === "B"
-                        ? user?.COMPANY_NAME
-                        : OrderReviewDetails?.CART_INFO[0]?.CONTACT_PERSON_NAME
+                    customertype === "B"
+                    ? user?.COMPANY_NAME
+                    : OrderReviewDetails?.CART_INFO[0]?.CONTACT_PERSON_NAME
                     }}
                   </p>
                 </div>
@@ -229,184 +162,105 @@
                   <p class="mb-1 text-muted">
                     {{ "order_review.contact_details.address" | translate }}
                   </p>
-                  <p
-                    class="mb-1 fw-bold text-black-500 cursor-pointer"
-                  >
-                    <span
-                      [attr.data-bs-toggle]="
+                  <p class="mb-1 fw-bold text-black-500 cursor-pointer">
+                    <span [attr.data-bs-toggle]="
                         OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_1
                           ?.length > maxCharLength
                           ? 'tooltip'
                           : null
-                      "
-                      data-bs-placement="top"
-                      [attr.title]="
+                      " data-bs-placement="top" [attr.title]="
                         OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_1
                           ?.length > maxCharLength
                           ? OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_1
                           : null
-                      "
-                    >
+                      ">
                       {{
-                        OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_1
-                          | slice : 0 : maxCharLength
+                      OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_1
+                      | slice : 0 : maxCharLength
                       }}
-                      <span
-                        *ngIf="
+                      <span *ngIf="
                           OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_1
                             ?.length > maxCharLength
-                        "
-                        >...</span
-                      > </span
-                    >,
-                    <span
-                      [attr.data-bs-toggle]="
+                        ">...</span> </span>,
+                    <span [attr.data-bs-toggle]="
                         OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_2
                           ?.length > maxCharLength
                           ? 'tooltip'
                           : null
-                      "
-                      data-bs-placement="top"
-                      [attr.title]="
+                      " data-bs-placement="top" [attr.title]="
                         OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_2
                           ?.length > maxCharLength
                           ? OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_2
                           : null
-                      "
-                    >
+                      ">
                       {{
-                        OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_2
-                          | slice : 0 : maxCharLength
+                      OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_2
+                      | slice : 0 : maxCharLength
                       }}
-                      <span
-                        *ngIf="
+                      <span *ngIf="
                           OrderReviewDetails?.CART_INFO[0]?.ADDRESS_LINE_2
                             ?.length > maxCharLength
-                        "
-                        >...</span
-                      >
+                        ">...</span>
                     </span>
                   </p>
                 </div>
               </div>
             </div>
           </div>
-          <div
-            class="accordion-item mb-3 shadow-sm rounded"
-            *ngIf="customertype == 'I'"
-          >
-            <h2
-              class="accordion-header"
-              (click)="toggleAccordion('reschedulePolicy')"
-            >
-              <button
-                class="accordion-button fw-bold d-flex align-items-center gap-2"
-                [class.collapsed]="!orderDetailsVisible['reschedulePolicy']"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                  width="16"
-                  height="25"
-                  viewBox="0 0 16 25"
-                  fill="none"
-                >
-                  <ellipse
-                    cx="8"
-                    cy="12.5"
-                    rx="8"
-                    ry="12"
-                    fill="url(#pattern0_5044_960)"
-                  />
+          <div class="accordion-item mb-3 shadow-sm rounded" *ngIf="customertype == 'I'">
+            <h2 class="accordion-header" (click)="toggleAccordion('reschedulePolicy')">
+              <button class="accordion-button fw-bold d-flex align-items-center gap-2"
+                [class.collapsed]="!orderDetailsVisible['reschedulePolicy']">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16"
+                  height="25" viewBox="0 0 16 25" fill="none">
+                  <ellipse cx="8" cy="12.5" rx="8" ry="12" fill="url(#pattern0_5044_960)" />
                   <defs>
-                    <pattern
-                      id="pattern0_5044_960"
-                      patternContentUnits="objectBoundingBox"
-                      width="1"
-                      height="1"
-                    >
-                      <use
-                        xlink:href="#image0_5044_960"
-                        transform="matrix(0.03125 0 0 0.0208333 -0.25 0)"
-                      />
+                    <pattern id="pattern0_5044_960" patternContentUnits="objectBoundingBox" width="1" height="1">
+                      <use xlink:href="#image0_5044_960" transform="matrix(0.03125 0 0 0.0208333 -0.25 0)" />
                     </pattern>
-                    <image
-                      id="image0_5044_960"
-                      width="48"
-                      height="48"
-                      preserveAspectRatio="none"
-                      xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAVCSURBVHgB7VhNbttGFH5DSS7QFoh6glK7xC5QeVfEDmqdoNIJLJ8g5gmkXKB0ThD5BPYNoqJW0F0JpHa8M3OCqosGiGRx8r3hjDShfkiKDpAFP8AWORwO3+/33gxRiRIlSpQoAEFfCD8d+kcR0ZEUFLz707ukLwSHHgCPj3zXvt87+P04kvSaJPVERBd7B75vP28e+XV6IBTyQPMX351UICiRi78Qiw3xO5ZEp0uTJbEXAiHgFXgmnu/0r0fPz6kACikAy77WwqxCKCR18LyHr7TXzBnv1KgRDL0xbYmtQ4itvxBeDHDNlgzVnRDDqEat6zdecPPG60CBl2ocAvMzcw/UP06pSwWQ2wN7T/0my483j40CELZxO/RCvuZ8MNc2XB33oba25b0AQpwjtIJqlYK83sisQCLe7SUGN6PTE8oJGKILhnpFSwI53Tx5kTmEphXEsiW8CYeoJl/QFkB4DbAIvxva45KiM8qBao65rvovRBBVZScZJhxaUYXcbyoqDMK0xXh+rUoDzO1zeH17D+aSyki5KDazB1CU3iv5YXlb+CYE2T3w7xAOfzPnT6Z0l+T9JHaf+j2ej7kckvO82AaZFUCSPUqOqbwQdEGJvOA6sE4JFh5W6Ks1E+GjMW4mCuMmpCrAQjJjQCrF5VIuPjqpKgp01bhDHfD+vi5mSolkxbWFB4L/a9QxzypgIX1ZZ89wK0JFFTDMY+gymbRQxjXj3O8w7zvOnONpOll4Jin8B9QJO3Tecr+0qA8utyJPnvltKqKAbWFmjOur05Yd/wircayIbBq3z2b0s3k+24mfpwlvcHPlncKLJ5xnav1ZepHbqAAWG1sThyteNl0mu/2Ok3kuqBCXrGxW4Q1qEQ0lUeak3qhArUYD0okGly4VnX+uvKHmcgNX/4agWi+v8Ay73kQ7K5rCPApwWYcXjIDuqsSC2/vRjBqsCKjxJYcABN13JnScV3gGrN+Nr8TgNkM9yVPIOOZXFpnbv9SH+uZ+leW/v6fm3jP/NyT+fxyOynsJMGtNp6odrwtWJQNSaRRW7enL8G2GndUq4b+bks+sIqO42vL1qjrBHsf3VB/EnshCpRsV4IaLdDxaoZRP+Am1TVio/kknKNeJ3UO/n1xjp0p9MyeKCuYAWSGDD/5IOYVXMe/Qcz0WonA1rkfeD6bYYdHj5Dr3CLX55x3xiIooAE7nkAnj1ajPNLmqzG9iG8R8Xb9/Ph8T9Iee+9laHFYq1ExDF8nUtnqjApycYJiWWNQAdzIVvazCx3JrA8Da3IGquNaWx7NgLjzvDxZ76dARakc3oBSkspBmmNbu4dkFzNkGE7nm2ZMDnz/YXye8EpLpVapWxOUOVNrkIhdtB3opVxPPmGk4a4eaY0+8TGuWMmt5nukSb3pkdZ4iPrnw1li4nqe9zt5Om1iGCU2Xyb1LBV1oWpF6N/LOVHFDWPB8TmYeM895PYcyEn8CmQsZb2h4A82dKfqef5FwLPBlpUIvslhMzxnaYzp/uljPtadSDmT2gJypWA/n93A18zsq5yvaAqrGxMnvmjFVJzLUGxuZFeBkvhl5Dd60cBjokzblEXvjsu7YcGncqg+qhca6qk5kYB4bW5/MsUAcSnoRPtji37bm8BAnbi2zuWd+NxTJlKzqQLyB59w6ySv0gyigBUs9WsQX/E1zoOh+kaPFXN1oEqjUJ44+7OL4jVBtlUWkCg/F+/PJUlxKR753SPzKOzjV7yDeiwj/YEger3OBQ9sh53+H/meHVe7Xcry+CY9xIOBgT72u9y9RokSJEl8FPgHbaJiGmNWu9QAAAABJRU5ErkJggg=="
-                    />
+                    <image id="image0_5044_960" width="48" height="48" preserveAspectRatio="none"
+                      xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAVCSURBVHgB7VhNbttGFH5DSS7QFoh6glK7xC5QeVfEDmqdoNIJLJ8g5gmkXKB0ThD5BPYNoqJW0F0JpHa8M3OCqosGiGRx8r3hjDShfkiKDpAFP8AWORwO3+/33gxRiRIlSpQoAEFfCD8d+kcR0ZEUFLz707ukLwSHHgCPj3zXvt87+P04kvSaJPVERBd7B75vP28e+XV6IBTyQPMX351UICiRi78Qiw3xO5ZEp0uTJbEXAiHgFXgmnu/0r0fPz6kACikAy77WwqxCKCR18LyHr7TXzBnv1KgRDL0xbYmtQ4itvxBeDHDNlgzVnRDDqEat6zdecPPG60CBl2ocAvMzcw/UP06pSwWQ2wN7T/0my483j40CELZxO/RCvuZ8MNc2XB33oba25b0AQpwjtIJqlYK83sisQCLe7SUGN6PTE8oJGKILhnpFSwI53Tx5kTmEphXEsiW8CYeoJl/QFkB4DbAIvxva45KiM8qBao65rvovRBBVZScZJhxaUYXcbyoqDMK0xXh+rUoDzO1zeH17D+aSyki5KDazB1CU3iv5YXlb+CYE2T3w7xAOfzPnT6Z0l+T9JHaf+j2ej7kckvO82AaZFUCSPUqOqbwQdEGJvOA6sE4JFh5W6Ks1E+GjMW4mCuMmpCrAQjJjQCrF5VIuPjqpKgp01bhDHfD+vi5mSolkxbWFB4L/a9QxzypgIX1ZZ89wK0JFFTDMY+gymbRQxjXj3O8w7zvOnONpOll4Jin8B9QJO3Tecr+0qA8utyJPnvltKqKAbWFmjOur05Yd/wircayIbBq3z2b0s3k+24mfpwlvcHPlncKLJ5xnav1ZepHbqAAWG1sThyteNl0mu/2Ok3kuqBCXrGxW4Q1qEQ0lUeak3qhArUYD0okGly4VnX+uvKHmcgNX/4agWi+v8Ay73kQ7K5rCPApwWYcXjIDuqsSC2/vRjBqsCKjxJYcABN13JnScV3gGrN+Nr8TgNkM9yVPIOOZXFpnbv9SH+uZ+leW/v6fm3jP/NyT+fxyOynsJMGtNp6odrwtWJQNSaRRW7enL8G2GndUq4b+bks+sIqO42vL1qjrBHsf3VB/EnshCpRsV4IaLdDxaoZRP+Am1TVio/kknKNeJ3UO/n1xjp0p9MyeKCuYAWSGDD/5IOYVXMe/Qcz0WonA1rkfeD6bYYdHj5Dr3CLX55x3xiIooAE7nkAnj1ajPNLmqzG9iG8R8Xb9/Ph8T9Iee+9laHFYq1ExDF8nUtnqjApycYJiWWNQAdzIVvazCx3JrA8Da3IGquNaWx7NgLjzvDxZ76dARakc3oBSkspBmmNbu4dkFzNkGE7nm2ZMDnz/YXye8EpLpVapWxOUOVNrkIhdtB3opVxPPmGk4a4eaY0+8TGuWMmt5nukSb3pkdZ4iPrnw1li4nqe9zt5Om1iGCU2Xyb1LBV1oWpF6N/LOVHFDWPB8TmYeM895PYcyEn8CmQsZb2h4A82dKfqef5FwLPBlpUIvslhMzxnaYzp/uljPtadSDmT2gJypWA/n93A18zsq5yvaAqrGxMnvmjFVJzLUGxuZFeBkvhl5Dd60cBjokzblEXvjsu7YcGncqg+qhca6qk5kYB4bW5/MsUAcSnoRPtji37bm8BAnbi2zuWd+NxTJlKzqQLyB59w6ySv0gyigBUs9WsQX/E1zoOh+kaPFXN1oEqjUJ44+7OL4jVBtlUWkCg/F+/PJUlxKR753SPzKOzjV7yDeiwj/YEger3OBQ9sh53+H/meHVe7Xcry+CY9xIOBgT72u9y9RokSJEl8FPgHbaJiGmNWu9QAAAABJRU5ErkJggg==" />
                   </defs>
                 </svg>
                 {{ "shop.CouponsandOffers" | translate }}
               </button>
             </h2>
-            <div
-              class="accordion-collapse"
-              [class.show]="orderDetailsVisible['reschedulePolicy']"
-            >
+            <div class="accordion-collapse" [class.show]="orderDetailsVisible['reschedulePolicy']">
               <div class="accordion-body text-muted">
-                <ng-container
-                  *ngIf="
+                <ng-container *ngIf="
                     OrderReviewDetails?.CART_INFO[0]?.COUPON_ID;
                     else noCoupon
-                  "
-                >
-                  <div
-                    class="coupon-box align-items-center p-3 border rounded shadow-sm bg-light padding-bg-white"
-                  >
-                    <div class="row w-100" >
-                      <div
-                        class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 m-0"
-                      >
-                        <strong class="font-16-weight-600-black"
-                          >{{
-                            OrderReviewDetails?.CART_INFO[0]?.COUPON_NAME
-                          }}</strong
-                        >
+                  ">
+                  <div class="coupon-box align-items-center p-3 border rounded shadow-sm bg-light padding-bg-white">
+                    <div class="row w-100">
+                      <div class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 m-0">
+                        <strong class="font-16-weight-600-black">{{
+                          OrderReviewDetails?.CART_INFO[0]?.COUPON_NAME
+                          }}</strong>
                       </div>
-                      <div
-                        class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 m-0 text-muted textaligns mt-0-font-12"
-                      >
+                      <div class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 m-0 text-muted textaligns mt-0-font-12">
                         {{ "shop.CouponApplied" | translate }}:
                         <strong>{{
                           OrderReviewDetails?.CART_INFO[0]?.COUPON_CODE
-                        }}</strong>
+                          }}</strong>
                       </div>
                     </div>
-                    <div
-                      class="row w-100-mt-7"
-                    >
-                      <div
-                        class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 m-0 text-muted mt-0-font-1"
-                      >
+                    <div class="row w-100-mt-7">
+                      <div class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 m-0 text-muted mt-0-font-1">
                         {{ "shop.Discount" | translate }}: ₹{{
-                          OrderReviewDetails?.CART_INFO[0]?.COUPON_AMOUNT
-                            | number
+                        OrderReviewDetails?.CART_INFO[0]?.COUPON_AMOUNT
+                        | number
                         }}
                       </div>
-                      <div
-                        class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 textaligns"
-                      >
-                        <button
-                          (click)="
+                      <div class="col-12 col-sm-6 col-lg-6 col-md-6 col-xl-6 textaligns">
+                        <button (click)="
                             deleteCoupon(OrderReviewDetails?.CART_INFO[0])
-                          "
-                          *ngIf="!LoadRemove"
-                          class="btn btn-sm text-danger border-blue-9"
-                        >
+                          " *ngIf="!LoadRemove" class="btn btn-sm text-danger border-blue-9">
                           {{ "shop.Remove" | translate }}
                         </button>
-                        <button
-                          *ngIf="LoadRemove"
-                          class="btn btn-sm text-danger border-blue-9"
-                        >
-                          {{ "shop.Remove" | translate }}&nbsp;<span
-                            class="spinner-border spinner-border-sm"
-                            role="status"
-                            aria-hidden="true"
-                          ></span>
+                        <button *ngIf="LoadRemove" class="btn btn-sm text-danger border-blue-9">
+                          {{ "shop.Remove" | translate }}&nbsp;<span class="spinner-border spinner-border-sm"
+                            role="status" aria-hidden="true"></span>
                         </button>
                       </div>
                     </div>
@@ -414,23 +268,14 @@
                 </ng-container>
                 <ng-template #noCoupon>
                   <div class="text-center mt-0-important">
-                    <button
-                      class="btn btn-link text-primary d-flex align-items-center gap-2"
-                      (click)="
+                    <button class="btn btn-link text-primary d-flex align-items-center gap-2" (click)="
                         openCouponModal(OrderReviewDetails?.CART_INFO[0])
-                      "
-                      [disabled]="isLoading" class="font-15-blue-bold btn  bg-blue-rounded-8"
-                    >
-                      <div class="flex-between-center"
-                      >
+                      " [disabled]="isLoading" class="font-15-blue-bold btn  bg-blue-rounded-8">
+                      <div class="flex-between-center">
                         <span class="font-12">{{
                           "shop.Clickheretoviewallcoupons" | translate
-                        }}</span
-                        >&nbsp;
-                        <span
-                          *ngIf="isLoading"
-                          class="spinner-border spinner-border-sm"
-                        ></span>
+                          }}</span>&nbsp;
+                        <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
                       </div>
                     </button>
                   </div>
@@ -438,67 +283,188 @@
               </div>
             </div>
           </div>
-          <div
-            class="accordion-item mb-3 shadow-sm rounded"
-            *ngIf="customertype == 'I'"
-          >
-            <h2
-              class="accordion-header"
-              (click)="toggleAccordion('cancelPolicy')"
-            >
-              <button
-                class="accordion-button fw-bold d-flex align-items-center gap-2"
-                [class.collapsed]="!orderDetailsVisible['cancelPolicy']"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="15"
-                  height="17"
-                  viewBox="0 0 15 17"
-                  fill="none"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+          <div class="accordion-item mb-3 shadow-sm rounded" *ngIf="customertype == 'I'">
+            <h2 class="accordion-header" (click)="toggleAccordion('cancelPolicy')">
+              <button class="accordion-button fw-bold d-flex align-items-center gap-2"
+                [class.collapsed]="!orderDetailsVisible['cancelPolicy']">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="17" viewBox="0 0 15 17" fill="none">
+                  <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M6.04539 12.6157C5.82809 12.8338 5.47385 12.8338 5.25655 12.6157C5.03851 12.3984 5.03851 12.0442 5.25655 11.8269L9.72167 7.36178C9.93897 7.14373 10.2932 7.14373 10.5105 7.36178C10.7286 7.57908 10.7286 7.93331 10.5105 8.15061L6.04539 12.6157Z"
-                    fill="#2A3B8F"
-                    stroke="#2A3B8F"
-                    stroke-width="0.2"
-                  />
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fill="#2A3B8F" stroke="#2A3B8F" stroke-width="0.2" />
+                  <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M10.5105 11.8269C10.7286 12.0442 10.7286 12.3984 10.5105 12.6157C10.2932 12.8338 9.93897 12.8338 9.72167 12.6157L5.25655 8.15061C5.03851 7.93331 5.03851 7.57908 5.25655 7.36178C5.47385 7.14373 5.82809 7.14373 6.04539 7.36178L10.5105 11.8269Z"
-                    fill="#2A3B8F"
-                    stroke="#2A3B8F"
-                    stroke-width="0.2"
-                  />
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fill="#2A3B8F" stroke="#2A3B8F" stroke-width="0.2" />
+                  <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M14.7674 5.43916V14.4535C14.7674 14.996 14.5516 15.5169 14.1684 15.9009C13.7844 16.2842 13.2634 16.5 12.7209 16.5H3.04651C2.504 16.5 1.98307 16.2842 1.59907 15.9009C1.21581 15.5169 1 14.996 1 14.4535V2.54651C1 2.004 1.21581 1.48307 1.59907 1.09907C1.98307 0.715814 2.504 0.5 3.04651 0.5H10.1594C10.5263 0.5 10.8761 0.654791 11.1232 0.926419L14.4288 4.56251C14.6469 4.80288 14.7674 5.1147 14.7674 5.43916ZM13.6512 5.43916C13.6512 5.39228 13.634 5.34763 13.6028 5.3134L10.2971 1.6773C10.2614 1.6386 10.2115 1.61628 10.1594 1.61628H3.04651C2.79944 1.61628 2.56353 1.71451 2.38865 1.88865C2.21451 2.06353 2.11628 2.29944 2.11628 2.54651V14.4535C2.11628 14.7006 2.21451 14.9365 2.38865 15.1113C2.56353 15.2855 2.79944 15.3837 3.04651 15.3837H12.7209C12.968 15.3837 13.2039 15.2855 13.3788 15.1113C13.5529 14.9365 13.6512 14.7006 13.6512 14.4535V5.43916Z"
-                    fill="#2A3B8F"
-                    stroke="#2A3B8F"
-                    stroke-width="0.2"
-                  />
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fill="#2A3B8F" stroke="#2A3B8F" stroke-width="0.2" />
+                  <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M9.93042 1.43021C9.93042 1.12212 10.1805 0.87207 10.4886 0.87207C10.7967 0.87207 11.0467 1.12212 11.0467 1.43021V4.40695C11.0467 4.50965 11.13 4.593 11.2327 4.593H13.8374C14.1455 4.593 14.3955 4.84305 14.3955 5.15114C14.3955 5.45923 14.1455 5.70928 13.8374 5.70928H11.2327C10.5131 5.70928 9.93042 5.12584 9.93042 4.40695V1.43021Z"
-                    fill="#2A3B8F"
-                    stroke="#2A3B8F"
-                    stroke-width="0.2"
-                  />
+                    fill="#2A3B8F" stroke="#2A3B8F" stroke-width="0.2" />
                 </svg>
                 {{ "order_review.cancellation_policy.title" | translate }}
               </button>
             </h2>
-            <div
-              class="accordion-collapse"
-              [class.show]="orderDetailsVisible['cancelPolicy']"
-            >
+            <div class="accordion-collapse" [class.show]="orderDetailsVisible['cancelPolicy']">
               <div class="accordion-body text-muted">
                 {{ "order_review.cancellation_policy.description" | translate }}
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item mb-3 shadow-sm rounded">
+            <h2 class="accordion-header" (click)="toggleAccordion('howPockitWorks')">
+              <button class="accordion-button fw-bold d-flex align-items-center gap-2"
+                [class.collapsed]="!orderDetailsVisible['howPockitWorks']">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" stroke="#2A3B8F" stroke-width="2" />
+                  <path d="M12 7v5l3 3" stroke="#2A3B8F" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                {{ "order_review.howpockitworks" | translate }}
+              </button>
+            </h2>
+            <div class="accordion-collapse" [class.show]="orderDetailsVisible['howPockitWorks']">
+              <div class="accordion-body">
+                <div class="pockit-step-row">
+                  <div class="pockit-circle"><span class="pockit-circle-text">1</span></div>
+                  <div class="flex-1">
+                    <p class="pockit-step-title">Book &amp; Confirm</p>
+                    <p class="pockit-step-desc">Schedule online; receive instant booking confirmation.</p>
+                  </div>
+                </div>
+                <div class="pockit-step-row">
+                  <div class="pockit-circle"><span class="pockit-circle-text">2</span></div>
+                  <div class="flex-1">
+                    <p class="pockit-step-title">Technician Visits or Remote Call for Instant Help</p>
+                    <p class="pockit-step-desc">For onsite services a Pockit Engineer arrives at your doorstep and
+                      inspects the device.<br /><br />
+                      For instant help services a Pockit expert calls you, walks you through basic diagnosis steps, and
+                      recommends a fix. If required and possible, the technician may request remote access or suggest an
+                      onsite visit.</p>
+                  </div>
+                </div>
+                <div class="pockit-step-row">
+                  <div class="pockit-circle"><span class="pockit-circle-text">3</span></div>
+                  <div class="flex-1">
+                    <p class="pockit-step-title">Diagnosis &amp; Quote</p>
+                    <p class="pockit-step-desc">A transparent repair quote is shared before any work begins.</p>
+                  </div>
+                </div>
+                <div class="pockit-step-row">
+                  <div class="pockit-circle"><span class="pockit-circle-text">4</span></div>
+                  <div class="flex-1">
+                    <p class="pockit-step-title">Spare Parts (if required)</p>
+                    <p class="pockit-step-desc">Sourced at Pockit fixed rates with your prior approval.</p>
+                  </div>
+                </div>
+                <div class="pockit-step-row">
+                  <div class="pockit-circle"><span class="pockit-circle-text">5</span></div>
+                  <div class="flex-1">
+                    <p class="pockit-step-title">Repair / Service</p>
+                    <p class="pockit-step-desc">Work completed on-site; hard disk handed over to you for data safety.
+                    </p>
+                  </div>
+                </div>
+                <div class="pockit-step-row">
+                  <div class="pockit-circle"><span class="pockit-circle-text">6</span></div>
+                  <div class="flex-1">
+                    <p class="pockit-step-title">Post-Service Clean-Up</p>
+                    <p class="pockit-step-desc">Technician leaves your workspace neat and tidy.</p>
+                  </div>
+                </div>
+                <div class="pockit-step-row">
+                  <div class="pockit-circle"><span class="pockit-circle-text">7</span></div>
+                  <div class="flex-1">
+                    <p class="pockit-step-title">Payment</p>
+                    <p class="pockit-step-desc">Pay the balance after adjusting the booking fee already paid.</p>
+                  </div>
+                </div>
+                <div class="pockit-blue-header">
+                  <span class="pockit-blue-header-text">Expert Verified Repair Quotes</span>
+                </div>
+                <div class="pockit-step-row">
+                  <div class="pockit-circle"><span class="pockit-circle-text">1</span></div>
+                  <div class="flex-1">
+                    <p class="pockit-step-desc">Pockit verify the repair quote shared by the professional</p>
+                  </div>
+                </div>
+                <div class="pockit-step-row">
+                  <div class="pockit-circle"><span class="pockit-circle-text">2</span></div>
+                  <div class="flex-1">
+                    <p class="pockit-step-desc">If you are not sure unsure, you can ask our expert for a second opinion
+                    </p>
+                  </div>
+                </div>
+                <div class="pockit-blue-header">
+                  <span class="pockit-blue-header-text">Fixed Rate Card</span>
+                </div>
+                <div class="pockit-step-row">
+                  <div class="pockit-circle"><span class="pockit-circle-text">1</span></div>
+                  <div class="flex-1">
+                    <p class="pockit-step-desc">All our prices are decided based on market standards.</p>
+                  </div>
+                </div>
+                <div class="pockit-step-row">
+                  <div class="pockit-circle"><span class="pockit-circle-text">2</span></div>
+                  <div class="flex-1">
+                    <p class="pockit-step-desc">If you are charged differently from the rate card, you can reach out to
+                      our help centre.</p>
+                  </div>
+                </div>
+                <div class="pockit-note-box">
+                  <p class="pockit-note-title">Please Note:</p>
+                  <p class="pockit-note-text">• For motherboard issues, the laptop will be taken to the repair shop.</p>
+                  <p class="pockit-note-text">• The repair quote will be provided after the check-up.</p>
+                  <p class="pockit-note-text">• Visitation charges will be adjusted in the final quote.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item mb-3 shadow-sm rounded">
+            <h2 class="accordion-header" (click)="toggleAccordion('pockitWarranty')">
+              <button class="accordion-button fw-bold d-flex align-items-center gap-2"
+                [class.collapsed]="!orderDetailsVisible['pockitWarranty']">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7l-9-5z" stroke="#2A3B8F"
+                    stroke-width="2" stroke-linejoin="round" />
+                </svg>
+                {{ "order_review.pockitwarrenty" | translate }}
+              </button>
+            </h2>
+            <div class="accordion-collapse" [class.show]="orderDetailsVisible['pockitWarranty']">
+              <div class="accordion-body">
+                <p class="pockit-warranty-bullet">• Upto 90 Days of warranty on service and spare parts.</p>
+                <p class="pockit-warranty-bullet">• Free re-repairs if the same issue recurs within the warranty period.
+                </p>
+                <div class="mt-2">
+                  <button class="pockit-blue-header w-100 text-start border-0">
+                    <span class="pockit-blue-header-text">How Pockit warranty works?</span>
+                  </button>
+                  <div class="pt-2 ps-1">
+                    <p class="pockit-warranty-bullet">• 100% warranty coverage — labour &amp; spare parts included.</p>
+                    <p class="pockit-warranty-bullet">• Expert-verified repair quotes before work begins.</p>
+                    <p class="pockit-warranty-bullet">• Fixed rate card — no surprise charges.</p>
+                    <p class="pockit-warranty-bullet">• One-click hassle-free warranty claims.</p>
+                    <p class="pockit-warranty-bullet">• No paperwork or follow-up required.</p>
+                  </div>
+                </div>
+                <div class="mt-2">
+                  <button class="pockit-blue-header w-100 text-start border-0">
+                    <span class="pockit-blue-header-text">How is warranty period calculated?</span>
+                  </button>
+                  <div class="pt-2 ps-1">
+                    <p class="pockit-warranty-bullet">• 5 days warranty on servicing and minor repairs not requiring
+                      spare parts.</p>
+                  </div>
+                </div>
+                <div class="mt-2">
+                  <button class="pockit-blue-header w-100 text-start border-0">
+                    <span class="pockit-blue-header-text">What is not covered in the warranty?</span>
+                  </button>
+                  <div class="pt-2 ps-1">
+                    <p class="pockit-warranty-bullet">• Any new issues occurring post repair in parts not repaired by
+                      Pockit.</p>
+                    <p class="pockit-warranty-bullet">• Spare parts not purchased from Pockit.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -507,38 +473,19 @@
       <div class="col-md-6">
         <div class="accordion" *ngIf="customertype == 'I'">
           <div class="accordion-item mb-3">
-            <h2
-              class="accordion-header"
-              (click)="toggleAccordion('paymentSummary')"
-            >
-              <button
-                class="accordion-button fw-bold d-flex align-items-center gap-2 padding-14-11"
-                [class.collapsed]="!orderDetailsVisible['paymentSummary']"
-              >
-                <svg
-                  _ngcontent-ecs-c33=""
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="18"
-                  viewBox="0 0 19 22"
-                  fill="none"
-                >
-                  <path
-                    _ngcontent-ecs-c33=""
+            <h2 class="accordion-header" (click)="toggleAccordion('paymentSummary')">
+              <button class="accordion-button fw-bold d-flex align-items-center gap-2"
+                [class.collapsed]="!orderDetailsVisible['paymentSummary']">
+                <svg _ngcontent-ecs-c33="" xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 19 22"
+                  fill="none">
+                  <path _ngcontent-ecs-c33=""
                     d="M14.55 3.50027L4.04996 3.5C4.06562 3.5 7.08126 3.50009 7.09687 3.50027C9.2844 3.52541 11.05 5.30652 11.05 7.5C11.05 9.69483 9.28223 11.4768 7.09284 11.4998C7.07856 11.4999 4.06427 11.5 4.04996 11.5L11.05 18.5M4.04996 7.5H14.55"
-                    stroke="#2A3B8F"
-                    stroke-width="1.3"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></path>
+                    stroke="#2A3B8F" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
                 {{ "order_review.payment_summary.title" | translate }}
               </button>
             </h2>
-            <div
-              class="accordion-collapse"
-              [class.show]="orderDetailsVisible['paymentSummary']"
-            >
+            <div class="accordion-collapse" [class.show]="orderDetailsVisible['paymentSummary']">
               <div class="accordion-body">
                 <div class="d-flex justify-content-between">
                   <p class="mb-1">
@@ -546,8 +493,8 @@
                   </p>
                   <p class="mb-1">
                     ₹{{
-                      OrderReviewDetails?.CART_INFO[0]?.TOTAL_TAXABLE_AMOUNT
-                        | number
+                    OrderReviewDetails?.CART_INFO[0]?.TOTAL_TAXABLE_AMOUNT
+                    | number
                     }}
                   </p>
                 </div>
@@ -559,34 +506,30 @@
                     ₹{{ OrderReviewDetails?.CART_INFO[0]?.TAX_AMOUNT | number }}
                   </p>
                 </div>
-                <ng-container
-                  *ngIf="OrderReviewDetails?.CART_INFO[0]?.IS_EXPRESS === 1"
-                >
+                <ng-container *ngIf="OrderReviewDetails?.CART_INFO[0]?.IS_EXPRESS === 1">
                   <div class="d-flex justify-content-between">
                     <p class="mb-1">
                       {{
-                        "order_review.payment_summary.express_service"
-                          | translate
+                      "order_review.payment_summary.express_service"
+                      | translate
                       }}
                     </p>
                     <p class="mb-1">
                       ₹{{
-                        OrderReviewDetails?.CART_INFO[0]?.EXPRESS_CHARGES
-                          | number
+                      OrderReviewDetails?.CART_INFO[0]?.EXPRESS_CHARGES
+                      | number
                       }}
                     </p>
                   </div>
                 </ng-container>
-                <ng-container
-                  *ngIf="OrderReviewDetails?.CART_INFO[0]?.COUPON_ID"
-                >
+                <ng-container *ngIf="OrderReviewDetails?.CART_INFO[0]?.COUPON_ID">
                   <div class="d-flex justify-content-between">
                     <p class="mb-1">
                       {{ "order_review.payment_summary.discount" | translate }}
                     </p>
                     <p class="mb-1">
                       - ₹{{
-                        OrderReviewDetails?.CART_INFO[0]?.COUPON_AMOUNT | number
+                      OrderReviewDetails?.CART_INFO[0]?.COUPON_AMOUNT | number
                       }}
                     </p>
                   </div>
@@ -598,7 +541,7 @@
                   </p>
                   <p class="mb-1">
                     ₹{{
-                      OrderReviewDetails?.CART_INFO[0]?.TOTAL_AMOUNT | number
+                    OrderReviewDetails?.CART_INFO[0]?.TOTAL_AMOUNT | number
                     }}
                   </p>
                 </div>
@@ -607,60 +550,26 @@
           </div>
         </div>
         <div class="card shadow-sm p-3 rounded-16">
-          <h5
-            *ngIf="customertype !== 'B'" class="font-14-bold"
-          >
+          <h5 *ngIf="customertype !== 'B'" class="font-14-bold">
             {{ "order_review.payment_mode.title" | translate }}
           </h5>
           <div *ngIf="customertype !== 'B'" class="form-check">
-            <input
-              class="form-check-input"
-              type="radio"
-              id="online"
-              name="paymentMode"
-              [(ngModel)]="selectedPaymentMethod"
-              value="ONLINE"
-            />
-            <label
-              class="form-check-label font-13"
-              for="online"
-              >{{
-                "order_review.payment_mode.online_payment" | translate
-              }}</label
-            >
+            <input class="form-check-input" type="radio" id="online" name="paymentMode"
+              [(ngModel)]="selectedPaymentMethod" value="ONLINE" />
+            <label class="form-check-label font-13" for="online">{{
+              "order_review.payment_mode.online_payment" | translate
+              }}</label>
           </div>
-          <div *ngIf="customertype !== 'B'" class="form-check">
-            <input
-              class="form-check-input"
-              type="radio"
-              id="cod"
-              name="paymentMode"
-              [(ngModel)]="selectedPaymentMethod"
-              value="COD"
-            />
-            <label  class="form-check-label font-13" for="cod">{{
-              "order_review.payment_mode.cash_on_delivery" | translate
-            }}</label>
-          </div>
-          <button
-            class="btn w-100 mt-3 bg-blue-rounded-8"
-            (click)="proceedToPay()"
-          >
+          <button class="btn w-100 mt-3 bg-blue-rounded-8" (click)="proceedToPay()">
             <span class="proceed-to-pay-btn" *ngIf="customertype === 'B'">{{
               "order_review.payment_mode.proceed" | translate
-            }}</span>
-            <span
-              *ngIf="customertype !== 'B' && selectedPaymentMethod == 'ONLINE'"
-              class="proceed-to-pay-btn"
-            >
+              }}</span>
+            <span *ngIf="customertype !== 'B' && selectedPaymentMethod == 'ONLINE'" class="proceed-to-pay-btn">
               {{ "order_review.payment_mode.proceed_to_pay" | translate }} ₹{{
-                OrderReviewDetails?.CART_INFO[0]?.TOTAL_AMOUNT | number
+              OrderReviewDetails?.CART_INFO[0]?.TOTAL_AMOUNT | number
               }}
             </span>
-            <span
-              *ngIf="customertype !== 'B' && selectedPaymentMethod == 'COD'"
-              class="proceed-to-pay-btn"
-            >
+            <span *ngIf="customertype !== 'B' && selectedPaymentMethod == 'COD'" class="proceed-to-pay-btn">
               {{ "order_review.payment_mode.proceed" | translate }}
             </span>
           </button>
@@ -669,169 +578,89 @@
     </div>
   </div>
 </div>
-<div
-  class="modal fade"
-  id="couponModal"
-  tabindex="-1"
-  aria-labelledby="couponModalLabel"
-  aria-hidden="true"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
->
+<div class="modal fade" id="couponModal" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true"
+  data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content p-2">
-      <div
-        class="modal-header border-0 py-2 px-3 flex-column align-items-stretch bg-light-rounded-6"
-        *ngIf="!newcoupons"
-      >
+      <div class="modal-header border-0 py-2 px-3 flex-column align-items-stretch bg-light-rounded-6"
+        *ngIf="!newcoupons">
         <div class="d-flex justify-content-between align-items-center mb-2">
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="d-flex align-items-center">
-          <input
-            type="text"
-            class="form-control form-control-sm font-13-flex-1"
-            *ngIf="couponcount > 0"
-            [placeholder]="
+          <input type="text" class="form-control form-control-sm font-13-flex-1" *ngIf="couponcount > 0" [placeholder]="
               'order_review.coupon_modal.search_placeholder' | translate
-            "
-            [(ngModel)]="searchQuery"
-          />
+            " [(ngModel)]="searchQuery" />
         </div>
       </div>
-      <div
-        class="border-0 p-3 bg-light-rounded-6"
-        *ngIf="newcoupons"
-      >
-        <div
-          class="d-flex align-items-center justify-content-between mb-2 border-bottom-light-padding-4"
-        >
-          <button
-            type="button"
-            class="btn btn-sm d-flex align-items-center font-13"
-            (click)="goBackFromCoupon()"
-          >
+      <div class="border-0 p-3 bg-light-rounded-6" *ngIf="newcoupons">
+        <div class="d-flex align-items-center justify-content-between mb-2 border-bottom-light-padding-4">
+          <button type="button" class="btn btn-sm d-flex align-items-center font-13" (click)="goBackFromCoupon()">
             ←
           </button>
           <span class="ml-10">Coupon Code</span>
-          <button
-            type="button"
-            class="btn-close"
-            (click)="goBackFromCoupon()"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" (click)="goBackFromCoupon()" data-bs-dismiss="modal"
+            aria-label="Close"></button>
         </div>
         <div class="d-flex align-items-center justify-content-between">
-          <input
-            type="text"
-            class="form-control form-control-sm me-2 font-13-w-70"
-            placeholder="Enter your coupon code"
-            [(ngModel)]="searchQuery"
-            name="couponCode"
-            pattern="^[A-Za-z0-9]+$"
-            #couponCode="ngModel"
-            required
-          />
-          <button
-            *ngIf="couponcount > 0 && !newcoupons"
-            class="btn btn-sm btn-primary font-13-minw-60"
-            (click)="applySelectedCoupon()"
-            [disabled]="!couponCode.valid"
-          >
+          <input type="text" class="form-control form-control-sm me-2 font-13-w-70" placeholder="Enter your coupon code"
+            [(ngModel)]="searchQuery" name="couponCode" pattern="^[A-Za-z0-9]+$" #couponCode="ngModel" required />
+          <button *ngIf="couponcount > 0 && !newcoupons" class="btn btn-sm btn-primary font-13-minw-60"
+            (click)="applySelectedCoupon()" [disabled]="!couponCode.valid">
             Apply
           </button>
-          <button
-            *ngIf="newcoupons"
-            class="btn btn-sm btn-primary font-13-minw-60"
-            (click)="newcouponadd(couponCode.value)"
-            [disabled]="!couponCode.valid"
-          >
+          <button *ngIf="newcoupons" class="btn btn-sm btn-primary font-13-minw-60"
+            (click)="newcouponadd(couponCode.value)" [disabled]="!couponCode.valid">
             Apply
           </button>
         </div>
-        <small
-          class="text-danger mt-1 d-block"
-          *ngIf="couponCode.invalid && couponCode.dirty"
-        >
+        <small class="text-danger mt-1 d-block" *ngIf="couponCode.invalid && couponCode.dirty">
           Only letters and numbers are allowed.
         </small>
       </div>
       <span *ngIf="!newcoupons">
-        <a class="ml-20-pointer-blue-13"
-          (click)="addCoupon()"
-        >
+        <a class="ml-20-pointer-blue-13" (click)="addCoupon()">
           Have a coupon code?
-        </a></span
-      >
-      <div
-        class="modal-body text-center p-3 cursor-pointer-padding-8"
-      >
-        <ng-container
-          *ngIf="filteredCoupons.length > 0 && !newcoupons; else noCoupons"
-        >
-          <div
-            *ngFor="let coupon of filteredCoupons"
+        </a></span>
+      <div class="modal-body text-center p-3 cursor-pointer-padding-8">
+        <ng-container *ngIf="filteredCoupons.length > 0 && !newcoupons; else noCoupons">
+          <div *ngFor="let coupon of filteredCoupons"
             class="coupon-item d-flex justify-content-between align-items-center p-2 border-bottom small card-style"
-            (click)="selectCoupon(coupon)"
-            [class.selected]="selectedCoupon?.COUPON_ID === coupon.COUPON_ID"
+            (click)="selectCoupon(coupon)" [class.selected]="selectedCoupon?.COUPON_ID === coupon.COUPON_ID"
             onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.15)';"
-            onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';"
-          >
+            onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">
             <div class="p-3 padding-3">
               <div class="text-start line-height-25">
-                <h6
-                  class="m-0 fw-bold text-dark font-14-weight-600-black"
-                >
+                <h6 class="m-0 fw-bold text-dark font-14-weight-600-black">
                   {{
-                    coupon?.COUPON_NAME ? coupon?.COUPON_NAME : "Coupon Applied"
+                  coupon?.COUPON_NAME ? coupon?.COUPON_NAME : "Coupon Applied"
                   }}
                 </h6>
-                <span
-                  class="m-0 text-muted mt-0-font-1"
-                  >Code : {{ coupon.COUPON_CODE }}</span
-                >
+                <span class="m-0 text-muted mt-0-font-1">Code : {{ coupon.COUPON_CODE }}</span>
                 &nbsp; &nbsp;
-                <span
-                  *ngIf="coupon.COUPON_VALUE_TYPE == 'P'" class="badge-red-style"
-                >
+                <span *ngIf="coupon.COUPON_VALUE_TYPE == 'P'" class="badge-red-style">
                   {{ coupon.COUPON_VALUE }}%
                   {{ "order_review.coupons.discount" | translate }}
                 </span>
-                <span
-                  *ngIf="coupon.COUPON_VALUE_TYPE == 'A'" class="badge-red-style"
-                >
+                <span *ngIf="coupon.COUPON_VALUE_TYPE == 'A'" class="badge-red-style">
                   &#8377;{{ coupon.COUPON_VALUE | number }}
                   {{ "order_review.coupons.discount" | translate }}
                 </span>
               </div>
             </div>
-            <div
-              class="d-flex align-items-center gap-2 cursor-pointer"
-            >
-              <i
-                class="bi"
-                [ngClass]="
+            <div class="d-flex align-items-center gap-2 cursor-pointer">
+              <i class="bi" [ngClass]="
                   selectedCoupon?.COUPON_ID === coupon.COUPON_ID
                     ? 'bi-check-circle-fill text-success'
                     : 'bi-circle'
-                "
-              ></i>
+                "></i>
             </div>
           </div>
         </ng-container>
         <ng-template #noCoupons>
           <div class="no-coupons text-center" *ngIf="!newcoupons">
-            <img
-              src="assets/img/hand-drawn-no-data-concept.png"
-              alt="No Coupons"
-              class="no-coupon-img mb-3 size-60-40"
-            />
+            <img src="assets/img/hand-drawn-no-data-concept.png" alt="No Coupons"
+              class="no-coupon-img mb-3 size-60-40" />
             <h6 class="fw-bold">
               {{ "order_review.coupon_modal.no_coupons" | translate }}
             </h6>
@@ -842,20 +671,11 @@
         </ng-template>
       </div>
       <div class="modal-footer border-0 p-3" *ngIf="filteredCoupons.length > 0 && !newcoupons">
-        <button
-          class="btn btn-primary w-100 padding-10-font-14-bold"
-          (click)="applySelectedCoupon()"
-          [disabled]="!selectedCoupon"
-        >
+        <button class="btn btn-primary w-100 padding-10-font-14-bold" (click)="applySelectedCoupon()"
+          [disabled]="!selectedCoupon">
           {{ "order_review.coupon_modal.apply" | translate }}
         </button>
       </div>
     </div>
   </div>
 </div>
-<style>
-  .custom-shadow {
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
-    border-radius: 8px;
-  }
-</style>
