@@ -356,6 +356,7 @@
       "myProfile": "My Profile",
       "myOrders": "My Orders",
       "myAddresses": "My Addresses",
+      "myWallet": "My Wallet",
       "logout": "Logout",
       "settings": "Settings",
       "notifications": "Notifications",
@@ -374,6 +375,17 @@
       "editDetails": "Edit Details",
       "editContact": "Edit Contact Info",
       "uploadFile": "Upload File",
+      "wallet": {
+        "availableBalance": "AVAILABLE BALANCE",
+        "lastUpdated": "Last updated",
+        "justNow": "just now",
+        "recentTransactions": "Recent Transactions",
+        "seeAll": "See all",
+        "moneyAdded": "Money Added",
+        "credit": "Credit",
+        "debit": "Debit",
+        "active": "ACTIVE"
+      },
       "photoCapture": {
         "title": "Take a Picture",
         "capture": "Capture"
@@ -869,7 +881,8 @@
     "base_price": "Base Price",
     "discount": "Discount",
     "express_service": "Express Service",
-    "total": "Total"
+    "total": "Total",
+    "wallet_amount_used": "Wallet Amount Used"
   },
   "shop.PopularBrands": "Popular Brands",
   "shop.AllBrands": "View All Brands",

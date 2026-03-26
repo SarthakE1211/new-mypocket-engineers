@@ -1,15 +1,17 @@
+::ng-deep html,
+::ng-deep body {
+  overflow-y: auto !important;
+}
 @media (max-width: 1000px) {
   .express-badge {
     top: 20px !important;
     font-size: 12px !important;
     padding: 4px 10px !important;
   }
-
   .full-text {
     display: none;
   }
 }
-
 .back-button {
   width: 25px;
   height: 25px;
@@ -18,61 +20,49 @@
   text-decoration: none;
   display: flex;
 }
-
 .back-button i {
   font-size: 16px;
 }
-
 body {
   font-size: 14px;
 }
-
 h2,
 h5 {
   font-size: 15px !important;
 }
-
 p,
 span,
 button {
   font-size: 13px !important;
 }
-
 .accordion-button,
 .accordion-body,
 .status-item p,
 .btn {
   font-size: 14px !important;
 }
-
 .badge {
   font-size: 13px !important;
   padding: 2px 6px;
 }
-
 .accordion-button {
   background: #f8f9fa;
   border: none;
   cursor: pointer;
   border-radius: 16px !important;
 }
-
 .accordion-button.collapsed {
   background: #fff;
 }
-
 .accordion-collapse {
   display: none;
 }
-
 .accordion-collapse.show {
   display: block;
 }
-
 .accordion-item {
   border-radius: 16px !important;
 }
-
 .badge-custom {
   background-color: #092B9C;
   color: white;
@@ -90,31 +80,25 @@ button {
   justify-content: center;
   gap: 5px;
 }
-
 .accordion-collapse {
   transition: max-height 0.3s ease-in-out;
   overflow: hidden;
 }
-
 .accordion-collapse:not(.show) {
   max-height: 0;
 }
-
 .accordion-collapse.show {
   max-height: none;
 }
-
 .status-header {
   background: #f0f5ff;
   padding: 10px;
   border-radius: 5px;
 }
-
 .timeline {
   position: relative;
   padding-left: 20px;
 }
-
 .timeline::before {
   content: '';
   position: absolute;
@@ -124,14 +108,12 @@ button {
   width: 2px;
   background: #d3d3d3;
 }
-
 .timeline-item {
   display: flex;
   align-items: flex-start;
   margin-bottom: 15px;
   position: relative;
 }
-
 .timeline-icon {
   width: 20px;
   height: 20px;
@@ -142,37 +124,30 @@ button {
   position: relative;
   z-index: 1;
 }
-
 .timeline-content {
   flex-grow: 1;
 }
-
 .text-muted {
   color: #6c757d !important;
 }
-
 .status-container {
   max-height: 250px;
   overflow-y: auto;
   padding-left: 15px;
   position: relative;
 }
-
 .status-container::-webkit-scrollbar {
   width: 5px;
 }
-
 .status-container::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 5px;
 }
-
 .status-item {
   position: relative;
   padding-left: 20px;
   margin-bottom: 10px;
 }
-
 .status-line {
   position: absolute;
   left: 5px;
@@ -181,13 +156,11 @@ button {
   width: 2px;
   background: #ccc;
 }
-
 .status-icon {
   font-size: 16px;
   position: absolute;
   left: -2px;
 }
-
 .technician-card {
   background: #fff;
   border: 1px solid #ddd;
@@ -195,13 +168,11 @@ button {
   padding: 15px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
-
 .map-container iframe {
   width: 100%;
   height: 300px;
   border-radius: 10px;
 }
-
 .no-data-loader {
   position: fixed;
   top: 0;
@@ -212,41 +183,34 @@ button {
   z-index: 1050;
   display: none;
 }
-
 @media (max-width: 576px) {
   .custom-drawer {
     width: 100%;
   }
-
   .service-card {
     padding: 10px;
   }
-
   .service-icon img {
     width: 40px;
     height: 40px;
   }
 }
-
 @media (max-width: 576px) {
   .service-icon img {
     width: 40px;
     height: 40px;
   }
 }
-
 .service-icon img {
   width: 50px;
   height: 50px;
   object-fit: cover;
 }
-
 .service-icon img {
   width: 50px;
   height: 50px;
   object-fit: cover;
 }
-
 .proceed-to-pay-btn {
   font-weight: 500;
   font-size: 16px !important;
@@ -256,14 +220,12 @@ button {
   color: white;
   display: inline-block;
 }
-
 body {
   font-family: SF Pro Text !important;
   font-weight: 400;
   font-size: 14px;
   color: #0E0E0E;
 }
-
 .cart-bottom {
   display: flex;
   align-items: center;
@@ -272,19 +234,16 @@ body {
   color: #0E0E0E;
   padding: 12px 0;
 }
-
 @media (max-width: 575px) {
   .textaligns {
     text-align: left !important;
   }
 }
-
 @media (min-width: 576px) {
   .textaligns {
     text-align: right !important;
   }
 }
-
 .cart-bottom {
   display: flex;
   align-items: center;
@@ -293,7 +252,6 @@ body {
   color: #0E0E0E;
   padding: 12px 0;
 }
-
 .cart-icon {
   width: 25px;
   height: 25px;
@@ -306,36 +264,29 @@ body {
   color: #2A3B8F;
   font-size: 18px;
 }
-
 .no-border-no-shadow {
   border: none;
   box-shadow: none !important
 }
-
 .no-margin-top-no-padding-left {
   margin-top: 0px !important;
   padding-top: 0px !important;
   padding-left: 0px !important;
 }
-
 .font-size-14 {
   font-size: 14px
 }
-
 .mb-0-font-18 {
   margin-bottom: 0px;
   font-size: 18px !important
 }
-
 .rounded-16-padding-10 {
   border-radius: 16px !important;
   padding: 10px !important
 }
-
 .padding-2 {
   padding: 2px
 }
-
 .absolute-right-action-badge {
   position: absolute;
   top: 25px;
@@ -351,105 +302,84 @@ body {
   font-size: 14px;
   z-index: 1;
 }
-
 .position-relative {
   position: relative
 }
-
 .size-50 {
   width: 50px;
   height: 50px
 }
-
 .size-36-contain {
   width: 36px;
   height: 36px;
   object-fit: contain
 }
-
 .font-16-weight-600 {
   font-size: 16px !important;
   font-weight: 600 !important;
 }
-
 .border-light-margin-11 {
   border: 1px solid #e7e6e6;
   margin: 11px
 }
-
 .padding-0 {
   padding: 0px
 }
-
 .text-blue-12 {
   color: #2a3b8f !important;
   font-size: 12px !important
 }
-
 .font-weight-500 {
   font-weight: 500
 }
-
 .transparent-btn-reset {
   background: transparent;
   border: none;
   outline: none;
   box-shadow: none;
 }
-
 .font-15-weight-600 {
   font-size: 15px !important;
   font-weight: 600 !important;
 }
-
 .text-dark-18 {
   color: #212529 !important;
   font-size: 18px
 }
-
 .text-black-500 {
   color: #0e0e0e !important;
   font-weight: 500 !important;
 }
-
 .text-gray-636 {
   color: #636363 !important
 }
-
 .my-4 {
   margin-top: 4px;
   margin-bottom: 4px
 }
-
 .cursor-pointer {
   cursor: pointer
 }
-
 .padding-bg-white {
   padding: 10px 0px 10px 10px !important;
   background-color: white !important;
 }
-
 .w-100 {
   width: 100% !important
 }
-
 .font-16-weight-600-black {
   font-weight: 600;
   font-size: 16px;
   color: black !important;
 }
-
 .mt-0-font-12 {
   margin-top: 0px !important;
   font-size: 12px
 }
-
 .w-100-mt-7 {
   width: 100% !important;
   margin-top: 7px
 }
-
 .border-blue-9 {
   border: 1px Solid;
   color: #0863e8 !important;
@@ -457,11 +387,9 @@ body {
   font-size: 9px !important;
   margin-top: 0px;
 }
-
 .mt-0-important {
   margin-top: 0px !important
 }
-
 .font-15-blue-bold {
   font-size: 17px !important;
   color: #ffff !important;
@@ -470,7 +398,6 @@ body {
   padding: 3px 1px 1px 7px !important;
   width: 110px;
 }
-
 .flex-between-center {
   display: flex;
   justify-content: space-between;
@@ -478,74 +405,59 @@ body {
   align-self: baseline !important;
   align-items: center !important;
 }
-
 .font-12 {
   font-size: 12px
 }
-
 .padding-14-11 {
   padding: 14px 11px
 }
-
 .rounded-16 {
   border-radius: 16px !important
 }
-
 .font-14-bold {
   font-size: 14px !important;
   font-weight: bold
 }
-
 .font-13 {
   font-size: 13px
 }
-
 .bg-blue-rounded-8 {
   background-color: #3170de;
   border-radius: 8px
 }
-
 .bg-light-rounded-6 {
   background-color: #f8f9fa;
   border-radius: 6px
 }
-
 .font-13-flex-1 {
   font-size: 13px;
   flex: 1
 }
-
 .border-bottom-light-padding-4 {
   border-bottom: 1px solid #eaeaea;
   padding-bottom: 4px
 }
-
 .ml-10 {
   margin-left: 10px
 }
-
 .font-13-w-70 {
   font-size: 13px;
   width: 70%
 }
-
 .font-13-minw-60 {
   font-size: 13px;
   min-width: 60px
 }
-
 .ml-20-pointer-blue-13 {
   margin-left: 20px;
   cursor: pointer;
   font-size: 13px;
   color: #034a95;
 }
-
 .cursor-pointer-padding-8 {
   cursor: pointer;
   padding: 8px 8px 0px !important
 }
-
 .card-style {
   border-radius: 10px;
   margin-bottom: 12px;
@@ -553,21 +465,17 @@ body {
   border: 0.5px solid #cbcbcb;
   transition: transform 0.3s ease-in-out;
 }
-
 .padding-3 {
   padding: 3px !important
 }
-
 .line-height-25 {
   line-height: 25px
 }
-
 .font-14-weight-600-black {
   font-weight: 600;
   font-size: 14px;
   color: black !important;
 }
-
 .badge-red-style {
   background-color: #ebd1d1;
   border-radius: 5px;
@@ -575,24 +483,20 @@ body {
   font-size: 10px !important;
   border: 1px solid #d3a5a5;
 }
-
 .size-60-40 {
   width: 60px;
   height: 40px
 }
-
 .padding-10-font-14-bold {
   padding: 10px;
   font-size: 14px;
   font-weight: 600
 }
-
 .pockit-step-row {
   display: flex;
   align-items: flex-start;
   margin-bottom: 14px;
 }
-
 .pockit-circle {
   width: 24px;
   height: 24px;
@@ -604,73 +508,58 @@ body {
   justify-content: center;
   margin-right: 10px;
 }
-
 .pockit-circle-text {
   color: #fff;
   font-size: 12px !important;
   font-weight: 600;
 }
-
 .pockit-step-title {
   font-weight: 600;
   font-size: 14px !important;
   margin-bottom: 2px;
   color: #0e0e0e;
 }
-
 .pockit-step-desc {
   font-size: 13px !important;
   color: #666;
   margin-bottom: 0;
   white-space: pre-line;
 }
-
 .flex-1 {
   flex: 1;
 }
-
-
-
-
-
 .pockit-note-box {
   background-color: #fafafa;
   padding: 10px;
   border-radius: 6px;
   margin-top: 12px;
 }
-
 .pockit-note-title {
   color: #ff4d4f;
   font-weight: 600;
   margin-bottom: 6px;
   font-size: 13px !important;
 }
-
 .pockit-note-text {
   font-size: 13px !important;
   color: #555;
   margin-bottom: 4px;
 }
-
 .pockit-warranty-bullet {
   font-size: 13px !important;
   color: #2A3B8F;
   margin-bottom: 4px;
   line-height: 18px;
 }
-
 .custom-shadow {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
 }
-
 .pockit-step-row {
   display: flex;
   align-items: flex-start;
   margin-bottom: 14px;
 }
-
 .pockit-circle {
   width: 24px;
   height: 24px;
@@ -682,65 +571,55 @@ body {
   justify-content: center;
   margin-right: 10px;
 }
-
 .pockit-circle-text {
   color: #fff;
   font-size: 12px !important;
   font-weight: 600;
 }
-
 .pockit-step-title {
   font-weight: 600;
   font-size: 14px !important;
   margin-bottom: 2px;
   color: #0e0e0e;
 }
-
 .pockit-step-desc {
   font-size: 13px !important;
   color: #666;
   margin-bottom: 0;
   white-space: pre-line;
 }
-
 .flex-1 {
   flex: 1;
 }
-
 .pockit-blue-header {
   background-color: #2f3e8c;
   padding: 8px 12px;
   border-radius: 6px;
   margin: 12px 0;
-  cursor:text !important;
+  cursor: text !important;
 }
-
 .pockit-blue-header-text {
   color: #fff !important;
   font-weight: 600;
   font-size: 13px !important;
 }
-
 .pockit-note-box {
   background-color: #fafafa;
   padding: 10px;
   border-radius: 6px;
   margin-top: 12px;
 }
-
 .pockit-note-title {
   color: #ff4d4f;
   font-weight: 600;
   margin-bottom: 6px;
   font-size: 13px !important;
 }
-
 .pockit-note-text {
   font-size: 13px !important;
   color: #555;
   margin-bottom: 4px;
 }
-
 .pockit-warranty-bullet {
   font-size: 13px !important;
   color: #2A3B8F;

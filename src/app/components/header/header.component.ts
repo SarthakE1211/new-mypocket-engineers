@@ -153,6 +153,24 @@ export class HeaderComponent {
   addressCity: any = '';
   locationName: string = '';
   currentLang = 'en';
+  walletBalance: number = 0;
+  totalUsed: number = 0;
+  expiredAmount: number = 0;
+  availableBalance: number = 0;
+  firstExpiryDate: any = null;
+
+  recentTransactions: any[] = [];
+  allTransactions: any[] = [];
+  historyPageIndex: number = 1;
+  hasMoreRecentTransactions: boolean = false;
+  historyPageSize: number = 10;
+  hasMoreTransactions: boolean = true;
+  isHistoryLoading: boolean = false;
+  customertype: any = this.apiservice.getCustomerType();
+  historyFromDate: string = '';
+  historyToDate: string = '';
+  historySelectedType: string = 'All';
+  isFilterApplied: boolean = false;
   toggleProfileMenu() {
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
   }
@@ -557,11 +575,14 @@ export class HeaderComponent {
   isMobileMenuOpen: boolean = false;
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
-    document.body.style.overflow = this.isMobileMenuOpen ? 'hidden' : '';
+    const overflow = this.isMobileMenuOpen ? 'hidden' : '';
+    document.body.style.overflow = overflow;
+    document.documentElement.style.overflow = overflow;
   }
   closeMobileMenu() {
     this.isMobileMenuOpen = false;
     document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
   }
   editProfilePhoto() { }
   fileChangeEvent(event: any) {
@@ -988,6 +1009,295 @@ export class HeaderComponent {
       });
   }
   gotoProfile() {
+    this.showContent = 'normal';
+  }
+  openWallet() {
+    this.showContent = 'walletTab';
+    this.getWalletData();
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+  }
+  getWalletData() {
+    this.expiredAmount = 0;
+    const data = {
+      CUSTOMER_ID: this.userID,
+      pageIndex: 1,
+      pageSize: 6,
+      sortKey: '',
+      sortValue: '',
+      filter: ' AND CUSTOMER_ID = ' + this.userID
+    };
+
+    this.apiservice.getCustomerWallet(data).subscribe((res: any) => {
+      if (res && res.code === 200 && res.data && res.data.length > 0) {
+        this.walletBalance = res.data[0]?.WALLET_AMOUNT || 0;
+        this.totalUsed = res.data[0]?.USED_AMOUNT || 0;
+        // this.expiredAmount = res.data[0]?.EXPIRED_AMOUNT || 0; // Don't show already expired historical amount
+        this.availableBalance = res.data[0]?.AVAILABLE_BALANCE || 0;
+      }
+    });
+
+    this.apiservice.getCustomerWalletTransaction(data).subscribe((res: any) => {
+      console.log('transactions res', res);
+      if (res && res.code === 200 && res.data) {
+        if (!this.walletBalance) {
+          this.walletBalance = res.data[0]?.BALANCE || res?.BALANCE || 0;
+        }
+        if (!this.totalUsed) {
+          this.totalUsed = res.data[0]?.USED_AMT || res?.USED_AMT || 0;
+        }
+        if (!this.availableBalance) {
+          this.availableBalance = res.data[0]?.AVAILABLE_BALANCE || 0;
+        }
+
+        this.hasMoreRecentTransactions = res.data.length > 5;
+        this.recentTransactions = res.data.slice(0, 5).map((trans: any) => {
+          let mappedTitle = trans.TITLE || 'Transaction';
+          let mappedType = (trans.TYPE === 'DW') ? 'Debited' : 'Credit';
+          let mappedIcon = 'bi-wallet2';
+
+          if (trans.TYPE === 'PR') {
+            mappedTitle = 'Promotional';
+            mappedIcon = 'bi-tags';
+          } else if (trans.TYPE === 'RF') {
+            mappedTitle = 'Refunded';
+            mappedIcon = 'bi-arrow-counterclockwise';
+          } else if (trans.TYPE === 'AT') {
+            mappedTitle = 'Admin Topup';
+            mappedIcon = 'bi-person-gear';
+          } else if (trans.TYPE === 'DW') {
+            mappedTitle = 'Debited';
+            mappedIcon = 'bi-cart-dash';
+          } else if (trans.TYPE === 'SB') {
+            mappedTitle = 'Signup Bonus';
+            mappedIcon = 'bi-gift';
+          }
+
+          if (mappedType === 'Credit' && mappedTitle === 'Transaction') {
+            mappedTitle = '';
+          }
+
+          return {
+            ...trans,
+            mappedTitle: mappedTitle,
+            mappedType: mappedType,
+            mappedIcon: mappedIcon,
+            displayDate: this.formatTransactionDate(trans.TRANSACTION_DATE),
+            displayTime: trans.CREATED_TIME || '',
+            displayAmount: trans.WALLET_AMOUNT || 0,
+            EXPIRY_DATE: trans.EXPIRY_DATE,
+            IS_EXPIRED: trans.IS_EXPIRED
+          };
+        });
+
+        // Filter valid credits that are expiring soon
+        const expiringPrs = res.data.filter((t: any) =>
+          t.EXPIRY_DATE &&
+          t.IS_EXPIRED === 0 &&
+          (t.TYPE === 'PR' || t.TYPE === 'SB' || t.TYPE === 'CR' || t.TYPE === 'AT' || t.TYPE === 'RF')
+        );
+
+        if (expiringPrs.length > 0) {
+          // Find the earliest/first expiry date
+          const earliestExpiryDate = expiringPrs.reduce((prev: any, curr: any) => {
+            return new Date(curr.EXPIRY_DATE) < new Date(prev.EXPIRY_DATE) ? curr : prev;
+          }, expiringPrs[0]).EXPIRY_DATE;
+
+          // Sum all amounts that expire on this exact same date
+          const totalAtFirstExpiry = expiringPrs
+            .filter((t: any) => t.EXPIRY_DATE === earliestExpiryDate)
+            .reduce((sum: number, t: any) => sum + (Number(t.WALLET_AMOUNT) || 0), 0);
+
+          this.expiredAmount = totalAtFirstExpiry;
+          this.firstExpiryDate = earliestExpiryDate; // Storing the date for potential display
+        } else {
+          this.expiredAmount = 0;
+          this.firstExpiryDate = null;
+        }
+      }
+    });
+  }
+
+  formatTransactionDate(date: any): string {
+    if (!date) return '';
+    try {
+      const formatted = this.datePipe.transform(date, 'EEE, MMM d, yyyy');
+      if (formatted) {
+        return formatted;
+      }
+      return '';
+    } catch (e) {
+      return '';
+    }
+  }
+  openAllTransactions() {
+    this.showContent = 'allTransactionsTab';
+    this.historyPageIndex = 1;
+    this.allTransactions = [];
+    this.hasMoreTransactions = true;
+    this.isHistoryLoading = false;
+    this.historyFromDate = '';
+    this.historyToDate = '';
+    this.historySelectedType = 'All';
+    this.isFilterApplied = false;
+    this.getAllTransactionsData();
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+  }
+  getAllTransactionsData() {
+    if (this.isHistoryLoading) return;
+    this.isHistoryLoading = true;
+    let filter = ' AND CUSTOMER_ID = ' + this.userID;
+    if (this.historyFromDate && this.historyToDate) {
+      filter += ` AND TRANSACTION_DATE BETWEEN '${this.historyFromDate} 00:00:00' AND '${this.historyToDate} 23:59:59'`;
+    }
+    if (this.historySelectedType !== 'All') {
+      let typeCode = '';
+      if (this.historySelectedType === 'Credit') typeCode = 'CR';
+      else if (this.historySelectedType === 'Debit') typeCode = 'DW';
+      else if (this.historySelectedType === 'Refunded') typeCode = 'RF';
+      else if (this.historySelectedType === 'Admin Topup') typeCode = 'AT';
+      else if (this.historySelectedType === 'Promotional') typeCode = 'PR';
+      else if (this.historySelectedType === 'Signup Bonus') typeCode = 'SB';
+
+      if (typeCode) {
+        filter += ` AND TYPE = '${typeCode}'`;
+      }
+    }
+
+    const data = {
+      CUSTOMER_ID: this.userID,
+      pageIndex: this.historyPageIndex,
+      pageSize: this.historyPageSize,
+      sortKey: 'ID',
+      sortValue: 'desc',
+      filter: filter
+    };
+    this.apiservice.getCustomerWalletTransaction(data).subscribe((res: any) => {
+      this.isHistoryLoading = false;
+      if (res && res.code === 200 && res.data) {
+        const newTransactions = res.data.map((trans: any) => {
+          let mappedTitle = trans.TITLE || 'Transaction';
+          let mappedType = (trans.TYPE === 'DW') ? 'Debited' : 'Credit';
+          let mappedIcon = 'bi-wallet2';
+
+          if (trans.TYPE === 'PR') {
+            mappedTitle = 'Promotional';
+            mappedIcon = 'bi-tags';
+          } else if (trans.TYPE === 'RF') {
+            mappedTitle = 'Refunded';
+            mappedIcon = 'bi-arrow-counterclockwise';
+          } else if (trans.TYPE === 'AT') {
+            mappedTitle = 'Admin Topup';
+            mappedIcon = 'bi-person-gear';
+          } else if (trans.TYPE === 'DW') {
+            mappedTitle = 'Debited';
+            mappedIcon = 'bi-cart-dash';
+          } else if (trans.TYPE === 'SB') {
+            mappedTitle = 'Signup Bonus';
+            mappedIcon = 'bi-gift';
+          }
+
+          if (mappedType === 'Credit' && mappedTitle === 'Transaction') {
+            mappedTitle = '';
+          }
+
+          return {
+            ...trans,
+            mappedTitle: mappedTitle,
+            mappedType: mappedType,
+            mappedIcon: mappedIcon,
+            displayDate: this.formatTransactionDate(trans.TRANSACTION_DATE),
+            displayTime: trans.CREATED_TIME || '',
+            displayAmount: trans.WALLET_AMOUNT || 0,
+            EXPIRY_DATE: trans.EXPIRY_DATE,
+            IS_EXPIRED: trans.IS_EXPIRED
+          };
+        });
+
+        const batchTransactions = newTransactions.slice(0, this.historyPageSize);
+        this.allTransactions = [...this.allTransactions, ...batchTransactions];
+        this.hasMoreTransactions = newTransactions.length >= this.historyPageSize;
+      } else {
+        this.hasMoreTransactions = false;
+      }
+    }, error => {
+      this.isHistoryLoading = false;
+      this.hasMoreTransactions = false;
+    });
+  }
+
+  loadMoreTransactions() {
+    this.historyPageIndex++;
+    this.getAllTransactionsData();
+  }
+
+  applyHistoryFilters() {
+    if (!this.historyFromDate) {
+      this.toastr.error('Please Slect From Date', '');
+      return;
+    }
+    if (!this.historyToDate) {
+      this.toastr.error('Please Select To Date', '');
+      return;
+    }
+    this.applyHistoryFiltersInternal();
+  }
+
+  showCalendarPopup: boolean = false;
+
+  selectTransactionTab(type: string) {
+    this.historySelectedType = type;
+    this.historyPageIndex = 1;
+    this.allTransactions = [];
+    this.hasMoreTransactions = true;
+    this.getAllTransactionsData();
+  }
+
+  toggleCalendarPopup() {
+    this.showCalendarPopup = !this.showCalendarPopup;
+  }
+
+  clearDateFilters() {
+    this.historyFromDate = '';
+    this.historyToDate = '';
+    this.applyHistoryFiltersInternal();
+  }
+
+
+  applyHistoryFiltersInternal() {
+    this.historyPageIndex = 1;
+    this.allTransactions = [];
+    this.hasMoreTransactions = true;
+    this.isFilterApplied = !!(this.historyFromDate || this.historyToDate || this.historySelectedType !== 'All');
+    this.showCalendarPopup = false;
+    this.getAllTransactionsData();
+  }
+
+
+  closeCalendarPopup() {
+    this.showCalendarPopup = false;
+  }
+
+  clearHistoryFilters() {
+    this.historyFromDate = '';
+    this.historyToDate = '';
+    this.historySelectedType = 'All';
+    this.isFilterApplied = false;
+    this.applyHistoryFilters();
+  }
+
+  onTransactionsScroll(event: any) {
+    if (this.showContent !== 'allTransactionsTab') return;
+
+    const element = event.target;
+    const atBottom = element.scrollHeight - element.scrollTop <= element.clientHeight + 50;
+
+    if (atBottom && this.hasMoreTransactions && !this.isHistoryLoading) {
+      this.loadMoreTransactions();
+    }
+  }
+  gotoProfileWallet() {
     this.showContent = 'normal';
   }
   gotoProfile1111() {
@@ -3282,6 +3592,7 @@ export class HeaderComponent {
   closemodelllllll() {
     this.isMobileMenuOpen = false;
     document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
   }
   notificationdata: any = [];
   notificationloader: boolean = false;

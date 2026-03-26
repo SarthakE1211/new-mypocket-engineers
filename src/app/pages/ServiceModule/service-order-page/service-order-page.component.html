@@ -26,8 +26,8 @@
                   currentterritory !== '' &&
                   currentterritory !== 'undefined'
                 ">
-                <a  class="dropdown-item cursor-pointer-font-13" (click)="openDrawer('reschedule')">
-                  <i class="bi bi-arrow-clockwise me-2 text-blue-2a3b8f" ></i>
+                <a class="dropdown-item cursor-pointer-font-13" (click)="openDrawer('reschedule')">
+                  <i class="bi bi-arrow-clockwise me-2 text-blue-2a3b8f"></i>
                   &nbsp;{{ "order_details.reschedule" | translate }}
                 </a>
               </li>
@@ -39,17 +39,16 @@
                   currentterritory !== '' &&
                   currentterritory !== 'undefined'
                 ">
-                <a  class="dropdown-item cursor-pointer-font-13" (click)="openDrawer('cancel')">
+                <a class="dropdown-item cursor-pointer-font-13" (click)="openDrawer('cancel')">
                   <i class="bi bi-x-circle me-2"></i>{{ "order_details.cancel" | translate }}
                 </a>
               </li>
               <li *ngIf="isShowDownload()">
-                <a  class="dropdown-item cursor-pointer-font-13" (click)="onDownloadInvoice()"
+                <a class="dropdown-item cursor-pointer-font-13" (click)="onDownloadInvoice()"
                   [class.disabled]="isDownloading">
-                  <i class="bi bi-file-earmark-arrow-down me-2 text-blue" ></i>
+                  <i class="bi bi-file-earmark-arrow-down me-2 text-blue"></i>
                   {{ "order_details.download_invoice" | translate }}
-                  <span *ngIf="isDownloading"
-                    class="spinner-border spinner-border-sm ms-2 font-bold"></span>
+                  <span *ngIf="isDownloading" class="spinner-border spinner-border-sm ms-2 font-bold"></span>
                 </a>
               </li>
             </ul>
@@ -58,23 +57,22 @@
         <div class="offcanvas offcanvas-end" tabindex="-1" id="cancelDrawer" aria-labelledby="cancelDrawerLabel"
           data-bs-backdrop="static">
           <div class="offcanvas-header border-bottom">
-            <h5 class="fw-bold mb-0 font-14" id="cancelDrawerLabel" >
+            <h5 class="fw-bold mb-0 font-14" id="cancelDrawerLabel">
               {{ "order_details.cancel_order" | translate }}
             </h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
           </div>
-          <div class="offcanvas-body d-flex flex-column bg-light-blue" >
-            <div *ngIf="reasonsisLoading" class="d-flex justify-content-center align-items-center h-200"
-              >
+          <div class="offcanvas-body d-flex flex-column bg-light-blue">
+            <div *ngIf="reasonsisLoading" class="d-flex justify-content-center align-items-center h-200">
               <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden"> Loading...</span>
               </div>
             </div>
             <div *ngIf="!reasonsisLoading" class="flex-grow-1">
-              <label class="form-label fw-semibold mb-3 font-14" >{{
+              <label class="form-label fw-semibold mb-3 font-14">{{
                 "order_details.select_cancellation_reason" | translate
                 }}</label>
-              <div class="border rounded-3 p-3 bg-white shadow-sm font-13" >
+              <div class="border rounded-3 p-3 bg-white shadow-sm font-13">
                 <div class="responsive-scroll">
                   <div *ngFor="let reason of cancelReasons; let i = index" class="form-check mb-2">
                     <input class="form-check-input" type="checkbox" [id]="'reason' + i" [value]="reason"
@@ -84,8 +82,8 @@
                     </label>
                   </div>
                 </div>
-                <div class="form-group mt-2 font-13-important" >
-                  <textarea  class="form-control rounded-3 w-100-font-13" rows="3"
+                <div class="form-group mt-2 font-13-important">
+                  <textarea class="form-control rounded-3 w-100-font-13" rows="3"
                     [placeholder]="'order_details.describe_problem' | translate" [(ngModel)]="comment"></textarea>
                 </div>
               </div>
@@ -126,23 +124,22 @@
         <div class="offcanvas offcanvas-end" tabindex="-1" id="rescheduleDrawer" aria-labelledby="rescheduleDrawerLabel"
           data-bs-backdrop="static">
           <div class="offcanvas-header border-bottom">
-            <h5 class="fw-bold mb-0 font-14" id="rescheduleDrawerLabel" >
+            <h5 class="fw-bold mb-0 font-14" id="rescheduleDrawerLabel">
               {{ "order_details.reschedule_order" | translate }}
             </h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
           </div>
-          <div class="offcanvas-body d-flex flex-column bg-light-blue" >
-            <div *ngIf="rescheduleLoading" class="d-flex justify-content-center align-items-center h-200"
-              >
+          <div class="offcanvas-body d-flex flex-column bg-light-blue">
+            <div *ngIf="rescheduleLoading" class="d-flex justify-content-center align-items-center h-200">
               <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">Loading...</span>
               </div>
             </div>
             <div *ngIf="!rescheduleLoading" class="flex-grow-1">
-              <label class="form-label fw-semibold mb-3 font-14" >{{
+              <label class="form-label fw-semibold mb-3 font-14">{{
                 "order_details.select_reschedule_reason" | translate
                 }}</label>
-              <div class="border rounded-3 p-3 bg-white shadow-sm font-13" >
+              <div class="border rounded-3 p-3 bg-white shadow-sm font-13">
                 <div class="responsive-scroll">
                   <div *ngFor="let reason of rescheduleReasons; let i = index" class="form-check mb-2">
                     <input class="form-check-input" type="checkbox" [id]="'rescheduleReason' + i" [value]="reason"
@@ -152,8 +149,8 @@
                     </label>
                   </div>
                 </div>
-                <div class="form-group mt-2 font-13-important" >
-                  <textarea  class="form-control rounded-3 w-100-font-13" rows="3"
+                <div class="form-group mt-2 font-13-important">
+                  <textarea class="form-control rounded-3 w-100-font-13" rows="3"
                     [placeholder]="'order_details.describe_problem' | translate"
                     [(ngModel)]="rescheduleComment"></textarea>
                 </div>
@@ -170,10 +167,10 @@
         </div>
       </div>
     </div>
-    <div class="offcanvas offcanvas-end w-700" data-bs-backdrop="static" tabindex="-1"
-      id="rescheduletimeslotdrawer" aria-labelledby="offcanvasRightLabel" [class.show]="isDrawerVisible">
+    <div class="offcanvas offcanvas-end w-700" data-bs-backdrop="static" tabindex="-1" id="rescheduletimeslotdrawer"
+      aria-labelledby="offcanvasRightLabel" [class.show]="isDrawerVisible">
       <div *ngIf="!loadepage" class="offcanvas-header border-bottom">
-        <h5 class="offcanvas-title fw-bold font-14" >
+        <h5 class="offcanvas-title fw-bold font-14">
           {{ "order_details.select_date_slot" | translate }}
         </h5>
         <button type="button" class="btn-close" (click)="drawerClose()"></button>
@@ -186,16 +183,15 @@
     <div class="row">
       <div class="col-md-6">
         <div class="accordion">
-          <div class="accordion-item mb-2 shadow-sm rounded rounded-16-mb-17" >
+          <div class="accordion-item mb-2 shadow-sm rounded rounded-16-mb-17">
             <div class="card rounded-16-border-none">
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
                   <h5 class="fw-bold d-flex align-items-center ml">
-                    <img src="assets/img/Vector.svg" alt="Icon" width="16" height="16" class="mr-2"
-                       />&nbsp;
+                    <img src="assets/img/Vector.svg" alt="Icon" width="16" height="16" class="mr-2" />&nbsp;
                     {{ "order_details.order_details" | translate }}
                   </h5>
-                  <span class="badge-blue-white" >
+                  <span class="badge-blue-white">
                     {{ "header.services" | translate }} :
                     {{ orderGetDetails.length }}
                   </span>
@@ -213,10 +209,11 @@
                       }}</span>
                   </p>
                   <div class="accordion-item mb-2 shadow-sm rounded rounded-16-mb-17">
-                    <button class="btn w-100 text-start fw-semibold d-flex justify-content-between align-items-center bg-white-rounded-padding"
+                    <button
+                      class="btn w-100 text-start fw-semibold d-flex justify-content-between align-items-center bg-white-rounded-padding"
                       type="button" (click)="toggleAccordionStatus()" [class.collapsed]="!isAccordionOpenStatus">
                       <span>
-                        <i class="bi bi-clock-history text-primary text-blue-2a3b8f" ></i>
+                        <i class="bi bi-clock-history text-primary text-blue-2a3b8f"></i>
                         &nbsp; {{ "order_details.order_status" | translate }}:
                         <ng-container *ngIf="
                             orderDetails.statusHistory?.length > 0;
@@ -279,8 +276,7 @@
                             selectedIndex === i ? '#f9e8d657' : 'white'
                         }" (click)="setSelectedCard(i)">
                         <div class="card-body padding-2">
-                          <div class="d-flex align-items-center gap-3 position-relative justify-end-important"
-                            >
+                          <div class="d-flex align-items-center gap-3 position-relative justify-end-important">
                             <div (click)="orderData?.[0]?.ORDER_STATUS === 'OR' ? showToast() : toggleCollapse(i, item)"
                               class="bottom-0 end-0 text-end show-details-btn">
                               <span class="btn-text mr-8">
@@ -303,7 +299,7 @@
                                 <ul ngbDropdownMenu class="dropdown-menu-end">
                                   <li>
                                     <a class="dropdown-item cursor-pointer" (click)="openticketdrawer(item)">
-                                      <i class="bi bi-ticket-detailed me-2 text-blue" ></i>
+                                      <i class="bi bi-ticket-detailed me-2 text-blue"></i>
                                       {{ "Raise Support Ticket" }}
                                     </a>
                                   </li>
@@ -313,13 +309,12 @@
                           </div>
                           <div class="d-flex align-items-center gap-3 position-relative">
                             <div
-                              class="service-icon d-flex align-items-center justify-content-center rounded-circle bg-light unique-size-class"
-                              >
+                              class="service-icon d-flex align-items-center justify-content-center rounded-circle bg-light unique-size-class">
                               <img [src]="
                                   item.SERVICE_IMAGE
                                     ? IMAGEuRL + 'Item/' + item.SERVICE_IMAGE
                                     : 'assets/img/services/no-image.png'
-                                " class="rounded-circle unique-size-class" alt="Service Icon"  />
+                                " class="rounded-circle unique-size-class" alt="Service Icon" />
                             </div>
                             <div>
                               <h6 class="fw-bold mb-0">
@@ -328,7 +323,7 @@
                             </div>
                           </div>
                           <hr class="unique-border-margin" />
-                          <div class="cart-bottom no-padding" >
+                          <div class="cart-bottom no-padding">
                             <div class="cart-icon">
                               <i class="bi bi-clock text-custom-blue"></i>
                             </div>
@@ -346,44 +341,45 @@
                             </span>
                           </div>
                           <div class="mt-2">
-                            <hr class="border-zero-margin"  />
-                            <button class="btn w-100 text-start d-flex justify-content-between align-items-center no-style-input"
-                              (click)="item.isOpen2 = !item.isOpen2" >
-                              <span class="fw-bold text-lg-semibold" >{{ "order_review.details" | translate }}</span>
-                              <i class="bi text-blue-2a3b8f"  [ngClass]="{
+                            <hr class="border-zero-margin" />
+                            <button
+                              class="btn w-100 text-start d-flex justify-content-between align-items-center no-style-input"
+                              (click)="item.isOpen2 = !item.isOpen2">
+                              <span class="fw-bold text-lg-semibold">{{ "order_review.details" | translate }}</span>
+                              <i class="bi text-blue-2a3b8f" [ngClass]="{
                                   'bi-chevron-down': !item.isOpen2,
                                   'bi-chevron-up': item.isOpen2
                                 }" class="text-primary"></i>
                             </button>
                             <div *ngIf="item.isOpen2" class="mt-2">
-                              <hr  class="my-2 text-light-blue" />
+                              <hr class="my-2 text-light-blue" />
                               <div class="myclass p-3">
                                 <div class="d-flex justify-content-between">
-                                  <p class="fw-bold mb-1 text-gray-dark" >
+                                  <p class="fw-bold mb-1 text-gray-dark">
                                     {{ "order_details.device" | translate }}:
                                   </p>
-                                  <p class="mb-1 text-dark-medium" >
+                                  <p class="mb-1 text-dark-medium">
                                     {{ item.CATEGORY_NAME }}
                                   </p>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                  <p class="fw-bold mb-1 text-gray-dark" >
+                                  <p class="fw-bold mb-1 text-gray-dark">
                                     {{ "order_details.type" | translate }}:
                                   </p>
-                                  <p class="mb-1 text-dark-medium" >
+                                  <p class="mb-1 text-dark-medium">
                                     {{ item.SUB_CATEGORY_NAME }}
                                   </p>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                  <p class="fw-bold mb-1 text-gray-dark" >
+                                  <p class="fw-bold mb-1 text-gray-dark">
                                     {{ "order_details.service" | translate }}:
                                   </p>
-                                  <p class="mb-1 text-dark-medium" >
+                                  <p class="mb-1 text-dark-medium">
                                     {{ item.SERVICE_NAME }}
                                   </p>
                                 </div>
                                 <div *ngIf="item.IS_EXPRESS == 1" class="d-flex justify-content-between">
-                                  <p class="fw-bold mb-1 text-gray-dark" >
+                                  <p class="fw-bold mb-1 text-gray-dark">
                                     {{ "order_details.priority" | translate }}:
                                   </p>
                                   <p class="mb-1 text-primary">
@@ -394,13 +390,13 @@
                                   </p>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                  <p class="fw-bold mb-1 text-gray-dark" >
+                                  <p class="fw-bold mb-1 text-gray-dark">
                                     {{
                                     "order_details.technician_visit"
                                     | translate
                                     }}:
                                   </p>
-                                  <p class="mb-1 text-dark-medium" >
+                                  <p class="mb-1 text-dark-medium">
                                     <ng-container *ngIf="
                                         getCombinedDateTime(item) !==
                                           'Not Mentioned';
@@ -417,13 +413,13 @@
                                   </p>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                  <p class="fw-bold mb-1 text-gray-dark" >
+                                  <p class="fw-bold mb-1 text-gray-dark">
                                     {{
                                     "order_details.estimated_service_time"
                                     | translate
                                     }}:
                                   </p>
-                                  <p class="mb-1 text-dark-medium" >
+                                  <p class="mb-1 text-dark-medium">
                                     {{
                                     item.ESTIMATED_TIME_IN_MIN
                                     ? item.ESTIMATED_TIME_IN_MIN +
@@ -434,54 +430,47 @@
                                     }}
                                   </p>
                                 </div>
-                                <div *ngIf="
-                                    item.GUARANTEE_ALLOWED == 1 &&
-                                    customertype === 'I'
-                                  " class="d-flex justify-content-between">
-                                  <p class="fw-bold mb-1 text-gray-dark" >
+
+                                <div *ngIf="item.GUARANTEE_ALLOWED == 1 && customertype === 'I'"
+                                  class="d-flex justify-content-between">
+                                  <p class="fw-bold mb-1 text-gray-dark">
                                     Guarantee Period
                                   </p>
-                                  <p class="mb-1 text-dark-medium" >
-                                    {{
-                                    formatPeriodCommon(item.GUARANTEE_PERIOD)
-                                    }}
+                                  <p class="mb-1 text-dark-medium">
+                                    {{ calculateExpirationDate(item.GUARANTEE_PERIOD) }}
                                   </p>
                                 </div>
-                                <div *ngIf="
-                                    item.WARRANTY_ALLOWED == 1 &&
-                                    customertype === 'I'
-                                  " class="d-flex justify-content-between">
-                                  <p class="fw-bold mb-1 text-gray-dark" >
+                                <div *ngIf="item.WARRANTY_ALLOWED == 1 && customertype === 'I'"
+                                  class="d-flex justify-content-between">
+                                  <p class="fw-bold mb-1 text-gray-dark">
                                     Warranty Period
                                   </p>
-                                  <p class="mb-1 text-dark-medium" >
-                                    {{
-                                    formatPeriodCommon(item.WARRANTY_PERIOD)
-                                    }}
+                                  <p class="mb-1 text-dark-medium">
+                                    {{ calculateExpirationDate(item.WARRANTY_PERIOD) }}
                                   </p>
                                 </div>
                               </div>
                             </div>
                           </div>
                           <div class="mt-2">
-                            <hr class="border-zero-margin"  />
-                            <button class="btn w-100 text-start d-flex justify-content-between align-items-center no-style-input"
-                              (click)="handleClick(i, item)" >
-                              <span class="fw-bold text-lg-semibold" >
+                            <hr class="border-zero-margin" />
+                            <button
+                              class="btn w-100 text-start d-flex justify-content-between align-items-center no-style-input"
+                              (click)="handleClick(i, item)">
+                              <span class="fw-bold text-lg-semibold">
                                 {{ "order_details.status" | translate }}
                               </span>
-                              <i class="bi text-blue-2a3b8f"  [ngClass]="{
+                              <i class="bi text-blue-2a3b8f" [ngClass]="{
                                   'bi-chevron-down': !item.isOpen,
                                   'bi-chevron-up': item.isOpen
                                 }" class="text-primary"></i>
                             </button>
                             <div *ngIf="item.isOpen" class="mt-2">
-                              <hr  class="my-2 text-light-blue" />
+                              <hr class="my-2 text-light-blue" />
                               <div *ngIf="selectedJobLogs" class="accordion-item m-2 rounded no-border">
                                 <button
                                   class="btn w-100 text-start fw-semibold d-flex justify-content-between align-items-center bg-white-rounded"
-                                 type="button"
-                                  (click)="toggleAccordion2()" [class.collapsed]="!isAccordionOpen2">
+                                  type="button" (click)="toggleAccordion2()" [class.collapsed]="!isAccordionOpen2">
                                   <span>{{ getJobStatusTitle() }}</span>
                                 </button>
                                 <div class="accordion-collapse" [class.show]="isAccordionOpen2">
@@ -544,9 +533,10 @@
               </div>
             </div>
           </div>
-          <div  class="accordion-item mb-2 shadow-sm rounded rounded-16-mb-17">
+          <div class="accordion-item mb-2 shadow-sm rounded rounded-16-mb-17">
             <h2 class="accordion-header" (click)="toggleAccordion('contactDetails')">
-              <button class="accordion-button fw-bold d-flex align-items-center gap-2 flex-space-between-padding"  [class.collapsed]="!orderDetailsVisible['contactDetails']">
+              <button class="accordion-button fw-bold d-flex align-items-center gap-2 flex-space-between-padding"
+                [class.collapsed]="!orderDetailsVisible['contactDetails']">
                 <span>
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
                     <path
@@ -568,7 +558,7 @@
                     <p class="mb-1 text-muted">
                       {{ "order_details.mobile_number" | translate }}
                     </p>
-                    <p class="mb-1 fw-bold text-black-medium" >
+                    <p class="mb-1 fw-bold text-black-medium">
                       {{ orderData[0]?.MOBILE_NO }}
                     </p>
                   </div>
@@ -576,7 +566,7 @@
                     <p class="mb-1 text-muted">
                       {{ "order_details.name" | translate }}
                     </p>
-                    <p class="mb-1 fw-bold text-black-medium" >
+                    <p class="mb-1 fw-bold text-black-medium">
                       {{ orderData[0]?.CUSTOMER_NAME }}
                     </p>
                   </div>
@@ -584,7 +574,7 @@
                     <p class="mb-1 text-muted">
                       {{ "order_details.address" | translate }}
                     </p>
-                    <p class="mb-1 fw-bold text-black-medium" >
+                    <p class="mb-1 fw-bold text-black-medium">
                       <span [attr.data-bs-toggle]="
                           orderData[0]?.ADDRESS_LINE_1?.length > maxCharLength
                             ? 'tooltip'
@@ -624,9 +614,10 @@
               </div>
             </div>
           </div>
-          <div *ngIf="customertype == 'I'"  class="accordion-item mb-2 shadow-sm rounded rounded-16-mb-17">
+          <div *ngIf="customertype == 'I'" class="accordion-item mb-2 shadow-sm rounded rounded-16-mb-17">
             <h2 class="accordion-header" (click)="toggleAccordion('reschedulePolicy')">
-              <button class="accordion-button fw-bold d-flex align-items-center gap-2 flex-space-between-padding-sm"[class.collapsed]="!orderDetailsVisible['reschedulePolicy']">
+              <button class="accordion-button fw-bold d-flex align-items-center gap-2 flex-space-between-padding-sm"
+                [class.collapsed]="!orderDetailsVisible['reschedulePolicy']">
                 <span>
                   <i class="bi bi-arrow-repeat text-warning text-blue-lg"></i>&nbsp;
                   {{ "order_details.reschedule_policy" | translate }}
@@ -643,10 +634,10 @@
               </div>
             </div>
           </div>
-          <div *ngIf="customertype == 'I'" 
-            class="accordion-item mb-2 shadow-sm rounded rounded-xl">
+          <div *ngIf="customertype == 'I'" class="accordion-item mb-2 shadow-sm rounded rounded-xl">
             <h2 class="accordion-header" (click)="toggleAccordion('cancelPolicy')">
-              <button class="accordion-button fw-bold d-flex align-items-center gap-2 flex-space-between-padding"  [class.collapsed]="!orderDetailsVisible['cancelPolicy']">
+              <button class="accordion-button fw-bold d-flex align-items-center gap-2 flex-space-between-padding"
+                [class.collapsed]="!orderDetailsVisible['cancelPolicy']">
                 <span>
                   <svg xmlns="http://www.w3.org/2000/svg" width="15" height="17" viewBox="0 0 15 17" fill="none">
                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -683,14 +674,14 @@
       <div class="col-md-6">
         <div class="accordion">
           <div class="technician-card shadow-sm rounded p-2 scroll-none-style">
-            <div *ngIf="orderData?.[0]?.ORDER_STATUS === 'OR'" class="alert shadow-sm mt-1 rounded-border-padding" >
+            <div *ngIf="orderData?.[0]?.ORDER_STATUS === 'OR'" class="alert shadow-sm mt-1 rounded-border-padding">
               <div class="d-flex align-items-center">
                 <i class="bi bi-x-circle-fill text-danger me-2"></i>
                 <strong class="fw-bold d-flex align-items-center ml">{{
                   "order_details.order_rejected" | translate
                   }}</strong>
               </div>
-              <p class="mt-1 text-muted mb-0" >
+              <p class="mt-1 text-muted mb-0">
                 {{ orderData?.[0]?.REMARK || ('order_details.no_remark_provided' | translate) }}
               </p>
             </div>
@@ -701,7 +692,7 @@
                   "order_details.order_accepted" | translate
                   }}</strong>
               </div>
-              <p *ngIf="orderData?.[0]?.ACCEPTANCE_REMARK" class="mt-1 text-muted mb-0" >
+              <p *ngIf="orderData?.[0]?.ACCEPTANCE_REMARK" class="mt-1 text-muted mb-0">
                 {{ orderData?.[0]?.ACCEPTANCE_REMARK }}
               </p>
             </div>
@@ -734,11 +725,12 @@
                 selectedJob?.JOB_CARD_ID &&
                 selectedJob?.JOB_CARD_ID !== 0 &&
                 (jobItem?.JOB_STATUS === 'AS' || jobItem?.JOB_STATUS === 'CO')"
-                 class="accordion-item m-2 shadow-sm rounded no-margin-rounded">
-              <button class="btn w-100 text-start fw-semibold d-flex justify-content-between align-items-center card-white-rounded"
+              class="accordion-item m-2 shadow-sm rounded no-margin-rounded">
+              <button
+                class="btn w-100 text-start fw-semibold d-flex justify-content-between align-items-center card-white-rounded"
                 type="button" (click)="toggleAccordion3()" [class.collapsed]="!isAccordionOpen3">
-                <span class="text-md-bold" ><svg xmlns="http://www.w3.org/2000/svg"
-                    width="23" height="26" viewBox="0 0 23 26" fill="none">
+                <span class="text-md-bold"><svg xmlns="http://www.w3.org/2000/svg" width="23" height="26"
+                    viewBox="0 0 23 26" fill="none">
                     <g clip-path="url(#clip0_5044_2680)">
                       <mask id="path-2-outside-1_5044_2680" maskUnits="userSpaceOnUse" x="2" y="3" width="19"
                         height="20" fill="black">
@@ -767,10 +759,11 @@
                   <p class="mb-0 d-flex align-items-center">
                     <span *ngIf="selectedJob?.techData?.profile_photo">
                       <img [src]="retriveimgUrl + 'TechnicianProfile/' + selectedJob?.techData?.profile_photo"
-                        alt="Attachment" class="avatar-small"  />
+                        alt="Attachment" class="avatar-small" />
                     </span>
                     <span *ngIf="!selectedJob?.techData?.profile_photo">
-                      <img [src]="'assets/img/blueEmpImage.png'" alt="Profile Photo" class="profile-photo avatar-small"  />
+                      <img [src]="'assets/img/blueEmpImage.png'" alt="Profile Photo"
+                        class="profile-photo avatar-small" />
                     </span>
                     <span class="fw-semibold text-dark flex-center-text">
                       {{ selectedJob?.techData?.name || "N/A" }} &nbsp;
@@ -779,14 +772,14 @@
                           d="M6.19091 1.45129C6.2882 1.15187 6.7118 1.15187 6.80909 1.45129L7.88637 4.76682C7.92988 4.90073 8.05467 4.99139 8.19547 4.99139H11.6816C11.9965 4.99139 12.1274 5.39426 11.8727 5.57932L9.05229 7.62843C8.93838 7.71119 8.89072 7.85788 8.93423 7.99179L10.0115 11.3073C10.1088 11.6067 9.76609 11.8557 9.51139 11.6707L6.69103 9.62157C6.57712 9.53881 6.42288 9.53881 6.30897 9.62157L3.48861 11.6707C3.23391 11.8557 2.8912 11.6067 2.98849 11.3073L4.06577 7.99179C4.10928 7.85788 4.06161 7.71119 3.94771 7.62843L1.12735 5.57932C0.872643 5.39426 1.00354 4.99139 1.31838 4.99139H4.80453C4.94533 4.99139 5.07012 4.90073 5.11363 4.76682L6.19091 1.45129Z"
                           stroke="#FBA042" stroke-width="1.3" />
                       </svg>
-                      <span class="fw-semibold text-orange-sm" >
+                      <span class="fw-semibold text-orange-sm">
                         {{ selectedJob?.techData?.rating || "0" }} </span>&nbsp;&nbsp;
                       <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewBox="0 0 15 14" fill="none">
                         <path
                           d="M8.89258 0.400391C9.28826 0.400391 9.66762 0.557216 9.94727 0.836914H9.94824C10.2284 1.11657 10.3857 1.4966 10.3857 1.89258V3.65039H12.6074C13.4318 3.65054 14.0995 4.31825 14.0996 5.14258V6.53613C14.0995 6.93183 13.9419 7.31027 13.6621 7.58984L13.6631 7.59082C13.5218 7.73257 13.3536 7.8409 13.1719 7.91504V12.1074C13.1717 12.9318 12.5031 13.5995 11.6787 13.5996H3.32129C2.4969 13.5995 1.82828 12.9318 1.82812 12.1074V7.91504C1.64642 7.8409 1.47822 7.73257 1.33691 7.59082V7.58984C1.0574 7.31031 0.900501 6.9316 0.900391 6.53613V5.14258C0.900541 4.31825 1.56825 3.65054 2.39258 3.65039H4.61426V1.89258C4.61432 1.54606 4.73433 1.21172 4.95215 0.946289L5.05176 0.836914C5.33145 0.55691 5.71151 0.400391 6.10742 0.400391H8.89258ZM2.95703 12.1074C2.95718 12.3083 3.12039 12.4716 3.32129 12.4717H11.6787C11.8796 12.4716 12.0428 12.3083 12.043 12.1074V8.02832H9.45215C9.40078 8.8063 8.75486 9.42188 7.96387 9.42188H7.03613C6.24514 9.42188 5.59922 8.8063 5.54785 8.02832H2.95703V12.1074ZM7.03613 6.63574C6.83508 6.63574 6.67188 6.79894 6.67188 7V7.92871C6.67195 8.1297 6.83512 8.29297 7.03613 8.29297H7.96387C8.16488 8.29297 8.32805 8.1297 8.32812 7.92871V7C8.32812 6.79894 8.16492 6.63574 7.96387 6.63574H7.03613ZM2.39258 4.77832C2.19174 4.77847 2.02847 4.94174 2.02832 5.14258V6.53613C2.02843 6.63255 2.06677 6.72521 2.13477 6.79297H2.13574L2.19043 6.83887C2.24967 6.87848 2.32008 6.90034 2.39258 6.90039H5.54785C5.59915 6.12235 6.24509 5.50684 7.03613 5.50684H7.96387C8.75491 5.50684 9.40085 6.12235 9.45215 6.90039H12.6074C12.704 6.90032 12.7964 6.86114 12.8643 6.79297H12.8652L12.9102 6.73828C12.9498 6.67905 12.9716 6.60865 12.9717 6.53613V5.14258C12.9715 4.94174 12.8083 4.77847 12.6074 4.77832H2.39258ZM6.10742 1.52832C6.01079 1.52832 5.91748 1.56659 5.84961 1.63477V1.63574C5.78145 1.70355 5.74324 1.79601 5.74316 1.89258V3.65039H9.25684V1.89258C9.25676 1.79601 9.21855 1.70355 9.15039 1.63574V1.63477C9.08252 1.56659 8.98921 1.52832 8.89258 1.52832H6.10742Z"
                           fill="#FBA042" stroke="#FBA042" stroke-width="0.2" />
                       </svg>
-                      <span class="text-muted ms-1 text-orange-sm" >
+                      <span class="text-muted ms-1 text-orange-sm">
                         {{ selectedJob?.techData?.jobCount || "0" }} Jobs
                       </span>
                     </span>
@@ -799,14 +792,15 @@
                   <div *ngIf="selectedJob?.techData?.ID" class="d-flex justify-content-between mt-3 mt-10-mb-15">
                     <button *ngIf="jobItem?.JOB_STATUS === 'AS'" (click)="chatwithcustomer(selectedJob)"
                       data-bs-toggle="offcanvas" data-bs-target="#offcanvasRightttttttt"
-                      aria-controls="offcanvasRightttttttt"  class="btn btn-outline-primary flex-fill me-2 btnhoverclas border-blue-text">
-                      <i class="bi bi-chat-left text-blue-2a3b8f" ></i>&nbsp; {{
+                      aria-controls="offcanvasRightttttttt"
+                      class="btn btn-outline-primary flex-fill me-2 btnhoverclas border-blue-text">
+                      <i class="bi bi-chat-left text-blue-2a3b8f"></i>&nbsp; {{
                       "order_details.send_message" | translate }}
                     </button>
-                    <a *ngIf="jobItem?.JOB_STATUS === 'AS'"  [href]="
+                    <a *ngIf="jobItem?.JOB_STATUS === 'AS'" [href]="
                         'tel:' + orderGetDetails[0]['TECHNICIAN_MOBILE_NUMBER']
                       " class="btn btn-outline-primary flex-fill btnhoverclas border-blue-text">
-                      <i class="bi bi-telephone me-1 text-blue-2a3b8f" ></i>&nbsp; {{
+                      <i class="bi bi-telephone me-1 text-blue-2a3b8f"></i>&nbsp; {{
                       "order_details.call" | translate }}
                     </a>
                   </div>
@@ -846,10 +840,11 @@
                     selectedJob?.partData?.length > 0 && customertype == 'I'
                   ">
                   <div class="accordion-item m-2 shadow-sm rounded my-15-rounded">
-                    <button class="btn w-100 text-start fw-semibold d-flex justify-content-between align-items-center bg-white-rounded-padding"
+                    <button
+                      class="btn w-100 text-start fw-semibold d-flex justify-content-between align-items-center bg-white-rounded-padding"
                       type="button" (click)="toggleAccordionPartData()" [class.collapsed]="!isAccordionOpenPartData">
-                      <span class="text-md-bold" ><svg xmlns="http://www.w3.org/2000/svg"
-                          width="20" height="20" viewBox="0 0 15 17" fill="none">
+                      <span class="text-md-bold"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                          viewBox="0 0 15 17" fill="none">
                           <path
                             d="M13.5 4.2998L7.49519 1.0498L1 4.2998M13.5 4.2998V11.7998L7.49519 15.5498M13.5 4.2998L7.49519 7.4498M7.49519 15.5498L1 11.7998V4.2998M7.49519 15.5498V7.4498M1 4.2998L7.49519 7.4498"
                             stroke="#2A3B8F" stroke-width="1.3" stroke-linejoin="round" />
@@ -869,12 +864,12 @@
                             <div *ngIf="
                                 !loadingParts &&
                                 selectedJob?.partData?.length > 0
-                              " class="scrollable-container" >
+                              " class="scrollable-container">
                               <div *ngFor="let part of selectedJob.partData"
                                 class="card part-details-card1 shadow-sm rounded border bg-white p-3 mb-3 no-border-shadow-padding">
                                 <div class="details-grid">
                                   <div class="d-flex justify-content-between gap-60">
-                                    <span class="fw-bold text-gray-medium-mb5" >{{
+                                    <span class="fw-bold text-gray-medium-mb5">{{
                                       "order_details.part" | translate
                                       }}</span>
                                     <span class="text-dark text-black-medium-right-mb5">{{
@@ -886,33 +881,33 @@
                                     </span>
                                   </div>
                                   <div *ngIf="part.INVENTORY_CATEGORY_NAME" class="d-flex justify-content-between">
-                                    <span class="fw-bold text-gray-medium-mb5" >{{
+                                    <span class="fw-bold text-gray-medium-mb5">{{
                                       "order_details.type" | translate
                                       }}</span>
-                                    <span class="text-dark text-black-medium-mb5" >{{
+                                    <span class="text-dark text-black-medium-mb5">{{
                                       part.INVENTORY_CATEGORY_NAME || "N/A"
                                       }}</span>
                                   </div>
                                   <div class="d-flex justify-content-between">
-                                    <span class="fw-bold text-gray-medium-mb5" >{{
+                                    <span class="fw-bold text-gray-medium-mb5">{{
                                       "order_details.quantity" | translate
                                       }}</span>
-                                    <span class="text-success text-black-medium-mb5" >{{ part.QUANTITY || "N/A" }}</span>
+                                    <span class="text-success text-black-medium-mb5">{{ part.QUANTITY || "N/A" }}</span>
                                   </div>
                                   <div class="d-flex justify-content-between">
-                                    <span class="fw-bold text-gray-medium-mb5" >{{
+                                    <span class="fw-bold text-gray-medium-mb5">{{
                                       "order_details.price" | translate
                                       }}</span>
-                                    <span class="text-dark text-black-medium-mb5" >₹
+                                    <span class="text-dark text-black-medium-mb5">₹
                                       {{
                                       (part.TOTAL_AMOUNT | number) || "0"
                                       }}</span>
                                   </div>
                                   <div class="d-flex justify-content-between">
-                                    <span class="fw-bold text-gray-medium-mb5" >{{
+                                    <span class="fw-bold text-gray-medium-mb5">{{
                                       "order_details.status" | translate
                                       }}</span>
-                                    <span class="text-dark mb-5" >
+                                    <span class="text-dark mb-5">
                                       <span *ngIf="
                                           part.STATUS === 'AC' &&
                                           part.IS_RETURNED === 0
@@ -959,11 +954,11 @@
                   </div>
                 </div>
               </ng-template>
-              <div *ngIf="selectedJob?.isPaymentReq" class="accordion-collapse show rounded-xl"
-                >
+              <div *ngIf="selectedJob?.isPaymentReq" class="accordion-collapse show rounded-xl">
                 <div class="accordion-body p-3 p-0-mb-17">
-                  <div class="card part-details-card1 shadow-sm rounded border bg-white p-3 mb-0 clickable-rounded-pb" (click)="openPartDetailsDrawer(selectedJob, 'PP')">
-                    <div class="d-flex align-items-center mb-3 mb-5" >
+                  <div class="card part-details-card1 shadow-sm rounded border bg-white p-3 mb-0 clickable-rounded-pb"
+                    (click)="openPartDetailsDrawer(selectedJob, 'PP')">
+                    <div class="d-flex align-items-center mb-3 mb-5">
                       <h6 class="fw-bold mb-0 text-dark">
                         {{ "order_details.part_payment" | translate }}
                       </h6>
@@ -998,29 +993,28 @@
                         <div *ngFor="let part of PartDetails"
                           class="card part-details-card1 shadow-sm rounded border bg-white p-3 mb-3 rounded-padding-lg">
                           <div class="details-grid">
-                            <div class="d-flex justify-content-between gap-20" >
-                              <span class="fw-bold font-semibold-mb10" >{{ "order_details.part" | translate }}:</span>
-                              <span class="text-dark mb-10" >{{
+                            <div class="d-flex justify-content-between gap-20">
+                              <span class="fw-bold font-semibold-mb10">{{ "order_details.part" | translate }}:</span>
+                              <span class="text-dark mb-10">{{
                                 part.ITEM_NAME || part.INVENTORY_NAME
                                 }}</span>
                             </div>
-                            <div *ngIf="part.INVENTORY_CATEGORY_NAME" class="d-flex justify-content-between gap-20"
-                              >
-                              <span class="fw-bold font-semibold-mb10" >{{ "order_details.type" | translate }}:</span>
-                              <span class="text-dark mb-10" >{{
+                            <div *ngIf="part.INVENTORY_CATEGORY_NAME" class="d-flex justify-content-between gap-20">
+                              <span class="fw-bold font-semibold-mb10">{{ "order_details.type" | translate }}:</span>
+                              <span class="text-dark mb-10">{{
                                 part.INVENTORY_CATEGORY_NAME || "N/A"
                                 }}</span>
                             </div>
-                            <div class="d-flex justify-content-between gap-20" >
-                              <span class="fw-bold font-semibold-mb10" >{{
+                            <div class="d-flex justify-content-between gap-20">
+                              <span class="fw-bold font-semibold-mb10">{{
                                 "order_details.quantity" | translate
                                 }}:</span>
-                              <span class="text-success mb-10" >{{ part.QUANTITY ||
+                              <span class="text-success mb-10">{{ part.QUANTITY ||
                                 "N/A" }}</span>
                             </div>
-                            <div class="d-flex justify-content-between gap-20" >
-                              <span class="fw-bold font-semibold-mb10" >{{ "order_details.price" | translate }}:</span>
-                              <span class="text-dark mb-10" >₹
+                            <div class="d-flex justify-content-between gap-20">
+                              <span class="fw-bold font-semibold-mb10">{{ "order_details.price" | translate }}:</span>
+                              <span class="text-dark mb-10">₹
                                 {{ (part.TOTAL_AMOUNT | number) || "0" }}</span>
                             </div>
                           </div>
@@ -1047,8 +1041,7 @@
                   </h5>
                   <button type="button" class="btn-close" data-bs-dismiss="offcanvas" (click)="cancel()"></button>
                 </div>
-                <div *ngIf="selectedJob?.isPaymentReq" class="offcanvas-body d-flex flex-column scrollable-max63"
-                  >
+                <div *ngIf="selectedJob?.isPaymentReq" class="offcanvas-body d-flex flex-column scrollable-max63">
                   <div>
                     <div *ngIf="loadingParts" class="d-flex justify-content-center my-3">
                       <div class="spinner-border text-primary" role="status">
@@ -1098,7 +1091,8 @@
                   </div>
                 </div>
                 <div *ngIf="selectedJob?.isPaymentReq" class="mx-16">
-                  <div class="card part-total-card shadow-sm rounded border bg-white p-2 mb-2 rounded-16-mb-17 rounded-padding-mb17">
+                  <div
+                    class="card part-total-card shadow-sm rounded border bg-white p-2 mb-2 rounded-16-mb-17 rounded-padding-mb17">
                     <div class="d-flex justify-content-between small mt-2 mt-0">
                       <span class="fw-bold text-dark">Total Amount</span>
                       <span class="fw-bold text-dark">
@@ -1112,13 +1106,13 @@
                   <div class="form-check">
                     <input class="form-check-input" type="radio" id="online" name="paymentMode"
                       [(ngModel)]="selectedPaymentMethod" value="ONLINE" />
-                    <label  class="form-check-label font-13" for="online">{{
+                    <label class="form-check-label font-13" for="online">{{
                       "order_details.online_payment" | translate }}</label>
                   </div>
                   <div class="form-check">
                     <input class="form-check-input" type="radio" id="cod" name="paymentMode"
                       [(ngModel)]="selectedPaymentMethod" value="COD" />
-                    <label  class="form-check-label font-13" for="cod">{{
+                    <label class="form-check-label font-13" for="cod">{{
                       "order_details.cash_on_delivery" | translate }}</label>
                   </div>
                 </div>
@@ -1148,19 +1142,19 @@
                 selectedJob?.JOB_CARD_ID !== 0 &&
                 jobItem?.JOB_STATUS == 'CO'
               " class="accordion-item m-2 shadow-sm rounde card-shadow-rounded">
-              <div class="d-flex justify-content-between align-items-center mb-2 p-10-mb-0"
-                >
-                <h6 class="fw-semibold text-dark text-15-bold-mb0" >
-                  <i class="bi bi-star ml-4-text-blue-lg" ></i>&nbsp; Rate Us
+              <div class="d-flex justify-content-between align-items-center mb-2 p-10-mb-0">
+                <h6 class="fw-semibold text-dark text-15-bold-mb0">
+                  <i class="bi bi-star ml-4-text-blue-lg"></i>&nbsp; Rate Us
                 </h6>
                 <button *ngIf="!selectedJob?.feedbackData?.service_feedback"
                   class="btn btn-warning fw-semibold px-3 py-1 d-flex align-items-center gap-1 shadow-sm small-btn badge-warning-light"
                   (click)="openFeedbackModal()">
-                  <i class="bi bi-star text-light fs-6 text-warning-xs" ></i>
+                  <i class="bi bi-star text-light fs-6 text-warning-xs"></i>
                   Add Rating
                 </button>
               </div>
-              <div *ngIf="selectedJob?.feedbackData?.service_feedback" class="p-3 rounded shadow-sm border bg-white no-border-shadow-rounded-bottom">
+              <div *ngIf="selectedJob?.feedbackData?.service_feedback"
+                class="p-3 rounded shadow-sm border bg-white no-border-shadow-rounded-bottom">
                 <div class="mb-2">
                   <p class="mb-1 fw-semibold text-dark">Service Rating</p>
                   <div class="d-flex align-items-center">
@@ -1169,7 +1163,7 @@
                           selectedJob.feedbackData.service_feedback
                         )
                       ">
-                      <i [class]="'bi ' + star" class="mr-5" ></i>
+                      <i [class]="'bi ' + star" class="mr-5"></i>
                     </ng-container>
                   </div>
                 </div>
@@ -1190,7 +1184,7 @@
                           selectedJob.feedbackData.technician_feedback
                         )
                       ">
-                      <i [class]="'bi ' + star" class="mr-5" ></i>
+                      <i [class]="'bi ' + star" class="mr-5"></i>
                     </ng-container>
                   </div>
                 </div>
@@ -1213,8 +1207,7 @@
               </div>
             </ng-template>
           </div>
-          <div class="accordion-item mt-2 shadow-sm rounded rounded-mt-10"
-            *ngIf="customertype == 'I'">
+          <div class="accordion-item mt-2 shadow-sm rounded rounded-mt-10" *ngIf="customertype == 'I'">
             <h2 class="accordion-header" (click)="toggleAccordion('paymentSummary')">
               <button class="accordion-button fw-bold d-flex align-items-center gap-2 btn-white-bold"
                 [class.collapsed]="!orderDetailsVisible['paymentSummary']">
@@ -1229,24 +1222,24 @@
             <div class="accordion-collapse show">
               <div class="accordion-body pt-0-pb-10">
                 <div class="d-flex justify-content-between">
-                  <p class="mb-1 text-gray-medium" >
+                  <p class="mb-1 text-gray-medium">
                     {{ "order_details.base_price" | translate }}
                   </p>
-                  <p class="mb-1 text-black-medium" >
+                  <p class="mb-1 text-black-medium">
                     ₹{{ orderData[0]?.TOTAL_TAXABLE_AMOUNT | number }}
                   </p>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <p class="mb-1 text-gray-medium" >
+                  <p class="mb-1 text-gray-medium">
                     {{ "order_details.tax" | translate }}
                   </p>
-                  <p class="mb-1 text-black-medium" >
+                  <p class="mb-1 text-black-medium">
                     ₹{{ orderData[0]?.TAX_AMOUNT | number }}
                   </p>
                 </div>
                 <ng-container *ngIf="orderData[0]?.DISCOUNT_AMOUNT">
                   <div class="d-flex justify-content-between">
-                    <p class="mb-1 text-gray-medium" >
+                    <p class="mb-1 text-gray-medium">
                       {{ "order_details.discount" | translate }}
                     </p>
                     <p class="mb-1 text-black-medium">
@@ -1254,20 +1247,30 @@
                     </p>
                   </div>
                 </ng-container>
+                <ng-container *ngIf="orderData[0]?.WALLET_AMOUNT_USED">
+                  <div class="d-flex justify-content-between">
+                    <p class="mb-1 text-gray-medium">
+                      {{ "order_details.wallet_amount_used" | translate }}
+                    </p>
+                    <p class="mb-1 text-black-medium">
+                      ₹{{ orderData[0]?.WALLET_AMOUNT_USED | number }}
+                    </p>
+                  </div>
+                </ng-container>
                 <ng-container *ngIf="orderData[0]?.IS_EXPRESS === 1">
                   <div class="d-flex justify-content-between">
-                    <p class="mb-1 text-gray-medium" >
+                    <p class="mb-1 text-gray-medium">
                       {{ "order_details.express_service" | translate }}
                     </p>
-                    <p class="mb-1 text-black-medium" >
+                    <p class="mb-1 text-black-medium">
                       ₹{{ orderData[0]?.EXPRESS_DELIVERY_CHARGES | number }}
                     </p>
                   </div>
                 </ng-container>
-                <hr class="mt-10"/>
+                <hr class="mt-10" />
                 <div class="d-flex justify-content-between fw-bold">
                   <p class="mb-1">{{ "order_details.total" | translate }}</p>
-                  <p class="mb-1">₹{{ orderData[0]?.FINAL_AMOUNT | number }}</p>
+                  <p class="mb-1">₹{{ orderData[0]?.TOTAL_AMOUNT | number }}</p>
                 </div>
               </div>
             </div>
@@ -1295,7 +1298,7 @@
         </div>
         <div class="modal-body p-2">
           <form #feedbackForm="ngForm" (ngSubmit)="submitFeedback()">
-            <p class="fw-medium text-dark mb-1 font-13" >
+            <p class="fw-medium text-dark mb-1 font-13">
               How would you rate the experience and service?
             </p>
             <div class="d-flex gap-1 justify-content-left mb-2">
@@ -1303,13 +1306,12 @@
                   rating >= star
                     ? 'bi-star-fill text-warning'
                     : 'bi-star text-muted'
-                " *ngFor="let star of [1, 2, 3, 4, 5]" (click)="setRating(star, 'service')"
-                ></i>
+                " *ngFor="let star of [1, 2, 3, 4, 5]" (click)="setRating(star, 'service')"></i>
             </div>
-            <textarea class="form-control bg-light rounded-2 border-0 p-2 text-12-full-width" name="comment" [(ngModel)]="feedback.comment"
-              placeholder="Tell us on how we can improve" rows="2" maxlength="256"
-              ></textarea>
-            <p class="fw-medium text-dark mt-2 mb-1 font-13" >
+            <textarea class="form-control bg-light rounded-2 border-0 p-2 text-12-full-width" name="comment"
+              [(ngModel)]="feedback.comment" placeholder="Tell us on how we can improve" rows="2"
+              maxlength="256"></textarea>
+            <p class="fw-medium text-dark mt-2 mb-1 font-13">
               How would you rate the technician assigned for this service?
             </p>
             <div class="d-flex gap-1 justify-content-left mb-2">
@@ -1317,14 +1319,14 @@
                   techRating >= star
                     ? 'bi-star-fill text-warning'
                     : 'bi-star text-muted'
-                " *ngFor="let star of [1, 2, 3, 4, 5]" (click)="setRating(star, 'technician')"
-                ></i>
+                " *ngFor="let star of [1, 2, 3, 4, 5]" (click)="setRating(star, 'technician')"></i>
             </div>
             <textarea class="form-control bg-light rounded-2 border-0 p-2 text-12-full-width" name="comment1"
               [(ngModel)]="feedback.comment1" placeholder="Share your experience with our technician" rows="2"
-              maxlength="256" ></textarea>
+              maxlength="256"></textarea>
             <div class="modal-footer border-0 pt-3 py-10">
-              <button type="submit" class="btn w-100 py-2 rounded-2 fw-medium text-white-bg-blue" [disabled]="rating === 0 || techRating === 0">
+              <button type="submit" class="btn w-100 py-2 rounded-2 fw-medium text-white-bg-blue"
+                [disabled]="rating === 0 || techRating === 0">
                 Submit
               </button>
             </div>
@@ -1360,7 +1362,7 @@
                     messageeee["TECHNICIAN_NAME"]
                     }}</span>
                   <div>
-                    <div class="message-text overflow-wrap-anywhere" >
+                    <div class="message-text overflow-wrap-anywhere">
                       {{ messageeee["MESSAGE"] }}
                       <div *ngIf="
                           messageeee['ATTACHMENT_URL'] != null &&
@@ -1410,7 +1412,7 @@
                   <span class="technician-name">{{
                     messageeee["SENDER_USER_ID_USER"]
                     }}</span>
-                  <div class="message-text overflow-wrap-anywhere" >
+                  <div class="message-text overflow-wrap-anywhere">
                     <div [innerHTML]="transform(messageeee['MESSAGE'])"></div>
                     <div *ngIf="
                         messageeee['ATTACHMENT_URL'] != null &&
@@ -1460,7 +1462,7 @@
             <span (click)="fileInput.click()" class="text-20"><i class="bi bi-upload"></i></span>
           </button>
           <input accept="image/*,video/*" #fileInput name="albumimage" type="file" (change)="onFileSelected($event)"
-           class="d-none" required />
+            class="d-none" required />
           <textarea placeholder="Type your message..." rows="1" #textArea id="messages2" [(ngModel)]="BODY_TEXT"
             name="BODY_TEXT" (keydown)="handleEnter($event)"></textarea>
           <div class="text-end">
@@ -1474,9 +1476,9 @@
   </div>
   <div *ngIf="isFAQDrawerVisible" id="offcanvasFAQ" class="offcanvas offcanvas-end widthclass" tabindex="-1"
     aria-labelledby="offcanvasFAQLabel">
-    <button  id="closefaq" #closefaq type="button" data-bs-dismiss="offcanvas" class="btn-close d-none"
+    <button id="closefaq" #closefaq type="button" data-bs-dismiss="offcanvas" class="btn-close d-none"
       (click)="FAQdrawerClose()" aria-label="Close"></button>
-    <div class="offcanvas-body no-padding" >
+    <div class="offcanvas-body no-padding">
       <app-order-show-tickets [drawerClose]="FAQcloseCallback" [isFAQDrawerVisible]="isFAQDrawerVisible"
         [orderid]="orderid" [jobcardid]="jobcardid" [orderdata]="orderdetailsnew" [type]="type">
       </app-order-show-tickets>

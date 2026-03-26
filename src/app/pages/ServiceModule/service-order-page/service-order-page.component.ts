@@ -131,12 +131,9 @@ export class ServiceOrderPageComponent {
       this.fetchOrderDetails(serviceId);
     }
     setTimeout(() => {
-      if (document.documentElement.scrollHeight <= window.innerHeight) {
-        document.body.style.overflowY = 'auto';
-      } else {
-        document.body.style.overflowY = '';
-      }
-    }, 300);
+      window.scrollTo(0, 0);
+      document.body.style.overflowY = 'auto';
+    }, 500);
     sessionStorage.setItem('chatopen', 'false');
   }
   setMaxCharLengthBasedOnScreen(): void {
@@ -1326,6 +1323,15 @@ export class ServiceOrderPageComponent {
     }
     return result.length > 0 ? result.join(' ') : '-';
   }
+
+  calculateExpirationDate(days: number): string {
+    if (!days || isNaN(days)) {
+      return '-';
+    }
+    return 'Valid upto ' + moment().add(days, 'days').format('DD/MMM/YY');
+  }
+
+
   getStars(rating: string | number): string[] {
     const fullStars = Math.floor(Number(rating));
     const emptyStars = 5 - fullStars;

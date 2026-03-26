@@ -34,7 +34,9 @@ export class OrderReviewPageComponent {
     reschedulePolicy: false,
     cancelPolicy: false,
     paymentSummary: false,
+    walletSummary: false,
   };
+  walletAmount: number = 0;
   updateSEO() {
     this.titleService.setTitle('Review Your Order - Pockit Web');
     this.metaService.updateTag({
@@ -106,18 +108,13 @@ export class OrderReviewPageComponent {
       this.cartID = serviceId;
       this.fetchOrderReviewDetails(serviceId);
       this.getCustomers();
+      this.getWalletAmount();
     }
     setTimeout(() => {
-      const doc = document.documentElement;
-      const body = document.body;
-      if (doc.scrollHeight <= window.innerHeight) {
-        body.style.overflowY = 'auto';
-        body.style.paddingRight = '0px';
-      } else {
-        body.style.overflowY = '';
-        body.style.paddingRight = '';
-      }
-    }, 300);
+      window.scrollTo(0, 0);
+      document.body.style.overflowY = 'auto';
+      document.body.style.paddingRight = '0px';
+    }, 500);
   }
   setMaxCharLengthBasedOnScreen(): void {
     const screenWidth = window.innerWidth;
@@ -152,6 +149,12 @@ export class OrderReviewPageComponent {
     }
     return result.length > 0 ? result.join(' ') : '-';
   }
+  calculateExpirationDate(days: number): string {
+    if (!days || isNaN(days)) {
+      return '-';
+    }
+    return 'Valid upto ' + moment().add(days, 'days').format('DD/MMM/YY');
+  }
   formatTime(timeString: string): string {
     if (!timeString) return 'N/A';
     const [hours, minutes, seconds] = timeString.split(':').map(Number);
@@ -175,6 +178,21 @@ export class OrderReviewPageComponent {
         (error) => {
         }
       );
+  }
+  getWalletAmount() {
+    const data = {
+      CUSTOMER_ID: this.userID,
+      pageIndex: 0,
+      pageSize: 5,
+      sortKey: '',
+      sortValue: '',
+      filter: ' AND CUSTOMER_ID = ' + this.userID
+    };
+    this.apiservice.getCustomerWallet(data).subscribe((res: any) => {
+      if (res && res.code === 200 && res.data) {
+        this.walletAmount = Number(res.data[0]?.AVAILABLE_BALANCE || res?.AVAILABLE_BALANCE || 0);
+      }
+    });
   }
   loadFullPage: boolean = false;
   fetchOrderReviewDetails(serviceId: any) {
@@ -363,20 +381,69 @@ export class OrderReviewPageComponent {
           this.message.error('Failed to place order. Please try again.', '');
         }
       });
+    } else if (this.selectedPaymentMethod === 'WALLET' && this.walletAmount >= finalAmount) {
+      const body = {
+        CART_ID: cartId,
+        ORDER_ID: null,
+        CUSTOMER_ID: this.userID,
+        MOBILE_NUMBER: this.user?.MOBILE_NO,
+        PAYMENT_FOR: 'O',
+        PAYMENT_MODE: 'W',
+        PAYMENT_TYPE: 'W',
+        TRANSACTION_DATE: moment().format('YYYY-MM-DD'),
+        TRANSACTION_ID: 'WALLET-' + Date.now(),
+        TRANSACTION_STATUS: 'Success',
+        TRANSACTION_AMOUNT: finalAmount,
+        PAYLOAD: { method: 'WALLET' },
+        RESPONSE_DATA: { status: 'Success' },
+        RESPONSE_CODE: 200,
+        MERCHENT_ID: 'WALLET',
+        RESPONSE_MESSAGE: 'Transaction success',
+        CLIENT_ID: 1,
+        TERRITORYID: cartInfo?.TERRITORY_ID,
+      };
+
+      this.apiservice.addPaymentTransactions(body).subscribe((res: any) => {
+        if (res?.code === 200) {
+          const payload = {
+            CART_ID: cartId,
+            PAYMENT_METHOD: 'WALLET',
+            CUSTOMER_ID: this.userID,
+            ADDRESS_ID: cartInfo?.ADDRESS_ID,
+            TERRITORYID: cartInfo?.TERRITORY_ID,
+            TYPE: 'S',
+            IS_WALLET_USED: true
+          };
+          this.apiservice.CreateOrder(payload).subscribe((response: any) => {
+            if (response?.code === 200) {
+              this.cartService.fetchAndUpdateCartDetails(this.userID);
+              this.message.success('Order placed successfully using Wallet.', '');
+              this.router.navigate(['/service']);
+            } else {
+              this.message.error(response?.message || 'Failed to place order. Please try again.', '');
+            }
+          });
+        } else {
+          this.message.error('Failed to record wallet transaction.', '');
+        }
+      });
     } else {
+      const isHybrid = this.selectedPaymentMethod === 'WALLET' && this.walletAmount < finalAmount;
+      const payableAmount = isHybrid ? (finalAmount - this.walletAmount) : finalAmount;
+
       var dataForRzpOrder = {
         CART_ID: cartId,
         ORDER_ID: 0,
         CUSTOMER_ID: this.user?.ID,
         JOB_CARD_ID: 0,
         PAYMENT_FOR: "O",
-        amount: finalAmount * 100
+        amount: payableAmount * 100
       }
       this.apiservice.createRazorpayOrdertoRzp(dataForRzpOrder).subscribe((responserzp: any) => {
         if (responserzp?.code === 200 && responserzp.data.amount) {
           const options = {
             key: this.RAZOR_PAY_KEY,
-            amount: finalAmount * 100,
+            amount: payableAmount * 100,
             currency: 'INR',
             name: this.user.NAME,
             order_id: responserzp.data.id,
@@ -393,7 +460,7 @@ export class OrderReviewPageComponent {
                 TRANSACTION_DATE: moment().format('YYYY-MM-DD'),
                 TRANSACTION_ID: data.razorpay_payment_id,
                 TRANSACTION_STATUS: 'Success',
-                TRANSACTION_AMOUNT: finalAmount,
+                TRANSACTION_AMOUNT: payableAmount,
                 PAYLOAD: options,
                 RESPONSE_DATA: data,
                 RESPONSE_CODE: 200,
@@ -408,17 +475,19 @@ export class OrderReviewPageComponent {
                   if (response?.code === 200) {
                     const payload = {
                       CART_ID: cartId,
-                      PAYMENT_METHOD: 'ONLINE',
+                      PAYMENT_METHOD: isHybrid ? 'WALLET' : 'ONLINE',
                       CUSTOMER_ID: this.userID,
                       ADDRESS_ID: cartInfo?.ADDRESS_ID,
                       TERRITORYID: cartInfo?.TERRITORY_ID,
                       Razorpay_ID: responserzp.data.id,
                       TYPE: 'S',
+                      IS_WALLET_USED: isHybrid
                     };
                     this.apiservice.CreateOrder(payload).subscribe((response: any) => {
                       if (response?.code === 200) {
                         this.cartService.fetchAndUpdateCartDetails(this.userID);
                         if (this.customertype === 'B') {
+                          this.message.success('Order placed successfully', '');
                         } else {
                           this.message.success('Order placed successfully', '');
                         }
@@ -427,13 +496,7 @@ export class OrderReviewPageComponent {
                         this.message.error('Failed to place order. Please try again.', '');
                       }
                     });
-                    this.message.success(
-                      'Payment successful. Your order has been placed!',
-                      ''
-                    );
-                    setTimeout(() => {
-                      this.router.navigate(['/service']);
-                    }, 1000);
+
                   } else {
                     this.message.error(
                       'Payment successful, but order processing failed. Please contact support.',

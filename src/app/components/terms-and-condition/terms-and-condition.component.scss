@@ -2,18 +2,87 @@
   background-color: #f8f9fa;
   font-family: Arial, sans-serif;
 }
+
 .terms-container {
   width: 100%;
   padding: 0 20px;
   box-sizing: border-box;
+
   .page-title {
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     color: #0d6efd;
+    text-align: center;
   }
+
+  .brand-name {
+    text-align: center;
+    font-style: italic;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+  }
+
+  .terms-subtitle {
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    color: #0d6efd;
+    margin-bottom: 2px;
+  }
+
+  .version-info {
+    text-align: center;
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 15px;
+  }
+
+  .blue-divider {
+    border: none;
+    border-top: 2px solid #0d6efd;
+    border-bottom: 1px solid #0d6efd;
+    height: 6px;
+    margin-bottom: 25px;
+    opacity: 1;
+  }
+
+  .company-details {
+    margin-bottom: 30px;
+
+    .details-title {
+      color: #0d6efd;
+      font-weight: bold;
+      font-size: 17px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    p {
+      margin-bottom: 5px;
+      font-size: 14px;
+      color: #333 !important;
+
+      b {
+        font-weight: 700;
+        color: #0d6efd;
+      }
+
+      a {
+        color: #0d6efd;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
   .terms-section {
     margin-bottom: 20px;
+
     .section-header {
       position: relative;
       margin-bottom: 5px;
@@ -24,15 +93,27 @@
       font-size: 16px;
       border-radius: 6px 6px 0 0;
     }
+
     p {
       font-size: 14px;
       line-height: 1.6;
       color: #6c757d;
+
+      a {
+        color: #0d6efd;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
+
     .custom-numbered-list {
       list-style: none;
       counter-reset: section;
       padding-left: 0;
+
       li {
         counter-increment: section;
         position: relative;
@@ -40,6 +121,7 @@
         margin-bottom: 8px;
         font-size: 14px;
         color: #6c757d;
+
         &::before {
           content: counter(section);
           position: absolute;
@@ -60,35 +142,138 @@
         }
       }
     }
+
+    .revision-note {
+      background-color: #fffdf0;
+      border-left: 4px solid #f3bc18;
+      padding: 12px 15px;
+      font-size: 13px;
+      font-style: italic;
+      color: #856404;
+      margin-top: 15px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .service-sub-header {
+      color: #0d6efd;
+      font-weight: bold;
+      font-size: 16px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    .service-row {
+      display: flex;
+      justify-content: flex-start;
+      gap: 5px;
+      align-items: baseline;
+    }
+
+    .service-value {
+      margin: 0;
+    }
+
+    .service-last-lable {
+      color: #0d6efd;
+      font-weight: bold;
+      font-size: 13px;
+      margin: 0;
+    }
+
+    .payment-note {
+      background-color: #f0f9ff;
+      border-left: 4px solid #0d6efd;
+      padding: 12px 15px;
+      font-size: 13px;
+      font-style: italic;
+      color: #055160;
+      margin-top: 15px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .custom-bullet-list {
+      list-style: disc;
+      padding-left: 20px;
+      margin-top: 10px;
+
+      li {
+        font-size: 14.5px;
+        line-height: 1.6;
+        color: #6c757d;
+        margin-bottom: 8px;
+
+        &::marker {
+          color: #2c4baf;
+        }
+      }
+    }
+
+    .table-container {
+      margin: 20px 0;
+      overflow-x: auto;
+
+      .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+
+        th {
+          background-color: #2c4baf;
+          color: #fff;
+          text-align: left;
+          padding: 10px;
+          border: 1px solid #dee2e6;
+        }
+
+        td {
+          padding: 10px;
+          border: 1px solid #dee2e6;
+          color: #6c757d;
+          background-color: #fff;
+        }
+
+        tr:nth-child(even) td {
+          background-color: #f8f9fa;
+        }
+      }
+    }
   }
 }
+
 @media (max-width: 768px) {
   .terms-container {
     padding: 0 20px;
   }
+
   .page-title {
     font-size: 20px;
   }
+
   .terms-section .section-header {
     font-size: 16px;
   }
+
   .terms-section p,
   .terms-section .custom-numbered-list li {
     font-size: 13px;
   }
 }
+
 .mb-10 {
   margin-bottom: 10px;
 }
+
 .text-center-fs-16 {
   text-align: center;
   font-size: 16px;
 }
+
 .text-center-fs-13-mb-20 {
   text-align: center;
   font-size: 13px;
   margin-bottom: 20px;
 }
-.mb-10{
-margin-bottom: 10px;
+
+.mb-10 {
+  margin-bottom: 10px;
 }

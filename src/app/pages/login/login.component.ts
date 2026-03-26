@@ -17,7 +17,7 @@ import {
   NgForm,
   Validators,
 } from '@angular/forms';
-import { interval, takeWhile } from 'rxjs';
+import { interval, takeWhile, forkJoin, of } from 'rxjs';
 import { HostListener } from '@angular/core';
 import { ModalService } from 'src/app/Service/modal.service';
 import { ApiServiceService } from 'src/app/Service/api-service.service';
@@ -166,7 +166,7 @@ export class LoginComponent implements OnInit {
         `Please wait ${this.remainingTime} seconds before resending OTP.`,
         ''
       );
-      return; 
+      return;
     }
     if (this.whichOTP == 'login') {
       this.loginotpverification();
@@ -175,15 +175,15 @@ export class LoginComponent implements OnInit {
     }
   }
   resendforgotOtp(content: any) {
-    this.otpSent = false; 
-    this.remainingTime = 60; 
+    this.otpSent = false;
+    this.remainingTime = 60;
     this.startTimer();
   }
   startTimer(): void {
     if (this.timerSubscription) {
       return;
     }
-    const maxDuration = 30; 
+    const maxDuration = 30;
     this.remainingTime = Math.min(this.remainingTime, maxDuration);
     this.timerSubscription = interval(1000)
       .pipe(takeWhile(() => this.remainingTime > 0))
@@ -221,7 +221,7 @@ export class LoginComponent implements OnInit {
   showConfirmPasswordError: boolean = false;
   modalVisible: boolean = false;
   form!: FormGroup;
-  showPasswordError: boolean = false; 
+  showPasswordError: boolean = false;
   @ViewChild('showlogin', { static: true }) showlogin!: TemplateRef<any>;
   private messaging: any;
   isLocalhost: boolean = false;
@@ -291,7 +291,7 @@ export class LoginComponent implements OnInit {
             this.isloadingconflict = false;
             this.loginSubmitted = true;
             this.type = this.isEmail(this.mobileNumberorEmail) ? 'E' : 'M';
-            const showDropdown = this.type === 'M'; 
+            const showDropdown = this.type === 'M';
             let customerType = '';
             this.isloginSendOTP = true;
             this.statusCode = '';
@@ -301,10 +301,10 @@ export class LoginComponent implements OnInit {
             customerType = successCode.data[0].CUSTOMER_TYPE;
             this.api
               .sendOTP(
-                this.selectedCountryCode,  
-                this.mobileNumberorEmail,   
-                this.type,                  
-                customerType                
+                this.selectedCountryCode,
+                this.mobileNumberorEmail,
+                this.type,
+                customerType
               )
               .subscribe({
                 next: (successCode: any) => {
@@ -439,13 +439,13 @@ export class LoginComponent implements OnInit {
     this.data.TYPE_VALUE = this.data.CUSTOMER_MOBILE_NO;
     this.whichOTP = 'register';
     if (this.userType === 'business') {
-      this.data.CUSTOMER_TYPE = 'B'; 
+      this.data.CUSTOMER_TYPE = 'B';
       this.data.CUSTOMER_NAME = this.data.CUSTOMER_NAME;
       this.data.TYPE = "E"
       this.data.SHORT_CODE = this.generateShortCodeFromName(this.data.CUSTOMER_NAME);
       this.data.TYPE_VALUE = this.data.EMAIL_ID;
     } else {
-      this.data.CUSTOMER_TYPE = 'I'; 
+      this.data.CUSTOMER_TYPE = 'I';
       this.data.SHORT_CODE = null;
       this.data.PAN_NUMBER = null;
       this.data.GST_NUMBER = null;
@@ -529,13 +529,13 @@ export class LoginComponent implements OnInit {
   showMap: boolean = false;
   VerifyOTP() {
     if (this.isverifyOTP) {
-      return; 
+      return;
     }
     if (this.otp.join('').length < 4) {
       this.toastr.error('Please Enter OTP...', '');
       return;
     }
-    this.isverifyOTP = true; 
+    this.isverifyOTP = true;
     const otp1 = this.otp.join('');
     this.loadData();
     if (this.whichOTP == 'login') {
@@ -570,311 +570,194 @@ export class LoginComponent implements OnInit {
                 true,
                 'None'
               );
-              sessionStorage.setItem('token', successCode.body.token);
+              const user = successCode.body.UserData[0];
               const token = successCode.body.token;
-              sessionStorage.setItem('token', token);
+              const userIdEnc = this.commonFunction.encryptdata(user.USER_ID);
+              const userNameEnc = this.commonFunction.encryptdata(user.USER_NAME || user.NAME || '');
+              const mobileEnc = this.commonFunction.encryptdata(user.MOBILE_NUMBER || user.MOBILE_NO || '');
+              const emailValue = user.EMAIL_ID || user.EMAIL || '';
+              const emailEnc = this.commonFunction.encryptdata(emailValue);
+              const channelsEnc = this.commonFunction.encryptdata(JSON.stringify(user.SUBSCRIBED_CHANNELS));
+              const type = user.CUSTOMER_TYPE || this.data.CUSTOMER_TYPE || 'I';
+              const typeEnc = this.commonFunction.encryptdata(type);
+
               localStorage.setItem('token', token);
-              const user = successCode.body.UserData[0]; 
-              sessionStorage.setItem(
-                'userId',
-                this.commonFunction.encryptdata(user.USER_ID)
-              );
-              sessionStorage.setItem(
-                'userName',
-                this.commonFunction.encryptdata(user.USER_NAME)
-              );
-              sessionStorage.setItem(
-                'mobileNumber',
-                this.commonFunction.encryptdata(user.MOBILE_NUMBER)
-              );
-              sessionStorage.setItem(
-                'emailId',
-                this.commonFunction.encryptdata(user.EMAIL_ID)
-              );
-              localStorage.setItem('token', successCode.body.token);
-              localStorage.setItem(
-                'userId',
-                this.commonFunction.encryptdata(user.USER_ID)
-              );
-              localStorage.setItem(
-                'userName',
-                this.commonFunction.encryptdata(user.USER_NAME)
-              );
-              localStorage.setItem(
-                'mobileNumber',
-                this.commonFunction.encryptdata(user.MOBILE_NUMBER)
-              );
-              localStorage.setItem(
-                'subscribedChannels',
-                this.commonFunction.encryptdata(
-                  JSON.stringify(user.SUBSCRIBED_CHANNELS)
-                )
-              );
-              var channelNames = user.SUBSCRIBED_CHANNELS.map(
-                (channel: any) => channel.CHANNEL_NAME
-              );
-              if (user.SUBSCRIBED_CHANNELS.length > 0) {
-                this.api
-                  .subscribeToMultipleTopics(channelNames)
-                  .subscribe((data) => {
-                    if (data['code'] == '200') {
-                    }
-                  });
-              }
+              localStorage.setItem('userId', userIdEnc);
+              localStorage.setItem('userName', userNameEnc);
+              localStorage.setItem('mobileNumber', mobileEnc);
+              localStorage.setItem('emailId', emailEnc);
+              localStorage.setItem('subscribedChannels', channelsEnc);
+              localStorage.setItem('customertype', typeEnc);
+              localStorage.setItem('customerType', type);
+
+              sessionStorage.setItem('token', token);
+              sessionStorage.setItem('userId', userIdEnc);
+              sessionStorage.setItem('userName', userNameEnc);
+              sessionStorage.setItem('mobileNumber', mobileEnc);
+              sessionStorage.setItem('emailId', emailEnc);
+              sessionStorage.setItem('customertype', typeEnc);
+              sessionStorage.setItem('customerType', type);
+              sessionStorage.setItem('userAddress', this.commonFunction.encryptdata(user.ADDRESS_LINE_2 || ''));
               localStorage.setItem('isLogged', 'true');
               this.otp = ['', '', '', ''];
-              localStorage.setItem('customerType', this.data.CUSTOMER_TYPE);
-              if (user.CUSTOMER_TYPE == 'I' || !user.CUSTOMER_TYPE) {
-                localStorage.setItem('customerType', 'I');
-                localStorage.setItem('skipLocationCheck', 'true');
-                localStorage.setItem('locationSet', 'true');
-                this.confirmLocation();
-                this.showMap = false;
-                this.modalVisible = false;
-                this.api.setDefaultPincodeForHomeUser().subscribe({
-                  next: () => {
-                    this.modalService.dismissAll();
-                    this.isverifyOTP = false;
-                    this.isAutoVerifying = false;
-                    this.showMap = false;
-                    this.modalVisible = false;
-                    this.openVerify = false;
+              const channelNames = (user.SUBSCRIBED_CHANNELS || []).map((channel: any) => channel.CHANNEL_NAME);
+              const subscribeCall = (channelNames.length > 0) ? this.api.subscribeToMultipleTopics(channelNames, successCode.body.token) : of(null);
+              const addressCall = (user.CUSTOMER_TYPE == 'I' || !user.CUSTOMER_TYPE) ? this.api.setDefaultPincodeForHomeUser(successCode.body.token) : of(null);
+
+              forkJoin([subscribeCall, addressCall]).subscribe({
+                next: () => {
+                  localStorage.setItem('isLogged', 'true');
+                  if (user.CUSTOMER_TYPE == 'I' || !user.CUSTOMER_TYPE) {
+                    localStorage.setItem('customerType', 'I');
+                    localStorage.setItem('skipLocationCheck', 'true');
+                    localStorage.setItem('locationSet', 'true');
                     this.showAddressDetailsForm = false;
                     window.location.href = '/service';
-                  },
-                  error: () => {
-                    this.modalService.dismissAll();
-                    this.isverifyOTP = false;
-                    this.isAutoVerifying = false;
-                    this.showMap = false;
-                    this.modalVisible = false;
-                    this.openVerify = false;
-                    this.showAddressDetailsForm = false;
-                    window.location.href = '/service';
+                  } else {
+                    localStorage.setItem('customerType', this.data.CUSTOMER_TYPE);
+                    const userPincode = localStorage.getItem('userPincode') || (this.addressForm && this.addressForm.PINCODE) || '110001';
+                    this.api.getTerritoriesByPincode(userPincode).subscribe({
+                      next: (resp: any) => {
+                        const territories = resp?.body?.data || resp?.body || [];
+                        if (territories && territories.length > 0) {
+                          const t = territories[0];
+                          localStorage.setItem('selectedTerritory', String(t.TERRITORY_ID || t.id));
+                        }
+                        this.showAddressDetailsForm = false;
+                        setTimeout(() => (window.location.href = '/service'), 200);
+                      },
+                      error: () => {
+                        this.showAddressDetailsForm = false;
+                        setTimeout(() => (window.location.href = '/service'), 200);
+                      }
+                    });
                   }
-                });
-              } else {
-                this.isverifyOTP = false;
-                this.isAutoVerifying = false;
-                this.modalVisible = false;
-                this.openVerify = false;
-                this.showMap = false; 
-                const userPincode = localStorage.getItem('userPincode') || (this.addressForm && this.addressForm.PINCODE) || '110001';
-                this.api.getTerritoriesByPincode(userPincode).subscribe({
-                  next: (resp: any) => {
-                    const territories = resp?.body?.data || resp?.body || [];
-                    this.terrotaryData = territories;
-                    if (territories && territories.length > 0) {
-                      const t = territories[0];
-                      this.addressForm.TERRITORY_ID = t.TERRITORY_ID || t.id || t.TERRITORY_ID;
-                      localStorage.setItem('selectedTerritory', String(this.addressForm.TERRITORY_ID));
-                    }
-                    this.showAddressDetailsForm = false;
-                    setTimeout(() => (window.location.href = '/service'), 200);
-                  },
-                  error: (err: any) => {
-                    console.error('Failed to load territories:', err);
-                    this.showAddressDetailsForm = false;
-                    setTimeout(() => (window.location.href = '/service'), 200);
-                  }
-                });
-              }
+                },
+                error: (err) => {
+                  console.error('Non-critical background setup failed, proceeding with login:', err);
+                  localStorage.setItem('isLogged', 'true');
+                  window.location.href = '/service';
+                }
+              });
               this.statusCode = '';
             }
           },
           error: (errorResponse) => {
-            if (errorResponse.error.code === 300) {
-              this.toastr.error(
-                'Invalid request. Please check the entered details.'
-              );
-              this.statusCode = 'Invalid OTP';
-              this.stopLoader();
-            } else if (errorResponse.error.code === 301) {
-              this.toastr.info('No Address Found');
-              this.stopLoader();
-            } else {
-              this.toastr.error('Something went wrong. Please try again.');
-              this.statusCode = '';
-              this.stopLoader();
-            }
-            this.isverifyOTP = false;
-            this.isAutoVerifying = false;
-            this.stopLoader();
+            this.handleLoginError(errorResponse);
           },
         });
     } else if (this.whichOTP == 'register') {
       let CLOUD_ID = this.cookie.get('CLOUD_ID');
-      this.data.TYPE = this.userType === 'business' ? 'E' : 'M';
-      this.data.COUNTRY_CODE = this.selectedCountryCode;
-      this.data.CUSTOMER_CATEGORY_ID = 1;
-      this.data.CUSTOMER_EMAIL_ID = this.data.EMAIL_ID;
-      this.data.OTP = otp1;
-      this.data.IS_NEW_CUSTOMER = 1;
-      this.data.CUSTOMER_NAME = this.data.CUSTOMER_NAME;
-      this.data.IS_SPECIAL_CATALOGUE = false;
-      this.data.ACCOUNT_STATUS = true;
-      this.data.CUSTOMER_MOBILE_NO = this.data.CUSTOMER_MOBILE_NO;
-      this.data.CUSTOMER_TYPE = this.userType === 'business' ? 'B' : 'I';
-      this.data.TYPE_VALUE = this.userType === 'business' ? this.data.EMAIL_ID : this.data.CUSTOMER_MOBILE_NO;;
-      this.data.CLOUD_ID = CLOUD_ID;
-      const registerData = this.data;
-      const COMPANY_NAME = this.data.COMPANY_NAME;
-      this.loadData();
-      this.api.userRegistration(this.data).subscribe({
+      const regData = {
+        ...this.data,
+        TYPE: this.userType === 'business' ? 'E' : 'M',
+        COUNTRY_CODE: this.selectedCountryCode,
+        OTP: otp1,
+        CUSTOMER_TYPE: this.userType === 'business' ? 'B' : 'I',
+        TYPE_VALUE: this.userType === 'business' ? this.data.EMAIL_ID : this.data.CUSTOMER_MOBILE_NO,
+        EMAIL: this.data.EMAIL_ID,
+        CUSTOMER_EMAIL_ID: this.data.EMAIL_ID,
+        MOBILE_NO: this.data.CUSTOMER_MOBILE_NO,
+        CLOUD_ID: CLOUD_ID,
+        CUSTOMER_CATEGORY_ID: 1,
+        IS_NEW_CUSTOMER: 1,
+        IS_SPECIAL_CATALOGUE: false,
+        ACCOUNT_STATUS: true
+      };
+      
+      this.api.userRegistration(regData).subscribe({
         next: (successCode: any) => {
           if (successCode.body.message === 'Logged in successfully.') {
             this.toastr.success('OTP verified successfully...', '');
-            this.showMap = false;
-            this.modalVisible = false;
-            this.confirmLocation();
-            this.modalService.dismissAll();
-            this.isOk = false;
-            this.data = registerData;
-            sessionStorage.setItem('token', successCode.body.token);
-            localStorage.setItem('token', successCode.body.token);
-            this.cookie.set(
-              'token',
-              successCode.body.token,
-              365,
-              '',
-              '',
-              false,
-              'Strict'
-            );
-            this.confirmLocation();
-            const user = successCode.body.UserData[0]; 
-            this.USER_ID = user.USER_ID;
-            var custype = this.userType == "business" ? "B" : "I";
-            sessionStorage.setItem(
-              'customertype',
-              this.commonFunction.encryptdata(custype)
-            );
-            localStorage.setItem(
-              'customertype',
-              this.commonFunction.encryptdata(custype)
-            );
-            sessionStorage.setItem(
-              'userId',
-              this.commonFunction.encryptdata(user.USER_ID)
-            );
-            sessionStorage.setItem(
-              'userName',
-              this.commonFunction.encryptdata(user.USER_NAME)
-            );
-            sessionStorage.setItem(
-              'mobileNumber',
-              this.commonFunction.encryptdata(user.MOBILE_NUMBER)
-            );
-            sessionStorage.setItem(
-              'userAddress',
-              this.commonFunction.encryptdata(this.addressForm.ADDRESS_LINE_2)
-            );
-            localStorage.setItem(
-              'userId',
-              this.commonFunction.encryptdata(user.USER_ID)
-            );
+            this.cookie.set('token', successCode.body.token, 365, '/', '', true, 'None');
+            const user = successCode.body.UserData[0];
+            const token = successCode.body.token;
+            const userIdEnc = this.commonFunction.encryptdata(user.USER_ID);
+            const userNameEnc = this.commonFunction.encryptdata(user.USER_NAME || user.NAME || this.data.CUSTOMER_NAME || '');
+            const mobileEnc = this.commonFunction.encryptdata(user.MOBILE_NUMBER || user.MOBILE_NO || this.data.CUSTOMER_MOBILE_NO || '');
+            const emailValue = user.EMAIL_ID || user.EMAIL || this.data.EMAIL_ID || '';
+            const emailEnc = this.commonFunction.encryptdata(emailValue);
+            const channelsEnc = this.commonFunction.encryptdata(JSON.stringify(user.SUBSCRIBED_CHANNELS));
+            const type = user.CUSTOMER_TYPE || (this.userType === 'business' ? 'B' : 'I');
+            const typeEnc = this.commonFunction.encryptdata(type);
+
+            localStorage.setItem('token', token);
+            localStorage.setItem('userId', userIdEnc);
+            localStorage.setItem('userName', userNameEnc);
+            localStorage.setItem('mobileNumber', mobileEnc);
+            localStorage.setItem('emailId', emailEnc);
+            localStorage.setItem('subscribedChannels', channelsEnc);
+            localStorage.setItem('customertype', typeEnc);
+            localStorage.setItem('customerType', type);
+
+            sessionStorage.setItem('token', token);
+            sessionStorage.setItem('userId', userIdEnc);
+            sessionStorage.setItem('userName', userNameEnc);
+            sessionStorage.setItem('mobileNumber', mobileEnc);
+            sessionStorage.setItem('emailId', emailEnc);
+            sessionStorage.setItem('customertype', typeEnc);
+            sessionStorage.setItem('customerType', type);
             if (user.organizationName) {
               localStorage.setItem('organizationName', user.organizationName);
-            };
-            localStorage.setItem(
-              'userName',
-              this.commonFunction.encryptdata(user.USER_NAME)
-            );
-            localStorage.setItem(
-              'mobileNumber',
-              this.commonFunction.encryptdata(user.MOBILE_NUMBER)
-            );
-            localStorage.setItem(
-              'userAddress',
-              this.commonFunction.encryptdata(this.addressForm.ADDRESS_LINE_2)
-            );
-            localStorage.setItem(
-              'subscribedChannels',
-              this.commonFunction.encryptdata(
-                JSON.stringify(user.SUBSCRIBED_CHANNELS)
-              )
-            );
-            var channelNames = user.SUBSCRIBED_CHANNELS.map(
-              (channel: any) => channel.CHANNEL_NAME
-            );
-            if (user.SUBSCRIBED_CHANNELS.length > 0) {
-              this.api
-                .subscribeToMultipleTopics(channelNames)
-                .subscribe((data) => {
-                  if (data['code'] == '200') {
-                  }
-                });
             }
-            localStorage.setItem('isLogged', 'true');
-            this.otp = ['', '', '', ''];
+            sessionStorage.setItem('userAddress', this.commonFunction.encryptdata(this.addressForm.ADDRESS_LINE_2 || ''));
+            localStorage.setItem('userAddress', this.commonFunction.encryptdata(this.addressForm.ADDRESS_LINE_2 || ''));
+
+            console.log('Post-registration synchronization starting...');
+            const channelNames = (user.SUBSCRIBED_CHANNELS || []).map((channel: any) => channel.CHANNEL_NAME);
+            const subscribeCall = (channelNames.length > 0) ? this.api.subscribeToMultipleTopics(channelNames, successCode.body.token) : of(null);
+            const addressCall = (this.userType !== 'business') ? this.api.setDefaultPincodeForHomeUser(successCode.body.token) : of(null);
+
+            forkJoin([subscribeCall, addressCall]).subscribe({
+              next: () => {
+                localStorage.setItem('isLogged', 'true');
+                this.otp = ['', '', '', ''];
+                if (this.userType === 'business') {
+                  const userPincode = localStorage.getItem('userPincode') || (this.addressForm && this.addressForm.PINCODE) || '110001';
+                  this.api.getTerritoriesByPincode(userPincode).subscribe({
+                    next: (resp: any) => {
+                      const territories = resp?.body?.data || resp?.body || [];
+                      if (territories && territories.length > 0) {
+                        localStorage.setItem('selectedTerritory', String(territories[0].TERRITORY_ID || territories[0].id));
+                      }
+                      setTimeout(() => (window.location.href = '/service'), 200);
+                    },
+                    error: () => setTimeout(() => (window.location.href = '/service'), 200)
+                  });
+                } else {
+                  window.location.href = '/service';
+                }
+              },
+              error: () => {
+                localStorage.setItem('isLogged', 'true');
+                window.location.href = '/service';
+              }
+            });
+          } else {
             this.isverifyOTP = false;
-            this.isAutoVerifying = false;
-            this.statusCode = '';
-            if (this.userType === 'business') {
-              this.openVerify = false;
-              this.stopLoader();
-              this.showMap = false;
-              const userPincode = localStorage.getItem('userPincode') || (this.addressForm && this.addressForm.PINCODE) || '110001';
-              this.api.getTerritoriesByPincode(userPincode).subscribe({
-                next: (resp: any) => {
-                  const territories = resp?.body?.data || resp?.body || [];
-                  this.terrotaryData = territories;
-                  if (territories && territories.length > 0) {
-                    const t = territories[0];
-                    this.addressForm.TERRITORY_ID = t.TERRITORY_ID || t.id || t.TERRITORY_ID;
-                    localStorage.setItem('selectedTerritory', String(this.addressForm.TERRITORY_ID));
-                  }
-                  this.showAddressDetailsForm = false;
-                  setTimeout(() => (window.location.href = '/service'), 200);
-                },
-                error: (err: any) => {
-                  console.error('Failed to load territories (register):', err);
-                  setTimeout(() => (window.location.href = '/service'), 200);
-                }
-              });
-            } else {
-              this.api.setDefaultPincodeForHomeUser().subscribe({
-                next: () => {
-                  this.isverifyOTP = false;
-                  this.isAutoVerifying = false;
-                  this.showMap = false;
-                  this.modalVisible = false;
-                  this.openVerify = false;
-                  this.showAddressDetailsForm = false;
-                  this.stopLoader();
-                  window.location.href = '/service';
-                },
-                error: () => {
-                  this.isverifyOTP = false;
-                  this.isAutoVerifying = false;
-                  this.showMap = false;
-                  this.modalVisible = false;
-                  this.openVerify = false;
-                  this.showAddressDetailsForm = false;
-                  this.stopLoader();
-                  window.location.href = '/service';
-                }
-              });
-            }
+            this.stopLoader();
           }
-          this.stopLoader();
         },
         error: (errorResponse) => {
-          if (errorResponse.error.code === 300) {
-            this.toastr.error(
-              'Invalid request. Please check the entered details.'
-            );
-            this.statusCode = 'Invalid OTP';
-          } else {
-            this.toastr.error('Something went wrong. Please try again.');
-            this.statusCode = '';
-          }
-          this.stopLoader();
-          this.isverifyOTP = false;
-          this.isAutoVerifying = false;
+          this.handleLoginError(errorResponse);
         },
       });
     }
+  }
+
+  handleLoginError(errorResponse: any) {
+    if (errorResponse.error.code === 300) {
+      this.toastr.error('Invalid request. Please check the entered details.');
+      this.statusCode = 'Invalid OTP';
+    } else if (errorResponse.error.code === 301) {
+      this.toastr.info('No Address Found');
+    } else {
+      this.toastr.error('Something went wrong. Please try again.');
+      this.statusCode = '';
+    }
+    this.isverifyOTP = false;
+    this.isAutoVerifying = false;
+    this.stopLoader();
   }
   @ViewChild('openMap') openMap!: TemplateRef<any>;
   @ViewChild('loginforgotModal') loginforgotModal!: TemplateRef<any>;
@@ -890,8 +773,8 @@ export class LoginComponent implements OnInit {
     }
   }
   forgotdefaultOTP = '654321';
-  otp: string[] = ['', '', '', '', '', '']; 
-  showError = false; 
+  otp: string[] = ['', '', '', '', '', ''];
+  showError = false;
   @ViewChild('otpInputs') otpInputs: ElementRef | undefined;
   moveToNext_original(event: KeyboardEvent, index: number) {
     if (event.key === 'Backspace' && !this.otp[index] && index > 0) {
@@ -904,13 +787,13 @@ export class LoginComponent implements OnInit {
     }
   }
   moveToNext(event: KeyboardEvent, index: number) {
-  if (event.key === 'Backspace' && !this.otp[index] && index > 0) {
-    const prevInput = document.getElementsByClassName('otp-input')[
-      index - 1
-    ] as HTMLInputElement;
-    prevInput?.focus();
+    if (event.key === 'Backspace' && !this.otp[index] && index > 0) {
+      const prevInput = document.getElementsByClassName('otp-input')[
+        index - 1
+      ] as HTMLInputElement;
+      prevInput?.focus();
+    }
   }
-}
   onChange_original(value: string, index: number) {
     if (/^\d*$/.test(value)) {
       if (value && index < 3) {
@@ -947,7 +830,7 @@ export class LoginComponent implements OnInit {
     const input = this.otpInputs?.nativeElement.querySelectorAll('input')[
       index
     ] as HTMLInputElement;
-    input?.select(); 
+    input?.select();
   }
   forgotclearOTPFields() {
     this.otp = ['', '', '', '', '', ''];
@@ -972,17 +855,17 @@ export class LoginComponent implements OnInit {
     const FIREBASE_REG_TOKEN = 'bacdefghi';
     this.isverifyForgotOTP = true;
   }
-  passwordVisible: boolean = false; 
-  passwordFieldType: string = 'password'; 
-  confpasswordVisible: boolean = false; 
-  passconfwordFieldType: string = 'password'; 
+  passwordVisible: boolean = false;
+  passwordFieldType: string = 'password';
+  confpasswordVisible: boolean = false;
+  passconfwordFieldType: string = 'password';
   togglePasswordVisibility() {
     this.passwordVisible = !this.passwordVisible;
-    this.passwordFieldType = this.passwordVisible ? 'text' : 'password'; 
+    this.passwordFieldType = this.passwordVisible ? 'text' : 'password';
   }
   toggleconfPasswordVisibility() {
     this.confpasswordVisible = !this.confpasswordVisible;
-    this.passconfwordFieldType = this.confpasswordVisible ? 'text' : 'password'; 
+    this.passconfwordFieldType = this.confpasswordVisible ? 'text' : 'password';
   }
   data: registerdata = new registerdata();
   isOk = true;
@@ -1002,18 +885,18 @@ export class LoginComponent implements OnInit {
     }
   }
   handlePaste(event: ClipboardEvent) {
-  event.preventDefault();
-  const pastedData = event.clipboardData?.getData('text');
-  if (pastedData && /^\d{4}$/.test(pastedData)) {
-    for (let i = 0; i < 4; i++) {
-      this.otp[i] = pastedData[i];
-    }
-    if (!this.isAutoVerifying) {
-      this.isAutoVerifying = true;
-      this.VerifyOTP();
+    event.preventDefault();
+    const pastedData = event.clipboardData?.getData('text');
+    if (pastedData && /^\d{4}$/.test(pastedData)) {
+      for (let i = 0; i < 4; i++) {
+        this.otp[i] = pastedData[i];
+      }
+      if (!this.isAutoVerifying) {
+        this.isAutoVerifying = true;
+        this.VerifyOTP();
+      }
     }
   }
-}
   openmodal123(currentModal: any) {
     this.modalService.dismissAll(currentModal);
     this.modalService1.openModal();
@@ -1291,7 +1174,7 @@ export class LoginComponent implements OnInit {
   toggleCountryDropdown() {
     this.showCountryDropdown = !this.showCountryDropdown;
     if (this.showCountryDropdown) {
-      this.filteredCountryCodes = [...this.countryCodes]; 
+      this.filteredCountryCodes = [...this.countryCodes];
       this.searchQuery = '';
     }
   }
@@ -1346,11 +1229,11 @@ export class LoginComponent implements OnInit {
           this.terrotaryData = data.data;
           const territory = this.terrotaryData[0];
           this.addressForm.TERRITORY_ID = territory.TERRITORY_ID;
-          this.pincodeloading = false; 
+          this.pincodeloading = false;
         },
         error: (error: any) => {
-          this.terrotaryData = []; 
-          this.pincodeloading = false; 
+          this.terrotaryData = [];
+          this.pincodeloading = false;
         },
       });
   }
@@ -1377,7 +1260,7 @@ export class LoginComponent implements OnInit {
     }
   }
   openLoginModal() {
-    this.modalService1.closeModal(); 
+    this.modalService1.closeModal();
     this.userType = '';
     this.otp = ['', '', '', ''];
     this.otp[0] = '';
@@ -1432,7 +1315,7 @@ export class LoginComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching default territories:', error);
-          this.loadMap(28.6139, 77.209); 
+          this.loadMap(28.6139, 77.209);
         }
       );
     } else {
@@ -1444,11 +1327,11 @@ export class LoginComponent implements OnInit {
             this.loadMap(this.latitude, this.longitude);
           },
           () => {
-            this.loadMap(28.6139, 77.209); 
+            this.loadMap(28.6139, 77.209);
           }
         );
       } else {
-        this.loadMap(28.6139, 77.209); 
+        this.loadMap(28.6139, 77.209);
       }
     }
   }
@@ -1537,10 +1420,10 @@ export class LoginComponent implements OnInit {
         const filteredAddress = addressComponents
           .filter(
             (comp: any) =>
-              comp.types.includes('route') || 
-              comp.types.includes('sublocality_level_1') || 
+              comp.types.includes('route') ||
+              comp.types.includes('sublocality_level_1') ||
               comp.types.includes('sublocality') ||
-              comp.types.includes('neighborhood') 
+              comp.types.includes('neighborhood')
           )
           .map((comp: any) => comp.long_name)
           .join(', ');
@@ -1549,7 +1432,7 @@ export class LoginComponent implements OnInit {
         const postalCode =
           addressComponents.find((comp: any) =>
             comp.types.includes('postal_code')
-          )?.long_name || '416310'; 
+          )?.long_name || '416310';
         if (results[0].plus_code && results[0].plus_code.global_code) {
           this.locationCode = results[0].plus_code.global_code.split(' ').pop();
         }
@@ -1562,7 +1445,7 @@ export class LoginComponent implements OnInit {
     return component ? component.long_name : '';
   }
   getpincode(pincodeeeee: any) {
-    let pincode: string = this.addressForm.PINCODE || ''; 
+    let pincode: string = this.addressForm.PINCODE || '';
     if (pincode || pincodeeeee) {
       if (pincode != null && pincode != null && pincode != '') {
         this.fetchPincodeData(pincode);
@@ -1584,15 +1467,15 @@ export class LoginComponent implements OnInit {
             );
             const data = await response.json();
             pincode = data.address.postcode || '';
-            this.fetchPincodeData(pincode); 
+            this.fetchPincodeData(pincode);
           } catch (error: any) {
-            this.pincodeData = []; 
-            this.pincodeloading = false; 
+            this.pincodeData = [];
+            this.pincodeloading = false;
           }
         },
         (error) => {
-          this.pincodeData = []; 
-          this.pincodeloading = false; 
+          this.pincodeData = [];
+          this.pincodeloading = false;
         }
       );
     }
@@ -1626,12 +1509,12 @@ export class LoginComponent implements OnInit {
             } else {
             }
             this.getStateData();
-            this.pincodeloading = false; 
+            this.pincodeloading = false;
             this.isLoading = false;
           },
           error: (error: any) => {
-            this.pincodeData = []; 
-            this.pincodeloading = false; 
+            this.pincodeData = [];
+            this.pincodeloading = false;
             this.isLoading = false;
           },
         });
@@ -1650,11 +1533,11 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: (data: any) => {
           this.stateData = data.data;
-          this.pincodeloading = false; 
+          this.pincodeloading = false;
         },
         error: (error: any) => {
-          this.stateData = []; 
-          this.pincodeloading = false; 
+          this.stateData = [];
+          this.pincodeloading = false;
         },
       });
   }
@@ -1673,8 +1556,8 @@ export class LoginComponent implements OnInit {
       window.location.href = '/service';
       return;
     }
-    const defaultLatitude = 28.6139; 
-    const defaultLongitude = 77.209; 
+    const defaultLatitude = 28.6139;
+    const defaultLongitude = 77.209;
     this.addressForm.PINCODE = '';
     if (this.currentMarker) {
       const position = this.currentMarker.getPosition();
@@ -1721,7 +1604,7 @@ export class LoginComponent implements OnInit {
           );
           const postalCode = addressComponents.find((comp: any) =>
             comp.types.includes('postal_code')
-          )?.long_name; 
+          )?.long_name;
           this.selectedPincode = '';
           this.addressForm.PINCODE = '';
           this.addressForm.PINCODE_ID = '';
@@ -1883,9 +1766,9 @@ export class LoginComponent implements OnInit {
         }
       );
     } else {
-      const addressFormString = JSON.stringify(this.addressForm); 
+      const addressFormString = JSON.stringify(this.addressForm);
       const encryptedAddress =
-        this.commonFunction.encryptdata(addressFormString); 
+        this.commonFunction.encryptdata(addressFormString);
       sessionStorage.setItem('userAddress', encryptedAddress);
       localStorage.setItem('userAddress', encryptedAddress);
       var abc = 0;
@@ -2014,7 +1897,7 @@ export class LoginComponent implements OnInit {
     return true;
   }
   backtologin() {
-    this.modalService1.closeModal(); 
+    this.modalService1.closeModal();
     this.mobileNumberorEmail = '';
     this.registrationSubmitted = false;
     this.statusCode = '';
@@ -2083,7 +1966,7 @@ export class LoginComponent implements OnInit {
     this.isloadingconflict = false;
     this.loginSubmitted = true;
     this.type = this.isEmail(this.mobileNumberorEmail) ? 'E' : 'M';
-    const showDropdown = this.type === 'M'; 
+    const showDropdown = this.type === 'M';
     let customerType = '';
     this.isloginSendOTP = true;
     this.statusCode = '';
@@ -2093,10 +1976,10 @@ export class LoginComponent implements OnInit {
     customerType = customerTypeFromUI;
     this.api
       .sendOTP(
-        this.selectedCountryCode,  
-        this.mobileNumberorEmail,   
-        this.type,                  
-        customerType                
+        this.selectedCountryCode,
+        this.mobileNumberorEmail,
+        this.type,
+        customerType
       )
       .subscribe({
         next: (successCode: any) => {

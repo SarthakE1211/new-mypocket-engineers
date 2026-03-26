@@ -70,7 +70,7 @@ export type DrawerStep =
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  styleUrls: ['./home.component.scss'], 
 })
 export class HomeComponent {
   map2: any;

@@ -20,7 +20,6 @@
     </div>
     <style>
       @media (min-width: 992px) {
-
         /* Large screens */
         .order-title {
           font-size: 28px !important;
@@ -106,7 +105,7 @@
                     Guarantee Period
                   </p>
                   <p class="mb-0 fw-bold text-black-500">
-                    {{ formatPeriodCommon(item.GUARANTEE_PERIOD) }}
+                    {{ calculateExpirationDate(item.GUARANTEE_PERIOD) }}
                   </p>
                 </div>
                 <div *ngIf="item.WARRANTY_ALLOWED == 1 && customertype === 'I'" class="d-flex justify-content-between">
@@ -114,7 +113,7 @@
                     Warranty Period
                   </p>
                   <p class="mb-0 fw-bold text-black-500">
-                    {{ formatPeriodCommon(item.WARRANTY_PERIOD) }}
+                    {{ calculateExpirationDate(item.WARRANTY_PERIOD) }}
                   </p>
                 </div>
               </div>
@@ -553,6 +552,15 @@
           <h5 *ngIf="customertype !== 'B'" class="font-14-bold">
             {{ "order_review.payment_mode.title" | translate }}
           </h5>
+          <div *ngIf="customertype == 'I'" class="form-check d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex align-items-center">
+              <input class="form-check-input mt-0" type="radio" id="wallet" name="paymentMode"
+                [(ngModel)]="selectedPaymentMethod" value="WALLET" />
+              <label class="form-check-label font-13 ms-2" for="wallet">Use Wallet</label>
+            </div>
+            <span class="text-muted font-13">Available Balance: <span class="fw-bold text-primary font-13">₹{{
+                walletAmount | number:'1.0-0' }}</span></span>
+          </div>
           <div *ngIf="customertype !== 'B'" class="form-check">
             <input class="form-check-input" type="radio" id="online" name="paymentMode"
               [(ngModel)]="selectedPaymentMethod" value="ONLINE" />
@@ -564,10 +572,18 @@
             <span class="proceed-to-pay-btn" *ngIf="customertype === 'B'">{{
               "order_review.payment_mode.proceed" | translate
               }}</span>
+            <span *ngIf="customertype !== 'B' && selectedPaymentMethod == 'WALLET'" class="proceed-to-pay-btn">
+              <ng-container *ngIf="walletAmount < (+OrderReviewDetails?.CART_INFO[0]?.TOTAL_AMOUNT)">
+                {{ "order_review.payment_mode.proceed_to_pay" | translate }} ₹{{
+                (+OrderReviewDetails?.CART_INFO[0]?.TOTAL_AMOUNT) - walletAmount | number:'1.0-0' }}
+              </ng-container>
+              <ng-container *ngIf="walletAmount >= (+OrderReviewDetails?.CART_INFO[0]?.TOTAL_AMOUNT)">
+                {{ "order_review.payment_mode.proceed" | translate }}
+              </ng-container>
+            </span>
             <span *ngIf="customertype !== 'B' && selectedPaymentMethod == 'ONLINE'" class="proceed-to-pay-btn">
               {{ "order_review.payment_mode.proceed_to_pay" | translate }} ₹{{
-              OrderReviewDetails?.CART_INFO[0]?.TOTAL_AMOUNT | number
-              }}
+              OrderReviewDetails?.CART_INFO[0]?.TOTAL_AMOUNT | number:'1.0-0' }}
             </span>
             <span *ngIf="customertype !== 'B' && selectedPaymentMethod == 'COD'" class="proceed-to-pay-btn">
               {{ "order_review.payment_mode.proceed" | translate }}

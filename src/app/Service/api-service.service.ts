@@ -71,7 +71,7 @@ export class ApiServiceService {
   url = `${this.commoncode}/`;
   baseUrl = `${this.commoncode}/`;
   retriveimgUrl = `${this.commoncode}/static/`;
-  setDefaultPincodeForHomeUser(): Observable<any> {
+  setDefaultPincodeForHomeUser(explicitToken?: string): Observable<any> {
     const body = {
       PINCODE: DEFAULT_PINCODE,
       CUSTOMER_TYPE: 'I',
@@ -80,13 +80,15 @@ export class ApiServiceService {
       CUSTOMER_ID: this.getDecryptedItemlocal('userId') || '',
       DEFAULT_ADDRESS: true
     };
+    const token = explicitToken || localStorage.getItem('token') || ' ';
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
     return this.httpClient
       .post<any>(`${this.baseUrl}api/customerAddress/add`, body, {
         observe: 'response',
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.token}`
-        })
+        headers: headers
       })
       .pipe(
         tap((response: any) => {
@@ -2930,14 +2932,20 @@ export class ApiServiceService {
       { headers: this.httpHeaders, observe: 'response' }
     );
   }
-  subscribeToMultipleTopics(topics: string[]): Observable<any> {
-    const fcmToken = this.cookie.get('CLOUD_ID');
+  subscribeToMultipleTopics(topics: string[], explicitToken?: string): Observable<any> {
+    let fcmToken = this.cookie.get('CLOUD_ID');
+    if (!fcmToken) {
+      fcmToken = 'G-' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    }
+    const token = explicitToken || localStorage.getItem('token') || ' ';
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
       apikey: this.commonFunction.encryptdatas(this.commonapikey),
-      token: localStorage.getItem('token') || ' ',
+      token: token,
+      'Authorization': `Bearer ${token}`
     });
+    console.log('ApiService: Subscribing to topics with token:', token.substring(0, 10) + '...');
     return this.httpClient.post<any>(
       this.url + 'api/notification/subscribeMultiple',
       { token: fcmToken, topics },
@@ -3146,6 +3154,32 @@ export class ApiServiceService {
     return this.httpClient.post<any>(
       this.url +
       'api/customertechnicianfeedback/technicianServiceFeedbackByCustomer',
+      JSON.stringify(data),
+      { headers }
+    );
+  }
+  getCustomerWallet(data: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
+      apikey: this.commonFunction.encryptdatas(this.commonapikey),
+      token: localStorage.getItem('token') || ' ',
+    });
+    return this.httpClient.post<any>(
+      this.url + 'api/customerWallet/get',
+      JSON.stringify(data),
+      { headers }
+    );
+  }
+  getCustomerWalletTransaction(data: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      applicationkey: this.commonFunction.encryptdatas(this.commonapplicationkey),
+      apikey: this.commonFunction.encryptdatas(this.commonapikey),
+      token: localStorage.getItem('token') || ' ',
+    });
+    return this.httpClient.post<any>(
+      this.url + 'api/customerWallet/getCustomerWalletTransaction',
       JSON.stringify(data),
       { headers }
     );
