@@ -259,6 +259,7 @@ export class OrderReviewPageComponent {
         COUNTRY_ID: this.countryID,
         COUPON_CODE: this.selectedCoupon.COUPON_CODE,
         TYPE: 'S',
+        TERRITORY_ID: this.TERRITORY_ID
       };
       this.apiservice.ApplyCoupan(data).subscribe((response: any) => {
         if (response?.code === 200) {
@@ -428,6 +429,7 @@ export class OrderReviewPageComponent {
         }
       });
     } else {
+      // ONLINE or WALLET with insufficient balance
       const isHybrid = this.selectedPaymentMethod === 'WALLET' && this.walletAmount < finalAmount;
       const payableAmount = isHybrid ? (finalAmount - this.walletAmount) : finalAmount;
 
@@ -440,7 +442,28 @@ export class OrderReviewPageComponent {
         amount: payableAmount * 100
       }
       this.apiservice.createRazorpayOrdertoRzp(dataForRzpOrder).subscribe((responserzp: any) => {
-        if (responserzp?.code === 200 && responserzp.data.amount) {
+        if (responserzp?.code === 200 && !responserzp.data) {
+          const payload = {
+            CART_ID: cartId,
+            PAYMENT_METHOD: isHybrid ? 'WALLET' : 'ONLINE',
+            CUSTOMER_ID: this.userID,
+            ADDRESS_ID: cartInfo?.ADDRESS_ID,
+            TERRITORYID: cartInfo?.TERRITORY_ID,
+            TYPE: 'S',
+            IS_WALLET_USED: isHybrid
+          };
+          this.apiservice.CreateOrder(payload).subscribe((response: any) => {
+            if (response?.code === 200) {
+              this.cartService.fetchAndUpdateCartDetails(this.userID);
+              this.message.success('Order placed successfully.', '');
+              this.router.navigate(['/service']);
+            } else {
+              this.message.error('Failed to place order. Please try again.', '');
+            }
+          });
+          return;
+        }
+        if (responserzp?.code === 200 && responserzp.data?.amount) {
           const options = {
             key: this.RAZOR_PAY_KEY,
             amount: payableAmount * 100,
@@ -469,41 +492,31 @@ export class OrderReviewPageComponent {
                 CLIENT_ID: 1,
                 TERRITORYID: cartInfo?.TERRITORY_ID,
               };
-              this.apiservice
-                .addPaymentTransactions(body)
-                .subscribe((response: any) => {
-                  if (response?.code === 200) {
-                    const payload = {
-                      CART_ID: cartId,
-                      PAYMENT_METHOD: isHybrid ? 'WALLET' : 'ONLINE',
-                      CUSTOMER_ID: this.userID,
-                      ADDRESS_ID: cartInfo?.ADDRESS_ID,
-                      TERRITORYID: cartInfo?.TERRITORY_ID,
-                      Razorpay_ID: responserzp.data.id,
-                      TYPE: 'S',
-                      IS_WALLET_USED: isHybrid
-                    };
-                    this.apiservice.CreateOrder(payload).subscribe((response: any) => {
-                      if (response?.code === 200) {
-                        this.cartService.fetchAndUpdateCartDetails(this.userID);
-                        if (this.customertype === 'B') {
-                          this.message.success('Order placed successfully', '');
-                        } else {
-                          this.message.success('Order placed successfully', '');
-                        }
-                        this.router.navigate(['/service']);
-                      } else {
-                        this.message.error('Failed to place order. Please try again.', '');
-                      }
-                    });
-
-                  } else {
-                    this.message.error(
-                      'Payment successful, but order processing failed. Please contact support.',
-                      ''
-                    );
-                  }
-                });
+              this.apiservice.addPaymentTransactions(body).subscribe((response: any) => {
+                if (response?.code === 200) {
+                  const payload = {
+                    CART_ID: cartId,
+                    PAYMENT_METHOD: isHybrid ? 'WALLET' : 'ONLINE',
+                    CUSTOMER_ID: this.userID,
+                    ADDRESS_ID: cartInfo?.ADDRESS_ID,
+                    TERRITORYID: cartInfo?.TERRITORY_ID,
+                    Razorpay_ID: responserzp.data.id,
+                    TYPE: 'S',
+                    IS_WALLET_USED: isHybrid
+                  };
+                  this.apiservice.CreateOrder(payload).subscribe((response: any) => {
+                    if (response?.code === 200) {
+                      this.cartService.fetchAndUpdateCartDetails(this.userID);
+                      this.message.success('Order placed successfully', '');
+                      this.router.navigate(['/service']);
+                    } else {
+                      this.message.error('Failed to place order. Please try again.', '');
+                    }
+                  });
+                } else {
+                  this.message.error('Payment successful, but order processing failed. Please contact support.', '');
+                }
+              });
             },
             prefill: {
               name: this.user?.NAME,
@@ -518,13 +531,14 @@ export class OrderReviewPageComponent {
           razorpay.open();
         } else {
           this.isLoading = false;
-          this.message.error(responserzp.data.error.description, '');
+          this.message.error(responserzp?.data?.error?.description || 'Failed to create payment order.', '');
         }
       }, err => {
         this.isLoading = false;
-        this.message.error(err.error.data.error.description, '');
+        this.message.error(err?.error?.data?.error?.description || 'Something went wrong.', '');
       });
     }
+
   }
   ngOnDestroy(): void {
     window.removeEventListener('resize', this.setMaxCharLengthBasedOnScreen);
@@ -543,6 +557,7 @@ export class OrderReviewPageComponent {
       COUNTRY_ID: this.countryID,
       COUPON_CODE: newcopon,
       TYPE: 'S',
+      TERRITORY_ID: this.TERRITORY_ID
     };
     this.apiservice.ApplyCoupan(data).subscribe((response: any) => {
       if (response?.code === 200) {
