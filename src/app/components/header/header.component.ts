@@ -124,6 +124,20 @@ import {
         ),
       ]),
     ]),
+    trigger('slideAnimation', [
+      state('visible', style({
+        opacity: 1
+      })),
+      state('hidden', style({
+        opacity: 0
+      })),
+      transition('visible => hidden', [
+        animate('250ms ease-out')
+      ]),
+      transition('hidden => visible', [
+        animate('250ms ease-in')
+      ])
+    ])
   ],
 })
 export class HeaderComponent {
@@ -136,6 +150,7 @@ export class HeaderComponent {
   userMobile: any = this.apiservice.getUsermobileNumber();
   userEMAIL: any = this.apiservice.getEmail();
   isLoading: boolean = false;
+  loadService: boolean = false;
   cartCount = 0;
   isActive: boolean = false;
   disableService: any;
@@ -158,7 +173,6 @@ export class HeaderComponent {
   expiredAmount: number = 0;
   availableBalance: number = 0;
   firstExpiryDate: any = null;
-
   recentTransactions: any[] = [];
   allTransactions: any[] = [];
   historyPageIndex: number = 1;
@@ -171,6 +185,14 @@ export class HeaderComponent {
   historyToDate: string = '';
   historySelectedType: string = 'All';
   isFilterApplied: boolean = false;
+  walletOpenedFromHeader: boolean = false;
+  placeholderTexts: string[] = [];
+  currentPlaceholder: string = '';
+  placeholderVisible: boolean = true;
+  private placeholderInterval: any;
+  DefaultAddressArray: any;
+  PopularServices: any;
+  showPlaceholder = true;
   toggleProfileMenu() {
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
   }
@@ -260,6 +282,7 @@ export class HeaderComponent {
       });
       this.cartService.fetchAndUpdateCartDetails(this.userID);
       this.getuserList();
+      this.fetchPopularServicesForPlaceholder();
       this.apiservice
         .getAddresses12data(
           0,
@@ -359,6 +382,12 @@ export class HeaderComponent {
       localStorage.setItem('pincodeFor', pincodeFor);
       this.isShopDisabled = !(pincodeFor === 'I' || pincodeFor === 'B');
       this.isServiceDisabled = !(pincodeFor === 'S' || pincodeFor === 'B');
+    }
+    this.startPlaceholderAnimation()
+  }
+  ngOnDestroy() {
+    if (this.placeholderInterval) {
+      clearInterval(this.placeholderInterval);
     }
   }
   onShopClick1(event: Event) {
@@ -574,6 +603,8 @@ export class HeaderComponent {
   }
   isMobileMenuOpen: boolean = false;
   toggleMobileMenu() {
+    this.walletOpenedFromHeader = false;
+    this.showContent = 'normal';
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
     const overflow = this.isMobileMenuOpen ? 'hidden' : '';
     document.body.style.overflow = overflow;
@@ -946,6 +977,7 @@ export class HeaderComponent {
           this.cartService.fetchAndUpdateCartDetails(this.userID);
           this.getuserList();
           this.addressUpdateService.notifyAddressChanged();
+          this.fetchPopularServicesForPlaceholder();
         }
       });
   }
@@ -1027,18 +1059,14 @@ export class HeaderComponent {
       sortValue: '',
       filter: ' AND CUSTOMER_ID = ' + this.userID
     };
-
     this.apiservice.getCustomerWallet(data).subscribe((res: any) => {
       if (res && res.code === 200 && res.data && res.data.length > 0) {
         this.walletBalance = res.data[0]?.WALLET_AMOUNT || 0;
         this.totalUsed = res.data[0]?.USED_AMOUNT || 0;
-        // this.expiredAmount = res.data[0]?.EXPIRED_AMOUNT || 0; // Don't show already expired historical amount
         this.availableBalance = res.data[0]?.AVAILABLE_BALANCE || 0;
       }
     });
-
     this.apiservice.getCustomerWalletTransaction(data).subscribe((res: any) => {
-      console.log('transactions res', res);
       if (res && res.code === 200 && res.data) {
         if (!this.walletBalance) {
           this.walletBalance = res.data[0]?.BALANCE || res?.BALANCE || 0;
@@ -1049,13 +1077,11 @@ export class HeaderComponent {
         if (!this.availableBalance) {
           this.availableBalance = res.data[0]?.AVAILABLE_BALANCE || 0;
         }
-
         this.hasMoreRecentTransactions = res.data.length > 5;
         this.recentTransactions = res.data.slice(0, 5).map((trans: any) => {
           let mappedTitle = trans.TITLE || 'Transaction';
           let mappedType = (trans.TYPE === 'DW') ? 'Debited' : 'Credit';
           let mappedIcon = 'bi-wallet2';
-
           if (trans.TYPE === 'PR') {
             mappedTitle = 'Promotional';
             mappedIcon = 'bi-tags';
@@ -1072,11 +1098,9 @@ export class HeaderComponent {
             mappedTitle = 'Signup Bonus';
             mappedIcon = 'bi-gift';
           }
-
           if (mappedType === 'Credit' && mappedTitle === 'Transaction') {
             mappedTitle = '';
           }
-
           return {
             ...trans,
             mappedTitle: mappedTitle,
@@ -1089,27 +1113,20 @@ export class HeaderComponent {
             IS_EXPIRED: trans.IS_EXPIRED
           };
         });
-
-        // Filter valid credits that are expiring soon
         const expiringPrs = res.data.filter((t: any) =>
           t.EXPIRY_DATE &&
           t.IS_EXPIRED === 0 &&
           (t.TYPE === 'PR' || t.TYPE === 'SB' || t.TYPE === 'CR' || t.TYPE === 'AT' || t.TYPE === 'RF')
         );
-
         if (expiringPrs.length > 0) {
-          // Find the earliest/first expiry date
           const earliestExpiryDate = expiringPrs.reduce((prev: any, curr: any) => {
             return new Date(curr.EXPIRY_DATE) < new Date(prev.EXPIRY_DATE) ? curr : prev;
           }, expiringPrs[0]).EXPIRY_DATE;
-
-          // Sum all amounts that expire on this exact same date
           const totalAtFirstExpiry = expiringPrs
             .filter((t: any) => t.EXPIRY_DATE === earliestExpiryDate)
             .reduce((sum: number, t: any) => sum + (Number(t.WALLET_AMOUNT) || 0), 0);
-
           this.expiredAmount = totalAtFirstExpiry;
-          this.firstExpiryDate = earliestExpiryDate; // Storing the date for potential display
+          this.firstExpiryDate = earliestExpiryDate; 
         } else {
           this.expiredAmount = 0;
           this.firstExpiryDate = null;
@@ -1117,7 +1134,6 @@ export class HeaderComponent {
       }
     });
   }
-
   formatTransactionDate(date: any): string {
     if (!date) return '';
     try {
@@ -1159,12 +1175,10 @@ export class HeaderComponent {
       else if (this.historySelectedType === 'Admin Topup') typeCode = 'AT';
       else if (this.historySelectedType === 'Promotional') typeCode = 'PR';
       else if (this.historySelectedType === 'Signup Bonus') typeCode = 'SB';
-
       if (typeCode) {
         filter += ` AND TYPE = '${typeCode}'`;
       }
     }
-
     const data = {
       CUSTOMER_ID: this.userID,
       pageIndex: this.historyPageIndex,
@@ -1180,7 +1194,6 @@ export class HeaderComponent {
           let mappedTitle = trans.TITLE || 'Transaction';
           let mappedType = (trans.TYPE === 'DW') ? 'Debited' : 'Credit';
           let mappedIcon = 'bi-wallet2';
-
           if (trans.TYPE === 'PR') {
             mappedTitle = 'Promotional';
             mappedIcon = 'bi-tags';
@@ -1197,11 +1210,9 @@ export class HeaderComponent {
             mappedTitle = 'Signup Bonus';
             mappedIcon = 'bi-gift';
           }
-
           if (mappedType === 'Credit' && mappedTitle === 'Transaction') {
             mappedTitle = '';
           }
-
           return {
             ...trans,
             mappedTitle: mappedTitle,
@@ -1214,7 +1225,6 @@ export class HeaderComponent {
             IS_EXPIRED: trans.IS_EXPIRED
           };
         });
-
         const batchTransactions = newTransactions.slice(0, this.historyPageSize);
         this.allTransactions = [...this.allTransactions, ...batchTransactions];
         this.hasMoreTransactions = newTransactions.length >= this.historyPageSize;
@@ -1226,12 +1236,10 @@ export class HeaderComponent {
       this.hasMoreTransactions = false;
     });
   }
-
   loadMoreTransactions() {
     this.historyPageIndex++;
     this.getAllTransactionsData();
   }
-
   applyHistoryFilters() {
     if (!this.historyFromDate) {
       this.toastr.error('Please Slect From Date', '');
@@ -1243,9 +1251,7 @@ export class HeaderComponent {
     }
     this.applyHistoryFiltersInternal();
   }
-
   showCalendarPopup: boolean = false;
-
   selectTransactionTab(type: string) {
     this.historySelectedType = type;
     this.historyPageIndex = 1;
@@ -1253,18 +1259,14 @@ export class HeaderComponent {
     this.hasMoreTransactions = true;
     this.getAllTransactionsData();
   }
-
   toggleCalendarPopup() {
     this.showCalendarPopup = !this.showCalendarPopup;
   }
-
   clearDateFilters() {
     this.historyFromDate = '';
     this.historyToDate = '';
     this.applyHistoryFiltersInternal();
   }
-
-
   applyHistoryFiltersInternal() {
     this.historyPageIndex = 1;
     this.allTransactions = [];
@@ -1273,12 +1275,9 @@ export class HeaderComponent {
     this.showCalendarPopup = false;
     this.getAllTransactionsData();
   }
-
-
   closeCalendarPopup() {
     this.showCalendarPopup = false;
   }
-
   clearHistoryFilters() {
     this.historyFromDate = '';
     this.historyToDate = '';
@@ -1286,19 +1285,21 @@ export class HeaderComponent {
     this.isFilterApplied = false;
     this.applyHistoryFilters();
   }
-
   onTransactionsScroll(event: any) {
     if (this.showContent !== 'allTransactionsTab') return;
-
     const element = event.target;
     const atBottom = element.scrollHeight - element.scrollTop <= element.clientHeight + 50;
-
     if (atBottom && this.hasMoreTransactions && !this.isHistoryLoading) {
       this.loadMoreTransactions();
     }
   }
   gotoProfileWallet() {
-    this.showContent = 'normal';
+    if (this.walletOpenedFromHeader) {
+      this.walletOpenedFromHeader = false;
+      this.closeMobileMenu();
+    } else {
+      this.showContent = 'normal';
+    }
   }
   gotoProfile1111() {
     this.showContent = 'normal';
@@ -4019,5 +4020,86 @@ export class HeaderComponent {
         },
       });
     }
+  }
+  openWalletFromHeader() {
+    this.walletOpenedFromHeader = true;
+    this.isMobileMenuOpen = true;
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    this.openWallet();
+  }
+  currentIndex = 0;
+  desktopAnimState: 'visible' | 'hidden' = 'visible';
+  mobileAnimState: 'visible' | 'hidden' = 'visible';
+  isAnimating = false;
+  placeholderIndex = 0;
+  startPlaceholderRotation() {
+    if (this.placeholderInterval) {
+      clearInterval(this.placeholderInterval);
+    }
+    this.placeholderInterval = setInterval(() => {
+      if (this.isAnimating) return;
+      this.isAnimating = true;
+      this.desktopAnimState = 'hidden';
+      this.mobileAnimState = 'hidden';
+      setTimeout(() => {
+        this.currentIndex =
+          (this.currentIndex + 1) % this.placeholderTexts.length;
+        this.currentPlaceholder =
+          this.placeholderTexts[this.currentIndex];
+        this.desktopAnimState = 'visible';
+        this.mobileAnimState = 'visible';
+        setTimeout(() => {
+          this.isAnimating = false;
+        }, 250); 
+      }, 250);
+    }, 2500);
+  }
+  startPlaceholderAnimation() {
+    if (this.placeholderInterval) {
+      clearInterval(this.placeholderInterval);
+    }
+    this.placeholderInterval = setInterval(() => {
+      if (this.isAnimating) return;
+      this.isAnimating = true;
+      this.desktopAnimState = 'hidden';
+      this.mobileAnimState = 'hidden';
+      setTimeout(() => {
+        this.currentIndex =
+          (this.currentIndex + 1) % this.placeholderTexts.length;
+        this.currentPlaceholder =
+          this.placeholderTexts[this.currentIndex];
+        this.desktopAnimState = 'visible';
+        this.mobileAnimState = 'visible';
+        setTimeout(() => {
+          this.isAnimating = false;
+        }, 250);
+      }, 250);
+    }, 2500);
+  }
+  updatePlaceholderTexts(services: string[]) {
+    this.placeholderTexts = [...services.map(s => s)];
+    this.currentIndex = 0;
+    this.currentPlaceholder = this.placeholderTexts[0];
+    this.startPlaceholderRotation();
+  }
+  fetchPopularServicesForPlaceholder() {
+    const territoryId = sessionStorage.getItem('CurrentTerritory');
+    if (!territoryId || territoryId === '0' || territoryId === 'null') return;
+    this.apiservice.getPoppulerServicesForWeb(
+      parseInt(territoryId),
+      this.userID,
+      this.customertype,
+      'ID',
+      'asc'
+    ).subscribe((data: any) => {
+      if (data?.data?.length > 0) {
+        const names = data.data
+          .slice(0, 10)
+          .map((s: any) => s.NAME)
+          .filter(Boolean);
+        this.updatePlaceholderTexts(names);
+      }
+    }, () => { });
   }
 }

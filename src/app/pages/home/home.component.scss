@@ -1540,9 +1540,32 @@ div[style*="overflow-y: auto"]::-webkit-scrollbar-thumb {
 }
 
 .popular-card {
-  transition: all 0.3s ease-in-out !important;
-  border-radius: 8px !important;
+  border-radius: 15px;
+  overflow: hidden;
   cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  .bg-light-blue-p-10 {
+    padding: 0 !important;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .category-label {
+    background-color: #1830a9;
+    padding: 8px 6px;
+    text-align: center;
+
+    .service-name {
+      color: #ffffff !important;
+      font-weight: 600 !important;
+      font-size: 13px;
+      margin: 0 !important;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 }
 
 .popular-card:hover {
@@ -1840,13 +1863,13 @@ div[style*="overflow-y: auto"]::-webkit-scrollbar-thumb {
 .scroll-container {
   padding-right: 0px;
   margin: 0px auto;
-  max-height: 350px;
+  max-height: 550px;
   overflow-y: auto;
-  scrollbar-width: none; 
-  -ms-overflow-style: none; 
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 
   &::-webkit-scrollbar {
-    display: none; 
+    display: none;
   }
 }
 
@@ -2066,7 +2089,7 @@ div[style*="overflow-y: auto"]::-webkit-scrollbar-thumb {
 }
 
 .max-h-350-overflow-auto-pr-0 {
-  max-height: 350px;
+  max-height: 550px;
   overflow-y: auto;
   padding-right: 0px;
   scrollbar-width: none;
@@ -2360,8 +2383,8 @@ div[style*="overflow-y: auto"]::-webkit-scrollbar-thumb {
 .flex-align-space-between-full {
   display: flex;
   align-items: center;
-  
-  
+
+
   justify-content: space-between;
   width: 100%;
 }
@@ -2763,7 +2786,7 @@ div[style*="overflow-y: auto"]::-webkit-scrollbar-thumb {
   width: 100% !important;
   max-width: 100% !important;
   height: 450px !important;
-  
+
 
   .hero-carousel-container {
     width: 100% !important;
@@ -2798,10 +2821,9 @@ div[style*="overflow-y: auto"]::-webkit-scrollbar-thumb {
   }
 
   .carousel-image {
-    width: 100%;
+    width: 95%;
     height: 100% !important;
-    
-    border-radius: 0 !important;
+    border-radius: 20px !important;
     background-size: 100% 100% !important;
     background-position: center !important;
   }
@@ -2829,4 +2851,9 @@ div[style*="overflow-y: auto"]::-webkit-scrollbar-thumb {
   #hero .carousel-item {
     height: 180px !important;
   }
+}
+
+.home-placeholder-visible {
+  transform: translateY(0) !important;
+  opacity: 1 !important;
 }

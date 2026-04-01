@@ -703,7 +703,6 @@ export class LoginComponent implements OnInit {
             sessionStorage.setItem('userAddress', this.commonFunction.encryptdata(this.addressForm.ADDRESS_LINE_2 || ''));
             localStorage.setItem('userAddress', this.commonFunction.encryptdata(this.addressForm.ADDRESS_LINE_2 || ''));
 
-            console.log('Post-registration synchronization starting...');
             const channelNames = (user.SUBSCRIBED_CHANNELS || []).map((channel: any) => channel.CHANNEL_NAME);
             const subscribeCall = (channelNames.length > 0) ? this.api.subscribeToMultipleTopics(channelNames, successCode.body.token) : of(null);
             const addressCall = (this.userType !== 'business') ? this.api.setDefaultPincodeForHomeUser(successCode.body.token) : of(null);

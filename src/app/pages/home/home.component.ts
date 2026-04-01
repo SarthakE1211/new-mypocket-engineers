@@ -70,7 +70,7 @@ export type DrawerStep =
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'], 
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
   map2: any;
@@ -85,6 +85,15 @@ export class HomeComponent {
   carouselItems: any[] = [];
   PopularServices: any[] = [];
   ServiceCateogries: any[] = [];
+  homeSearchKeyword: string = '';
+  homeShowOptionsList: boolean = false;
+  homeOptionsList: any[] = [];
+  homeFilteredOptions: any[] = [];
+  homeSearchLoading: boolean = false;
+  homePlaceholderTexts: string[] = [];
+  homeCurrentPlaceholder: string = '';
+  homePlaceholderVisible: boolean = true;
+  private homePlaceholderInterval: any;
   public commonFunction = new CommonFunctionService();
   IMAGEuRL: any;
   services = [
@@ -598,6 +607,9 @@ export class HomeComponent {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    if (this.homePlaceholderInterval) {
+      clearInterval(this.homePlaceholderInterval);
+    }
   }
   selectedJob: any;
   onAddressChanged(): void {
@@ -976,7 +988,7 @@ export class HomeComponent {
     this.isLoading = false;
     this.apiservice.getPoppulerServicesForWeb(this.DefaultAddressArray['TERRITORY_ID'], this.userID, this.customertype, 'ID', 'asc').subscribe(
       (data) => {
-        if (data.data.length > 0) { this.loadService = false; this.PopularServices = data.data.slice(0, 10); }
+        if (data.data.length > 0) { this.loadService = false; this.PopularServices = data.data.slice(0, 10); this.initHomePlaceholder(); }
         else { this.loadService = false; this.PopularServices = []; }
       },
       () => { this.loadService = false; }
@@ -1908,5 +1920,95 @@ export class HomeComponent {
         () => { this.message.error('Something went wrong. Please try again.'); }
       );
     } else { this.message.error('Job not found. Please try again.'); }
+  }
+  initHomePlaceholder() {
+    if (this.homePlaceholderInterval) {
+      clearInterval(this.homePlaceholderInterval);
+    }
+    if (this.PopularServices?.length > 0) {
+      this.homePlaceholderTexts = this.PopularServices
+        .map((s: any) => s.NAME)
+        .filter(Boolean);
+      this.homeCurrentPlaceholder = this.homePlaceholderTexts[0] || '';
+      this.homePlaceholderVisible = true;
+      this.startHomePlaceholderRotation();
+    }
+  }
+
+  startHomePlaceholderRotation() {
+    if (this.homePlaceholderInterval) {
+      clearInterval(this.homePlaceholderInterval);
+    }
+    this.homePlaceholderInterval = setInterval(() => {
+      this.homePlaceholderVisible = false;
+      setTimeout(() => {
+        const idx = this.homePlaceholderTexts.indexOf(this.homeCurrentPlaceholder);
+        this.homeCurrentPlaceholder =
+          this.homePlaceholderTexts[(idx + 1) % this.homePlaceholderTexts.length];
+        this.homePlaceholderVisible = true;
+      }, 300);
+    }, 1000);
+  }
+
+  homeGetServiceData() {
+    if (this.homeSearchLoading || !this.DefaultAddressArray?.TERRITORY_ID) return;
+    this.homeSearchLoading = true;
+    this.apiservice.getglobalServiceData(
+      0, 0, '', '', '', 'I', this.userID,
+      [this.DefaultAddressArray.TERRITORY_ID]
+    ).subscribe({
+      next: (data: any) => {
+        this.homeOptionsList = data.data.filter((item: any) =>
+          item['CATEGORY'] == 'Category' ||
+          item['CATEGORY'] == 'Service' ||
+          item['CATEGORY'] == 'SubCategory'
+        );
+        this.homeFilteredOptions = this.homeOptionsList;
+        this.homeSearchLoading = false;
+      },
+      error: () => { this.homeSearchLoading = false; }
+    });
+  }
+
+  homeFilterOptions() {
+    if (this.homeOptionsList.length === 0) {
+      this.homeGetServiceData();
+    }
+    if (this.homeSearchKeyword?.trim()) {
+      const keyword = this.homeSearchKeyword.trim().toLowerCase();
+      this.homeFilteredOptions = this.homeOptionsList
+        .map(category => ({
+          ...category,
+          MATCHED_RECORDS: (category.MATCHED_RECORDS || []).filter((record: any) =>
+            record.TITLE?.toLowerCase().includes(keyword) ||
+            record.CATEGORY?.toLowerCase().includes(keyword)
+          )
+        }))
+        .filter(category => category.MATCHED_RECORDS?.length > 0);
+    } else {
+      this.homeFilteredOptions = this.homeOptionsList;
+    }
+    this.homeShowOptionsList = true;
+  }
+
+  homeSelectOption(record: any) {
+    this.homeSearchKeyword = record.TITLE;
+    this.homeShowOptionsList = false;
+    if (record.CATEGORY === 'Category') {
+      sessionStorage.setItem('categoryidforsearch', record['DATA']['ID']);
+    } else if (record.CATEGORY === 'SubCategory') {
+      sessionStorage.setItem('categoryidforsearch', record['DATA']['CATEGORY_ID']);
+    } else if (record.CATEGORY === 'Service') {
+      sessionStorage.setItem('categoryidforsearch', record['DATA']['CATEGORY_ID']);
+      sessionStorage.setItem('categoryidforsearch22', record['DATA']['ID']);
+    }
+    sessionStorage.setItem('brandid', '');
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/services']);
+    });
+  }
+
+  homeOnBlur() {
+    setTimeout(() => { this.homeShowOptionsList = false; }, 500);
   }
 }

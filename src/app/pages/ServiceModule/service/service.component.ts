@@ -274,6 +274,7 @@ ServiceDescription:any='';
   getProjectData(category: any, event: boolean, eventt: boolean = false) {
     if (eventt) {
       this.selectedCategory = category.NAME;
+      this.filterdata = '';
     } else {
     }
     this.loadingpage = true;

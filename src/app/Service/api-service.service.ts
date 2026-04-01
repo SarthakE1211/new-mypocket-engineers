@@ -2945,7 +2945,6 @@ export class ApiServiceService {
       token: token,
       'Authorization': `Bearer ${token}`
     });
-    console.log('ApiService: Subscribing to topics with token:', token.substring(0, 10) + '...');
     return this.httpClient.post<any>(
       this.url + 'api/notification/subscribeMultiple',
       { token: fcmToken, topics },

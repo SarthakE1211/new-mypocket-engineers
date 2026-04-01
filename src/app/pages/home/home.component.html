@@ -37,12 +37,12 @@
     <div class="container d-flex flex-wrap justify-content-between align-items-start gap-4 p-0" data-aos="fade-up">
       <div
         class="card bg-white rounded-4 shadow pt-4 pb-4 ps-2 pe-2 text-center border-0 mt-2 service-categories pb-9-no-shadow">
-        <div class="container section-title d-flex justify-content-between align-items-start pt-0-pb-7-bg-white">
+        <!-- <div class="container section-title d-flex justify-content-between align-items-start pt-0-pb-7-bg-white">
           <div class="d-flex align-items-center">
             <span class="me-2 indicator-bar"></span>
             <p class="fw-bold m-0 responsive-text">{{ "home.service_categories.title" | translate }}</p>
           </div>
-        </div>
+        </div> -->
         <div *ngIf="loadCategories1" class="spinner-border text-secondary mx-auto my-3" role="status">
           <span class="sr-only">Loading...</span>
         </div>
@@ -50,17 +50,18 @@
           <div *ngFor="let category of displayedCategories1; let i = index"
             class="col-12 col-sm-4 col-md-4 col-lg-2-3 col-xl-2-4 mt-18-mb-10" data-aos="fade-up"
             [attr.data-aos-delay]="(i + 1) * 100">
-            <div class="popular-card flex-center-column-box" (click)="openServiceDrawerViewOnly(category)">
+            <div class="popular-card" (click)="openServiceDrawerViewOnly(category)">
               <div class="bg-light-blue-p-10">
                 <div [ngStyle]="{
-                    'background-image': 'url(' + (category.ICON ? IMAGEuRL + 'Category/' + category.ICON : 'assets/img/services/no-image.png') + ')',
-                    'background-size': '100% 100%', 'background-position': 'center',
-                    'background-repeat': 'no-repeat', width: '100%', 'aspect-ratio': '1 / 1',
-                    'border-radius': '8px', border: 'none'
-                  }" class="img-fluid cc" role="img" [attr.aria-label]="category.title"></div>
+        'background-image': 'url(' + (category.ICON ? IMAGEuRL + 'Category/' + category.ICON : 'assets/img/services/no-image.png') + ')',
+        'background-size': '100% 100%', 'background-position': 'center',
+        'background-repeat': 'no-repeat', width: '100%', 'aspect-ratio': '1 / 1',
+        'border-radius': '8px 8px 0 0', border: 'none'
+      }" class="img-fluid cc" role="img" [attr.aria-label]="category.title"></div>
+                <div class="category-label">
+                  <p class="service-name" [attr.title]="category.title">{{ category.title }}</p>
+                </div>
               </div>
-              <p class="service-name mt-2 text-center-preline-bold" [attr.title]="category.title">{{ category.title }}
-              </p>
             </div>
           </div>
         </div>
@@ -73,7 +74,79 @@
       </div>
     </div>
   </section>
-  <section *ngIf="userID !== 0 && PopularServices.length > 0" id="services" class="services section p-10-pt-20">
+  <!-- Mobile Search Box - Banner ke niche, sirf logged-in users -->
+  <!-- <section *ngIf="userID !== 0 && DefaultAddressArray?.TERRITORY_ID" class="d-md-none"
+    style="background:#f5f8fd; padding: 10px 16px 6px;">
+    <div style="position:relative;">
+
+      <div style="
+      display:flex; align-items:center;
+      background:#fff; border:1px solid #ddd;
+      border-radius:10px; padding:0 12px;
+      height:46px; position:relative;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.07);">
+
+        <i class="bi bi-search" style="color:#aaa; font-size:15px; margin-right:8px; flex-shrink:0;"></i>
+
+        <div *ngIf="!homeSearchKeyword" style="
+          position:absolute; left:40px;
+          display:flex; align-items:center;
+          pointer-events:none; overflow:hidden;
+          height:20px; font-size:13px; color:#999;">
+          <span>Search for </span>
+          <span [class.home-placeholder-visible]="homePlaceholderVisible" style="
+            display:inline-block;
+            transform: translateY(20px);
+            opacity:0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            margin-left:4px;">
+            "{{homeCurrentPlaceholder}}"
+          </span>
+        </div>
+
+        <input type="text" [(ngModel)]="homeSearchKeyword" (click)="homeFilterOptions()" (input)="homeFilterOptions()"
+          (blur)="homeOnBlur()" style="
+          flex:1; border:none; outline:none;
+          background:transparent; font-size:13px;
+          color:#333; position:relative; z-index:2;" />
+
+        <span *ngIf="homeSearchLoading" class="spinner-border spinner-border-sm text-secondary" style="flex-shrink:0;">
+        </span>
+      </div>
+
+      <div *ngIf="homeShowOptionsList" style="
+        position:absolute; top:calc(100% + 4px);
+        left:0; right:0; background:#fff;
+        border:1px solid #ddd; border-radius:10px;
+        box-shadow:0 4px 12px rgba(0,0,0,0.1);
+        max-height:220px; overflow-y:auto;
+        z-index:999;">
+
+        <ng-container *ngIf="!homeSearchLoading && homeFilteredOptions.length > 0">
+          <ng-container *ngFor="let option of homeFilteredOptions">
+            <div *ngFor="let record of option['MATCHED_RECORDS']" (click)="homeSelectOption(record)" style="
+              display:flex; align-items:center;
+              padding:10px 14px; cursor:pointer;
+              border-bottom:1px solid #f0f0f0;
+              font-size:13px;">
+              <i class="bi bi-search" style="color:#aaa; font-size:12px; margin-right:8px;"></i>
+              <div>
+                <div style="color:#333; font-weight:500;">{{record.TITLE}}</div>
+                <div style="color:#aaa; font-size:11px;">{{record.CATEGORY}}</div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+
+        <div *ngIf="!homeSearchLoading && homeFilteredOptions.length === 0 && homeSearchKeyword"
+          style="padding:12px; text-align:center; color:#999; font-size:13px;">
+          No results found
+        </div>
+      </div>
+
+    </div>
+  </section> -->
+  <!-- <section *ngIf="userID !== 0 && PopularServices.length > 0" id="services" class="services section p-10-pt-20">
     <div
       class="container section-title d-flex justify-content-between align-items-start rounded-top-4 p-22-28-0-bg-white"
       data-aos="fade-up">
@@ -165,19 +238,19 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
   <section id="agents" class="agents section p-10-pt-20" *ngIf="OfferData.length > 0 || ServiceCateogries.length > 0">
     <div class="container d-flex flex-wrap justify-content-between align-items-start gap-4 p-0" data-aos="fade-up">
       <div
         class="card bg-white rounded-4 shadow pt-4 pb-4 ps-2 pe-2 text-center border-0 mt-2 shadow-sm service-categories pb-9-no-shadow"
         [ngClass]="{ 'full-width': OfferData.length === 0 }">
-        <div class="container section-title d-flex justify-content-between align-items-start pt-0-pb-7-bg-white"
+        <!-- <div class="container section-title d-flex justify-content-between align-items-start pt-0-pb-7-bg-white"
           data-aos="fade-up">
           <div class="d-flex align-items-center">
             <span class="me-2 indicator-bar"></span>
             <p class="fw-bold m-0 responsive-text">{{ "home.service_categories.title" | translate }}</p>
           </div>
-        </div>
+        </div> -->
         <div
           class="container d-flex flex-column justify-content-center align-items-center bg-white-pb-22-pr-0-pl-0-m-auto">
           <div *ngIf="loadCategories" class="spinner-border text-secondary mx-auto" role="status">
@@ -188,19 +261,18 @@
               class="col-12 col-sm-4 col-md-4 mt-18-mb-10"
               [ngClass]="OfferData.length === 0 ? 'col-lg-2-3 col-xl-2-4' : 'col-lg-2-33 col-xl-2-44'"
               data-aos="fade-up" [attr.data-aos-delay]="(i + 1) * 100">
-              <div class="popular-card flex-center-column-padded" (click)="openServiceDrawer(category)">
+              <div class="popular-card" (click)="openServiceDrawer(category)">
                 <div class="bg-light-blue-p-10">
                   <div [ngStyle]="{
-                      'background-image': 'url(' + (category.ICON ? IMAGEuRL + 'Category/' + category.ICON : 'assets/img/services/no-image.png') + ')',
-                      'background-size': '100% 100%', 'background-position': 'center',
-                      'background-repeat': 'no-repeat', width: '100%', 'aspect-ratio': '1 / 1',
-                      'border-radius': '8px', border: 'none'
-                    }" class="img-fluid cc" role="img" [attr.aria-label]="category.title"></div>
+                    'background-image': 'url(' + (category.ICON ? IMAGEuRL + 'Category/' + category.ICON : 'assets/img/services/no-image.png') + ')',
+                    'background-size': '100% 100%', 'background-position': 'center',
+                    'background-repeat': 'no-repeat', width: '100%', 'aspect-ratio': '1 / 1',
+                    'border-radius': '8px 8px 0 0', border: 'none'
+                  }" class="img-fluid cc" role="img" [attr.aria-label]="category.title"></div>
+                  <div class="category-label">
+                    <p class="service-name" [attr.title]="category.title">{{ category.title }}</p>
+                  </div>
                 </div>
-                <p class="service-name" [attr.title]="category.title" [ngStyle]="{
-                    'text-align': displayedCategories.length === 1 ? 'left' : 'center',
-                    'white-space': 'pre-line', color: '#0e0e0e', 'font-weight': '600', 'margin': '0px'
-                  }">{{ category.title }}</p>
               </div>
             </div>
           </div>
@@ -1045,6 +1117,7 @@
       opacity: 0;
       transform: translateY(40px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
