@@ -1,7 +1,8 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-
+const razorPayKey = 'rzp_test_SJw4Sq4w5kXdZn';
+// const razorPayKey  = 'rzp_live_UOLu84DuvGULjK';
 export const environment = {
   production: false,
 
@@ -17,13 +18,15 @@ export const environment = {
     // measurementId: 'G-N76JL181BX',
 
     apiKey: "AIzaSyBHNvnQFnEV4oLDQREF1nXNbllOV-5STKY",
-  authDomain: "pockit-engineers.firebaseapp.com",
-  projectId: "pockit-engineers",
-  storageBucket: "pockit-engineers.firebasestorage.app",
-  messagingSenderId: "427204155934",
-  appId: "1:427204155934:web:e9576c9de50b2aa2f5ac0f",
-  measurementId: "G-ZKJWKWPMB9"
+    authDomain: "pockit-engineers.firebaseapp.com",
+    projectId: "pockit-engineers",
+    storageBucket: "pockit-engineers.firebasestorage.app",
+    messagingSenderId: "427204155934",
+    appId: "1:427204155934:web:e9576c9de50b2aa2f5ac0f",
+    measurementId: "G-ZKJWKWPMB9"
   },
+  firebaseUrl: 'https://pockit-engineers-default-rtdb.firebaseio.com/Jobs',
+  razorPayKey: razorPayKey,
 };
 
 /*

@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 declare var Razorpay: any;
 import * as bootstrap from 'bootstrap';
 import { CartService } from 'src/app/Service/cart.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-check-out',
   templateUrl: './check-out.component.html',
@@ -426,8 +427,7 @@ export class CheckOutComponent {
     );
   }
   selectedPaymentMethod: string = 'ONLINE';
-  RAZOR_PAY_KEY = 'rzp_test_SJw4Sq4w5kXdZn';
-  // RAZOR_PAY_KEY = 'rzp_live_UOLu84DuvGULjK'; // Razorpay API Key live
+  RAZOR_PAY_KEY = environment.razorPayKey;
 
   user: any;
   getFinalAmount(): number {

@@ -7,6 +7,7 @@ import { ApiServiceService } from 'src/app/Service/api-service.service';
 declare var Razorpay: any;
 import { Meta, Title } from '@angular/platform-browser';
 import { CartService } from 'src/app/Service/cart.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-order-review-page',
   templateUrl: './order-review-page.component.html',
@@ -342,9 +343,7 @@ export class OrderReviewPageComponent {
   toggleAccordion(section: string) {
     this.orderDetailsVisible[section] = !this.orderDetailsVisible[section];
   }
-  RAZOR_PAY_KEY = 'rzp_test_SJw4Sq4w5kXdZn';
-  // RAZOR_PAY_KEY = 'rzp_live_UOLu84DuvGULjK'; // Razorpay API Key live
-
+  RAZOR_PAY_KEY = environment.razorPayKey;
   getFinalAmount(): number {
     const cartInfo = this.OrderReviewDetails?.CART_INFO[0]?.TOTAL_AMOUNT;
     return cartInfo
@@ -403,7 +402,6 @@ export class OrderReviewPageComponent {
         CLIENT_ID: 1,
         TERRITORYID: cartInfo?.TERRITORY_ID,
       };
-
       this.apiservice.addPaymentTransactions(body).subscribe((res: any) => {
         if (res?.code === 200) {
           const payload = {
@@ -432,7 +430,6 @@ export class OrderReviewPageComponent {
       // ONLINE or WALLET with insufficient balance
       const isHybrid = this.selectedPaymentMethod === 'WALLET' && this.walletAmount < finalAmount;
       const payableAmount = isHybrid ? (finalAmount - this.walletAmount) : finalAmount;
-
       var dataForRzpOrder = {
         CART_ID: cartId,
         ORDER_ID: 0,
@@ -538,7 +535,6 @@ export class OrderReviewPageComponent {
         this.message.error(err?.error?.data?.error?.description || 'Something went wrong.', '');
       });
     }
-
   }
   ngOnDestroy(): void {
     window.removeEventListener('resize', this.setMaxCharLengthBasedOnScreen);
