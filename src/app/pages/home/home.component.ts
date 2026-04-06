@@ -15,7 +15,8 @@ import {
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { CookieService } from 'ngx-cookie-service';
-import * as moment from 'moment';
+import * as _moment from 'moment';
+const moment = (_moment as any).default || _moment;
 import { Router } from '@angular/router';
 import { ModalService } from 'src/app/Service/modal.service';
 import { FormsModule } from '@angular/forms';
@@ -1307,37 +1308,66 @@ export class HomeComponent {
   updateTimeSlots(date: any) {
     const activeTerritory = this.TerritoryData?.find((t: any) => t.IS_ACTIVE === 1);
     if (!activeTerritory) return;
-    const selectedDateMoment = moment(date, 'ddd, MMM D, YYYY');
-    if (!Array.isArray(this.updatedselectedService)) this.updatedselectedService = [];
+
+    const selectedDateMoment = (moment as any)(date, 'ddd, MMM D, YYYY');
+    if (!Array.isArray(this.updatedselectedService)) {
+      this.updatedselectedService = [];
+    }
     if (!this.timeSlots || this.timeSlots.length === 0) return;
-    const { serviceStart, serviceEnd } = this.getServiceTimeRange(selectedDateMoment);
-    if (!serviceStart || !serviceEnd || serviceStart.isAfter(serviceEnd)) {
-      this.timeSlots = this.timeSlots.map((period) => ({ ...period, times: { ...period.times, disabled: true } }));
+
+    const timeRange: any = this.getServiceTimeRange(selectedDateMoment);
+    const serviceStart = timeRange.serviceStart;
+    const serviceEnd = timeRange.serviceEnd;
+
+    if (!serviceStart || !serviceEnd || !serviceStart.isValid() || !serviceEnd.isValid() || serviceStart.isAfter(serviceEnd)) {
+      this.timeSlots = this.timeSlots.map((period) => ({
+        ...period,
+        times: { ...period.times, disabled: true }
+      }));
       return;
     }
+
     this.timeSlots = this.timeSlots.map((period) => {
-      const slotStart = moment(period.times.start, 'HH:mm');
-      const slotEnd = moment(period.times.end, 'HH:mm');
-      const isValid = (slotStart.isSameOrAfter(serviceStart) && slotEnd.isSameOrBefore(serviceEnd)) || serviceStart.isBetween(slotStart, slotEnd, null, '[)') || serviceEnd.isBetween(slotStart, slotEnd, null, '(]');
+      const slotStart = (moment as any)(period.times.start, 'HH:mm');
+      const slotEnd = (moment as any)(period.times.end, 'HH:mm');
+      const isValid = (slotStart.isSameOrAfter(serviceStart) && slotEnd.isSameOrBefore(serviceEnd)) ||
+        serviceStart.isBetween(slotStart, slotEnd, 'milliseconds', '[)') ||
+        serviceEnd.isBetween(slotStart, slotEnd, 'milliseconds', '(]');
       return { ...period, times: { ...period.times, disabled: !isValid } };
     });
   }
-  getServiceTimeRange(selectedDate: moment.Moment) {
+
+  getServiceTimeRange(selectedDate: any): { serviceStart: any; serviceEnd: any } {
     const activeTerritory = this.TerritoryData?.find((t: any) => t.IS_ACTIVE === 1);
     if (!activeTerritory) return { serviceStart: null, serviceEnd: null };
-    const startTimes = [...this.updatedselectedService.map((service: any) => moment(service.START_TIME || '00:00:01', 'HH:mm:ss')), moment(activeTerritory.START_TIME, 'HH:mm:ss')].filter((time) => time.isValid());
-    const endTimes = [...this.updatedselectedService.map((service: any) => moment(service.END_TIME || '23:59:59', 'HH:mm:ss')), moment(activeTerritory.END_TIME, 'HH:mm:ss')].filter((time) => time.isValid());
-    if (selectedDate.isSame(moment(), 'day')) {
+
+    const startTimes: any[] = [
+      ...this.updatedselectedService.map((service: any) => (moment as any)(service.START_TIME || '00:00:01', 'HH:mm:ss')),
+      (moment as any)(activeTerritory.START_TIME, 'HH:mm:ss')
+    ].filter((time) => time.isValid());
+
+    const endTimes: any[] = [
+      ...this.updatedselectedService.map((service: any) => (moment as any)(service.END_TIME || '23:59:59', 'HH:mm:ss')),
+      (moment as any)(activeTerritory.END_TIME, 'HH:mm:ss')
+    ].filter((time) => time.isValid());
+
+    if (selectedDate.isSame((moment as any)(), 'day')) {
       const maxPrepMinutes = this.updatedselectedService.reduce((maxTime: number, service: any) => {
-        const hours = service.T_PREPARATION_HOURS != null ? parseInt(service.T_PREPARATION_HOURS, 10) : service.PREPARATION_HOURS != null ? parseInt(service.PREPARATION_HOURS, 10) : 0;
-        const minutes = service.T_PREPARATION_MINUTES != null ? parseInt(service.T_PREPARATION_MINUTES, 10) : service.PREPARATION_MINUTES != null ? parseInt(service.PREPARATION_MINUTES, 10) : 0;
+        const hours = service.T_PREPARATION_HOURS != null ? parseInt(service.T_PREPARATION_HOURS, 10) : (service.PREPARATION_HOURS != null ? parseInt(service.PREPARATION_HOURS, 10) : 0);
+        const minutes = service.T_PREPARATION_MINUTES != null ? parseInt(service.T_PREPARATION_MINUTES, 10) : (service.PREPARATION_MINUTES != null ? parseInt(service.PREPARATION_MINUTES, 10) : 0);
         return Math.max(maxTime, hours * 60 + minutes);
       }, 0);
-      if (maxPrepMinutes > 0) startTimes.push(moment().add(maxPrepMinutes, 'minutes'));
+      if (maxPrepMinutes > 0) {
+        startTimes.push((moment as any)().add(maxPrepMinutes, 'minutes'));
+      }
     }
-    if (startTimes.length === 0 || endTimes.length === 0) return { serviceStart: null, serviceEnd: null };
-    const serviceStart = moment.max(startTimes);
-    const serviceEnd = moment.min(endTimes);
+
+    if (startTimes.length === 0 || endTimes.length === 0) {
+      return { serviceStart: null, serviceEnd: null };
+    }
+
+    const serviceStart = (moment as any).max(startTimes);
+    const serviceEnd = (moment as any).min(endTimes);
     this.MaxEndValue = serviceStart.format('hh:mm A');
     return { serviceStart, serviceEnd };
   }
