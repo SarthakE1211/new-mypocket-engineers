@@ -736,8 +736,9 @@ export class HomeComponent {
           this.displayedCategories1 = [];
         }
         this.loadCategories1 = false;
+        this.loaderService.hideLoader();
       },
-      () => { this.loadCategories1 = false; }
+      () => { this.loadCategories1 = false; this.loaderService.hideLoader(); }
     );
   }
   viewOnlySubCategories: any[] = [];
@@ -990,8 +991,9 @@ export class HomeComponent {
       (data) => {
         if (data.data.length > 0) { this.loadService = false; this.PopularServices = data.data.slice(0, 10); this.initHomePlaceholder(); }
         else { this.loadService = false; this.PopularServices = []; }
+        this.loaderService.hideLoader();
       },
-      () => { this.loadService = false; }
+      () => { this.loadService = false; this.loaderService.hideLoader(); }
     );
   }
   loadMoreLoading: boolean = false;
@@ -1011,8 +1013,9 @@ export class HomeComponent {
           this.displayedCategories = [];
           this.loadCategories = false;
         }
+        this.loaderService.hideLoader();
       },
-      () => { this.loadCategories = false; }
+      () => { this.loadCategories = false; this.loaderService.hideLoader(); }
     );
   }
   loadMore() {
@@ -1934,7 +1937,6 @@ export class HomeComponent {
       this.startHomePlaceholderRotation();
     }
   }
-
   startHomePlaceholderRotation() {
     if (this.homePlaceholderInterval) {
       clearInterval(this.homePlaceholderInterval);
@@ -1949,7 +1951,6 @@ export class HomeComponent {
       }, 300);
     }, 1000);
   }
-
   homeGetServiceData() {
     if (this.homeSearchLoading || !this.DefaultAddressArray?.TERRITORY_ID) return;
     this.homeSearchLoading = true;
@@ -1969,7 +1970,6 @@ export class HomeComponent {
       error: () => { this.homeSearchLoading = false; }
     });
   }
-
   homeFilterOptions() {
     if (this.homeOptionsList.length === 0) {
       this.homeGetServiceData();
@@ -1990,7 +1990,6 @@ export class HomeComponent {
     }
     this.homeShowOptionsList = true;
   }
-
   homeSelectOption(record: any) {
     this.homeSearchKeyword = record.TITLE;
     this.homeShowOptionsList = false;
@@ -2007,7 +2006,6 @@ export class HomeComponent {
       this.router.navigate(['/services']);
     });
   }
-
   homeOnBlur() {
     setTimeout(() => { this.homeShowOptionsList = false; }, 500);
   }

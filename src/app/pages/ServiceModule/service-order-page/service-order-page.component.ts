@@ -4,11 +4,13 @@ import { Component, ElementRef, NgZone, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as bootstrap from 'bootstrap';
-import * as moment from 'moment';
+import * as _moment from 'moment';
+const moment = _moment as any;
 import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from 'src/app/Service/api-service.service';
 import { CommonFunctionService } from 'src/app/Service/CommonFunctionService';
 import { LocationService } from 'src/app/Service/location.service';
+
 declare var google: any;
 declare var Razorpay: any;
 import { environment } from 'src/environments/environment';
@@ -735,7 +737,37 @@ export class ServiceOrderPageComponent {
           }
           this.loadjobdetails = false;
           this.loadingOrderStatus = null;
+
+          // Check for query parameters to open drawer automatically
+          const openPartPayment = this.route.snapshot.queryParamMap.get('openPartPayment');
+          const openPartDetails = this.route.snapshot.queryParamMap.get('openPartDetails');
+          const openChat = this.route.snapshot.queryParamMap.get('openChat');
+
+          if (openPartPayment === 'true') {
+            this.openPartDetailsDrawer(this.selectedJob, 'PP');
+            this.router.navigate([], { queryParams: { openPartPayment: null }, queryParamsHandling: 'merge' });
+          } else if (openPartDetails === 'true') {
+            this.openPartDetailsDrawer(this.selectedJob, 'PD');
+            this.router.navigate([], { queryParams: { openPartDetails: null }, queryParamsHandling: 'merge' });
+          } else if (openChat === 'true') {
+            this.chatwithcustomer(this.selectedJob);
+            setTimeout(() => {
+              const chatOffcanvas = document.getElementById('offcanvasRightttttttt');
+              if (chatOffcanvas) {
+                let offcanvasInstance = bootstrap.Offcanvas.getInstance(chatOffcanvas);
+                if (!offcanvasInstance) {
+                  offcanvasInstance = new bootstrap.Offcanvas(chatOffcanvas);
+                }
+                offcanvasInstance.show();
+              }
+            }, 500);
+            this.router.navigate([], { queryParams: { openChat: null }, queryParamsHandling: 'merge' });
+          }
+
+
+
         },
+
         error: (error) => {
           this.loadingOrderStatus = null;
         },
@@ -1829,5 +1861,17 @@ export class ServiceOrderPageComponent {
     } else {
       sessionStorage.setItem('msgget', 'no');
     }
+  }
+  getFirstLine(name: string): string {
+    if (!name) return '';
+    const parts = name.split(',');
+    if (parts.length <= 2) return name;
+    return parts.slice(0, 2).join(',');
+  }
+  getSecondLine(name: string): string {
+    if (!name) return '';
+    const parts = name.split(',');
+    if (parts.length <= 2) return '';
+    return parts.slice(2).join(',').trim();
   }
 }

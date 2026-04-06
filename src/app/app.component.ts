@@ -33,36 +33,45 @@ export class AppComponent {
   ) {
     this.loaderService.isLoading$.subscribe((loading) => {
       this.isLoading = loading;
+      if (!loading && this.minTimePassed) {
+        this.flashscreen = false;
+      }
     });
-       this.routePath = window.location.href.split('/')[3]
+    this.routePath = window.location.href.split('/')[3]
   }
   needLogeIn: boolean = false;
-  isLoading = false; 
+  isLoading = false;
   flashscreen: boolean = true;
- cookiesAccepted:boolean = false;
-  isPrivacyPolicyPage:boolean = false;
+  cookiesAccepted: boolean = false;
+  isPrivacyPolicyPage: boolean = false;
+  minTimePassed: boolean = false;
   ngOnInit() {
+    this.loaderService.showLoader(); // Explicitly start initial loading bit
     let isLogged: any = localStorage.getItem('isLogged');
     const userId = localStorage.getItem('userId');
-    this.chatshow = false
+    this.chatshow = false;
     sessionStorage.setItem('chatreciveee', 'no');
     sessionStorage.setItem('chatopen', 'false');
     const firebaseApp = initializeApp(environment.firebase);
     this.messaging = getMessaging(firebaseApp);
     this.requestPermission();
+    // Minimum 3s splash screen duration
+    setTimeout(() => {
+      this.minTimePassed = true;
+      if (!this.isLoading) {
+        this.flashscreen = false;
+      }
+    }, 3000);
+    // Failsafe: Always hide after 10 seconds
     setTimeout(() => {
       this.flashscreen = false;
-    }, 3000);
-    this.loaderService.isLoading$.subscribe((status) => {
-      this.isLoading = status;
-    });
-    this.loaderService.isLoading$.subscribe((status) => {
-      this.isLoading = status;
-    });
+    }, 10000);
     if (isLogged !== 'true') {
-      if(this.routePath!=='privacy_policy_page' && this.routePath!=='terms-conditions' ){
- this.needLogeIn = true;
-      this.openModal();
+      if (this.routePath !== 'privacy_policy_page' && this.routePath !== 'terms-conditions') {
+        this.needLogeIn = true;
+        setTimeout(() => {
+          this.openModal();
+        }, 100);
       }
     } else if (userId === '0') {
       sessionStorage.setItem('userId', userId);
@@ -124,7 +133,7 @@ export class AppComponent {
     }
     this.router.events
       .pipe(
-        filter((event) => event instanceof NavigationEnd) 
+        filter((event) => event instanceof NavigationEnd)
       )
       .subscribe((event) => {
         const fragment = this.activatedRoute.snapshot.fragment;
@@ -138,7 +147,7 @@ export class AppComponent {
         }
       });
   }
- acceptCookies(): void {
+  acceptCookies(): void {
     localStorage.setItem('cookiesAccepted', 'true');
     this.cookiesAccepted = true;
   }
@@ -205,7 +214,7 @@ export class AppComponent {
   }
   rotationAngle: number = 0;
   rotateImage() {
-    this.rotationAngle += 90; 
+    this.rotationAngle += 90;
   }
   @ViewChild('btnclickkkkformsg') btnclickkkkformsg!: ElementRef;
   chatwith: any = '';
@@ -286,16 +295,16 @@ export class AppComponent {
     }, {});
   }
   getMediaType(url: string): string {
-    if (!url) return ''; 
+    if (!url) return '';
     const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
     const videoExtensions = ['mp4', 'avi', 'mov', 'mkv', 'webm'];
-    const extension = url.split('.').pop()?.toLowerCase(); 
+    const extension = url.split('.').pop()?.toLowerCase();
     if (extension && imageExtensions.includes(extension)) {
-      return 'I'; 
+      return 'I';
     } else if (extension && videoExtensions.includes(extension)) {
-      return 'V'; 
+      return 'V';
     }
-    return ''; 
+    return '';
   }
   sendmessage() {
     this.isSpinning = true;
@@ -315,7 +324,7 @@ export class AppComponent {
         this.BODY_TEXT === null
       ) {
       } else {
-        const boldPattern = /\*(.*?)\*/g; 
+        const boldPattern = /\*(.*?)\*/g;
         this.BODY_TEXT = this.BODY_TEXT.replace(boldPattern, '<b>$1</b>');
       }
     }
@@ -488,7 +497,7 @@ export class AppComponent {
       this.BODY_TEXT =
         this.BODY_TEXT.slice(0, start) + boldText + this.BODY_TEXT.slice(end);
       textarea.value = this.BODY_TEXT;
-      textarea.selectionStart = textarea.selectionEnd = end + 7; 
+      textarea.selectionStart = textarea.selectionEnd = end + 7;
     }
   }
   messageListener() {

@@ -1856,7 +1856,7 @@
           <hr class="date-divider" />
         </div>
         <div class="col-12 notification-item-wrapper">
-          <div class="notification-card">
+          <div class="notification-card" (click)="handleNotificationClick(dataa)">
             <div class="notification-content">
               <div class="notification-icon-wrapper" [ngClass]="getNotificationIconClass(dataa)">
                 <i [class]="getNotificationIcon(dataa)"></i>

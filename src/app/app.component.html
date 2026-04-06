@@ -1,6 +1,6 @@
-<app-common-loader *ngIf="isLoading" class="overlay-loader"></app-common-loader>
+<app-common-loader *ngIf="isLoading && !flashscreen" class="overlay-loader"></app-common-loader>
 <app-flastscreen *ngIf="flashscreen" class="overlay-loader"></app-flastscreen>
-<div *ngIf="!flashscreen">
+<div>
   <div *ngIf="
       !needLogeIn &&
       routePath !== 'privacy_policy_page' && routePath !== 'terms-conditions'

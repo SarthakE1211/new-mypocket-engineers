@@ -282,7 +282,7 @@ export class HeaderComponent {
       });
       this.cartService.fetchAndUpdateCartDetails(this.userID);
       this.getuserList();
-      this.fetchPopularServicesForPlaceholder();
+      // this.fetchPopularServicesForPlaceholder(); // Moved for better territory handling
       this.apiservice
         .getAddresses12data(
           0,
@@ -318,6 +318,10 @@ export class HeaderComponent {
             this.TERRITORY_IDssss = data.data.map(
               (addressssss: any) => addressssss['TERRITORY_ID']
             );
+            if (this.TERRITORY_IDssss && this.TERRITORY_IDssss.length > 0) {
+              sessionStorage.setItem('CurrentTerritory', this.TERRITORY_IDssss[0]);
+              this.fetchPopularServicesForPlaceholder();
+            }
             this.pincodeforrkey =
               pincodeFor == 'B'
                 ? 'B'
@@ -382,6 +386,7 @@ export class HeaderComponent {
       localStorage.setItem('pincodeFor', pincodeFor);
       this.isShopDisabled = !(pincodeFor === 'I' || pincodeFor === 'B');
       this.isServiceDisabled = !(pincodeFor === 'S' || pincodeFor === 'B');
+      this.fetchPopularServicesForPlaceholder();
     }
     this.startPlaceholderAnimation()
   }
@@ -1126,7 +1131,7 @@ export class HeaderComponent {
             .filter((t: any) => t.EXPIRY_DATE === earliestExpiryDate)
             .reduce((sum: number, t: any) => sum + (Number(t.WALLET_AMOUNT) || 0), 0);
           this.expiredAmount = totalAtFirstExpiry;
-          this.firstExpiryDate = earliestExpiryDate; 
+          this.firstExpiryDate = earliestExpiryDate;
         } else {
           this.expiredAmount = 0;
           this.firstExpiryDate = null;
@@ -1771,7 +1776,7 @@ export class HeaderComponent {
             .getglobalServiceData(0, 0, '', '', '', 'I', 0, TERRITORY_ID)
             .subscribe({
               next: (dataaaaa: any) => {
-                this.optionsList = dataaaaa.data;
+                this.optionsList = dataaaaa.data ?? [];
                 this.filteredOptions = this.optionsList.filter(
                   (item: any) =>
                     item['CATEGORY'] == 'Category' ||
@@ -1810,7 +1815,7 @@ export class HeaderComponent {
             )
             .subscribe({
               next: (dataaaaa: any) => {
-                this.optionsList = dataaaaa.data;
+                this.optionsList = dataaaaa.data ?? [];
                 if (this.pincodeforrkey == 'S') {
                   this.optionsList = this.optionsList.filter(
                     (item: any) =>
@@ -1846,7 +1851,7 @@ export class HeaderComponent {
             )
             .subscribe({
               next: (dataaaaa: any) => {
-                this.optionsList = dataaaaa.data;
+                this.optionsList = dataaaaa.data ?? [];
                 if (this.pincodeforrkey == 'S') {
                   this.optionsList = this.optionsList.filter(
                     (item: any) =>
@@ -2953,6 +2958,9 @@ export class HeaderComponent {
   optionsList: any[] = [];
   filteredOptions: any[] = [...this.optionsList];
   filterOptions() {
+    if (!this.optionsList) {
+      this.optionsList = [];
+    }
     if (
       this.searchKeyword != null &&
       this.searchKeyword != '' &&
@@ -4051,7 +4059,7 @@ export class HeaderComponent {
         this.mobileAnimState = 'visible';
         setTimeout(() => {
           this.isAnimating = false;
-        }, 250); 
+        }, 250);
       }, 250);
     }, 2500);
   }
@@ -4078,18 +4086,25 @@ export class HeaderComponent {
     }, 2500);
   }
   updatePlaceholderTexts(services: string[]) {
-    this.placeholderTexts = [...services.map(s => s)];
-    this.currentIndex = 0;
-    this.currentPlaceholder = this.placeholderTexts[0];
-    this.startPlaceholderRotation();
+    if (services && services.length > 0) {
+      this.placeholderTexts = [...services];
+      this.currentIndex = 0;
+      this.currentPlaceholder = this.placeholderTexts[0];
+      this.startPlaceholderRotation();
+    }
   }
   fetchPopularServicesForPlaceholder() {
-    const territoryId = sessionStorage.getItem('CurrentTerritory');
-    if (!territoryId || territoryId === '0' || territoryId === 'null') return;
+    let territoryId = sessionStorage.getItem('CurrentTerritory');
+    // Fallback to default territory if not set (e.g. for guest users)
+    if (!territoryId || territoryId === '0' || territoryId === 'null') {
+      territoryId = '1'; // Default to Delhi/Global territory
+    }
+    const cid = this.userID || 0;
+    const ctype = this.customertype || 'I';
     this.apiservice.getPoppulerServicesForWeb(
       parseInt(territoryId),
-      this.userID,
-      this.customertype,
+      cid,
+      ctype,
       'ID',
       'asc'
     ).subscribe((data: any) => {
@@ -4100,6 +4115,60 @@ export class HeaderComponent {
           .filter(Boolean);
         this.updatePlaceholderTexts(names);
       }
-    }, () => { });
+    }, () => {
+      // If API fails, we still have the default placeholders from initialization
+    });
   }
+  handleNotificationClick(dataa: any) {
+    const title = dataa.TITLE || '';
+    const description = dataa.DESCRIPTION || '';
+
+    if (dataa.MEDIA_TYPE === 'IR' ||
+      title.includes('Inventory request for job') ||
+      title.includes('Inventory Payment request') ||
+      title.includes('New Message') ||
+      description.toLowerCase().includes('new message')) {
+
+      let orderId = dataa.ORDER_ID;
+
+      // Extract Order ID from description if missing (robust regex for formats like ORD/2026/04/03/00052)
+      if (!orderId && description) {
+        const match = description.match(/(ORD\/[^\s,\-]+)/);
+        if (match) {
+          orderId = match[1];
+        }
+      }
+
+      if (orderId) {
+        const notificationDrawer = document.getElementById('offcanvasRight');
+        if (notificationDrawer) {
+          const offcanvasInstance = bootstrap.Offcanvas.getInstance(notificationDrawer);
+          if (offcanvasInstance) {
+            offcanvasInstance.hide();
+          }
+        }
+        // Force cleanup of backdrops and page state
+        const backdrops = document.querySelectorAll('.offcanvas-backdrop, .modal-backdrop');
+        backdrops.forEach((el) => el.remove());
+        document.body.classList.remove('modal-open', 'offcanvas-open');
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+
+        const queryParams: any = {};
+        const isNewMessage = title.includes('New Message') || description.toLowerCase().includes('new message');
+
+        if (title.includes('Inventory Payment request')) {
+          queryParams.openPartPayment = 'true';
+        } else if (isNewMessage) {
+          queryParams.openChat = 'true';
+        } else {
+          queryParams.openPartDetails = 'true';
+        }
+
+        this.router.navigate(['/order-details', orderId], { queryParams: queryParams });
+      }
+    }
+  }
+
 }
+

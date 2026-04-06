@@ -232,6 +232,8 @@ export class LoginComponent implements OnInit {
       this.modalVisible = state;
       this.data = new registerdata();
     });
+    this.loaderService.hideLoader();
+
     this.form = this.fb.group({
       password: [
         '',
@@ -664,7 +666,7 @@ export class LoginComponent implements OnInit {
         IS_SPECIAL_CATALOGUE: false,
         ACCOUNT_STATUS: true
       };
-      
+
       this.api.userRegistration(regData).subscribe({
         next: (successCode: any) => {
           if (successCode.body.message === 'Logged in successfully.') {

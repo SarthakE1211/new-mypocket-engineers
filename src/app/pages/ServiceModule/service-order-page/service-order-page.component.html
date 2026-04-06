@@ -430,7 +430,6 @@
                                     }}
                                   </p>
                                 </div>
-
                                 <div *ngIf="item.GUARANTEE_ALLOWED == 1 && customertype === 'I'"
                                   class="d-flex justify-content-between">
                                   <p class="fw-bold mb-1 text-gray-dark">
@@ -1255,6 +1254,19 @@
                     <p class="mb-1 text-black-medium">
                       ₹{{ orderData[0]?.WALLET_AMOUNT_USED | number }}
                     </p>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="selectedJob?.partData?.[0]">
+                  <div class="d-flex justify-content-between mb-2">
+                    <div class="mb-0 text-gray-medium">
+                      <div>{{ getFirstLine(selectedJob.partData[0].ITEM_NAME) }}</div>
+                      <div class="text-gray-medium">
+                        {{ getSecondLine(selectedJob.partData[0].ITEM_NAME) }}
+                      </div>
+                    </div>
+                    <div class="mb-0 text-black-medium fw-bold">
+                      ₹{{ orderData[0]?.TOTAL_INVENTORY_AMOUNT | number }}
+                    </div>
                   </div>
                 </ng-container>
                 <ng-container *ngIf="orderData[0]?.IS_EXPRESS === 1">
