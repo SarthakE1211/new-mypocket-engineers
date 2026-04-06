@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
+import { LoaderService } from 'src/app/Service/loader.service';
 @Component({
   selector: 'app-terms-and-condition-without-login',
   templateUrl: './terms-and-condition-without-login.component.html',
   styleUrls: ['./terms-and-condition-without-login.component.scss']
 })
-export class TermsAndConditionWithoutLoginComponent  {
- constructor(private titleService: Title,private metaService: Meta) { this.updateSEO() }
+export class TermsAndConditionWithoutLoginComponent {
+  constructor(private titleService: Title, private metaService: Meta, private loaderService: LoaderService) {
+    this.updateSEO();
+    this.loaderService.hideLoader();
+  }
   updateSEO() {
     this.titleService.setTitle('Terms and Conditions - Pockit');
     this.metaService.updateTag({ name: 'description', content: 'Read the Terms and Conditions of Pockit Web to understand our policies on IT services, hardware sales, payments, returns, and user responsibilities.' });

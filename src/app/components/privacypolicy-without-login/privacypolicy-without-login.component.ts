@@ -1,21 +1,25 @@
 import { Component } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
+import { LoaderService } from 'src/app/Service/loader.service';
 @Component({
   selector: 'app-privacypolicy-without-login',
   templateUrl: './privacypolicy-without-login.component.html',
   styleUrls: ['./privacypolicy-without-login.component.scss']
 })
 export class PrivacypolicyWithoutLoginComponent {
- constructor(private titleService: Title,private metaService: Meta) { this.updateSEO() }
+  constructor(private titleService: Title, private metaService: Meta, private loaderService: LoaderService) {
+    this.updateSEO();
+    this.loaderService.hideLoader();
+  }
   updateSEO() {
-    this.titleService.setTitle('Terms and Conditions - Pockit');
-    this.metaService.updateTag({ name: 'description', content: 'Read the Terms and Conditions of Pockit Web to understand our policies on IT services, hardware sales, payments, returns, and user responsibilities.' });
-    this.metaService.updateTag({ name: 'keywords', content: 'terms and conditions, Pockit Web policies, IT services terms, hardware sales policy, return policy, warranty, user agreement' });
-    this.metaService.updateTag({ property: 'og:title', content: 'Terms and Conditions - Pockit Web' });
-    this.metaService.updateTag({ property: 'og:description', content: 'Review the Terms and Conditions of Pockit Web, covering IT services, hardware sales, payments, shipping, refunds, and warranties.' });
-    this.metaService.updateTag({ property: 'og:url', content: 'https://my.pockitengineers.com/terms-and-conditions' });
-    this.metaService.updateTag({ name: 'twitter:title', content: 'Terms and Conditions - Pockit Web' });
-    this.metaService.updateTag({ name: 'twitter:description', content: 'Understand the policies of Pockit Web regarding IT services, hardware sales, payment terms, shipping, and returns.' });
+    this.titleService.setTitle('Privacy Policy - Pockit');
+    this.metaService.updateTag({ name: 'description', content: 'Read the Privacy Policy of Pockit Web to understand how we collect, use, and protect your personal information.' });
+    this.metaService.updateTag({ name: 'keywords', content: 'privacy policy, Pockit Web privacy, data protection, personal information, user privacy' });
+    this.metaService.updateTag({ property: 'og:title', content: 'Privacy Policy - Pockit Web' });
+    this.metaService.updateTag({ property: 'og:description', content: 'Review the Privacy Policy of Pockit Web to understand our data collection and protection practices.' });
+    this.metaService.updateTag({ property: 'og:url', content: 'https://my.pockitengineers.com/privacy_policy_page' });
+    this.metaService.updateTag({ name: 'twitter:title', content: 'Privacy Policy - Pockit Web' });
+    this.metaService.updateTag({ name: 'twitter:description', content: 'Understand how Pockit Web collects and protects your personal data.' });
     this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
     let link: HTMLLinkElement = document.querySelector("link[rel='canonical']") || document.createElement('link');
     link.setAttribute('rel', 'canonical');

@@ -37,7 +37,22 @@ export class AppComponent {
         this.flashscreen = false;
       }
     });
-    this.routePath = window.location.href.split('/')[3]
+
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        this.routePath = event.urlAfterRedirects.split('/')[1]?.split(/[?#]/)[0] || '';
+        const fragment = this.activatedRoute.snapshot.fragment;
+        if (fragment) {
+          const element = document.getElementById(fragment);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        } else {
+          window.scrollTo(0, 0);
+        }
+      });
+    this.routePath = window.location.pathname.split('/')[1]?.split(/[?#]/)[0] || '';
   }
   needLogeIn: boolean = false;
   isLoading = false;
@@ -131,21 +146,6 @@ export class AppComponent {
         }
       });
     }
-    this.router.events
-      .pipe(
-        filter((event) => event instanceof NavigationEnd)
-      )
-      .subscribe((event) => {
-        const fragment = this.activatedRoute.snapshot.fragment;
-        if (fragment) {
-          const element = document.getElementById(fragment);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-          }
-        } else {
-          window.scrollTo(0, 0);
-        }
-      });
   }
   acceptCookies(): void {
     localStorage.setItem('cookiesAccepted', 'true');
