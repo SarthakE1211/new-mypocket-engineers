@@ -15,17 +15,19 @@ div[disabled-click] {
   display: inline-block;
   cursor: pointer;
 }
-@media (max-width: 400px) {
+@media (max-width: 768px) {
   .icon-btn {
-    padding: 0;
+    padding: 4px;
   }
   .header {
-    padding: 0;
+    padding: 5px 10px;
+    overflow-x: hidden;
   }
-}
-@media (max-width: 400px) {
-  i {
-    font-size: 18px;
+  .d-none-mobile {
+    display: none !important;
+  }
+  .mr-1rem {
+    margin-right: 0.5rem !important;
   }
 }
 .logo img {
@@ -2042,7 +2044,10 @@ textarea {
   }
 }
 .header-root {
-  padding: 5px
+  padding: 5px;
+  @media (max-width: 768px) {
+    padding: 2px;
+  }
 }
 .nav-links-flex {
   display: flex
@@ -2054,7 +2059,12 @@ textarea {
   font-size: 14px;
 }
 .mr-1rem {
-  margin-right: 1rem !important
+  margin-right: 1rem !important;
+}
+.d-none-mobile {
+  @media (max-width: 768px) {
+    display: none !important;
+  }
 }
 .search-header-5px {
   text-align: center;
@@ -2092,7 +2102,12 @@ textarea {
 }
 .box-55px-unique {
   width: 55px;
-  height: 55px
+  height: 55px;
+  flex-shrink: 0;
+  @media (max-width: 768px) {
+    width: 45px;
+    height: 45px;
+  }
 }
 .profile-img-40px-unique {
   width: 40px;
@@ -3207,9 +3222,16 @@ textarea {
 }
 .mobile-search-dropdown {
   position: absolute;
-  width: 100%;
-  z-index: 999;
+  top: 100%;
+  left: 0;
+  width: 280px;
   background: #fff;
+  border: 1px solid #ccc;
+  z-index: 200;
+  padding: 8px;
+  @media (max-width: 400px) {
+    width: 250px;
+  }
 }
 .search-wrapper {
   position: relative;
@@ -3312,12 +3334,15 @@ textarea {
 .mobile-search-dropdown {
   position: absolute;
   top: 100%;
-  left: 0;
-  width: 100vw;
+  right: 0; // Align to right to avoid overflow if parent is on the right
+  width: 280px;
   background: white;
   border: 1px solid #ccc;
   z-index: 200;
   padding: 8px;
+  @media (max-width: 400px) {
+    width: 250px;
+  }
 }
 .mobile-search-input-wrapper {
   position: relative;

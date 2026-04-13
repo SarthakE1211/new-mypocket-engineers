@@ -406,6 +406,9 @@
                 <h6 class="fw-bold mb-1 ellipsis-text-200" [attr.title]="service.NAME || 'N/A'">
                   {{ service.NAME?.length > 35 ? (service.NAME | slice:0:35) + '...' : service.NAME || '-' }}
                 </h6>
+                <h6 *ngIf="service.SUB_NAME" class="text-muted mb-1 fs-13" [attr.title]="service.SUB_NAME">
+                  {{ service.SUB_NAME.length > 35 ? (service.SUB_NAME | slice:0:35) + '...' : service.SUB_NAME }}
+                </h6>
                 <div *ngIf="customertype !== 'B'" class="d-flex justify-content-between">
                   <p class="text-muted mb-1 fs-13">{{ "home.service_card.base_price" | translate }}</p>
                   <p class="fw-bold mb-1 fs-13">₹ {{ service?.B2C_PRICE ? (service.B2C_PRICE | number) : "0" }}</p>
@@ -473,13 +476,20 @@
     </button>
   </div>
   <div *ngIf="!loadepage && drawerStep === 'serviceDetail'" class="demodash offcanvas-body d-flex flex-column">
-    <p class="device-type fs-13-mb-2">
-      {{ "servicejson.selected_service" | translate }} :
-      <span class="text-danger fw-bold ellipsis-text" [attr.title]="selectedService.NAME || 'N/A'">
-        {{ selectedService.NAME?.length > 40 ? (selectedService.NAME | slice:0:40) + '...' : selectedService.NAME ||
-        "N/A" }}
-      </span>
-    </p>
+<p class="device-type fs-13-mb-2 d-flex align-items-center flex-wrap gap-1">
+  <span class="text-nowrap">{{ "servicejson.selected_service" | translate }} :</span>
+
+  <span 
+    class="text-danger fw-bold text-truncate" 
+    style="max-width: 180px;" 
+    [attr.title]="selectedService.NAME || 'N/A'">
+    {{ selectedService.NAME || "N/A" }}
+  </span>
+
+  <span *ngIf="selectedService.SUB_NAME" class="text-muted fs-12 text-nowrap flex-shrink-0">
+    -({{ selectedService.SUB_NAME }})
+  </span>
+</p>
     <p class="text-muted fs-12">{{ "servicejson.enter_details" | translate }}</p>
     <div *ngIf="defaultAddress" (click)="openAddressModal()" class="border rounded p-3 mb-2 card-shadow-pointer">
       <div class="d-flex justify-content-between align-items-center">
@@ -488,10 +498,15 @@
       </div>
       <p class="text-muted mb-0 fs-12">{{ defaultAddress.ADDRESS_LINE_2 }}, {{ defaultAddress.PINCODE }}</p>
     </div>
-    <div class="border rounded p-3 bg-light shadow-sm border-bg-white">
+    <div class="border rounded p-3 bg-light shadow-sm border-bg-white mb-2">
       <p class="fw-bold mb-1 ellipsis-text" [attr.title]="selectedService.NAME || 'N/A'">
         {{ selectedService.NAME?.length > 40 ? (selectedService.NAME | slice:0:40) + '...' : selectedService.NAME ||
         "N/A" }}
+      </p>
+      <p *ngIf="selectedService.SUB_NAME" class="d-flex justify-content-between text-muted"
+        [attr.title]="selectedService.SUB_NAME">
+        {{ selectedService.SUB_NAME.length > 40 ? (selectedService.SUB_NAME | slice:0:40) + '...' :
+        selectedService.SUB_NAME }}
       </p>
       <div *ngIf="customertype !== 'B'" class="d-flex justify-content-between text-muted">
         <span class="fs-12">{{ "servicejson.base_price" | translate }}</span>
@@ -511,6 +526,12 @@
           <input type="text" class="form-control text-center fs-12" [(ngModel)]="quantity" readonly />
           <button class="btn btn-outline-secondary btn-sm fs-12" (click)="increaseQty()">+</button>
         </div>
+      </div>
+    </div>
+    <div class="border rounded p-3 bg-light shadow-sm border-bg-white">
+      <p class="fw-bold mb-1">{{ "servicejson.about_service" | translate }}</p>
+      <div class="d-flex justify-content-between text-muted">
+        <span class=" fs-13">{{ (selectedService?.ABOUT_SERVICE || "N/A") }} </span>
       </div>
     </div>
     <div class="mt-3 border rounded p-3 shadow-sm pb-120">

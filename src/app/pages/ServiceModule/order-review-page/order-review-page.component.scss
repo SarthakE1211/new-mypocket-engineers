@@ -626,3 +626,30 @@ body {
   margin-bottom: 4px;
   line-height: 18px;
 }
+.exclusive-wrapper {
+  border: 1.5px solid #FFCDD2;
+  border-radius: 10px;
+  background: #FFF5F5;
+  padding: 14px 16px;
+}
+.exclusive-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #C62828;
+}
+.exclusive-body ul {
+  margin: 0;
+  padding-left: 18px;
+}
+.exclusive-body ul li {
+  margin-bottom: 8px;
+  font-size: 10px;
+  line-height: 1.5;
+  color: #B71C1C;
+}
+.exclusive-body ul li:last-child {
+  margin-bottom: 0;
+}
+.fnt-sz {
+  font-size: 13px !important;
+}

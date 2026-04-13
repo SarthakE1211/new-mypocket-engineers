@@ -1099,7 +1099,7 @@
                       </span>
                     </div>
                   </div>
-                  <h5 class="text-14-bold">
+                  <!-- <h5 class="text-14-bold">
                     {{ "order_details.select_payment_mode" | translate }}
                   </h5>
                   <div class="form-check">
@@ -1107,13 +1107,13 @@
                       [(ngModel)]="selectedPaymentMethod" value="ONLINE" />
                     <label class="form-check-label font-13" for="online">{{
                       "order_details.online_payment" | translate }}</label>
-                  </div>
-                  <div class="form-check">
+                  </div> -->
+                  <!-- <div class="form-check">
                     <input class="form-check-input" type="radio" id="cod" name="paymentMode"
                       [(ngModel)]="selectedPaymentMethod" value="COD" />
                     <label class="form-check-label font-13" for="cod">{{
                       "order_details.cash_on_delivery" | translate }}</label>
-                  </div>
+                  </div> -->
                 </div>
                 <div *ngIf="!loadingParts && selectedJob?.isPaymentReq"
                   class="offcanvas-footer border-top p-3 d-flex align-items-center justify-content-end mt-auto gap-2">

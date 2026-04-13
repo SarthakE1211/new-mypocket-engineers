@@ -20,6 +20,7 @@
     </div>
     <style>
       @media (min-width: 992px) {
+
         /* Large screens */
         .order-title {
           font-size: 28px !important;
@@ -48,6 +49,10 @@
                 <h6 class="fw-bold mb-0 font-16-weight-600" [title]="item.SERVICE_NAME" [attr.title]="item.SERVICE_NAME"
                   data-bs-toggle="tooltip" data-bs-placement="top">
                   {{ item.SERVICE_NAME }}
+                </h6>
+                <h6 class="font-weight-500 text-muted text-gray-636 fnt-sz" [title]="item.SUB_NAME"
+                  [attr.title]="item.SUB_NAME" data-bs-toggle="tooltip" data-bs-placement="top">
+                  {{ item.SUB_NAME }}
                 </h6>
               </div>
             </div>
@@ -105,7 +110,7 @@
                     Guarantee Period
                   </p>
                   <p class="mb-0 fw-bold text-black-500">
-                    {{ calculateExpirationDate(item.GUARANTEE_PERIOD) }}
+                    {{ item.QUANTITY }}
                   </p>
                 </div>
                 <div *ngIf="item.WARRANTY_ALLOWED == 1 && customertype === 'I'" class="d-flex justify-content-between">
@@ -114,6 +119,14 @@
                   </p>
                   <p class="mb-0 fw-bold text-black-500">
                     {{ calculateExpirationDate(item.WARRANTY_PERIOD) }}
+                  </p>
+                </div>
+                <div class=" my-4">
+                  <p class="mb-0 text-muted text-gray-636">
+                    About Service
+                  </p>
+                  <p class="mb-0 fw-bold text-black-500">
+                    {{ item.ABOUT_SERVICE || "N/A" }}
                   </p>
                 </div>
               </div>
@@ -466,6 +479,22 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div name="exclusivepoints">
+            <ng-container *ngFor="let item of OrderReviewDetails?.CART_DETAILS">
+              <div *ngIf="item.SERVICE_EXCLUSIVES" class="exclusive-wrapper mb-3">
+                <div class="exclusive-header d-flex align-items-center gap-2 mb-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+                      fill="#FFEBEE" stroke="#E53935" stroke-width="2" stroke-linejoin="round" />
+                    <line x1="12" y1="9" x2="12" y2="13" stroke="#E53935" stroke-width="2" stroke-linecap="round" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" stroke="#E53935" stroke-width="2" stroke-linecap="round" />
+                  </svg>
+                  <span class="exclusive-title">Not included in this service</span>
+                </div>
+                <div class="exclusive-body text-gray-636 fnt-sz" [innerHTML]="item.SERVICE_EXCLUSIVES"></div>
+              </div>
+            </ng-container>
           </div>
         </div>
       </div>

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as bootstrap from 'bootstrap';
-import * as moment from 'moment';
+import * as _moment from 'moment';
+const moment = (_moment as any).default || _moment;
 import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from 'src/app/Service/api-service.service';
 declare var Razorpay: any;

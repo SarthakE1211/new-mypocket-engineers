@@ -551,7 +551,8 @@
     "next": "Next",
     "select_address_slot": "Select Slot",
     "enter_model_number": "Enter Model Number",
-    "enter_brand_name": "Enter Brand Name"
+    "enter_brand_name": "Enter Brand Name",
+    "about_service":"About the Service"
   },
   "home": {
     "service_description": "Service Description",
