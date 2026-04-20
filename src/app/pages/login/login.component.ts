@@ -350,6 +350,11 @@ export class LoginComponent implements OnInit {
                     this.statusCode =
                       'The user is not registered or has been deactivated';
                     this.stopLoader();
+                  } else if (successCode.code == '301') {
+                    this.modalVisible = true;
+                    this.isloginSendOTP = false;
+                    this.statusCode = successCode.message || 'OTP Validation Failed...';
+                    this.stopLoader();
                   } else {
                     this.modalVisible = true;
                     this.isloginSendOTP = false;
@@ -488,6 +493,10 @@ export class LoginComponent implements OnInit {
           this.stopLoader();
           this.issignUpLoading = false;
           this.statusCode = 'Parent domain not found';
+        } else if (successCode.body.code === 303) {
+          this.stopLoader();
+          this.issignUpLoading = false;
+          this.statusCode = successCode.body.message || 'OTP Validation Failed...';
         }
         this.mobileNumberorEmail = this.userType === 'business' ? this.data.EMAIL_ID : this.data.CUSTOMER_MOBILE_NO;
       },
