@@ -27,34 +27,11 @@ import { CommonFunctionService } from 'src/app/Service/CommonFunctionService';
 import { registerdata } from '../pages/login/login.component';
 import { NgForm } from '@angular/forms';
 import { LoaderService } from 'src/app/Service/loader.service';
+import { AddressForm } from 'src/app/models/address.model';
 declare var google: any;
 interface User {
   ID: number;
   EMAIL_ID?: string;
-}
-interface AddressForm {
-  CUSTOMER_ID: number;
-  CUSTOMER_TYPE: number;
-  CONTACT_PERSON_NAME: string;
-  MOBILE_NO: string;
-  EMAIL_ID: string;
-  ADDRESS_LINE_1: string;
-  ADDRESS_LINE_2: string;
-  COUNTRY_ID: number;
-  STATE_ID: number;
-  CITY_ID: number;
-  CITY_NAME: string;
-  PINCODE_ID: any;
-  PINCODE: string;
-  TERRITORY_ID: any;
-  DISTRICT_ID: number;
-  GEO_LOCATION: string;
-  DISTRICT_NAME: string;
-  TYPE: string;
-  IS_DEFAULT: boolean;
-  CLIENT_ID: number;
-  LANDMARK: '';
-  PINCODE_FOR: '';
 }
 interface LocationOption {
   id: number;

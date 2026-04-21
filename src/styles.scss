@@ -141,3 +141,69 @@ video {
     font-size: 17px !important;
   }
 }
+
+section.mobile-subpage,
+section.mobile-subpage.section {
+  padding: 0 !important;
+  margin: 0 !important;
+  scroll-margin-top: 0 !important;
+  overflow: visible !important;
+}
+
+html body.drawer-open nav.mobile-bottom-nav,
+html body.drawer-open .mobile-bottom-nav,
+html body.drawer-open app-footer .mobile-bottom-nav {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+body:has(.offcanvas.show) .mobile-bottom-nav,
+body:has(.custom-drawer.show) .mobile-bottom-nav,
+body:has(.custom-drawer12.show) .mobile-bottom-nav,
+body:has(.custom-drawer15.show) .mobile-bottom-nav {
+  display: none !important;
+}
+
+@media (max-width: 767.98px) {
+  body {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  }
+  body.page-mobile-subpage app-header,
+  body.page-mobile-subpage header#header,
+  body:has(.mobile-subpage) app-header,
+  body:has(.mobile-subpage) header#header {
+    display: none !important;
+  }
+  body.page-mobile-subpage main.main,
+  body:has(.mobile-subpage) main.main,
+  main.main.is-mobile-subpage {
+    background: #f3f5fa !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  body:has(.mobile-subpage),
+  body.page-mobile-subpage {
+    margin: 0 !important;
+  }
+  section.mobile-subpage,
+  .mobile-subpage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    z-index: 1;
+  }
+  .mobile-subpage-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+}

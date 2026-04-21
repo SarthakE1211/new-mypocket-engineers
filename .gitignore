@@ -41,3 +41,13 @@ testem.log
 .DS_Store
 Thumbs.db
 backups
+
+# Local environment files (contain secrets — keep only example tracked)
+/src/environments/environment.local.ts
+/src/environments/environment.prod.local.ts
+/src/environments/secrets.ts
+/src/environments/secrets.prod.ts
+/src/environments/secrets.local.ts
+.env
+.env.local
+.env.*.local

@@ -37,30 +37,7 @@ export class registerdata {
   GST_NUMBER: any;
   CONTACT_PERSON_NAME: any;
 }
-interface AddressForm {
-  CUSTOMER_ID: number;
-  CUSTOMER_TYPE: number;
-  CONTACT_PERSON_NAME: string;
-  MOBILE_NO: string;
-  EMAIL_ID: string;
-  ADDRESS_LINE_1: string;
-  ADDRESS_LINE_2: string;
-  COUNTRY_ID: number;
-  STATE_ID: number;
-  CITY_ID: number;
-  CITY_NAME: string;
-  PINCODE_ID: any;
-  PINCODE: string;
-  TERRITORY_ID: any;
-  DISTRICT_ID: number;
-  GEO_LOCATION: string;
-  DISTRICT_NAME: string;
-  TYPE: string;
-  IS_DEFAULT: boolean;
-  CLIENT_ID: number;
-  LANDMARK: '';
-  PINCODE_FOR: '';
-}
+import { AddressForm } from 'src/app/models/address.model';
 @Component({
   selector: 'app-shop-buy-now-page',
   templateUrl: './shop-buy-now-page.component.html',

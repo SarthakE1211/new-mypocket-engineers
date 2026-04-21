@@ -29,34 +29,11 @@ import { registerdata } from '../login/login.component';
 import { NgForm } from '@angular/forms';
 import { LoaderService } from 'src/app/Service/loader.service';
 import { AddressUpdateServiceService } from 'src/app/Service/address-update.service.service';
+import { AddressForm } from 'src/app/models/address.model';
 declare var google: any;
 interface User {
   ID: number;
   EMAIL_ID?: string;
-}
-interface AddressForm {
-  CUSTOMER_ID: number;
-  CUSTOMER_TYPE: number;
-  CONTACT_PERSON_NAME: string;
-  MOBILE_NO: string;
-  EMAIL_ID: string;
-  ADDRESS_LINE_1: string;
-  ADDRESS_LINE_2: string;
-  COUNTRY_ID: number;
-  STATE_ID: number;
-  CITY_ID: number;
-  CITY_NAME: string;
-  PINCODE_ID: any;
-  PINCODE: string;
-  TERRITORY_ID: any;
-  DISTRICT_ID: number;
-  GEO_LOCATION: string;
-  DISTRICT_NAME: string;
-  TYPE: string;
-  IS_DEFAULT: boolean;
-  CLIENT_ID: number;
-  LANDMARK: '';
-  PINCODE_FOR: '';
 }
 interface LocationOption {
   id: number;
@@ -74,6 +51,8 @@ export type DrawerStep =
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
+  trackById = (_: number, item: any): any =>
+    item?.ID ?? item?.id ?? item?.SERVICE_ID ?? item?.CATEGORY_ID ?? item?.ORDER_ID ?? _;
   map2: any;
   longitude: any;
   latitude: any;
@@ -84,6 +63,20 @@ export class HomeComponent {
   sessionAddress: any = this.apiservice.getSessionAddress();
   token = this.cookie.get('token');
   carouselItems: any[] = [];
+  promoBanners = [
+    {
+      desktop: 'assets/img/banners/promo-10off-desktop.png',
+      mobile: 'assets/img/banners/promo-10off-mobile.png',
+      alt: 'Get 10% OFF on your first service — Book Now',
+      link: '/service'
+    },
+    {
+      desktop: 'assets/img/banners/promo-wfh-desktop.png',
+      mobile: 'assets/img/banners/promo-wfh-mobile.png',
+      alt: 'WFH Setup starting at ₹9,999/- — Book Now',
+      link: '/service'
+    }
+  ];
   PopularServices: any[] = [];
   ServiceCateogries: any[] = [];
   homeSearchKeyword: string = '';
@@ -91,6 +84,7 @@ export class HomeComponent {
   homeOptionsList: any[] = [];
   homeFilteredOptions: any[] = [];
   homeSearchLoading: boolean = false;
+  homeSearchFocused: boolean = false;
   homePlaceholderTexts: string[] = [];
   homeCurrentPlaceholder: string = '';
   homePlaceholderVisible: boolean = true;
@@ -109,12 +103,15 @@ export class HomeComponent {
   }
   carouselOptions = {
     loop: true,
-    margin: 10,
+    margin: 0,
     nav: true,
-    dots: false,
+    dots: true,
     autoplay: true,
     autoplayTimeout: 5000,
     autoplayHoverPause: true,
+    smartSpeed: 700,
+    animateOut: 'fadeOut',
+    animateIn: 'fadeIn',
     navText: [
       '<i class="bi bi-chevron-left"></i>',
       '<i class="bi bi-chevron-right"></i>',
@@ -261,6 +258,7 @@ export class HomeComponent {
       this.drawerStep = 'category';
     }
     this.unifiedDrawerOpen = true;
+    document.body.classList.add('drawer-open');
     setTimeout(() => {
       const el = document.getElementById('unifiedServiceDrawer');
       if (el) {
@@ -272,6 +270,7 @@ export class HomeComponent {
   }
   closeUnifiedDrawer() {
     this.unifiedDrawerOpen = false;
+    document.body.classList.remove('drawer-open');
     const el = document.getElementById('unifiedServiceDrawer');
     if (el) {
       const bs = bootstrap.Offcanvas.getInstance(el);
@@ -457,6 +456,7 @@ export class HomeComponent {
     this.homepageprogress = 50;
     this.drawerStep = 'serviceDetail';
     this.unifiedDrawerOpen = true;
+    document.body.classList.add('drawer-open');
     setTimeout(() => {
       const el = document.getElementById('unifiedServiceDrawer');
       if (el) bootstrap.Offcanvas.getOrCreateInstance(el).show();
@@ -546,6 +546,7 @@ export class HomeComponent {
     window.addEventListener('resize', () => {
       this.isMobile = window.innerWidth < 768;
     });
+    this.initHomePlaceholder();
     this.getTopSellingLaptops();
     this.IMAGEuRL = this.apiservice.retriveimgUrl2();
     this.geServiceCategoriesViewOnly();
@@ -611,6 +612,7 @@ export class HomeComponent {
     if (this.homePlaceholderInterval) {
       clearInterval(this.homePlaceholderInterval);
     }
+    document.body.classList.remove('drawer-open');
   }
   selectedJob: any;
   onAddressChanged(): void {
@@ -724,6 +726,44 @@ export class HomeComponent {
   loadMoreLoading1 = false;
   itemsPerPage = 10;
   currentPage = 1;
+  mobileServiceOrder: string[] = [
+    'Instant Help',
+    'Laptop',
+    'Mouse',
+    'Desktop',
+    'WFH Setup',
+    'CCTV',
+    'Printer',
+    'Smart TV',
+    'Smart Phone',
+    'Kids Safe',
+  ];
+  get mobileOrderedCategories(): any[] {
+    const primary = this.ServiceCateogries || [];
+    const secondary = this.ServiceCateogriesView || [];
+    const seen = new Set<string>();
+    const source: any[] = [];
+    for (const cat of [...primary, ...secondary]) {
+      const key = (cat?.NAME || cat?.title || '').toString().trim().toLowerCase();
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      source.push(cat);
+    }
+    if (!source.length) return [];
+    const normalized = source.map((cat: any) => ({
+      cat,
+      key: (cat?.NAME || cat?.title || '').toString().trim().toLowerCase(),
+    }));
+    const ordered: any[] = [];
+    for (const preferred of this.mobileServiceOrder) {
+      const pk = preferred.toLowerCase();
+      const direct = normalized.find((n: any) => n.key === pk);
+      if (direct && !ordered.includes(direct.cat)) { ordered.push(direct.cat); continue; }
+      const partial = normalized.find((n: any) => n.key && (n.key.includes(pk) || pk.includes(n.key)));
+      if (partial && !ordered.includes(partial.cat)) ordered.push(partial.cat);
+    }
+    return ordered;
+  }
   geServiceCategoriesViewOnly() {
     this.loadCategories1 = true;
     this.apiservice.getCategoriesServicesViewOnly(0, 0, 'SEQ_NO', 'asc', ' AND STATUS = 1').subscribe(
@@ -1611,11 +1651,13 @@ export class HomeComponent {
       this.imagePreview = null;
       this.drawerData.SERVICE_PHOTO_FILE = '';
       this.isDrawerVisible = true;
+      document.body.classList.add('drawer-open');
       document.body.style.overflow = '';
     }, 200);
   }
   drawerClose() {
     this.isDrawerVisible = false;
+    document.body.classList.remove('drawer-open');
     setTimeout(() => {
       const serviceDrawer = document.getElementById('offcanvasRight11');
       if (serviceDrawer) { const offcanvasInstance = bootstrap.Offcanvas.getInstance(serviceDrawer); if (offcanvasInstance) { offcanvasInstance.hide(); this.decreaseProgress(); } }
@@ -1958,28 +2000,28 @@ export class HomeComponent {
     if (this.homePlaceholderInterval) {
       clearInterval(this.homePlaceholderInterval);
     }
-    if (this.PopularServices?.length > 0) {
-      this.homePlaceholderTexts = this.PopularServices
-        .map((s: any) => s.NAME)
-        .filter(Boolean);
-      this.homeCurrentPlaceholder = this.homePlaceholderTexts[0] || '';
-      this.homePlaceholderVisible = true;
-      this.startHomePlaceholderRotation();
-    }
+    const fallback = [
+      'B&W Toner Refilling (Laser)',
+      'Laptop Repair',
+      'CCTV Installation',
+      'MacBook Service',
+      'Printer Setup',
+      'WFH Setup',
+    ];
+    const fromServices = (this.PopularServices || [])
+      .map((s: any) => s?.NAME)
+      .filter(Boolean);
+    this.homePlaceholderTexts = fromServices.length ? fromServices : fallback;
+    this.homeCurrentPlaceholder = this.homePlaceholderTexts[0] || '';
+    this.homePlaceholderVisible = true;
+    this.startHomePlaceholderRotation();
   }
   startHomePlaceholderRotation() {
     if (this.homePlaceholderInterval) {
       clearInterval(this.homePlaceholderInterval);
+      this.homePlaceholderInterval = null;
     }
-    this.homePlaceholderInterval = setInterval(() => {
-      this.homePlaceholderVisible = false;
-      setTimeout(() => {
-        const idx = this.homePlaceholderTexts.indexOf(this.homeCurrentPlaceholder);
-        this.homeCurrentPlaceholder =
-          this.homePlaceholderTexts[(idx + 1) % this.homePlaceholderTexts.length];
-        this.homePlaceholderVisible = true;
-      }, 300);
-    }, 1000);
+    this.homePlaceholderVisible = true;
   }
   homeGetServiceData() {
     if (this.homeSearchLoading || !this.DefaultAddressArray?.TERRITORY_ID) return;
@@ -2037,6 +2079,18 @@ export class HomeComponent {
     });
   }
   homeOnBlur() {
-    setTimeout(() => { this.homeShowOptionsList = false; }, 500);
+    setTimeout(() => {
+      this.homeShowOptionsList = false;
+      this.homeSearchFocused = false;
+    }, 200);
+  }
+  onHomeSearchFocus() {
+    this.homeSearchFocused = true;
+    if (this.homeOptionsList.length === 0) {
+      this.homeGetServiceData();
+    }
+    if (this.homeSearchKeyword?.trim()) {
+      this.homeFilterOptions();
+    }
   }
 }

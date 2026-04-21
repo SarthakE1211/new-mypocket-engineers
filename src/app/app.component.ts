@@ -1,25 +1,27 @@
 import { DatePipe, ViewportScroller } from '@angular/common';
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, SecurityContext, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 import { CookieService } from 'ngx-cookie-service';
 import { ModalService } from 'src/app/Service/modal.service';
 import { ApiServiceService } from './Service/api-service.service';
 import { LoaderService } from './Service/loader.service';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 import { initializeApp } from 'firebase/app';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
   title = 'Pockit-website';
   routePath: string = '';
+  private destroy$ = new Subject<void>();
   constructor(
     private router: Router,
     private viewportScroller: ViewportScroller,
@@ -29,17 +31,23 @@ export class AppComponent {
     public apiservice: ApiServiceService,
     private loaderService: LoaderService,
     private message: ToastrService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private sanitizer: DomSanitizer
   ) {
-    this.loaderService.isLoading$.subscribe((loading) => {
-      this.isLoading = loading;
-      if (!loading && this.minTimePassed) {
-        this.flashscreen = false;
-      }
-    });
+    this.loaderService.isLoading$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((loading) => {
+        this.isLoading = loading;
+        if (!loading && this.minTimePassed) {
+          this.flashscreen = false;
+        }
+      });
 
     this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
       .subscribe((event: any) => {
         this.routePath = event.urlAfterRedirects.split('/')[1]?.split(/[?#]/)[0] || '';
         const fragment = this.activatedRoute.snapshot.fragment;
@@ -317,17 +325,9 @@ export class AppComponent {
       this.message.error('Please enter message');
       this.isSpinning = false;
       return;
-    } else {
-      if (
-        this.BODY_TEXT === '' ||
-        this.BODY_TEXT === undefined ||
-        this.BODY_TEXT === null
-      ) {
-      } else {
-        const boldPattern = /\*(.*?)\*/g;
-        this.BODY_TEXT = this.BODY_TEXT.replace(boldPattern, '<b>$1</b>');
-      }
     }
+    // Store message text as-is (with *markdown* markers). transform() renders
+    // it safely at display time — do not inject raw HTML here.
     const mediaType = this.getMediaType(this.ICON);
     var dataaa = {
       ORDER_ID: this.jobdataaaaa.ORDER_ID,
@@ -381,9 +381,23 @@ export class AppComponent {
       }
     );
   }
+  private escapeHtml(value: string): string {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
   transform(value: string): string {
     if (!value) return '';
-    return value.replace(/\n/g, '<br/>');
+    // Escape all user HTML, then re-apply the only two formats we support:
+    // *...* → <b>...</b> and \n → <br/>. Angular's [innerHTML] still runs its
+    // own sanitizer on the result as defense-in-depth.
+    const escaped = this.escapeHtml(value);
+    const withBold = escaped.replace(/\*(.+?)\*/g, '<b>$1</b>');
+    const withBreaks = withBold.replace(/\n/g, '<br/>');
+    return this.sanitizer.sanitize(SecurityContext.HTML, withBreaks) ?? '';
   }
   ICON: any = '';
   imageshow: any;
@@ -520,5 +534,9 @@ export class AppComponent {
     } else {
       sessionStorage.setItem('msgget', 'no');
     }
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

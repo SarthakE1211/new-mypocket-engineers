@@ -1,6 +1,6 @@
 <section class="service-section py-4">
-  <div class="container pt-4 pb-4 ps-2 pe-2 m-auto">
-    <div class="d-flex align-items-center justify-content-between mt-0-important">
+  <div class="container service-shell pt-4 pb-4 ps-2 pe-2 m-auto">
+    <div class="page-header d-flex align-items-center justify-content-between mt-0-important">
       <div class="d-flex align-items-center">
         <a
           [routerLink]="'/service'"
@@ -8,38 +8,53 @@
         >
           <i class="bi bi-arrow-left text-white"></i>
         </a>
-        <p class="fw-bold m-0 responsive-text">
-          &nbsp; {{ "service.title" | translate }}
-        </p>
+        <div class="ms-2 d-flex flex-column">
+          <p class="fw-bold m-0 responsive-text page-title">
+            {{ "service.title" | translate }}
+          </p>
+          <span class="page-subtitle d-none d-sm-block">
+            Discover our most popular services
+          </span>
+        </div>
       </div>
-      <div>
+      <div class="d-none d-md-flex align-items-center">
+        <span class="service-count-badge" *ngIf="PopularServices?.length">
+          <i class="bi bi-grid-fill me-1"></i>
+          {{ PopularServices.length }} services
+        </span>
       </div>
     </div>
-    <div
-      class="d-flex flex-wrap justify-content-start pt-15"
-    >
-      <button
-        *ngFor="let category of groupedCategories"
-        class="btn btn-sm me-3 mb-2"
-        [ngClass]="{
-          'btn-custom': selectedCategory === category.NAME,
-          'btn-outline-secondary': selectedCategory !== category.NAME
-        }"
-        (click)="getProjectData(category, false, true)"
-        [attr.title]="category.NAME"
-        data-bs-toggle="tooltip"
-        data-bs-placement="top"
-      >
-        {{
-          category.NAME.length > 20
-            ? (category.NAME | slice : 0 : 20) + "..."
-            : category.NAME
-        }}
-      </button>
+
+    <div class="category-filter-wrap pt-15">
+      <div class="d-flex flex-wrap justify-content-start category-chip-group">
+        <button
+          *ngFor="let category of groupedCategories"
+          class="category-chip"
+          [ngClass]="{
+            'category-chip-active': selectedCategory === category.NAME
+          }"
+          (click)="getProjectData(category, false, true)"
+          [attr.title]="category.NAME"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+        >
+          <span class="chip-dot"></span>
+          {{
+            category.NAME.length > 20
+              ? (category.NAME | slice : 0 : 20) + "..."
+              : category.NAME
+          }}
+        </button>
+      </div>
     </div>
+
+    <h3 class="greeting-heading">
+      Hey there! Let's fix your tech issues.
+    </h3>
+
     <div class="service-card-container">
       <div class="row pt-3 m-auto">
-        <div *ngIf="loadingpage" class="text-center w-100">
+        <div *ngIf="loadingpage" class="text-center w-100 py-5">
           <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">{{
               "service.loading" | translate
@@ -52,30 +67,28 @@
             else noDataTemplate
           "
         >
-          <div class="row pt-3 m-auto">
+          <div class="row g-3 pt-3 m-auto">
 
-  <div class="col-12 col-xs-4 col-sm-4 col-md-4 col-xl-2-4 col-lg-2-3"
+  <div class="col-4 col-sm-4 col-md-4 col-xl-2-4 col-lg-2-3"
        *ngFor="let service of PopularServices.slice(0, displayCount)">
 
-    <div class="popular-card" 
+    <div class="popular-card"
          (click)="userID !== 0 ? openModal(service) : openLoginModal()">
 
       <!-- IMAGE -->
-      <div class="bg-light-blue-p-10">
-        <div [ngStyle]="{
+      <div class="bg-light-blue-p-10 card-image-wrap">
+        <div class="card-image" [ngStyle]="{
           'background-image':
             'url(' +
             (service.SERVICE_IMAGE
               ? IMAGEuRL + 'Item/' + service.SERVICE_IMAGE
               : 'assets/img/services/no-image.png') +
-            ')',
-          'background-size': '100% 100%',
-          'background-position': 'center',
-          'background-repeat': 'no-repeat',
-          width: '100%',
-          'aspect-ratio': '1 / 1'
+            ')'
         }">
         </div>
+        <span class="card-hover-cta">
+          <i class="bi bi-arrow-right"></i>
+        </span>
       </div>
 
       <!-- BLUE STRIP -->
@@ -92,11 +105,12 @@
 </div>
         </ng-container>
         <div
-          class="text-center mt-3"
+          class="text-center mt-4"
           *ngIf="displayCount < PopularServices.length"
         >
-          <button class="btn btn-primary" (click)="loadMore()">
+          <button class="btn load-more-btn" (click)="loadMore()">
             {{ "service.load_more" | translate }}
+            <i class="bi bi-chevron-down ms-1"></i>
           </button>
         </div>
         <ng-template #noDataTemplate>

@@ -5,25 +5,17 @@
   </div>
 </div>
 <main class="main">
-  <section id="hero" class="hero section">
+  <section id="hero" class="hero section promo-hero">
     <div class="carousel hero-carousel-container">
-      <owl-carousel-o *ngIf="carouselItems.length > 0" [options]="carouselOptions" class="p-0">
-        <ng-container *ngFor="let item of carouselItems">
+      <owl-carousel-o [options]="carouselOptions" class="p-0">
+        <ng-container *ngFor="let promo of promoBanners">
           <ng-template carouselSlide>
-            <div class="carousel-item">
-              <div class="carousel-image" [ngStyle]="{
-                  'background-image':
-                    'url(' + IMAGEuRL + 'BannerImages/' + item.IMAGE_URL + ')',
-                  'background-size': '100% 100%',
-                  'background-position': 'center',
-                  'background-repeat': 'no-repeat'
-                }"></div>
-              <div class="carousel-container text-left">
-                <h3 [style.color]="item.TITLE_COLOR + ' !important'" class="carousel-title">{{ item.TITLE }}</h3>
-                <h6 [style.color]="item.SUB_TITLE_COLOR + ' !important'" class="carousel-title">{{ item.SUB_TITLE }}
-                </h6>
-              </div>
-            </div>
+            <a class="carousel-item promo-slide" [routerLink]="promo.link">
+              <picture class="promo-picture">
+                <source media="(max-width: 768px)" [srcset]="promo.mobile">
+                <img [src]="promo.desktop" [alt]="promo.alt" class="promo-img" />
+              </picture>
+            </a>
           </ng-template>
         </ng-container>
       </owl-carousel-o>
@@ -34,6 +26,18 @@
       DefaultAddressArray?.TERRITORY_ID === null ||
       DefaultAddressArray.length === 0
     ">
+    <div class="mobile-home-greet d-md-none">
+      <a class="mobile-search-pill" routerLink="/service">
+        <i class="bi bi-search mobile-search-pill-icon"></i>
+        <span class="mobile-search-pill-placeholder">
+          <span class="mobile-search-pill-static">Search for&nbsp;</span>
+          <span class="mobile-search-pill-rotating"
+            [class.is-visible]="homePlaceholderVisible">"{{ homeCurrentPlaceholder || 'B&amp;W Toner Refilling (Laser)' }}"</span>
+        </span>
+        <i class="bi bi-sliders mobile-search-pill-filter"></i>
+      </a>
+      <h3 class="mobile-home-heading">Hey there! Let's fix your tech issues.</h3>
+    </div>
     <div class="container d-flex flex-wrap justify-content-between align-items-start gap-4 p-0" data-aos="fade-up">
       <div
         class="card bg-white rounded-4 shadow pt-4 pb-4 ps-2 pe-2 text-center border-0 mt-2 service-categories pb-9-no-shadow">
@@ -46,8 +50,8 @@
         <div *ngIf="loadCategories1" class="spinner-border text-secondary mx-auto my-3" role="status">
           <span class="sr-only">Loading...</span>
         </div>
-        <div *ngIf="!loadCategories1" class="row gy-4 w-100 scroll-container">
-          <div *ngFor="let category of displayedCategories1; let i = index"
+        <div *ngIf="!loadCategories1" class="row gy-4 w-100 scroll-container d-none d-md-flex">
+          <div *ngFor="let category of displayedCategories1; let i = index; trackBy: trackById"
             class="col-12 col-sm-4 col-md-4 col-lg-2-3 col-xl-2-4 mt-18-mb-10" data-aos="fade-up"
             [attr.data-aos-delay]="(i + 1) * 100">
             <div class="popular-card" (click)="openServiceDrawerViewOnly(category)">
@@ -65,7 +69,25 @@
             </div>
           </div>
         </div>
-        <div class="text-center w-100 mt-3" *ngIf="displayedCategories1.length < ServiceCateogriesView.length">
+        <div *ngIf="!loadCategories1" class="row g-2 w-100 scroll-container d-md-none mobile-cat-grid">
+          <div *ngFor="let category of mobileOrderedCategories; let i = index; trackBy: trackById"
+            class="col-4">
+            <div class="popular-card" (click)="openServiceDrawerViewOnly(category)">
+              <div class="bg-light-blue-p-10">
+                <div [ngStyle]="{
+        'background-image': 'url(' + (category.ICON ? IMAGEuRL + 'Category/' + category.ICON : 'assets/img/services/no-image.png') + ')',
+        'background-size': '100% 100%', 'background-position': 'center',
+        'background-repeat': 'no-repeat', width: '100%', 'aspect-ratio': '1 / 1',
+        'border-radius': '8px 8px 0 0', border: 'none'
+      }" class="img-fluid cc" role="img" [attr.aria-label]="category.title"></div>
+                <div class="category-label">
+                  <p class="service-name" [attr.title]="category.title">{{ category.title }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-center w-100 mt-3 d-none d-md-block" *ngIf="displayedCategories1.length < ServiceCateogriesView.length">
           <button class="btn btn-primary" (click)="loadMore2()" [disabled]="loadMoreLoading1">
             <span *ngIf="!loadMoreLoading1">Load More</span>
             <span *ngIf="loadMoreLoading1" class="spinner-border spinner-border-sm"></span>
@@ -164,7 +186,7 @@
       <div *ngIf="!loadService" class="row demo11 w-100">
         <owl-carousel-o *ngIf="PopularServices.length >= 4 || isMobile" [options]="carouselOptions1"
           [ngStyle]="{'max-width': PopularServices.length === 1 ? '300px' : '100%'}" class="p-0">
-          <ng-container *ngFor="let service of PopularServices">
+          <ng-container *ngFor="let service of PopularServices; trackBy: trackById">
             <ng-template carouselSlide>
               <div class="popular-card p-12">
                 <div class="bg-light-blue-p-10">
@@ -189,7 +211,7 @@
           </ng-container>
         </owl-carousel-o>
         <div *ngIf="PopularServices.length < 4 && !isMobile" class="row w-100">
-          <div class="col-12 col-md-4 col-sm-6 col-lg-2-3 col-xl-2-4 mb-3" *ngFor="let service of PopularServices">
+          <div class="col-12 col-md-4 col-sm-6 col-lg-2-3 col-xl-2-4 mb-3" *ngFor="let service of PopularServices; trackBy: trackById">
             <div (click)="userID !== 0 ? openDrawerFromPopular(service) : openLoginModal()">
               <div [ngStyle]="{
                   'background-image': 'url(' + (service.SERVICE_IMAGE ? IMAGEuRL + 'Item/' + service.SERVICE_IMAGE : 'assets/img/services/no-image.png') + ')',
@@ -212,7 +234,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body overflow-auto max-h-400">
-            <div *ngFor="let address of addresses" class="border rounded p-2 mb-2" [ngStyle]="
+            <div *ngFor="let address of addresses; trackBy: trackById" class="border rounded p-2 mb-2" [ngStyle]="
                 (address.PINCODE_FOR === 'B' || address.PINCODE_FOR === 'S') &&
                 address.TERRITORY_ID == defaultAddress.TERRITORY_ID ? {} : { display: 'none' }">
               <div class="d-flex justify-content-between align-items-center">
@@ -239,7 +261,50 @@
       </div>
     </div>
   </section> -->
-  <section id="agents" class="agents section p-10-pt-20" *ngIf="OfferData.length > 0 || ServiceCateogries.length > 0">
+  <section id="agents" class="agents section p-0-pt-20" *ngIf="OfferData.length > 0 || ServiceCateogries.length > 0">
+    <div class="mobile-home-greet d-md-none">
+      <div class="mobile-search-pill-wrap">
+        <div class="mobile-search-pill" [class.is-active]="homeSearchFocused || homeSearchKeyword">
+          <i class="bi bi-search mobile-search-pill-icon"></i>
+          <div class="mobile-search-pill-input-wrap">
+            <input type="text" class="mobile-search-pill-input"
+              [(ngModel)]="homeSearchKeyword"
+              (focus)="onHomeSearchFocus()"
+              (blur)="homeOnBlur()"
+              (input)="homeFilterOptions()"
+              aria-label="Search services" />
+            <span class="mobile-search-pill-placeholder"
+              *ngIf="!homeSearchKeyword && !homeSearchFocused">
+              <span class="mobile-search-pill-static">Search for&nbsp;</span>
+              <span class="mobile-search-pill-rotating"
+                [class.is-visible]="homePlaceholderVisible">"{{ homeCurrentPlaceholder || 'B&amp;W Toner Refilling (Laser)' }}"</span>
+            </span>
+          </div>
+          <span *ngIf="homeSearchLoading" class="spinner-border spinner-border-sm text-secondary mobile-search-pill-spinner"></span>
+          <i class="bi bi-sliders mobile-search-pill-filter" routerLink="/service"></i>
+        </div>
+        <div class="mobile-search-pill-dropdown" *ngIf="homeShowOptionsList && homeSearchKeyword">
+          <ng-container *ngIf="!homeSearchLoading && homeFilteredOptions.length > 0">
+            <ng-container *ngFor="let option of homeFilteredOptions">
+              <div *ngFor="let record of option['MATCHED_RECORDS']"
+                (click)="homeSelectOption(record)"
+                class="mobile-search-pill-dropdown-item">
+                <i class="bi bi-search"></i>
+                <div class="mobile-search-pill-dropdown-item-body">
+                  <div class="title">{{record.TITLE}}</div>
+                  <div class="subtitle">{{record.CATEGORY}}</div>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+          <div *ngIf="!homeSearchLoading && homeFilteredOptions.length === 0 && homeSearchKeyword"
+            class="mobile-search-pill-dropdown-empty">
+            No results found
+          </div>
+        </div>
+      </div>
+      <h3 class="mobile-home-heading">Hey there! Let's fix your tech issues.</h3>
+    </div>
     <div class="container d-flex flex-wrap justify-content-between align-items-start gap-4 p-0" data-aos="fade-up">
       <div
         class="card bg-white rounded-4 shadow pt-4 pb-4 ps-2 pe-2 text-center border-0 mt-2 shadow-sm service-categories pb-9-no-shadow"
@@ -256,9 +321,9 @@
           <div *ngIf="loadCategories" class="spinner-border text-secondary mx-auto" role="status">
             <span class="sr-only">{{ "home.service_categories.loading" | translate }}</span>
           </div>
-          <div *ngIf="!loadCategories" class="row gy-4 w-100 max-h-350-overflow-auto-pr-0">
+          <div *ngIf="!loadCategories" class="row gy-4 w-100 max-h-350-overflow-auto-pr-0 d-none d-md-flex">
             <div *ngFor="let category of displayedCategories; let i = index"
-              class="col-12 col-sm-4 col-md-4 mt-18-mb-10"
+              class="col-4 col-sm-4 col-md-4 mt-18-mb-10"
               [ngClass]="OfferData.length === 0 ? 'col-lg-2-3 col-xl-2-4' : 'col-lg-2-33 col-xl-2-44'"
               data-aos="fade-up" [attr.data-aos-delay]="(i + 1) * 100">
               <div class="popular-card" (click)="openServiceDrawer(category)">
@@ -276,7 +341,25 @@
               </div>
             </div>
           </div>
-          <div class="text-center w-100 mt-3" *ngIf="displayedCategories.length < ServiceCateogries.length">
+          <div *ngIf="!loadCategories" class="row g-2 w-100 mobile-cat-grid d-md-none">
+            <div *ngFor="let category of mobileOrderedCategories; let i = index; trackBy: trackById"
+              class="col-4">
+              <div class="popular-card" (click)="openServiceDrawer(category)">
+                <div class="bg-light-blue-p-10">
+                  <div [ngStyle]="{
+                    'background-image': 'url(' + (category.ICON ? IMAGEuRL + 'Category/' + category.ICON : 'assets/img/services/no-image.png') + ')',
+                    'background-size': '100% 100%', 'background-position': 'center',
+                    'background-repeat': 'no-repeat', width: '100%', 'aspect-ratio': '1 / 1',
+                    'border-radius': '8px 8px 0 0', border: 'none'
+                  }" class="img-fluid cc" role="img" [attr.aria-label]="category.title"></div>
+                  <div class="category-label">
+                    <p class="service-name" [attr.title]="category.title">{{ category.title }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-center w-100 mt-3 d-none d-md-block" *ngIf="displayedCategories.length < ServiceCateogries.length">
             <button class="btn btn-primary" (click)="loadMore()" [disabled]="loadMoreLoading">
               <span *ngIf="!loadMoreLoading">Load More</span>
               <span *ngIf="loadMoreLoading" class="spinner-border spinner-border-sm"></span>

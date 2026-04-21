@@ -11,8 +11,9 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ApiServiceService } from './Service/api-service.service';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { ServiceOrderPageComponent } from './pages/ServiceModule/service-order-page/service-order-page.component';
 import { ServiceComponent } from './pages/ServiceModule/service/service.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
@@ -55,6 +56,8 @@ import { PrivacypolicyWithoutLoginComponent } from './components/privacypolicy-w
 import { AllRefurbishedProductsComponent } from './pages/shop/components/all-refurbished-products/all-refurbished-products.component';
 import { TermsAndConditionWithoutLoginComponent } from './components/terms-and-condition-without-login/terms-and-condition-without-login.component';
 import { CommonmapComponent } from './commonmap/commonmap.component';
+import { MyOrdersComponent } from './pages/my-orders/my-orders.component';
+import { MyCartComponent } from './pages/my-cart/my-cart.component';
 registerLocaleData(en);
 initializeApp(environment.firebase);
 export function HttpLoaderFactory(http: HttpClient) {
@@ -99,7 +102,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     FooteraboutpageComponent,
     PrivacypolicyWithoutLoginComponent,
     AllRefurbishedProductsComponent,
-    CommonmapComponent
+    CommonmapComponent,
+    MyOrdersComponent,
+    MyCartComponent
   ],
   imports: [
     BrowserModule,
@@ -120,7 +125,14 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  providers: [ApiServiceService, DatePipe, CartService, Title, Meta],
+  providers: [
+    ApiServiceService,
+    DatePipe,
+    CartService,
+    Title,
+    Meta,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA], 
 })

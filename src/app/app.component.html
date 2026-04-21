@@ -5,8 +5,8 @@
       !needLogeIn &&
       routePath !== 'privacy_policy_page' && routePath !== 'terms-conditions'
     ">
-    <app-header></app-header>
-    <main class="main min-height-60vh">
+    <app-header *ngIf="routePath !== 'my-orders' && routePath !== 'my-cart'"></app-header>
+    <main class="main min-height-60vh" [class.is-mobile-subpage]="routePath === 'my-orders' || routePath === 'my-cart'">
       <router-outlet></router-outlet>
     </main>
     <app-footer></app-footer>

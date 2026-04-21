@@ -7,32 +7,7 @@ import { Subscription } from 'rxjs';
 import { ApiServiceService } from 'src/app/Service/api-service.service';
 import { CartService } from 'src/app/Service/cart.service';
 import { ModalService } from 'src/app/Service/modal.service';
-interface AddressForm {
-  CUSTOMER_ID: number;
-  IS_MAPPED_TO_TERRITORY: boolean;
-  TERRITORY_ID: number;
-  CUSTOMER_TYPE: number;
-  CONTACT_PERSON_NAME: string;
-  MOBILE_NO: string;
-  EMAIL_ID: string;
-  ADDRESS_LINE_1: string;
-  ADDRESS_LINE_2: string;
-  COUNTRY_ID: number;
-  STATE_ID: number;
-  LANDMARK: any;
-  ID: any;
-  CITY_ID: any;
-  CITY_NAME: string;
-  PINCODE_ID: number;
-  PINCODE: string;
-  DISTRICT_ID: number;
-  GEO_LOCATION: string;
-  TYPE: string;
-  IS_DEFAULT: boolean;
-  CLIENT_ID: number;
-  STATUS: boolean;
-  PINCODE_FOR: any;
-}
+import { AddressForm } from 'src/app/models/address.model';
 declare var google: any;
 @Component({
   selector: 'app-add-address',

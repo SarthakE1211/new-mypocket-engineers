@@ -1,35 +1,110 @@
-<footer class="footer custom-margin-top-20">
+<footer class="footer">
   <div class="footer-content">
-    <div class="footer-left">
+    <div class="footer-col footer-brand">
       <div class="footer-logo">
         <img src="assets/img/pockitwebfooterimage.png" alt="Pockit Engineers Logo" />
       </div>
-      <ul class="footer-links">
-        <li class="paddingleftttt"><a>About Us</a></li>
-        <li class="paddingleftttt"><a routerLink="/terms-and-conditions">Terms & Conditions</a></li>
-        <li class="paddingleftttt"><a routerLink="/privacy-policy">Privacy Policy</a></li>
-        <li class="paddingleftttt" routerLink="/contact-us"><a>Contact Us</a></li>
-      </ul>
-    </div>
-    <div class="footer-social custom-flex-column-center-gap-10">
-      <div class="custom-flex-gap-15">
-        <p class="custom-white-text-mt-7-font-15">Social Connect - </p>
-        <a href="https://api.whatsapp.com/send?phone=9582700865" target="_blank">
+      <p class="footer-tagline">
+        Bharat's only dedicated IT on-demand service app. Background-verified experts at your door in under 10 minutes.
+      </p>
+      <div class="social-row">
+        <a href="https://api.whatsapp.com/send?phone=9582700865" target="_blank" class="social-chip social-whatsapp" aria-label="WhatsApp">
           <i class="bi bi-whatsapp"></i>
         </a>
-        <a href="https://www.linkedin.com/company/pockit-engineers/about/" target="_blank">
+        <a href="https://www.linkedin.com/company/pockit-engineers/about/" target="_blank" class="social-chip social-linkedin" aria-label="LinkedIn">
           <i class="bi bi-linkedin"></i>
         </a>
-      </div>
-      <div class="custom-flex-gap-15">
-          <p class="custom-white-text-mt-7-font-15">Download App - </p>
-        <a href="https://play.google.com/store/apps/details?id=com.pockitcust" target="_blank">
-          <i class=" bi-android2"></i>
+        <a href="#" target="_blank" class="social-chip social-twitter" aria-label="X">
+          <i class="bi bi-twitter-x"></i>
         </a>
-        <a href="https://apps.apple.com/in/app/pockit/id6745779480" target="_blank">
-          <i class="bi bi-apple"></i>
+        <a href="#" target="_blank" class="social-chip social-facebook" aria-label="Facebook">
+          <i class="bi bi-facebook"></i>
+        </a>
+        <a href="#" target="_blank" class="social-chip social-instagram" aria-label="Instagram">
+          <i class="bi bi-instagram"></i>
         </a>
       </div>
-    </div> 
+    </div>
+
+    <div class="footer-col footer-links-desktop">
+      <h6 class="footer-heading">Quick Links</h6>
+      <ul class="footer-links">
+        <li><a>About Us</a></li>
+        <li><a routerLink="/contact-us">Contact Us</a></li>
+        <li><a routerLink="/privacy-policy">Privacy Policy</a></li>
+        <li><a routerLink="/terms-and-conditions">Terms &amp; Conditions</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col footer-links-mobile">
+      <div class="mobile-links-grid">
+        <div>
+          <h6 class="footer-heading">Company</h6>
+          <ul class="footer-links">
+            <li><a>About Us</a></li>
+            <li><a routerLink="/contact-us">Contact Us</a></li>
+          </ul>
+        </div>
+        <div>
+          <h6 class="footer-heading">Legal</h6>
+          <ul class="footer-links">
+            <li><a routerLink="/privacy-policy">Privacy Policy</a></li>
+            <li><a routerLink="/terms-and-conditions">Terms &amp; Conditions</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-col footer-apps">
+      <h6 class="footer-heading">Get the App</h6>
+      <div class="store-badges">
+        <a href="https://play.google.com/store/apps/details?id=com.pockitcust" target="_blank" class="store-badge" aria-label="Get it on Google Play">
+          <svg viewBox="0 0 24 24" class="store-svg" fill="none" aria-hidden="true">
+            <path d="M3.61 1.814 13.793 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .61-.92Z" fill="#4285F4" />
+            <path d="M17.318 8.5 14.5 10.2 13.793 12l.707 1.8 2.818 1.7 3.186-1.89a1.005 1.005 0 0 0 0-1.72L17.318 8.5Z" fill="#FBBC04" />
+            <path d="m3.61 1.814 10.89 10.186L17.318 8.5 7.236.645A1.01 1.01 0 0 0 3.61 1.814Z" fill="#34A853" />
+            <path d="m3.61 22.186 3.626-1.169 10.082-6.517-2.818-2.5L3.61 22.186Z" fill="#EA4335" />
+          </svg>
+          <span class="store-text">
+            <small>GET IT ON</small>
+            <strong>Google Play</strong>
+          </span>
+        </a>
+        <a href="https://apps.apple.com/in/app/pockit/id6745779480" target="_blank" class="store-badge" aria-label="Download on the App Store">
+          <svg viewBox="0 0 24 24" class="store-svg" fill="currentColor" aria-hidden="true">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+          </svg>
+          <span class="store-text">
+            <small>DOWNLOAD ON THE</small>
+            <strong>App Store</strong>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p class="copyright">© {{ currentYear }} Pockit Engineers. All rights reserved.</p>
   </div>
 </footer>
+
+<nav class="mobile-bottom-nav" aria-label="Primary" *ngIf="showBottomNav">
+  <a class="mb-nav-item mb-nav-item--home" routerLink="/" [class.is-active]="activeTab === 'home'">
+    <span class="mb-nav-glyph mb-nav-glyph--home">
+      <span class="mb-nav-pe">PE</span>
+    </span>
+    <span class="mb-nav-label">Home</span>
+  </a>
+  <a class="mb-nav-item" routerLink="/my-orders" [class.is-active]="activeTab === 'order'">
+    <span class="mb-nav-glyph">
+      <i class="bi bi-file-earmark-text"></i>
+    </span>
+    <span class="mb-nav-label">Order</span>
+  </a>
+  <a class="mb-nav-item" routerLink="/my-cart" [class.is-active]="activeTab === 'cart'">
+    <span class="mb-nav-glyph">
+      <i class="bi bi-cart3"></i>
+    </span>
+    <span class="mb-nav-label">Cart</span>
+  </a>
+</nav>

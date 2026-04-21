@@ -1,4 +1,36 @@
 <header id="header" class="header d-flex align-items-center">
+  <!-- Mobile app-style header (visible only on mobile) -->
+  <div class="mobile-app-header">
+    <div class="mobile-profile-side" (click)="toggleMobileMenu()">
+      <div class="mobile-avatar">
+        <img *ngIf="userID" [src]="imagePreview || 'assets/img/blueEmpImage.png'" alt="Profile" (error)="setDefaultImage($event)" />
+        <i *ngIf="!userID" class="bi bi-person-fill"></i>
+      </div>
+      <div class="mobile-user-info">
+        <span class="mobile-user-name">
+          {{ userID ? (userNAME || 'Guest') : 'Sign In' }}
+        </span>
+        <span class="mobile-user-location">
+          {{ addressCity || 'Select Location' }}
+          <i class="bi bi-chevron-down ms-1"></i>
+        </span>
+      </div>
+    </div>
+    <div class="mobile-actions-side">
+      <button class="mobile-icon-btn"
+        *ngIf="userID != 0 && userID != null && userID != undefined && customertype == 'I'"
+        (click)="openWalletFromHeader()" aria-label="Wallet">
+        <i class="bi bi-wallet2"></i>
+      </button>
+      <button class="mobile-icon-btn"
+        *ngIf="userID != 0 && userID != null && userID != undefined"
+        data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
+        (click)="opennotification()" aria-label="Notifications">
+        <i class="bi bi-bell"></i>
+        <span *ngIf="msgreciveddd" class="mobile-icon-dot"></span>
+      </button>
+    </div>
+  </div>
   <div class="header-root container-fluid d-flex align-items-center justify-content-between">
     <div class="d-flex align-items-center h-48">
       <a href="/" class="logo">
@@ -1063,7 +1095,7 @@
       </div>
       <div *ngIf="!loadAddresses" class="mobile-menu-content">
         <div class="saved-addresses">
-          <div class="address-card" *ngFor="let address of addressData; let i = index"
+          <div class="address-card" *ngFor="let address of addressData; let i = index; trackBy: trackById"
             [class.selected]="selectedAddress === address.ID"
             (click)="customertype1 === 'B' ? selectAddress(address.ID) : null">
             <div class="address-header">
@@ -1419,7 +1451,7 @@
           <div class="container mt-4 p-0-important-unique">
             <div *ngIf="!loading && selectedTab === 'current'">
               <div *ngIf="orders?.length > 0; else noDatademo">
-                <div class="card order-card cursor-pointer-unique" *ngFor="let order of orders"
+                <div class="card order-card cursor-pointer-unique" *ngFor="let order of orders; trackBy: trackById"
                   (click)="goToOrderDetails(order.ID)">
                   <div class="d-flex justify-content-between justify-start-align-center-unique">
                     <div
@@ -1482,7 +1514,7 @@
           </div>
           <div class="container mt-4 p-0-important-unique" *ngIf="!loading && selectedTab === 'past'">
             <div *ngIf="Shoporders.length > 0; else noData">
-              <div class="card order-card nav-link-pointer" *ngFor="let order of Shoporders"
+              <div class="card order-card nav-link-pointer" *ngFor="let order of Shoporders; trackBy: trackById"
                 (click)="goToOrderShopDetails(order.ID)">
                 <div class="d-flex align-items-center">
                   <div

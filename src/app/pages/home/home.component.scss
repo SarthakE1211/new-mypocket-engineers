@@ -780,7 +780,7 @@
 .service-card {
   background: #f4f4f4;
   border-radius: 8px;
-  padding: 15px;
+  padding: 5px;
   text-align: center;
   height: 200px;
   display: flex;
@@ -2400,4 +2400,699 @@ div[style*="overflow-y: auto"]::-webkit-scrollbar-thumb {
 .home-placeholder-visible {
   transform: translateY(0) !important;
   opacity: 1 !important;
+}
+
+/* ==========================================================================
+   PROMO HERO BANNERS (rotating) — overrides old fixed-height rules
+   ========================================================================== */
+section.promo-hero,
+#hero.promo-hero,
+.promo-hero {
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  height: auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  scroll-margin-top: 0 !important;
+}
+.promo-hero {
+  /* Override legacy #hero fixed height on the item */
+  .carousel-item {
+    height: auto !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+    border-radius: 0 !important;
+  }
+  .hero-carousel-container,
+  &.hero-carousel-container,
+  .carousel {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: relative;
+    border-radius: 0 !important;
+  }
+  .promo-slide {
+    display: block !important;
+    width: 100% !important;
+    border-radius: 0 !important;
+    overflow: hidden;
+    box-shadow: none !important;
+    text-decoration: none;
+    transition: none !important;
+    position: relative;
+    transform: none !important;
+    &::after {
+      display: none !important;
+    }
+    &:hover {
+      transform: none !important;
+      box-shadow: none !important;
+    }
+  }
+  .promo-picture {
+    display: block;
+    width: 100%;
+    line-height: 0;
+  }
+  .promo-img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    display: block !important;
+    object-fit: cover;
+    border-radius: 0 !important;
+  }
+  ::ng-deep .owl-carousel,
+  ::ng-deep .owl-stage-outer,
+  ::ng-deep .owl-stage,
+  ::ng-deep .owl-item {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+}
+/* Desktop (>= 992px): present banner as a contained, polished card */
+@media (min-width: 992px) {
+  section.promo-hero,
+  #hero.promo-hero,
+  .promo-hero {
+    padding: 22px 0 32px !important;
+    background: transparent !important;
+    overflow: visible !important;
+  }
+  .promo-hero .hero-carousel-container {
+    max-width: 1280px !important;
+    margin: 0 auto !important;
+    padding: 0 32px !important;
+    overflow: visible !important;
+  }
+  /* Let the outer wrapper show the shadow */
+  .promo-hero ::ng-deep .owl-carousel {
+    overflow: visible !important;
+    position: relative;
+  }
+  /* Clip siblings here so only the active slide is visible.
+     Shadow is applied on this same element — shadows render outside
+     the box, so overflow:hidden does NOT clip them. */
+  .promo-hero ::ng-deep .owl-stage-outer {
+    overflow: hidden !important;
+    border-radius: 22px !important;
+    box-shadow: 0 18px 44px rgba(15, 26, 92, 0.22), 0 6px 14px rgba(15, 26, 92, 0.08) !important;
+    transition: transform 0.35s ease, box-shadow 0.35s ease !important;
+    /* WebKit needs this to actually clip children against the rounded corners */
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    mask-image: radial-gradient(white, black);
+    isolation: isolate;
+  }
+  .promo-hero:hover ::ng-deep .owl-stage-outer {
+    transform: translateY(-3px);
+    box-shadow: 0 24px 54px rgba(15, 26, 92, 0.28), 0 10px 20px rgba(15, 26, 92, 0.1) !important;
+  }
+  /* Stage + items must not poke past the clipping container */
+  .promo-hero ::ng-deep .owl-stage {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .promo-hero ::ng-deep .owl-item {
+    margin: 0 !important;
+    padding: 0 !important;
+    float: left;
+  }
+  /* Only the active slide is visible — hide clones/neighbors to avoid left-edge peek */
+  .promo-hero ::ng-deep .owl-item:not(.active) {
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+  .promo-hero .carousel-item,
+  .promo-hero .promo-slide,
+  .promo-hero .promo-picture,
+  .promo-hero .promo-img {
+    border-radius: 22px !important;
+    overflow: hidden !important;
+  }
+  .promo-hero .promo-slide {
+    box-shadow: none !important;
+    transform: none !important;
+    &:hover {
+      transform: none !important;
+      box-shadow: none !important;
+    }
+  }
+  .promo-hero .promo-img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: cover !important;
+  }
+  .promo-hero ::ng-deep .owl-nav {
+    padding: 0 44px;
+  }
+}
+@media (min-width: 1400px) {
+  .promo-hero .hero-carousel-container {
+    max-width: 1400px !important;
+  }
+}
+
+@media (max-width: 991px) {
+  .promo-hero {
+    padding: 14px 0 18px !important;
+  }
+  .promo-hero .hero-carousel-container {
+    padding: 0 20px !important;
+  }
+  .promo-hero .promo-slide {
+    border-radius: 16px;
+  }
+}
+@media (max-width: 576px) {
+  .promo-hero {
+    padding: 10px 0 14px !important;
+  }
+  .promo-hero .hero-carousel-container {
+    padding: 0 12px !important;
+  }
+  .promo-hero .promo-slide {
+    border-radius: 14px;
+    box-shadow: 0 8px 22px rgba(24, 48, 169, 0.18);
+  }
+  .promo-hero .carousel-item {
+    height: auto !important;
+  }
+}
+
+/* Force-override the legacy #hero height rules when it's in promo mode */
+#hero.promo-hero {
+  height: auto !important;
+}
+#hero.promo-hero .carousel-item {
+  height: auto !important;
+}
+@media (max-width: 991px) {
+  #hero.promo-hero,
+  #hero.promo-hero .carousel-item {
+    height: auto !important;
+  }
+}
+@media (max-width: 768px) {
+  #hero.promo-hero,
+  #hero.promo-hero .carousel-item {
+    height: auto !important;
+  }
+}
+@media (max-width: 576px) {
+  #hero.promo-hero,
+  #hero.promo-hero .carousel-item {
+    height: auto !important;
+  }
+}
+
+/* ==========================================================================
+   PROMO HERO — engagement polish
+   ========================================================================== */
+.promo-hero {
+  position: relative;
+  /* Decorative orbs removed for full-bleed banner layout */
+  &::before,
+  &::after {
+    display: none !important;
+  }
+  .hero-carousel-container {
+    position: relative;
+    z-index: 1;
+  }
+  .promo-slide {
+    animation: promoSlideIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .promo-img {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+@keyframes promoOrbFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(12px, -10px) scale(1.06); }
+}
+@keyframes promoSlideIn {
+  from { opacity: 0; transform: translateY(18px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes promoKenBurns {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.04); }
+}
+@media (max-width: 576px) {
+  .promo-hero::before {
+    width: 120px;
+    height: 120px;
+    top: 4px;
+  }
+  .promo-hero::after {
+    width: 140px;
+    height: 140px;
+    bottom: 4px;
+  }
+}
+
+/* Owl dots — app-style progress bar segments */
+.promo-hero ::ng-deep .owl-dots {
+  display: flex !important;
+  justify-content: center;
+  margin-top: 12px;
+  gap: 4px;
+}
+.promo-hero ::ng-deep .owl-dot {
+  outline: none !important;
+  span {
+    display: block !important;
+    width: 28px !important;
+    height: 5px !important;
+    margin: 0 !important;
+    background: rgba(255, 255, 255, 0.5) !important;
+    border-radius: 999px !important;
+    border: none !important;
+    transition: all 0.35s ease !important;
+  }
+  &.active span {
+    background: #f36631 !important;
+    width: 36px !important;
+  }
+  &:hover span {
+    background: rgba(243, 102, 49, 0.7) !important;
+  }
+}
+@media (max-width: 767.98px) {
+  .promo-hero ::ng-deep .owl-dots {
+    margin-top: 10px;
+  }
+  .promo-hero ::ng-deep .owl-dot span {
+    width: 24px !important;
+    height: 4px !important;
+    background: rgba(255, 255, 255, 0.55) !important;
+  }
+  .promo-hero ::ng-deep .owl-dot.active span {
+    background: #f36631 !important;
+    width: 32px !important;
+  }
+}
+
+/* Owl nav arrows — polished circular buttons */
+.promo-hero ::ng-deep .owl-nav {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 3;
+  padding: 0 12px;
+}
+.promo-hero ::ng-deep .owl-nav button.owl-prev,
+.promo-hero ::ng-deep .owl-nav button.owl-next {
+  pointer-events: auto;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  color: #2a3b8f !important;
+  box-shadow: 0 10px 24px rgba(15, 26, 92, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease !important;
+  opacity: 0.9;
+  i {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  &:hover {
+    background: linear-gradient(135deg, #2a3b8f 0%, #3f52b5 100%) !important;
+    color: #fff !important;
+    transform: scale(1.08);
+    box-shadow: 0 14px 30px rgba(42, 59, 143, 0.4) !important;
+    opacity: 1;
+  }
+}
+@media (max-width: 576px) {
+  .promo-hero ::ng-deep .owl-nav button.owl-prev,
+  .promo-hero ::ng-deep .owl-nav button.owl-next {
+    width: 36px !important;
+    height: 36px !important;
+    i { font-size: 16px; }
+  }
+  .promo-hero ::ng-deep .owl-nav {
+    padding: 0 6px;
+  }
+}
+
+/* ==========================================================================
+   HOME PAGE — mobile app-style (matches reference mobile UI)
+   ========================================================================== */
+@media (max-width: 767.98px) {
+  /* Full blue gradient flowing from header through the cards (matches reference mobile UI) */
+  .main,
+  .main.min-height-60vh {
+    background: linear-gradient(180deg, #2d6ff0 0%, #5a8deb 25%, #8fb0ef 55%, #c5d7f5 80%, #e5edfb 100%) !important;
+    min-height: 0 !important;
+  }
+  /* Drop the trailing padding so the footer sits flush under the cards */
+  #agents.agents {
+    padding-bottom: 0 !important;
+  }
+  #agents .service-categories.pb-9-no-shadow {
+    padding-bottom: 0 !important;
+  }
+
+  /* Hero promo banner: tight spacing, flat banner, static image */
+  #hero.promo-hero {
+    background: transparent !important;
+    padding: 12px 14px 0 !important;
+    margin: 0 !important;
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+  /* Hide arrow buttons on mobile — app only shows swipe */
+  .promo-hero ::ng-deep .owl-nav {
+    display: none !important;
+  }
+  .promo-hero .hero-carousel-container {
+    padding: 10px 0 !important;
+    margin: 0 auto !important;
+  }
+  .promo-hero .carousel-item {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .promo-hero .promo-slide {
+    border-radius: 16px !important;
+    box-shadow: 0 6px 18px rgba(15, 26, 92, 0.18) !important;
+    overflow: hidden;
+    animation: none !important;
+    transform: none !important;
+  }
+  .promo-hero .promo-picture {
+    display: block;
+    line-height: 0;
+  }
+  .promo-hero .promo-img {
+    border-radius: 16px !important;
+    display: block;
+    width: 100%;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    animation: none !important;
+    transform: none !important;
+    object-fit: fill;
+  }
+  .promo-hero .promo-slide:hover .promo-img {
+    transform: none !important;
+  }
+  /* Breathing room between banner and progress pill */
+  .promo-hero ::ng-deep .owl-dots {
+    margin-top: 12px !important;
+    margin-bottom: 4px !important;
+  }
+  /* Tighten agents section padding so search+heading flow naturally */
+  #agents.agents {
+    padding: 14px 16px 20px !important;
+  }
+
+  /* Agents section: sits on transparent background */
+  #agents .container {
+    padding: 0 !important;
+    gap: 10px !important;
+  }
+  #agents .service-categories {
+    box-shadow: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin-top: 0 !important;
+    width: 100%;
+    border: none !important;
+  }
+
+  /* Mobile search pill + greeting that sit on the blue background, above the card */
+  .mobile-home-greet {
+    // padding: 14px 16px 0;
+  }
+  .mobile-home-greet .mobile-search-pill-wrap {
+    position: relative;
+    width: calc(100% + 40px) !important;
+    max-width: none !important;
+    margin-left: -20px !important;
+    margin-right: -20px !important;
+  }
+  .mobile-home-greet .mobile-search-pill {
+    width: 100% !important;
+    max-width: none !important;
+    border-radius: 20px !important;
+    padding: 0 12px !important;
+  }
+  .mobile-search-pill {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 20px;
+    padding: 0 10px;
+    height: 48px;
+    box-shadow: 0 4px 14px rgba(15, 26, 92, 0.08);
+    gap: 10px;
+    text-decoration: none;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease;
+    &.is-active {
+      box-shadow: 0 6px 18px rgba(15, 26, 92, 0.18);
+    }
+    .mobile-search-pill-icon {
+      color: #2a6eff;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .mobile-search-pill-input-wrap {
+      position: relative;
+      flex: 1 1 auto;
+      min-width: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+    .mobile-search-pill-input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 14px;
+      color: #1a1f36;
+      padding: 0;
+      position: relative;
+      z-index: 2;
+    }
+    .mobile-search-pill-placeholder {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      color: #9aa0b8;
+      font-weight: 400;
+      font-style: italic;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .mobile-search-pill-static {
+      display: inline;
+    }
+    .mobile-search-pill-rotating {
+      display: inline;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      &.is-visible {
+        opacity: 1;
+      }
+    }
+    .mobile-search-pill-spinner {
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+    }
+    .mobile-search-pill-filter {
+      color: #2a6eff;
+      font-size: 18px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+  }
+  .mobile-search-pill-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 10px 24px rgba(15, 26, 92, 0.18);
+    max-height: 260px;
+    overflow-y: auto;
+    z-index: 1000;
+    padding: 4px 0;
+  }
+  .mobile-search-pill-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #f2f3f7;
+    &:last-child {
+      border-bottom: none;
+    }
+    &:active {
+      background: #f5f8fd;
+    }
+    i {
+      color: #9aa0b8;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .mobile-search-pill-dropdown-item-body {
+      min-width: 0;
+      flex: 1;
+    }
+    .title {
+      color: #1a1f36;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .subtitle {
+      color: #9aa0b8;
+      font-size: 11px;
+      margin-top: 2px;
+    }
+  }
+  .mobile-search-pill-dropdown-empty {
+    padding: 14px;
+    text-align: center;
+    color: #9aa0b8;
+    font-size: 13px;
+  }
+  .mobile-home-heading {
+    color: #1a1f36;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    margin: 20px 0 10px;
+    padding: 0 8px;
+    line-height: 1.25;
+    text-align: center;
+  }
+
+  /* Service category grid — force 3 cards per row on mobile */
+  #agents .row.scroll-container {
+    --bs-gutter-x: 0.7rem;
+    --bs-gutter-y: 0.8rem;
+  }
+  #agents .col-12 {
+    flex: 0 0 auto !important;
+    width: 33.333% !important;
+    max-width: 33.333% !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Service card — square white card with icon + flush blue label strip (matches reference mobile UI) */
+  #agents .popular-card {
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    background: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(15, 26, 92, 0.10) !important;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    aspect-ratio: 1 / 1 !important;
+    &:hover,
+    &:active {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(15, 26, 92, 0.16) !important;
+    }
+    .bg-light-blue-p-10 {
+      padding: 0 !important;
+      background: #ffffff !important;
+      border-radius: 14px !important;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+    }
+    .cc {
+      background-size: contain !important;
+      background-color: #ffffff !important;
+      background-repeat: no-repeat !important;
+      background-position: center !important;
+      border-radius: 0 !important;
+      aspect-ratio: auto !important;
+      width: 100% !important;
+      height: auto !important;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+    .category-label {
+      background: #1830a9 !important;
+      padding: 0 !important;
+      text-align: center;
+      border-radius: 0 0 14px 14px !important;
+      margin: 0 !important;
+      flex-shrink: 0;
+    }
+    .service-name {
+      color: #ffffff !important;
+      font-weight: 600 !important;
+      font-size: 12.5px !important;
+      line-height: 1.9 !important;
+      margin: 0 !important;
+      padding: 0 6px !important;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      letter-spacing: 0.2px;
+    }
+  }
+
+  /* Slightly looser grid so cards breathe and icons feel prominent */
+  #agents .row.mobile-cat-grid {
+    --bs-gutter-x: 0.75rem;
+    --bs-gutter-y: 0.85rem;
+  }
+
+  /* Load more button polish */
+  #agents .btn-primary {
+    background: #1830a9;
+    border-color: #1830a9;
+    border-radius: 999px;
+    padding: 7px 22px;
+    font-size: 13px;
+    font-weight: 500;
+  }
 }

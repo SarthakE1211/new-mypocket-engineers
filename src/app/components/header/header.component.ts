@@ -26,6 +26,7 @@ import { CartService } from 'src/app/Service/cart.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { AddressUpdateServiceService } from 'src/app/Service/address-update.service.service';
+import { AddressForm } from 'src/app/models/address.model';
 class User {
   ID?: number;
   MOBILE_NO?: string;
@@ -46,32 +47,6 @@ class Ticketgroup {
   STATUS?: boolean;
   PRIORITY: string = 'M';
   DEPARTMENT_ID?: number;
-}
-interface AddressForm {
-  TERRITORY_ID: any;
-  IS_MAPPED_TO_TERRITORY: boolean;
-  CUSTOMER_ID: number;
-  CUSTOMER_TYPE: number;
-  CONTACT_PERSON_NAME: string;
-  MOBILE_NO: string;
-  EMAIL_ID: string;
-  ADDRESS_LINE_1: string;
-  ADDRESS_LINE_2: string;
-  COUNTRY_ID: number;
-  STATE_ID: number;
-  LANDMARK: any;
-  ID: any;
-  CITY_ID: any;
-  CITY_NAME: string;
-  PINCODE_ID: number;
-  PINCODE: string;
-  DISTRICT_ID: number;
-  GEO_LOCATION: string;
-  TYPE: string;
-  IS_DEFAULT: boolean;
-  CLIENT_ID: number;
-  STATUS: boolean;
-  PINCODE_FOR: any;
 }
 declare var google: any;
 import {
@@ -141,6 +116,8 @@ import {
   ],
 })
 export class HeaderComponent {
+  trackById = (_: number, item: any): any =>
+    item?.ID ?? item?.id ?? item?.ORDER_ID ?? _;
   showsearchtruee: boolean = false;
   isProfileMenuOpen = false;
   subscribedChannels: any = this.apiservice.getsubscribedChannels();
@@ -1776,18 +1753,23 @@ export class HeaderComponent {
             .getglobalServiceData(0, 0, '', '', '', 'I', 0, TERRITORY_ID)
             .subscribe({
               next: (dataaaaa: any) => {
-                this.optionsList = dataaaaa.data ?? [];
-                this.filteredOptions = this.optionsList.filter(
+                this.optionsList = (dataaaaa.data ?? []).filter(
                   (item: any) =>
                     item['CATEGORY'] == 'Category' ||
                     item['CATEGORY'] == 'Service' ||
                     item['CATEGORY'] == 'SubCategory'
                 );
+                this.filteredOptions = [...this.optionsList];
                 this.searchloading = false;
                 this.pincodeloading = false;
+                if (this.searchKeyword) {
+                  this.filterOptions();
+                }
               },
               error: (error: any) => {
                 this.optionsList = [];
+                this.filteredOptions = [];
+                this.searchloading = false;
                 this.pincodeloading = false;
               },
             });
@@ -1815,25 +1797,21 @@ export class HeaderComponent {
             )
             .subscribe({
               next: (dataaaaa: any) => {
-                this.optionsList = dataaaaa.data ?? [];
-                if (this.pincodeforrkey == 'S') {
-                  this.optionsList = this.optionsList.filter(
-                    (item: any) =>
-                      item['CATEGORY'] == 'Category' ||
-                      item['CATEGORY'] == 'Service' ||
-                      item['CATEGORY'] == 'SubCategory'
-                  );
-                  this.filteredOptions = this.optionsList.filter(
-                    (item: any) =>
-                      item['CATEGORY'] == 'Category' ||
-                      item['CATEGORY'] == 'Service' ||
-                      item['CATEGORY'] == 'SubCategory'
-                  );
-                }
+                this.optionsList = (dataaaaa.data ?? []).filter(
+                  (item: any) =>
+                    item['CATEGORY'] == 'Category' ||
+                    item['CATEGORY'] == 'Service' ||
+                    item['CATEGORY'] == 'SubCategory'
+                );
+                this.filteredOptions = [...this.optionsList];
                 this.searchloading = false;
+                if (this.searchKeyword) {
+                  this.filterOptions();
+                }
               },
               error: (error: any) => {
                 this.optionsList = [];
+                this.filteredOptions = [];
                 this.searchloading = false;
               },
             });
@@ -1851,25 +1829,21 @@ export class HeaderComponent {
             )
             .subscribe({
               next: (dataaaaa: any) => {
-                this.optionsList = dataaaaa.data ?? [];
-                if (this.pincodeforrkey == 'S') {
-                  this.optionsList = this.optionsList.filter(
-                    (item: any) =>
-                      item['CATEGORY'] == 'Category' ||
-                      item['CATEGORY'] == 'Service' ||
-                      item['CATEGORY'] == 'SubCategory'
-                  );
-                  this.filteredOptions = this.optionsList.filter(
-                    (item: any) =>
-                      item['CATEGORY'] == 'Category' ||
-                      item['CATEGORY'] == 'Service' ||
-                      item['CATEGORY'] == 'SubCategory'
-                  );
-                }
+                this.optionsList = (dataaaaa.data ?? []).filter(
+                  (item: any) =>
+                    item['CATEGORY'] == 'Category' ||
+                    item['CATEGORY'] == 'Service' ||
+                    item['CATEGORY'] == 'SubCategory'
+                );
+                this.filteredOptions = [...this.optionsList];
                 this.searchloading = false;
+                if (this.searchKeyword) {
+                  this.filterOptions();
+                }
               },
               error: (error: any) => {
                 this.optionsList = [];
+                this.filteredOptions = [];
                 this.searchloading = false;
               },
             });
@@ -2964,19 +2938,23 @@ export class HeaderComponent {
     if (
       this.searchKeyword != null &&
       this.searchKeyword != '' &&
-      this.searchKeyword != undefined &&
-      this.optionsList != null &&
-      this.optionsList != undefined &&
-      this.optionsList.length > 0
+      this.searchKeyword != undefined
     ) {
+      if (this.optionsList.length === 0) {
+        this.getServiceData();
+        this.showOptionsList = true;
+        return;
+      }
       const keyword = this.searchKeyword.trim().toLowerCase();
       this.filteredOptions = this.optionsList
         .map((category) => ({
           ...category,
-          MATCHED_RECORDS: category.MATCHED_RECORDS.filter(
+          MATCHED_RECORDS: (category.MATCHED_RECORDS ?? []).filter(
             (record: any) =>
-              record.TITLE?.toLowerCase().includes(keyword) ||
-              record.CATEGORY?.toLowerCase().includes(keyword)
+              record?.TITLE?.toLowerCase().includes(keyword) ||
+              record?.CATEGORY?.toLowerCase().includes(keyword) ||
+              record?.DATA?.CATEGORY_NAME?.toLowerCase().includes(keyword) ||
+              record?.DATA?.SUB_CATEGORY_NAME?.toLowerCase().includes(keyword)
           ),
         }))
         .filter((category) => category.MATCHED_RECORDS.length > 0);
