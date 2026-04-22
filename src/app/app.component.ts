@@ -50,6 +50,10 @@ export class AppComponent implements OnDestroy {
       )
       .subscribe((event: any) => {
         this.routePath = event.urlAfterRedirects.split('/')[1]?.split(/[?#]/)[0] || '';
+        document.body.classList.remove('drawer-open');
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
         const fragment = this.activatedRoute.snapshot.fragment;
         if (fragment) {
           const element = document.getElementById(fragment);

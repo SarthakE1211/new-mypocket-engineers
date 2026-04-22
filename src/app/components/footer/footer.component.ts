@@ -37,16 +37,18 @@ export class FooterComponent implements OnInit, OnDestroy {
     const path = (url || '/').split('?')[0].split('#')[0];
     if (path.startsWith('/my-orders')) {
       this.activeTab = 'order';
-      this.showBottomNav = true;
     } else if (path.startsWith('/my-cart')) {
       this.activeTab = 'cart';
-      this.showBottomNav = true;
-    } else if (path === '/' || path === '' || path === '/service') {
-      this.activeTab = 'home';
-      this.showBottomNav = true;
     } else {
       this.activeTab = 'home';
-      this.showBottomNav = false;
     }
+    const hiddenPrefixes = [
+      '/order-details',
+      '/order-review',
+      '/shop',
+      '/privacy_policy_page',
+      '/terms-conditions',
+    ];
+    this.showBottomNav = !hiddenPrefixes.some((p) => path.startsWith(p));
   }
 }

@@ -29,10 +29,12 @@
     <div class="mobile-home-greet d-md-none">
       <a class="mobile-search-pill" routerLink="/service">
         <i class="bi bi-search mobile-search-pill-icon"></i>
-        <span class="mobile-search-pill-placeholder">
-          <span class="mobile-search-pill-static">Search for&nbsp;</span>
-          <span class="mobile-search-pill-rotating"
-            [class.is-visible]="homePlaceholderVisible">"{{ homeCurrentPlaceholder || 'B&amp;W Toner Refilling (Laser)' }}"</span>
+        <span class="mobile-search-pill-input-wrap">
+          <span class="mobile-search-pill-placeholder">
+            <span class="mobile-search-pill-static">Search for&nbsp;</span>
+            <span class="mobile-search-pill-rotating"
+              [class.is-visible]="homePlaceholderVisible">"{{ homeCurrentPlaceholder || 'B&amp;W Toner Refilling (Laser)' }}"</span>
+          </span>
         </span>
         <i class="bi bi-sliders mobile-search-pill-filter"></i>
       </a>

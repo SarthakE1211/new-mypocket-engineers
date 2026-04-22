@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(xargs wc *)"
+      "Bash(xargs wc *)",
+      "Bash(awk -F: '$2 > 2700 && $2 < 3100 {print}')"
     ]
   }
 }
