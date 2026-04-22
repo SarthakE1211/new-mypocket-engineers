@@ -2859,6 +2859,7 @@ section.promo-hero,
     padding: 0 12px !important;
   }
   .mobile-search-pill {
+    position: relative;
     display: flex;
     align-items: center;
     background: #fff;
@@ -2939,6 +2940,10 @@ section.promo-hero,
       flex-shrink: 0;
       cursor: pointer;
     }
+  }
+  .mobile-search-pill > .mobile-search-pill-placeholder {
+    left: 40px;
+    right: 40px;
   }
   .mobile-search-pill-dropdown {
     position: absolute;

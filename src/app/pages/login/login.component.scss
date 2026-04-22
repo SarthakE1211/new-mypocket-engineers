@@ -1477,7 +1477,7 @@ select::placeholder {
   margin-bottom: 0px
 }
 .auth-status-message{
-  color: red; margin-bottom: 15px; z-index: 1
+  color: red; margin-bottom: 15px; z-index: 1; white-space: pre-line;font-size: 13px !important;
 }
 .auth-label-left{
   text-align: left
