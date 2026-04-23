@@ -187,12 +187,53 @@ export class ServiceComponent {
   }
   ModalData: any;
   quantity: number = 1;
-ServiceDescription:any='';
+  ServiceDescription:any='';
+  // Bottom-sheet state: on mobile (<768px) we show the new ServiceDetailSheet
+  // instead of the Bootstrap modal, matching the mobile-app-style mockups.
+  // Desktop continues to use `modalInstance` unchanged.
+  sheetVisible: boolean = false;
+  sheetService: any = null;
+  selectedServiceReviews: any[] = [];
+  loadingReviews: boolean = false;
   openModal(data: any) {
-        this.ServiceDescription = data.DESCRIPTION? this.sanitizer.bypassSecurityTrustHtml(data.DESCRIPTION):'No description available.';
+    this.ServiceDescription = data.DESCRIPTION ? this.sanitizer.bypassSecurityTrustHtml(data.DESCRIPTION) : 'No description available.';
     this.ModalData = data;
-    this.quantity = 1; 
+    this.quantity = 1;
+    if (this.isMobileViewport()) {
+      this.sheetService = data;
+      this.sheetVisible = true;
+      return;
+    }
     this.modalInstance.show();
+  }
+  private isMobileViewport(): boolean {
+    return typeof window !== 'undefined' && window.innerWidth < 768;
+  }
+  onSheetClose(): void {
+    this.sheetVisible = false;
+  }
+  onSheetConfirm(payload: { service: any; quantity: number }): void {
+    this.sheetVisible = false;
+    this.quantity = payload.quantity;
+    // Same downstream flow as the desktop modal's Select button.
+    this.openNextDrawer(payload.service);
+  }
+  onSheetViewReviews(service: any): void {
+    if (!service) return;
+    this.loadingReviews = true;
+    this.apiservice.getCustomerServiceFeedback(0, 0, '', '', ' AND SERVICE_ID =' + service.ID).subscribe(
+      (response: any) => {
+        this.loadingReviews = false;
+        this.selectedServiceReviews = (response?.code === 200 && response.data?.length > 0)
+          ? response.data.map((review: any) => ({ ...review, RATING: Number(review.RATING) }))
+          : [];
+      },
+      () => { this.loadingReviews = false; this.selectedServiceReviews = []; }
+    );
+    setTimeout(() => {
+      const modalEl = document.getElementById('svcSheetReviewsModal');
+      if (modalEl) { const m = new bootstrap.Modal(modalEl); m.show(); }
+    }, 100);
   }
   increaseQty() {
     if (this.quantity < this.ModalData?.MAX_QTY) {

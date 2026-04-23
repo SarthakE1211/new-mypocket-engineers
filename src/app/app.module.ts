@@ -9,7 +9,13 @@ import { HomeComponent } from './pages/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, RouteReuseStrategy } from '@angular/router';
+import { TabRouteReuseStrategy } from './core/route-reuse/tab-route-reuse.strategy';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { reducers } from './store';
+import { UserEffects } from './store/user/user.effects';
 import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ApiServiceService } from './Service/api-service.service';
@@ -58,6 +64,7 @@ import { TermsAndConditionWithoutLoginComponent } from './components/terms-and-c
 import { CommonmapComponent } from './commonmap/commonmap.component';
 import { MyOrdersComponent } from './pages/my-orders/my-orders.component';
 import { MyCartComponent } from './pages/my-cart/my-cart.component';
+import { ServiceDetailSheetComponent } from './components/service-detail-sheet/service-detail-sheet.component';
 registerLocaleData(en);
 initializeApp(environment.firebase);
 export function HttpLoaderFactory(http: HttpClient) {
@@ -104,7 +111,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AllRefurbishedProductsComponent,
     CommonmapComponent,
     MyOrdersComponent,
-    MyCartComponent
+    MyCartComponent,
+    ServiceDetailSheetComponent
   ],
   imports: [
     BrowserModule,
@@ -123,7 +131,10 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([UserEffects]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [
     ApiServiceService,
@@ -132,6 +143,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     Title,
     Meta,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: RouteReuseStrategy, useClass: TabRouteReuseStrategy },
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA], 

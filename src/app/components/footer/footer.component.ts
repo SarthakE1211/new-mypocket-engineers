@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import { OrdersOverlayService } from 'src/app/Service/orders-overlay.service';
 
 @Component({
   selector: 'app-footer',
@@ -13,10 +14,41 @@ export class FooterComponent implements OnInit, OnDestroy {
   currentYear: number = new Date().getFullYear();
   activeTab: 'home' | 'order' | 'cart' = 'home';
   showBottomNav: boolean = true;
+  overlayOpen: boolean = false;
 
   private destroy$ = new Subject<void>();
+  private bodyClassObserver: MutationObserver | null = null;
+  private unlistenFns: Array<() => void> = [];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private renderer: Renderer2,
+    private zone: NgZone,
+    private ordersOverlay: OrdersOverlayService,
+  ) {}
+
+  // Bottom-nav "Order" tap. Instead of navigating to the /my-orders route
+  // (which flashes and redirects to home on some mobile paths), ask
+  // HeaderComponent to open its My Orders modal drawer — the same flow a
+  // user gets when they tap My Orders from the profile menu, which the
+  // user has confirmed works reliably on mobile.
+  //
+  // If the current route doesn't mount <app-header> (e.g. /my-orders,
+  // /my-cart — hidden via *ngIf in app.component.html), there's no header
+  // instance to receive the Subject event. In that case we set a session
+  // flag and hard-navigate home so the newly-mounted header picks it up
+  // and opens the overlay on arrival.
+  onOrderTap(event: Event): void {
+    event.preventDefault();
+    const path = (this.router.url || '/').split('?')[0].split('#')[0];
+    const headerMounted = path !== '/my-orders' && path !== '/my-cart';
+    if (headerMounted) {
+      this.ordersOverlay.open();
+    } else {
+      sessionStorage.setItem('pockit.openOrdersOverlay', '1');
+      window.location.href = '/service';
+    }
+  }
 
   ngOnInit(): void {
     this.updateActiveTab(this.router.url);
@@ -26,11 +58,37 @@ export class FooterComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe((e) => this.updateActiveTab(e.urlAfterRedirects));
+
+    // Hide the bottom nav whenever a drawer, offcanvas, or modal is on screen
+    // so booking flows are not obstructed. We watch three signals, since
+    // different UIs use different mechanisms:
+    //   1. `body.drawer-open` — set manually by HomeComponent for the unified
+    //      service-booking drawer.
+    //   2. `body.modal-open` — set by Bootstrap whenever a modal is shown.
+    //   3. Any live `.offcanvas.show` element — Bootstrap offcanvas does not
+    //      add a body class, so we listen for its shown/hidden events.
+    this.bodyClassObserver = new MutationObserver(() => this.recomputeOverlayOpen());
+    this.bodyClassObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+    // Run outside Angular because these events can fire repeatedly during
+    // open/close animations and we only need one change-detection pass at the
+    // end — recomputeOverlayOpen() re-enters the zone itself if state changed.
+    this.zone.runOutsideAngular(() => {
+      for (const evt of ['shown.bs.offcanvas', 'hidden.bs.offcanvas', 'shown.bs.modal', 'hidden.bs.modal']) {
+        this.unlistenFns.push(this.renderer.listen(document, evt, () => this.recomputeOverlayOpen()));
+      }
+    });
+
+    this.recomputeOverlayOpen();
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.bodyClassObserver?.disconnect();
+    this.bodyClassObserver = null;
+    this.unlistenFns.forEach((off) => off());
+    this.unlistenFns = [];
   }
 
   private updateActiveTab(url: string): void {
@@ -50,5 +108,17 @@ export class FooterComponent implements OnInit, OnDestroy {
       '/terms-conditions',
     ];
     this.showBottomNav = !hiddenPrefixes.some((p) => path.startsWith(p));
+  }
+
+  private recomputeOverlayOpen(): void {
+    const next =
+      document.body.classList.contains('drawer-open') ||
+      document.body.classList.contains('modal-open') ||
+      !!document.querySelector('.offcanvas.show') ||
+      !!document.querySelector('.modal.show');
+    if (next === this.overlayOpen) return;
+    // Writes back to a component field bound in the template — re-enter the
+    // zone so Angular picks up the change even when triggered from outside.
+    this.zone.run(() => (this.overlayOpen = next));
   }
 }

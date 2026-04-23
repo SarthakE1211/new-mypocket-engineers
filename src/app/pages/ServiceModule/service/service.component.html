@@ -135,7 +135,7 @@
   aria-labelledby="exampleModalCenterTitle"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-centered" role="document" >
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down" role="document" >
     <div class="modal-content">
       <div class="modal-header border-0 d-flex justify-content-between flex-start-padding-custom">
         <button
@@ -275,6 +275,51 @@
     </div>
   </div>
 </div>
+
+<app-service-detail-sheet
+  [visible]="sheetVisible"
+  [service]="sheetService"
+  [imageUrl]="IMAGEuRL"
+  [customerType]="customertype"
+  [categoryName]="selectedCategory"
+  (close)="onSheetClose()"
+  (confirm)="onSheetConfirm($event)"
+  (viewReviews)="onSheetViewReviews($event)"
+></app-service-detail-sheet>
+
+<div class="modal fade" id="svcSheetReviewsModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-1">
+      <div class="modal-header border-bottom py-2">
+        <h5 class="modal-title fw-bold">Customer Reviews</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-2">
+        <div *ngIf="loadingReviews" class="text-center p-2">
+          <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+        </div>
+        <div *ngIf="!loadingReviews">
+          <div *ngFor="let review of selectedServiceReviews" class="mb-2 pb-2 border-bottom">
+            <div class="d-flex align-items-center mb-1">
+              <img [src]="review.PROFILE_PHOTO ? IMAGEuRL + 'CustomerProfile/' + review.PROFILE_PHOTO : 'assets/img/userimage.jpg'"
+                class="rounded-circle me-2" width="36" height="36" />
+              <div>
+                <strong class="d-block small">{{ review.CUSTOMER_NAME }}</strong>
+                <div class="d-flex align-items-center small">
+                  <i class="bi bi-star-fill text-warning me-1"></i>
+                  <span>{{ review.RATING | number:'1.2-2' }}</span>
+                </div>
+              </div>
+            </div>
+            <p class="mt-1 mb-0 text-muted fst-italic small" *ngIf="review?.COMMENTS">"{{ review.COMMENTS }}"</p>
+          </div>
+          <p *ngIf="selectedServiceReviews.length === 0" class="text-center text-muted small mb-0">No reviews available.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div
   class="modal fade"
   id="guestModal"

@@ -48,6 +48,26 @@ body {
   padding: 0;
   overflow-x: hidden;
 }
+
+
+html,
+body {
+  padding: 0 !important;
+}
+
+// Reviews modal opens over the mobile ServiceDetailSheet (z-index 1060).
+// Bootstrap's default modal z-index (1055) puts it *underneath* the sheet,
+// so the list is visible only at the top-most strip before the sheet covers
+// it. Raise the specific review modals and their backdrops above the sheet
+// so they pop cleanly in front — not partially covered.
+#reviewsModal,
+#svcSheetReviewsModal {
+  z-index: 2000 !important;
+}
+body:has(#reviewsModal.show) .modal-backdrop.show,
+body:has(#svcSheetReviewsModal.show) .modal-backdrop.show {
+  z-index: 1990 !important;
+}
 app-header,
 app-footer {
   display: block;
@@ -206,4 +226,3 @@ body:has(.custom-drawer15.show) .mobile-bottom-nav {
     top: 0;
     z-index: 10;
   }
-}

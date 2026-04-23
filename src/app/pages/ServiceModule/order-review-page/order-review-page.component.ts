@@ -377,7 +377,7 @@ export class OrderReviewPageComponent {
           } else {
             this.message.success('Order placed successfully via Cash on Delivery.', '');
           }
-          this.router.navigate(['/service']);
+          window.location.href = '/service';
         } else {
           this.message.error('Failed to place order. Please try again.', '');
         }
@@ -418,7 +418,12 @@ export class OrderReviewPageComponent {
             if (response?.code === 200) {
               this.cartService.fetchAndUpdateCartDetails(this.userID);
               this.message.success('Order placed successfully using Wallet.', '');
-              this.router.navigate(['/service']);
+              // Hard reload to home. Razorpay can leave its own DOM/backdrop
+              // behind, and TabRouteReuseStrategy caches `/service`, so an
+              // in-SPA router.navigate() sometimes lands on a stale or
+              // obscured home on mobile. Matches the pattern used throughout
+              // login.component.ts for post-transaction navigation.
+              window.location.href = '/service';
             } else {
               this.message.error(response?.message || 'Failed to place order. Please try again.', '');
             }
@@ -454,7 +459,12 @@ export class OrderReviewPageComponent {
             if (response?.code === 200) {
               this.cartService.fetchAndUpdateCartDetails(this.userID);
               this.message.success('Order placed successfully.', '');
-              this.router.navigate(['/service']);
+              // Hard reload to home. Razorpay can leave its own DOM/backdrop
+              // behind, and TabRouteReuseStrategy caches `/service`, so an
+              // in-SPA router.navigate() sometimes lands on a stale or
+              // obscured home on mobile. Matches the pattern used throughout
+              // login.component.ts for post-transaction navigation.
+              window.location.href = '/service';
             } else {
               this.message.error('Failed to place order. Please try again.', '');
             }
@@ -506,7 +516,12 @@ export class OrderReviewPageComponent {
                     if (response?.code === 200) {
                       this.cartService.fetchAndUpdateCartDetails(this.userID);
                       this.message.success('Order placed successfully', '');
-                      this.router.navigate(['/service']);
+                      // Hard reload to home. Razorpay can leave its own DOM/backdrop
+              // behind, and TabRouteReuseStrategy caches `/service`, so an
+              // in-SPA router.navigate() sometimes lands on a stale or
+              // obscured home on mobile. Matches the pattern used throughout
+              // login.component.ts for post-transaction navigation.
+              window.location.href = '/service';
                     } else {
                       this.message.error('Failed to place order. Please try again.', '');
                     }

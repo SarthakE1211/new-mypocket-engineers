@@ -69,179 +69,161 @@
     </div>
   </div>
 </div>
-<p class="device-type text-13-mb2">
-  {{ "servicejson.selected_service" | translate }} :
-  <span class="text-danger fw-bold text-14-ellipsis"
-    [attr.title]="data.NAME || 'N/A'" data-bs-toggle="tooltip" data-bs-placement="top">
-    {{ (data.NAME?.length > 40) ? (data.NAME | slice:0:40) + '...' : (data.NAME || 'N/A') }}
-  </span>
-</p>
-<p class="text-muted text-12" >
-  {{ "servicejson.enter_details" | translate }}
-</p>
-<div *ngIf="defaultAddress" (click)="openAddressModal()" class="border rounded p-3 mb-2 cursor-shadow-text13"
-  >
-  <div class="d-flex justify-content-between align-items-center">
-    <span class="fw-bold text-14" >
-      🏠 {{ defaultAddress.ADDRESS_LINE_1 }},
-      {{ defaultAddress.DISTRICT_NAME }}
+<div class="svc-drawer">
+  <div class="svc-drawer-hero">
+    <span class="svc-drawer-hero-label">{{ "servicejson.selected_service" | translate }}</span>
+    <h3 class="svc-drawer-hero-title" [attr.title]="data.NAME || 'N/A'">
+      {{ data.NAME || "N/A" }}
+    </h3>
+    <p class="svc-drawer-hero-sub" *ngIf="data.SUB_NAME">{{ data.SUB_NAME }}</p>
+    <p class="svc-drawer-hero-hint">{{ "servicejson.enter_details" | translate }}</p>
+  </div>
+
+  <button *ngIf="defaultAddress" type="button" (click)="openAddressModal()" class="svc-drawer-address">
+    <span class="svc-drawer-address-icon"><i class="bi bi-geo-alt-fill"></i></span>
+    <span class="svc-drawer-address-body">
+      <span class="svc-drawer-address-title">{{ defaultAddress.ADDRESS_LINE_1 }}, {{ defaultAddress.DISTRICT_NAME }}</span>
+      <span class="svc-drawer-address-sub">{{ defaultAddress.ADDRESS_LINE_2 }}, {{ defaultAddress.PINCODE }}</span>
     </span>
-    <i class="bi bi-chevron-right"></i>
-  </div>
-  <p class="text-muted mb-0 pl-25-text-12">
-    {{ defaultAddress.ADDRESS_LINE_2 }}, {{ defaultAddress.PINCODE }}
-  </p>
-</div>
-<div class="border rounded p-3 bg-light shadow-sm bg-white-border-light" >
-  <p class="fw-bold mb-1 text-14-ellipsis" 
-    [attr.title]="data.NAME" data-bs-toggle="tooltip" data-bs-placement="top">
-    {{ (data.NAME?.length > 40) ? (data.NAME | slice:0:40) + '...' : (data.NAME || 'N/A') }}
-  </p>
-  <div  *ngIf="customertype !== 'B'" class="d-flex justify-content-between text-muted">
-    <span class="text-12" >{{
-      "servicejson.base_price" | translate
-      }}</span>
-    <span *ngIf="customertype !== 'B'" class="fw-bold text-13" >₹ {{ (data.B2C_PRICE| number) || "0" }}</span>
-  </div>
-  <div class="d-flex justify-content-between text-muted">
-    <span class="text-12" > {{ customertype === 'B' ? 'Estimated Duration' : 'Estimated Duration' }}
-    </span>
-    <span class="fw-bold text-13" >
-                      {{(data?.DURARTION_HOUR || 0) * 60 + (data?.DURARTION_MIN || 0)}} min
-    </span>
-  </div>
-  <div class="d-flex justify-content-between align-items-center mt-2">
-    <span class="text-12" >{{
-      "servicejson.quantity" | translate
-      }}</span>
-    <div class="input-group qty-box">
-      <button class="btn btn-outline-secondary btn-sm text-12" (click)="decreaseQty()" >
-        -
-      </button>
-      <input type="text" class="form-control text-center text-12" [(ngModel)]="quantity" (ngModelChange)="changeData($event)"
-        readonly name="any"  />
-      <button class="btn btn-outline-secondary btn-sm text-12" (click)="increaseQty()" >
-        +
-      </button>
+    <i class="bi bi-chevron-right svc-drawer-address-chev"></i>
+  </button>
+
+  <div class="svc-drawer-card svc-drawer-price-card">
+    <div class="svc-drawer-price-top">
+      <div class="svc-drawer-price-info">
+        <h4 class="svc-drawer-price-name" [attr.title]="data.NAME || 'N/A'">
+          {{ (data.NAME?.length > 40) ? (data.NAME | slice:0:40) + '...' : (data.NAME || 'N/A') }}
+        </h4>
+        <div class="svc-drawer-price-meta">
+          <span class="svc-drawer-chip">
+            <i class="bi bi-clock"></i>
+            <span>{{ (data?.DURARTION_HOUR || 0) * 60 + (data?.DURARTION_MIN || 0) }} min</span>
+          </span>
+          <span *ngIf="customertype === 'B'" class="svc-drawer-chip svc-drawer-chip--muted">
+            {{ "servicejson.sla" | translate }}
+          </span>
+        </div>
+      </div>
+      <div *ngIf="customertype !== 'B'" class="svc-drawer-price-amount">
+        <span class="svc-drawer-price-label">{{ "servicejson.base_price" | translate }}</span>
+        <span class="svc-drawer-price-value">
+          <span class="svc-drawer-price-cur">&#8377;</span>{{ (data.B2C_PRICE | number) || "0" }}
+        </span>
+      </div>
     </div>
-  </div>
-</div>
-<div class="mt-3 border rounded p-3 shadow-sm pb-120">
-  <div class="d-flex justify-content-between align-items-center">
-    <label class="form-label text-muted mb-0 text-12" > {{ "servicejson.brand_name" | translate }}</label>
-    <span class="text-muted text-12" >(Optional)</span>
-  </div>
-  <input type="text" class="form-control custom-input text-12" [(ngModel)]="data.BRAND_NAME" placeholder="Enter brand name"
-  maxlength="128" (focus)="isFocused = 'BRAND_NAME'" (blur)="isFocused = ''" />
-  <h6 class="text-red-xs-mt4"  *ngIf="
-  isFocused === 'BRAND_NAME' ||
-  (data.BRAND_NAME != undefined &&
-    data.BRAND_NAME != null &&
-    data.BRAND_NAME != '' &&
-    isFocused === 'BRAND_NAME')
-">
-    {{ data?.BRAND_NAME?.length || 0 }}/128
-  </h6>
-  <div class="d-flex justify-content-between align-items-center mt-3">
-    <label class="form-label text-muted mb-0 text-12" > {{ "servicejson.model_number" | translate }}</label>
-    <div class="d-flex align-items-center">
-      <span class="text-muted me-1 text-12" >(Optional)</span>
-      <i class="bi bi-info-circle text-primary cursor-pointer-text-12"  data-bs-toggle="modal"
-        data-bs-target="#modelNumberModal"></i>
-    </div>
-  </div>
-  <input type="text" class="form-control custom-input text-12" [(ngModel)]="data.MODEL_NUMBER" placeholder="Enter model number"
-     maxlength="60" (focus)="isFocused = 'MODEL_NUMBER'" (blur)="isFocused = ''" />
-  <h6 class="text-red-xs-mt4"  *ngIf="
-  isFocused === 'MODEL_NUMBER' ||
-  (data.MODEL_NUMBER != undefined &&
-    data.MODEL_NUMBER != null &&
-    data.MODEL_NUMBER != '' &&
-    isFocused === 'MODEL_NUMBER')
-">
-    {{ data?.MODEL_NUMBER?.length || 0 }}/60
-  </h6>
-  <div class="d-flex justify-content-between align-items-center mt-3">
-    <label class="form-label text-muted mb-0 text-12" >{{
-      "servicejson.upload_photo" | translate
-      }}</label>
-    <div class="d-flex align-items-center">
-      <span class="text-muted me-1 text-12" >(Optional)</span>
-      <i class="bi bi-info-circle text-primary cursor-pointer-text-12"  data-bs-toggle="modal"
-        data-bs-target="#uploadPhotoModal1"></i>
-    </div>
-  </div>
-  <div class="upload-container d-flex align-items-center px-3">
-    <span *ngIf="!data.SERVICE_PHOTO_FILE"  class="placeholder-text text-12"> {{ "servicejson.browse_photo" |translate }}</span>
-    <span *ngIf="data.SERVICE_PHOTO_FILE"  class="text-truncate file-name text-12"
-      title="{{ data.SERVICE_PHOTO_FILE }}">
-      {{
-      data.SERVICE_PHOTO_FILE.length > 36
-      ? (data.SERVICE_PHOTO_FILE | slice : 0 : 36) + "..."
-      : data.SERVICE_PHOTO_FILE
-      }}
-    </span>
-    <input #icon type="file" accept=".png, .jpg, .jpeg" (change)="fileChangeEvent($event)" class="file-input text-122"
-      />
-    <i *ngIf="!data.SERVICE_PHOTO_FILE" (change)="fileChangeEvent($event)" class="bi bi-upload upload-icon"
-      (click)="icon.click()"></i>
-    <div *ngIf="data.SERVICE_PHOTO_FILE" class="d-flex align-items-center ms-2">
-      <a href="javascript:void(0)" class="text-primary me-2" (click)="openModal()">
-        <i class="bi bi-eye"></i>
-      </a>
-      <a href="javascript:void(0)" class="text-danger" (click)="removeImage()">
-        <i class="bi bi-trash"></i>
-      </a>
-    </div>
-  </div>
-  <div *ngIf="isUploading" class="progress mt-2">
-    <div class="progress-bar" role="progressbar" [style.width.%]="progressPercent"></div>
-  </div>
-  <div *ngIf="showModal" class="custom-modal">
-    <div class="modal-content">
-      <span  class="custom-close-btn cursor-pointer" (click)="closeModal()">&times;</span>
-      <img  [src]="imagePreview" class="modal-img position-relative" alt="Uploaded Image" />
-    </div>
-  </div>
-  <div class="d-flex justify-content-between align-items-center mt-3">
-    <label class="form-label text-muted mb-0 text-12" >
-      {{"servicejson.add_description" | translate}}</label>
-    <span class="text-muted text-12" >(Optional)</span>
-  </div>
-  <textarea class="form-control custom-input text-12" rows="3" [(ngModel)]="data.DESCRIPTION" placeholder="Enter description"
-     maxlength="256" (focus)="isFocused = 'DESCRIPTION'" (blur)="isFocused = ''"></textarea>
-  <h6 class="text-red-xs-mt4"  *ngIf="
-  isFocused === 'DESCRIPTION' ||
-  (data.DESCRIPTION != undefined &&
-    data.DESCRIPTION != null &&
-    data.DESCRIPTION != '' &&
-    isFocused === 'DESCRIPTION')
-">
-    {{ data?.DESCRIPTION?.length || 0 }}/256
-  </h6>
-</div>
-<div class="drawer-footer mt-auto border-top pt-3 footer-absolute">
-  <div class="container-fluid">
-    <div class="row align-items-center">
-      <div class="col-12 text-center text-md-start mb-2 mb-md-0 flex-justify-end">
-        <button class="btn btn-outline-secondary bg-light-text-black-12" (click)="close()" data-bs-dismiss="offcanvas"
-          >
-          {{ "servicejson.back" | translate }}
-        </button>
-        <button *ngIf="InCart" class="btn btn-success px-3 ml-12"
-          [routerLink]="'/shop/cart'">
-          <i class="bi bi-cart-fill"></i>
-          <span class="ms-2">{{"servicejson.go_to_cart" | translate}}</span>
-        </button>
-        <button (click)="openDrawer2(data)" class="btn btn-dark btn-blue-12" [disabled]="!data?.CATEGORY_NAME">
-       {{ "servicejson.next" | translate }}
-      <span class="text-muted text-white-12">
-        ({{ "servicejson.select_address_slot" | translate }})
-      </span>
-    </button>
+    <div class="svc-drawer-qty-row">
+      <span class="svc-drawer-qty-label">{{ "servicejson.quantity" | translate }}</span>
+      <div class="svc-drawer-qty-stepper">
+        <button type="button" class="svc-drawer-qty-btn" (click)="decreaseQty()" aria-label="Decrease quantity">&minus;</button>
+        <input type="text" class="svc-drawer-qty-input" [(ngModel)]="quantity"
+          (ngModelChange)="changeData($event)" readonly name="qty" />
+        <button type="button" class="svc-drawer-qty-btn" (click)="increaseQty()" aria-label="Increase quantity">+</button>
       </div>
     </div>
   </div>
+
+  <div *ngIf="data?.ABOUT_SERVICE && data.ABOUT_SERVICE !== 'N/A'" class="svc-drawer-card">
+    <h5 class="svc-drawer-section-title">{{ "servicejson.about_service" | translate }}</h5>
+    <p class="svc-drawer-section-body">{{ data.ABOUT_SERVICE }}</p>
+  </div>
+
+  <div class="svc-drawer-card svc-drawer-details">
+    <div class="svc-drawer-details-head">
+      <h5 class="svc-drawer-section-title">Device details</h5>
+      <span class="svc-drawer-optional-badge">Optional</span>
+    </div>
+
+    <div class="svc-drawer-field">
+      <label class="svc-drawer-field-label">{{ "servicejson.brand_name" | translate }}</label>
+      <input type="text" class="svc-drawer-field-input" [(ngModel)]="data.BRAND_NAME"
+        placeholder="{{ 'servicejson.enter_brand_name' | translate }}" maxlength="128"
+        (focus)="isFocused = 'BRAND_NAME'" (blur)="isFocused = ''" />
+      <span class="svc-drawer-field-count" *ngIf="isFocused === 'BRAND_NAME'">
+        {{ data?.BRAND_NAME?.length || 0 }}/128
+      </span>
+    </div>
+
+    <div class="svc-drawer-field">
+      <div class="svc-drawer-field-label-row">
+        <label class="svc-drawer-field-label">{{ "servicejson.model_number" | translate }}</label>
+        <button type="button" class="svc-drawer-field-hint" data-bs-toggle="modal" data-bs-target="#modelNumberModal"
+          aria-label="How to find model number">
+          <i class="bi bi-info-circle"></i>
+        </button>
+      </div>
+      <input type="text" class="svc-drawer-field-input" [(ngModel)]="data.MODEL_NUMBER"
+        placeholder="{{ 'servicejson.enter_model_number' | translate }}" maxlength="60"
+        (focus)="isFocused = 'MODEL_NUMBER'" (blur)="isFocused = ''" />
+      <span class="svc-drawer-field-count" *ngIf="isFocused === 'MODEL_NUMBER'">
+        {{ data?.MODEL_NUMBER?.length || 0 }}/60
+      </span>
+    </div>
+
+    <div class="svc-drawer-field">
+      <div class="svc-drawer-field-label-row">
+        <label class="svc-drawer-field-label">{{ "servicejson.upload_photo" | translate }}</label>
+        <button type="button" class="svc-drawer-field-hint" data-bs-toggle="modal" data-bs-target="#uploadPhotoModal1"
+          aria-label="How to upload a photo">
+          <i class="bi bi-info-circle"></i>
+        </button>
+      </div>
+      <label class="svc-drawer-upload" [class.has-file]="data.SERVICE_PHOTO_FILE">
+        <input #icon type="file" accept=".png, .jpg, .jpeg" (change)="fileChangeEvent($event)" class="svc-drawer-upload-input" />
+        <i class="bi bi-cloud-arrow-up-fill svc-drawer-upload-icon"></i>
+        <span *ngIf="!data.SERVICE_PHOTO_FILE" class="svc-drawer-upload-text">
+          <span class="svc-drawer-upload-primary">{{ "servicejson.browse_photo" | translate }}</span>
+          <span class="svc-drawer-upload-secondary">PNG or JPG, up to 5MB</span>
+        </span>
+        <span *ngIf="data.SERVICE_PHOTO_FILE" class="svc-drawer-upload-filename" [title]="data.SERVICE_PHOTO_FILE">
+          {{ data.SERVICE_PHOTO_FILE.length > 30 ? (data.SERVICE_PHOTO_FILE | slice:0:30) + '...' : data.SERVICE_PHOTO_FILE }}
+        </span>
+        <span *ngIf="data.SERVICE_PHOTO_FILE" class="svc-drawer-upload-actions">
+          <button type="button" class="svc-drawer-upload-action" (click)="openModal(); $event.preventDefault()"
+            aria-label="Preview photo">
+            <i class="bi bi-eye"></i>
+          </button>
+          <button type="button" class="svc-drawer-upload-action is-danger" (click)="removeImage(); $event.preventDefault()"
+            aria-label="Remove photo">
+            <i class="bi bi-trash"></i>
+          </button>
+        </span>
+      </label>
+      <div *ngIf="isUploading" class="svc-drawer-progress">
+        <div class="svc-drawer-progress-bar" [style.width.%]="progressPercent"></div>
+      </div>
+      <div *ngIf="showModal" class="custom-modal">
+        <div class="modal-content">
+          <span class="custom-close-btn cursor-pointer" (click)="closeModal()">&times;</span>
+          <img [src]="imagePreview" class="modal-img position-relative" alt="Uploaded Image" />
+        </div>
+      </div>
+    </div>
+
+    <div class="svc-drawer-field">
+      <label class="svc-drawer-field-label">{{ "servicejson.add_description" | translate }}</label>
+      <textarea name="desc" class="svc-drawer-field-input svc-drawer-field-textarea" rows="3"
+        [(ngModel)]="data.DESCRIPTION" placeholder="{{ 'servicejson.enter_description' | translate }}" maxlength="256"
+        (focus)="isFocused = 'DESCRIPTION'" (blur)="isFocused = ''"></textarea>
+      <span class="svc-drawer-field-count" *ngIf="isFocused === 'DESCRIPTION'">
+        {{ data?.DESCRIPTION?.length || 0 }}/256
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="offcanvas-footer footer-absolute svc-drawer-footer">
+  <button class="svc-drawer-btn svc-drawer-btn--ghost" (click)="close()" data-bs-dismiss="offcanvas">
+    {{ "servicejson.back" | translate }}
+  </button>
+  <button *ngIf="InCart" class="svc-drawer-btn svc-drawer-btn--primary" [routerLink]="'/shop/cart'">
+    <i class="bi bi-cart-fill"></i>
+    <span class="svc-drawer-btn-title">{{ "servicejson.go_to_cart" | translate }}</span>
+  </button>
+  <button *ngIf="!InCart" class="svc-drawer-btn svc-drawer-btn--primary" (click)="openDrawer2(data)"
+    [disabled]="!data?.CATEGORY_NAME">
+    <span class="svc-drawer-btn-title">{{ "servicejson.next" | translate }}</span>
+    <span class="svc-drawer-btn-sub">({{ "servicejson.select_address_slot" | translate }})</span>
+  </button>
 </div>
 <div class="modal fade" id="modelNumberModal" tabindex="-1" aria-labelledby="modelNumberModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
   <div class="modal-dialog">
@@ -294,98 +276,85 @@
     <div class="progress-bar bg-orange-custom" role="progressbar"
       [style.width.%]="progress" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100"></div>
   </div>
-  <div class="offcanvas-body">
-    <div *ngIf="data?.IS_EXPRESS === 1" class="border rounded p-3 bg-light shadow-13"
-      >
-      <div class="d-flex align-items-center">
-        <input type="radio" id="expressService" name="serviceOption" checked class="me-2" />
-        <label for="expressService" class="fw-bold text-14" >
-          <i>Express Service</i>
-        </label>
+  <div class="offcanvas-body svc-drawer">
+    <div *ngIf="data?.IS_EXPRESS === 1 && data?.EXPRESS_COST > 0" class="svc-drawer-express">
+      <div class="svc-drawer-express-top">
+        <span class="svc-drawer-express-icon"><i class="bi bi-lightning-charge-fill"></i></span>
+        <div class="svc-drawer-express-text">
+          <strong class="svc-drawer-express-title">Express Service</strong>
+          <span class="svc-drawer-express-sub">
+            Same-day service with our express checkout option with an additional charge of
+            <b>+&#8377;{{ data.EXPRESS_COST | number }}</b>.
+          </span>
+        </div>
       </div>
-      <p class="text-muted text-12" >
-        Same day service with our express checkout option with an additional
-        charge of
-        <b>{{ data?.EXPRESS_COST ? data.EXPRESS_COST + " INR" : "N/A" }}</b>.
-      </p>
-      <div *ngIf="data?.IS_EXPRESS === 1" class="d-flex justify-content-center mt-2">
-        <button class="btn w-50-text-13" [ngClass]="{
-            'btn-outline-primary': IS_EXPRESS === 0,
-            'btn-outline-danger': IS_EXPRESS === 1
-          }"  (click)="toggleExpressService()">
-          {{
-          IS_EXPRESS === 1 ? "Remove Express Service" : "Use Express Service"
-          }}
+      <button type="button" class="svc-drawer-express-btn" [class.is-active]="IS_EXPRESS === 1"
+        (click)="toggleExpressService()">
+        <i class="bi" [ngClass]="IS_EXPRESS === 1 ? 'bi-check2-circle' : 'bi-lightning-charge'"></i>
+        <span>{{ IS_EXPRESS === 1 ? "Remove Express Service" : "Use Express Service" }}</span>
+      </button>
+    </div>
+
+    <p class="svc-drawer-section-hint">Please select a date and time for the technician's visit</p>
+
+    <div class="svc-drawer-card svc-drawer-picker">
+      <div class="svc-drawer-picker-head">
+        <label class="svc-drawer-picker-label">Select a date</label>
+        <span class="svc-drawer-picker-value">{{ selectedDate }}</span>
+      </div>
+      <div class="svc-drawer-date-scroll">
+        <button *ngFor="let date of dates" type="button" class="svc-drawer-date-pill"
+          [class.is-selected]="selectedDate.trim() === date.fullDate.trim()"
+          (click)="selectDate(date.fullDate)">
+          <span class="svc-drawer-date-day">{{ date.display.split(" ")[0] }}</span>
+          <span class="svc-drawer-date-num">{{ date.display.split(" ")[1] }}</span>
         </button>
       </div>
     </div>
-    <p class="text-center mt-3 text-13" >
-      Please select a date and time for the technician's visit
-    </p>
-    <div class="border date-time-container shadow-13" >
-      <div class="date-picker-container">
-        <label class="form-label text-13" >Select a date</label>
-        <p class="selected-date text-12" >
-          {{ selectedDate }}
-        </p>
-        <div class="date-scroll">
-          <button *ngFor="let date of dates" class="date-button text-12" [ngClass]="{
-              selected: selectedDate.trim() === date.fullDate.trim()
-            }" (click)="selectDate(date.fullDate)"  >
-            <span class="day">{{ date.display.split(" ")[0] }}</span>
-            <span class="date">{{ date.display.split(" ")[1] }}</span>
-          </button>
-        </div>
+
+    <div class="svc-drawer-card svc-drawer-slots">
+      <label class="svc-drawer-picker-label">Select a time slot</label>
+      <div class="svc-drawer-slot-grid">
+        <button *ngFor="let period of timeSlots" type="button" class="svc-drawer-slot"
+          [class.is-selected]="selectedSlot === formatTime(period.times.start) + ' - ' + formatTime(period.times.end)"
+          [class.is-disabled]="period.times.disabled"
+          [disabled]="period.times.disabled"
+          (click)="selectSlot(period.times)">
+          <span class="svc-drawer-slot-period">
+            <i class="bi" [ngClass]="{
+              'bi-sunrise-fill': period.period === 'Morning',
+              'bi-sun-fill': period.period === 'Afternoon',
+              'bi-sunset-fill': period.period === 'Evening'
+            }"></i>
+            <span>{{ period.period }}</span>
+          </span>
+          <span class="svc-drawer-slot-time">
+            {{ formatTime(period.times.start) }} &ndash; {{ formatTime(period.times.end) }}
+          </span>
+          <span *ngIf="period.times.disabled" class="svc-drawer-slot-chip">Unavailable</span>
+        </button>
       </div>
-      <div class="time-slot-container">
-        <label class="form-label fw-bold text-13" >
-          Select a time slot
-        </label>
-        <div class="time-slot-wrapper">
-          <div *ngFor="let period of timeSlots" class="time-slot">
-            <p class="slot-title text-left-13">
-              {{ period.period }}
-            </p>
-            <button class="slot-button" [ngClass]="{
-                'selected-slot':
-                  selectedSlot ===
-                  formatTime(period.times.start) +
-                    ' - ' +
-                    formatTime(period.times.end)
-              }" (click)="selectSlot(period.times)" [disabled]="period.times.disabled">
-              <span class="time-range">
-                {{ formatTime(period.times.start) }}<br />-<br />{{
-                formatTime(period.times.end)
-                }}
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
-      <p *ngIf="isAllSlotsDisabled()" 
-      class="no-slots-message text-red-14" 
-      >
-      No time slots are available for the selected date. 
-       </p>
+      <p *ngIf="isAllSlotsDisabled()" class="svc-drawer-empty">
+        <i class="bi bi-calendar-x"></i>
+        No time slots are available for the selected date.
+      </p>
     </div>
-    <div class="border p-3 mt-3 card-rounded-shadow-13">
-      <label class="form-label fw-bold text-13" >Remarks</label>
-      <input type="text" class="form-control text-12" [(ngModel)]="remark"
-    [placeholder]="'home.remarks_placeholder' | translate"  maxlength="256"
-    (focus)="isFocused = 'REMARK'" (blur)="isFocused = ''" />
-  <h6 *ngIf="isFocused === 'REMARK'" class="text-red-10-mt4">
-    {{ remark?.length || 0 }}/256
-  </h6>
+
+    <div class="svc-drawer-card">
+      <label class="svc-drawer-picker-label">Remarks</label>
+      <input type="text" class="svc-drawer-field-input" [(ngModel)]="remark"
+        [placeholder]="'home.remarks_placeholder' | translate" maxlength="256"
+        (focus)="isFocused = 'REMARK'" (blur)="isFocused = ''" />
+      <span class="svc-drawer-field-count" *ngIf="isFocused === 'REMARK'">
+        {{ remark?.length || 0 }}/256
+      </span>
     </div>
   </div>
-  <div class="offcanvas-footer border-top p-3 d-flex align-items-center">
-    <button class="btn btn-outline-secondary flex-grow-0 me-2 text-13" (click)="backaddress()" data-bs-dismiss="offcanvas"
-      >
+  <div class="offcanvas-footer footer-absolute svc-drawer-footer">
+    <button class="svc-drawer-btn svc-drawer-btn--ghost" (click)="backaddress()" data-bs-dismiss="offcanvas">
       Back
     </button>
-    <button class="btn btn-light flex-grow-0 me-2">
-    </button>
-    <button class="btn btn-dark flex-grow-1 text-white text-14" (click)="bookNow()" >
+    <button class="svc-drawer-btn svc-drawer-btn--primary" (click)="bookNow()">
       Confirm
     </button>
   </div>

@@ -1,5 +1,5 @@
 import { DatePipe, ViewportScroller } from '@angular/common';
-import { Component, ElementRef, HostListener, OnDestroy, SecurityContext, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, Renderer2, SecurityContext, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { filter, takeUntil } from 'rxjs/operators';
 import { CookieService } from 'ngx-cookie-service';
@@ -13,6 +13,8 @@ import { environment } from 'src/environments/environment';
 import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Store } from '@ngrx/store';
+import { hydrateUserFromStorage } from './store/user/user.actions';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -32,8 +34,34 @@ export class AppComponent implements OnDestroy {
     private loaderService: LoaderService,
     private message: ToastrService,
     private datePipe: DatePipe,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private store: Store,
+    private renderer: Renderer2
   ) {
+    this.store.dispatch(hydrateUserFromStorage());
+    // Safety net for Bootstrap modal/offcanvas teardown. In some fast
+    // open/close sequences Bootstrap leaves `padding-right` and `overflow:
+    // hidden` on <body>, or orphans a `.modal-backdrop` / `.offcanvas-backdrop`
+    // node, which shows up as a dark frame around the page after dismiss.
+    // After every dismiss we re-check: if nothing is open anymore, fully
+    // reset body styles and remove stray backdrops.
+    const resetOverlayState = () => {
+      if (document.querySelector('.modal.show') || document.querySelector('.offcanvas.show')) return;
+      document.body.classList.remove('modal-open', 'offcanvas-backdrop', 'drawer-open');
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+      document.body.style.paddingLeft = '';
+      document.documentElement.style.overflow = '';
+      document.documentElement.style.paddingRight = '';
+      document.querySelectorAll('.modal-backdrop, .offcanvas-backdrop').forEach((b) => b.remove());
+    };
+    // Fire on both the start-of-hide and end-of-hide events so the styles are
+    // stripped immediately as the dismiss animation begins — not waiting for
+    // the 150ms fade to finish — which avoids any perceptible layout shift.
+    this.renderer.listen(document, 'hide.bs.modal', resetOverlayState);
+    this.renderer.listen(document, 'hidden.bs.modal', resetOverlayState);
+    this.renderer.listen(document, 'hide.bs.offcanvas', resetOverlayState);
+    this.renderer.listen(document, 'hidden.bs.offcanvas', resetOverlayState);
     this.loaderService.isLoading$
       .pipe(takeUntil(this.destroy$))
       .subscribe((loading) => {

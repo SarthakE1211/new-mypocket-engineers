@@ -577,26 +577,34 @@
             </div>
           </div>
         </div>
-        <div class="card shadow-sm p-3 rounded-16">
-          <h5 *ngIf="customertype !== 'B'" class="font-14-bold">
+        <div class="card shadow-sm p-3 rounded-16 payment-mode-card">
+          <h5 *ngIf="customertype !== 'B'" class="font-14-bold payment-mode-title">
             {{ "order_review.payment_mode.title" | translate }}
           </h5>
-          <div *ngIf="customertype == 'I'" class="form-check d-flex justify-content-between align-items-center mb-2">
-            <div class="d-flex align-items-center">
-              <input class="form-check-input mt-0" type="radio" id="wallet" name="paymentMode"
-                [(ngModel)]="selectedPaymentMethod" value="WALLET" />
-              <label class="form-check-label font-13 ms-2" for="wallet">Use Wallet</label>
-            </div>
-            <span class="text-muted font-13">Available Balance: <span class="fw-bold text-primary font-13">₹{{
-                walletAmount | number:'1.0-0' }}</span></span>
-          </div>
-          <div *ngIf="customertype !== 'B'" class="form-check">
-            <input class="form-check-input" type="radio" id="online" name="paymentMode"
+
+          <label *ngIf="customertype == 'I'" class="payment-tile" for="wallet">
+            <input class="form-check-input payment-tile-input" type="radio" id="wallet" name="paymentMode"
+              [(ngModel)]="selectedPaymentMethod" value="WALLET" />
+            <span class="payment-tile-icon"><i class="bi bi-wallet2"></i></span>
+            <span class="payment-tile-body">
+              <span class="payment-tile-title">Use Wallet</span>
+              <span class="payment-tile-sub">
+                Balance <b class="payment-tile-balance">&#8377;{{ walletAmount | number:'1.0-0' }}</b>
+              </span>
+            </span>
+            <span class="payment-tile-radio" aria-hidden="true"></span>
+          </label>
+
+          <label *ngIf="customertype !== 'B'" class="payment-tile" for="online">
+            <input class="form-check-input payment-tile-input" type="radio" id="online" name="paymentMode"
               [(ngModel)]="selectedPaymentMethod" value="ONLINE" />
-            <label class="form-check-label font-13" for="online">{{
-              "order_review.payment_mode.online_payment" | translate
-              }}</label>
-          </div>
+            <span class="payment-tile-icon payment-tile-icon--online"><i class="bi bi-credit-card-2-back-fill"></i></span>
+            <span class="payment-tile-body">
+              <span class="payment-tile-title">{{ "order_review.payment_mode.online_payment" | translate }}</span>
+              <span class="payment-tile-sub">UPI, Cards, NetBanking, Wallets</span>
+            </span>
+            <span class="payment-tile-radio" aria-hidden="true"></span>
+          </label>
           <button class="btn w-100 mt-3 bg-blue-rounded-8" (click)="proceedToPay()">
             <span class="proceed-to-pay-btn" *ngIf="customertype === 'B'">{{
               "order_review.payment_mode.proceed" | translate

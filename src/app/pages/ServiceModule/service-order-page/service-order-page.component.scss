@@ -980,3 +980,35 @@
 		background: #2A3B8F;
 		font-weight: 400;
 	}
+
+	// Back-button styling for the Order Details page title row. Matches the
+	// order-review back button — small navy circular pill with a chevron,
+	// placed immediately left of the "Order Details" heading.
+	.order-details-title-row {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+	.order-details-title-row .back-button {
+		width: 32px;
+		height: 32px;
+		border-radius: 999px;
+		background: #2A3B8F;
+		color: #ffffff;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		text-decoration: none;
+		box-shadow: 0 4px 12px rgba(42, 59, 143, 0.25);
+		transition: transform 0.15s ease, box-shadow 0.15s ease;
+	}
+	.order-details-title-row .back-button:hover {
+		transform: translateX(-2px);
+		box-shadow: 0 6px 16px rgba(42, 59, 143, 0.32);
+	}
+	.order-details-title-row .back-button i {
+		font-size: 15px;
+		color: #ffffff;
+		line-height: 1;
+	}

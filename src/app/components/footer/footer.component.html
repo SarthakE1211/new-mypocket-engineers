@@ -11,16 +11,16 @@
         <a href="https://api.whatsapp.com/send?phone=9582700865" target="_blank" class="social-chip social-whatsapp" aria-label="WhatsApp">
           <i class="bi bi-whatsapp"></i>
         </a>
-        <a href="https://www.linkedin.com/company/pockit-engineers/about/" target="_blank" class="social-chip social-linkedin" aria-label="LinkedIn">
+        <a href="https://www.linkedin.com/company/pockit-engineers/about/" target="_blank" rel="noopener noreferrer" class="social-chip social-linkedin" aria-label="LinkedIn">
           <i class="bi bi-linkedin"></i>
         </a>
-        <a href="#" target="_blank" class="social-chip social-twitter" aria-label="X">
+        <a href="https://x.com/PockITEngineers/status/1959230050198249598" target="_blank" rel="noopener noreferrer" class="social-chip social-twitter" aria-label="X">
           <i class="bi bi-twitter-x"></i>
         </a>
-        <a href="#" target="_blank" class="social-chip social-facebook" aria-label="Facebook">
+        <a href="https://www.facebook.com/people/Pockit-Engineers/61576204075910/?locale=en_GB" target="_blank" rel="noopener noreferrer" class="social-chip social-facebook" aria-label="Facebook">
           <i class="bi bi-facebook"></i>
         </a>
-        <a href="#" target="_blank" class="social-chip social-instagram" aria-label="Instagram">
+        <a href="https://www.instagram.com/baspockitkaro" target="_blank" rel="noopener noreferrer" class="social-chip social-instagram" aria-label="Instagram">
           <i class="bi bi-instagram"></i>
         </a>
       </div>
@@ -88,14 +88,15 @@
   </div>
 </footer>
 
-<nav class="mobile-bottom-nav" aria-label="Primary" *ngIf="showBottomNav">
-  <a class="mb-nav-item mb-nav-item--home" routerLink="/" [class.is-active]="activeTab === 'home'">
+<nav class="mobile-bottom-nav" aria-label="Primary" *ngIf="showBottomNav && !overlayOpen">
+  <a class="mb-nav-item mb-nav-item--home" routerLink="/service" [class.is-active]="activeTab === 'home'">
     <span class="mb-nav-glyph mb-nav-glyph--home">
       <span class="mb-nav-pe">PE</span>
     </span>
     <span class="mb-nav-label">Home</span>
   </a>
-  <a class="mb-nav-item" routerLink="/my-orders" [class.is-active]="activeTab === 'order'">
+  <a class="mb-nav-item" href="javascript:void(0)" (click)="onOrderTap($event)"
+    [class.is-active]="activeTab === 'order'">
     <span class="mb-nav-glyph">
       <i class="bi bi-file-earmark-text"></i>
     </span>

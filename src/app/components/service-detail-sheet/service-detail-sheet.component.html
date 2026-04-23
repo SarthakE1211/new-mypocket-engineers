@@ -1,0 +1,194 @@
+<div class="svc-sheet-root" [class.is-visible]="visible" (click)="onBackdropClick($event)">
+  <button *ngIf="visible" type="button" class="svc-sheet-close" aria-label="Close" (click)="onClose()">
+    <i class="bi bi-x"></i>
+  </button>
+
+  <div class="svc-sheet" role="dialog" aria-modal="true" [attr.aria-hidden]="!visible">
+    <div class="svc-sheet-body" *ngIf="service">
+      <header class="svc-sheet-header">
+        <div class="svc-sheet-header-text">
+          <h2 class="svc-sheet-title">{{ service?.NAME || '' }}</h2>
+          <p class="svc-sheet-subtitle" *ngIf="categoryName || subCategoryName">
+            {{ subCategoryName || categoryName }}
+          </p>
+          <div class="svc-sheet-rating">
+            <i class="bi bi-star-fill"></i>
+            <span class="svc-sheet-rating-value">{{ displayRating | number:'1.1-1' }}</span>
+            <span class="svc-sheet-rating-label">({{ reviewCount }} reviews)</span>
+          </div>
+        </div>
+        <div class="svc-sheet-hero-icon">
+          <img *ngIf="service?.SERVICE_IMAGE" [src]="imageUrl + 'Item/' + service.SERVICE_IMAGE"
+            [alt]="service?.NAME || 'Service'" />
+          <i *ngIf="!service?.SERVICE_IMAGE" class="bi bi-tools"></i>
+        </div>
+      </header>
+
+      <section class="svc-sheet-price-card">
+        <div class="svc-sheet-price-col">
+          <span class="svc-sheet-price-label">Base price</span>
+          <span class="svc-sheet-price-value">&#8377;{{ basePrice | number }}</span>
+        </div>
+        <div class="svc-sheet-duration-chip">
+          <i class="bi bi-clock"></i>
+          <span>{{ durationMinutes }} min</span>
+        </div>
+      </section>
+
+      <section class="svc-sheet-how-card">
+        <h3 class="svc-sheet-how-title">How Pockit Works</h3>
+        <ol class="svc-sheet-how-steps">
+          <li *ngFor="let step of howPockitWorks">
+            <span class="svc-sheet-how-icon"><i class="bi" [ngClass]="step.icon"></i></span>
+            <span class="svc-sheet-how-label">{{ step.label }}</span>
+          </li>
+        </ol>
+        <button type="button" class="svc-sheet-learn-more" (click)="toggleLearnMore()">
+          <ng-container *ngIf="!howLearnMoreOpen">Learn more &rsaquo;</ng-container>
+          <ng-container *ngIf="howLearnMoreOpen">Show less &lsaquo;</ng-container>
+        </button>
+      </section>
+
+      <section class="svc-sheet-learn-more-card" *ngIf="howLearnMoreOpen">
+        <ol class="svc-sheet-learn-more-steps">
+          <li *ngFor="let step of howLearnMoreSteps; let i = index">
+            <span class="svc-sheet-learn-more-num">{{ i + 1 }}</span>
+            <div class="svc-sheet-learn-more-body">
+              <div class="svc-sheet-learn-more-title">{{ step.title }}</div>
+              <p class="svc-sheet-learn-more-text">{{ step.body }}</p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="svc-sheet-learn-more-section-title">{{ expertVerified.title }}</div>
+        <ol class="svc-sheet-learn-more-steps">
+          <li *ngFor="let text of expertVerified.items; let i = index">
+            <span class="svc-sheet-learn-more-num">{{ i + 1 }}</span>
+            <div class="svc-sheet-learn-more-body">
+              <p class="svc-sheet-learn-more-text">{{ text }}</p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="svc-sheet-learn-more-section-title">{{ fixedRateCard.title }}</div>
+        <ol class="svc-sheet-learn-more-steps">
+          <li *ngFor="let text of fixedRateCard.items; let i = index">
+            <span class="svc-sheet-learn-more-num">{{ i + 1 }}</span>
+            <div class="svc-sheet-learn-more-body">
+              <p class="svc-sheet-learn-more-text">{{ text }}</p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="svc-sheet-learn-more-subnote">
+          <div class="svc-sheet-learn-more-subnote-title">Not included:</div>
+          <ul class="svc-sheet-learn-more-subnote-list">
+            <li *ngFor="let text of fixedRateCard.notIncluded">{{ text }}</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="svc-sheet-accordion" [class.is-open]="descriptionOpen">
+        <button type="button" class="svc-sheet-accordion-trigger" (click)="toggleDescription()">
+          <span class="svc-sheet-accordion-icon svc-sheet-accordion-icon--info">
+            <span class="svc-sheet-warranty-logo">PE</span>
+          </span>
+          <span class="svc-sheet-accordion-label">Service Description</span>
+          <i class="bi" [ngClass]="descriptionOpen ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+        </button>
+        <div class="svc-sheet-accordion-body" *ngIf="descriptionOpen">
+          <div class="svc-sheet-desc-card">
+            <div class="svc-sheet-desc-head">
+              <span class="svc-sheet-desc-icon"><i class="bi bi-search"></i></span>
+              <span class="svc-sheet-desc-title">{{ service?.NAME }}</span>
+            </div>
+            <div class="svc-sheet-desc-breadcrumb" *ngIf="categoryName || subCategoryName">
+              <span>{{ categoryName }}</span>
+              <span class="svc-sheet-desc-sep" *ngIf="categoryName && subCategoryName">||</span>
+              <span>{{ subCategoryName }}</span>
+              <span class="svc-sheet-desc-sep" *ngIf="(categoryName || subCategoryName) && service?.NAME">||</span>
+              <span class="svc-sheet-desc-current">{{ service?.NAME }}</span>
+            </div>
+            <div class="svc-sheet-desc-text" *ngIf="sanitizedDescription" [innerHTML]="sanitizedDescription"></div>
+            <div class="svc-sheet-desc-text" *ngIf="!sanitizedDescription">No description available.</div>
+            <div class="svc-sheet-what-we-do">
+              <div class="svc-sheet-what-we-do-header">What We Do</div>
+              <ol class="svc-sheet-what-we-do-list">
+                <li *ngFor="let step of whatWeDo; let i = index">
+                  <span class="svc-sheet-step-num">{{ i + 1 }}</span>
+                  <span class="svc-sheet-step-text">{{ step }}</span>
+                </li>
+              </ol>
+            </div>
+            <div class="svc-sheet-not-included">
+              <div class="svc-sheet-not-included-title">Not Included:</div>
+              <ul class="svc-sheet-not-included-list">
+                <li *ngFor="let item of notIncluded">{{ item }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="svc-sheet-accordion" [class.is-open]="warrantyOpen">
+        <button type="button" class="svc-sheet-accordion-trigger" (click)="toggleWarranty()">
+          <span class="svc-sheet-accordion-icon svc-sheet-accordion-icon--warranty">
+            <span class="svc-sheet-warranty-logo">PE</span>
+          </span>
+          <span class="svc-sheet-accordion-label">Pockit Warranty</span>
+          <i class="bi" [ngClass]="warrantyOpen ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+        </button>
+        <div class="svc-sheet-accordion-body" *ngIf="warrantyOpen">
+          <ul class="svc-sheet-warranty-bullets">
+            <li *ngFor="let item of warrantyHighlights">{{ item }}</li>
+          </ul>
+          <div class="svc-sheet-warranty-actions">
+            <button type="button" class="svc-sheet-warranty-pill" (click)="toggleWarrantySub('how')"
+              [class.is-active]="warrantySubExpanded === 'how'">
+              How Pockit warranty works?
+            </button>
+            <div class="svc-sheet-warranty-answer" *ngIf="warrantySubExpanded === 'how'">
+              <ul class="svc-sheet-warranty-bullets">
+                <li *ngFor="let item of warrantyCopy.how">{{ item }}</li>
+              </ul>
+            </div>
+            <button type="button" class="svc-sheet-warranty-pill" (click)="toggleWarrantySub('calc')"
+              [class.is-active]="warrantySubExpanded === 'calc'">
+              How is warranty period calculated?
+            </button>
+            <div class="svc-sheet-warranty-answer" *ngIf="warrantySubExpanded === 'calc'">
+              <ul class="svc-sheet-warranty-bullets">
+                <li *ngFor="let item of warrantyCopy.calc">{{ item }}</li>
+              </ul>
+            </div>
+            <button type="button" class="svc-sheet-warranty-pill" (click)="toggleWarrantySub('notCovered')"
+              [class.is-active]="warrantySubExpanded === 'notCovered'">
+              What is not covered in the warranty?
+            </button>
+            <div class="svc-sheet-warranty-answer" *ngIf="warrantySubExpanded === 'notCovered'">
+              <ul class="svc-sheet-warranty-bullets">
+                <li *ngFor="let item of warrantyCopy.notCovered">{{ item }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="svc-sheet-not-included-card">
+        <div class="svc-sheet-not-included-head">
+          <i class="bi bi-exclamation-triangle"></i>
+          <span>Not included</span>
+        </div>
+        <ul class="svc-sheet-not-included-list svc-sheet-not-included-list--red">
+          <li *ngFor="let item of notIncluded">{{ item }}</li>
+        </ul>
+      </section>
+    </div>
+
+    <footer class="svc-sheet-footer">
+      <button type="button" class="svc-sheet-confirm" (click)="onConfirm()" [disabled]="!service">
+        Confirm &nbsp;-&nbsp; &#8377;{{ basePrice * quantity | number }}
+      </button>
+    </footer>
+  </div>
+</div>

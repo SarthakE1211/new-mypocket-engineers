@@ -27,6 +27,9 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { AddressUpdateServiceService } from 'src/app/Service/address-update.service.service';
 import { AddressForm } from 'src/app/models/address.model';
+import { OrdersOverlayService } from 'src/app/Service/orders-overlay.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 class User {
   ID?: number;
   MOBILE_NO?: string;
@@ -204,10 +207,28 @@ export class HeaderComponent {
     private cdRef: ChangeDetectorRef,
     private sanitizer: DomSanitizer,
     private translate: TranslateService,
-    private addressUpdateService: AddressUpdateServiceService
+    private addressUpdateService: AddressUpdateServiceService,
+    private ordersOverlay: OrdersOverlayService
   ) {
     translate.addLangs(['en', 'mr']);
     translate.setDefaultLang('en');
+  }
+
+  // Lifecycle helpers for the orders-overlay subscription below.
+  private destroy$ = new Subject<void>();
+
+  // Opens the same in-drawer "My Orders" view that the profile menu uses
+  // (showContent = 'myorder'). Called by:
+  //   - FooterComponent's bottom-nav "Order" tap (via OrdersOverlayService)
+  //   - this.ngOnInit() when the `pockit.openOrdersOverlay` session flag
+  //     is set, which FooterComponent sets when it needs to hard-navigate
+  //     home first (e.g. from /my-orders where the header isn't mounted)
+  openOrdersOverlayFromNav(): void {
+    this.walletOpenedFromHeader = false;
+    this.isMobileMenuOpen = true;
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    this.openOrdersModal();
   }
   changeLanguage(language: string) {
     this.currentLang = language;
@@ -228,6 +249,22 @@ export class HeaderComponent {
   }
   cityOnly: string = "";
   ngOnInit(): void {
+    // Footer bottom-nav "Order" tap asks us (via a shared service) to open
+    // the profile drawer's My Orders view — matches the known-working
+    // behaviour of tapping My Orders from the profile menu.
+    this.ordersOverlay.open$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.openOrdersOverlayFromNav());
+
+    // If the footer couldn't reach us because this component wasn't mounted
+    // on the previous route (e.g. /my-orders hides <app-header>), it hard-
+    // navigates home and leaves a session flag for us to honour on mount.
+    if (sessionStorage.getItem('pockit.openOrdersOverlay') === '1') {
+      sessionStorage.removeItem('pockit.openOrdersOverlay');
+      // Small delay so the rest of ngOnInit's storage/API setup runs first.
+      setTimeout(() => this.openOrdersOverlayFromNav(), 250);
+    }
+
     this.apiservice.getAddressObservable().subscribe((city: any) => {
       if (city) {
         this.mainaddress = city;
@@ -371,6 +408,8 @@ export class HeaderComponent {
     if (this.placeholderInterval) {
       clearInterval(this.placeholderInterval);
     }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
   onShopClick1(event: Event) {
     if (this.isShopDisabled) {

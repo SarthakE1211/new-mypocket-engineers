@@ -3,9 +3,48 @@
     <h1 class="mobile-subpage-title">Orders</h1>
   </header>
   <div class="mobile-subpage-body">
-    <div class="empty-state">
-      <img src="assets/img/hand-drawn-no-data-concept.png" alt="No Data Found" class="empty-state-illustration" />
-      <p class="empty-state-text">No orders found</p>
+    <div *ngIf="loading" class="orders-loading">
+      <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
     </div>
+
+    <ng-container *ngIf="!loading">
+      <ul *ngIf="orders?.length; else empty" class="orders-list">
+        <li *ngFor="let order of orders; trackBy: trackByOrderId" class="orders-card-item">
+          <a class="orders-card" href="javascript:void(0)" (click)="openOrder(order); $event.preventDefault()">
+            <div class="orders-card-row">
+              <div class="orders-card-icon">
+                <img *ngIf="order?.SERVICE_IMAGE" [src]="imageUrl + 'Item/' + order.SERVICE_IMAGE"
+                  [alt]="order?.SERVICE_NAME || 'Order'" />
+                <img *ngIf="!order?.SERVICE_IMAGE" src="assets/img/nopimage.jpg" alt="Order" />
+              </div>
+              <div class="orders-card-body">
+                <div class="orders-card-title-row">
+                  <span class="orders-card-order-no">Order ID&nbsp;:&nbsp;{{ order?.ORDER_NUMBER }}</span>
+                  <i class="bi bi-chevron-right orders-card-chev"></i>
+                </div>
+                <p class="orders-card-service" *ngIf="order?.SERVICE_NAME">{{ order.SERVICE_NAME }}</p>
+                <div class="orders-card-meta">
+                  <span class="orders-card-date" *ngIf="order?.CREATED_MODIFIED_DATE">
+                    <i class="bi bi-clock"></i>
+                    <span>{{ order.CREATED_MODIFIED_DATE | date: 'dd MMM yyyy, h:mm a' }}</span>
+                  </span>
+                  <span class="orders-card-status"
+                    [class.is-urgent]="order?.ORDER_STATUS_NAME === 'OP' && order?.REFUND_STATUS === 'P'">
+                    {{ statusLabel(order) }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </a>
+        </li>
+      </ul>
+
+      <ng-template #empty>
+        <div class="empty-state">
+          <img src="assets/img/hand-drawn-no-data-concept.png" alt="No Data Found" class="empty-state-illustration" />
+          <p class="empty-state-text">No orders found</p>
+        </div>
+      </ng-template>
+    </ng-container>
   </div>
 </section>

@@ -147,6 +147,18 @@ export class ServiceOrderPageComponent {
   ngOnDestroy(): void {
     window.removeEventListener('resize', this.setMaxCharLengthBasedOnScreen);
   }
+
+  // Back button handler. Prefer browser history (natural "back" UX — the
+  // user returns to /my-orders, the profile menu overlay, or wherever they
+  // came from). Falls back to /my-orders if there's no history (e.g. if
+  // the user deep-linked directly to /order-details/:id).
+  goBack(): void {
+    if (window.history.length > 1) {
+      window.history.back();
+      return;
+    }
+    this.router.navigate(['/my-orders']);
+  }
   selectedIndex: number | null = 0;
   setSelectedCard(index: number) {
     this.selectedIndex = index;

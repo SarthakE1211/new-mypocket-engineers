@@ -17,7 +17,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CookieService } from 'ngx-cookie-service';
 import * as _moment from 'moment';
 const moment = (_moment as any).default || _moment;
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { ModalService } from 'src/app/Service/modal.service';
 import { FormsModule } from '@angular/forms';
 import { CartService } from 'src/app/Service/cart.service';
@@ -30,6 +30,9 @@ import { NgForm } from '@angular/forms';
 import { LoaderService } from 'src/app/Service/loader.service';
 import { AddressUpdateServiceService } from 'src/app/Service/address-update.service.service';
 import { AddressForm } from 'src/app/models/address.model';
+import { Store } from '@ngrx/store';
+import { filter, take } from 'rxjs/operators';
+import { selectUserId } from 'src/app/store/user/user.selectors';
 declare var google: any;
 interface User {
   ID: number;
@@ -57,7 +60,7 @@ export class HomeComponent {
   longitude: any;
   latitude: any;
   currentMarker: any;
-  userID: any = this.apiservice.getUserId();
+  userID: any;
   userName: any = this.apiservice.getUserName();
   addressID: any = this.apiservice.getUserAddressLocal();
   sessionAddress: any = this.apiservice.getSessionAddress();
@@ -505,10 +508,18 @@ export class HomeComponent {
     private modalService: NgbModal,
     public sanitizer: DomSanitizer,
     private loaderService: LoaderService, private renderer: Renderer2,
-    private addressUpdateService: AddressUpdateServiceService
+    private addressUpdateService: AddressUpdateServiceService,
+    private store: Store
   ) {
     this.updateSEO();
     this.generateDates();
+    // Pull the logged-in user id from the NgRx store. The store is hydrated
+    // once in AppComponent's ctor (which runs before this one), so the value
+    // is synchronously available here. apiservice.getUserId() stays as a
+    // fallback so behaviour does not regress if the store is ever empty.
+    this.store.select(selectUserId).pipe(take(1)).subscribe((id) => {
+      this.userID = id ?? this.apiservice.getUserId();
+    });
   }
   updateSEO() {
     this.titleService.setTitle('Pockit - Your Digital Service Marketplace');
@@ -541,6 +552,11 @@ export class HomeComponent {
   loadingPage: boolean = false;
   CUSTOMER_ID: number = 0;
   HAS_FEEDBACK: number = 0;
+  // Tracks whether HomeComponent has mounted at least once in this browser
+  // session. Resets on full page reload / login, so the splash + initial
+  // spinners show only on the first visit. Subsequent tab returns from
+  // /my-orders or /my-cart refresh data silently without flashing loaders.
+  private static firstLoadDone: boolean = false;
   ngOnInit() {
     this.isMobile = window.innerWidth < 768;
     window.addEventListener('resize', () => {
@@ -605,6 +621,26 @@ export class HomeComponent {
     this.addressUpdateService.addressChanged$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.onAddressChanged();
     });
+
+    // Clear the home search box whenever the user lands back on home. The
+    // TabRouteReuseStrategy keeps HomeComponent alive across navigations
+    // (including when homeSelectOption jumps to /services), so the previously
+    // typed keyword and result dropdown would persist on return. Reset them
+    // on every NavigationEnd that resolves to the home URL.
+    this.router.events
+      .pipe(
+        filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((e) => {
+        const path = (e.urlAfterRedirects || '').split('?')[0].split('#')[0];
+        if (path === '/' || path === '/service') {
+          this.homeSearchKeyword = '';
+          this.homeFilteredOptions = this.homeOptionsList;
+          this.homeShowOptionsList = false;
+          this.homeSearchFocused = false;
+        }
+      });
   }
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -693,7 +729,9 @@ export class HomeComponent {
   }
   DefaultAddressArray: any = [];
   getAddresses1() {
-    this.loadingPage = true;
+    if (!HomeComponent.firstLoadDone) {
+      this.loadingPage = true;
+    }
     this.apiservice.getAddresses1data(0, 0, 'IS_DEFAULT', 'desc', ' AND CUSTOMER_ID = ' + this.userID).subscribe(
       (data) => {
         if (data['code'] == 200) {
@@ -765,7 +803,9 @@ export class HomeComponent {
     return ordered;
   }
   geServiceCategoriesViewOnly() {
-    this.loadCategories1 = true;
+    if (!HomeComponent.firstLoadDone) {
+      this.loadCategories1 = true;
+    }
     this.apiservice.getCategoriesServicesViewOnly(0, 0, 'SEQ_NO', 'asc', ' AND STATUS = 1').subscribe(
       (data) => {
         if (data.data && data.data.length > 0) {
@@ -778,8 +818,9 @@ export class HomeComponent {
         }
         this.loadCategories1 = false;
         this.loaderService.hideLoader();
+        HomeComponent.firstLoadDone = true;
       },
-      () => { this.loadCategories1 = false; this.loaderService.hideLoader(); }
+      () => { this.loadCategories1 = false; this.loaderService.hideLoader(); HomeComponent.firstLoadDone = true; }
     );
   }
   viewOnlySubCategories: any[] = [];
@@ -792,6 +833,77 @@ export class HomeComponent {
   viewOnlyServicesList: any[] = [];
   viewOnlySelectedDevice: any = null;
   cartspinner: boolean = false;
+
+  // Mobile-only bottom-sheet state for the home-flow service lists. On
+  // phones (<768px) tapping a service card opens ServiceDetailSheetComponent
+  // instead of the legacy `.service-card1` layout with Description/Next buttons.
+  // Two callers today:
+  //   - viewOnlyServiceDrawerFinal (no territory resolved) → context 'viewOnly'
+  //   - unifiedServiceDrawer at serviceList step (booking flow) → context 'booking'
+  // The context decides what Confirm on the sheet does — show "not available"
+  // for view-only or push to 'serviceDetail' step for booking.
+  serviceSheetVisible: boolean = false;
+  serviceSheetData: any = null;
+  serviceSheetContext: 'viewOnly' | 'booking' = 'viewOnly';
+  openServiceSheet(service: any, context: 'viewOnly' | 'booking' = 'viewOnly'): void {
+    if (!service) return;
+    this.serviceSheetData = service;
+    this.serviceSheetContext = context;
+    this.serviceSheetVisible = true;
+  }
+  closeServiceSheet(): void {
+    this.serviceSheetVisible = false;
+  }
+  onServiceSheetConfirm(payload: { service: any; quantity: number }): void {
+    this.serviceSheetVisible = false;
+    const next = () => {
+      if (this.serviceSheetContext === 'booking') {
+        // Continue the unified-drawer booking flow — same as the desktop
+        // card's click / Next button.
+        this.onDrawerServiceClick(payload.service);
+      } else {
+        // View-only flow (no territory) — legacy semantic: show the
+        // "Service Not Available in Your Area" suggestion modal.
+        this.openSuggestionModal();
+      }
+    };
+    // Small delay so the sheet's slide-down animation finishes before the
+    // next overlay opens (avoids two overlays stacking and the body
+    // overflow: hidden / scroll-lock fighting each other).
+    setTimeout(next, 250);
+  }
+  onServiceSheetReviews(service: any): void {
+    if (!service) return;
+    this.openReviews(service, new Event('click'));
+    // Belt-and-suspenders for the sheet/modal stacking — even when CSS
+    // overrides are in place, builds sometimes serve a stale stylesheet. Force
+    // the modal and its backdrop above the sheet (z-index 1060) via inline
+    // style so the reviews list always renders in front. Reset on hide.
+    setTimeout(() => {
+      const modalEl = document.getElementById('reviewsModal');
+      if (!modalEl) return;
+      modalEl.style.zIndex = '9999';
+      const backdrop = document.querySelector('.modal-backdrop:last-of-type') as HTMLElement | null;
+      if (backdrop) backdrop.style.zIndex = '9998';
+      const cleanup = () => {
+        modalEl.style.zIndex = '';
+        if (backdrop) backdrop.style.zIndex = '';
+        modalEl.removeEventListener('hidden.bs.modal', cleanup);
+      };
+      modalEl.addEventListener('hidden.bs.modal', cleanup);
+    }, 200);
+  }
+  // Used by the mobile service-row template to show plain-text descriptions
+  // without re-rendering backend HTML markup in a compact card. Strips any
+  // <style>/<script> blocks first — textContent would otherwise include the
+  // raw CSS source, which showed up in some cards as "body { margin: 0 } …".
+  stripHtml(value: string): string {
+    if (!value) return '';
+    const tmp = document.createElement('div');
+    tmp.innerHTML = value;
+    tmp.querySelectorAll('style, script, noscript, template, link, meta').forEach((el) => el.remove());
+    return (tmp.textContent || tmp.innerText || '').replace(/\s+/g, ' ').trim();
+  }
   initializemap() {
     setTimeout(() => this.initializeMapWithLocation(), 100);
   }

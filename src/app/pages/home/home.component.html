@@ -407,30 +407,44 @@
     <div class="progress-bar bg-f36631" role="progressbar" [style.width.%]="homepageprogress"
       [attr.aria-valuenow]="homepageprogress" aria-valuemin="0" aria-valuemax="100"></div>
   </div>
-  <div *ngIf="!loadepage && drawerStep === 'category'" class="offcanvas-body">
-    <p class="fs-14-mb-2">
-      <strong>{{ "home.service_drawer.selected_category" | translate }}:</strong>
-      {{ drawerRootCategory?.title || drawerRootCategory?.NAME }}
-    </p>
-    <p class="text-muted fs-13-mb-8">{{ "home.service_drawer.select_service_type" | translate }}</p>
-    <div *ngIf="drawerLoadingSubCat" class="text-center my-3">
+  <div *ngIf="!loadepage && drawerStep === 'category'" class="offcanvas-body subcat-body">
+    <div class="subcat-intro">
+      <span class="subcat-eyebrow">{{ "home.service_drawer.selected_category" | translate }}</span>
+      <h2 class="subcat-title">{{ drawerRootCategory?.title || drawerRootCategory?.NAME }}</h2>
+      <p class="subcat-sub">{{ "home.service_drawer.select_service_type" | translate }}</p>
+    </div>
+
+    <div *ngIf="drawerLoadingSubCat" class="text-center my-4">
       <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
     </div>
-    <ul *ngIf="!drawerLoadingSubCat" class="list-group list-container">
-      <li *ngFor="let device of drawerSubCategories"
-        class="list-group-item list-group-item-action d-flex align-items-center shadow-sm"
-        (click)="onDrawerSubCategoryClick(device)">
-        <div class="circle-box">
+
+    <ul *ngIf="!drawerLoadingSubCat" class="subcat-grid">
+      <li *ngFor="let device of drawerSubCategories; let i = index"
+        class="subcat-card"
+        [class.is-accent-0]="i % 3 === 0"
+        [class.is-accent-1]="i % 3 === 1"
+        [class.is-accent-2]="i % 3 === 2"
+        (click)="onDrawerSubCategoryClick(device)"
+        role="button" tabindex="0"
+        (keyup.enter)="onDrawerSubCategoryClick(device)"
+      >
+        <span class="subcat-card-icon">
           <img [src]="device.ICON ? IMAGEuRL + 'SubCategory/' + device.ICON : 'assets/img/services/no-image.png'"
-            alt="Device Image" class="img-40-contain" />
-        </div>
-        <span class="ms-3 flex-grow-1">{{ device.title }}</span>
-        <i class="bi bi-chevron-right"></i>
+            [alt]="device.title || 'Service type'" />
+        </span>
+        <span class="subcat-card-body">
+          <span class="subcat-card-title">{{ device.title }}</span>
+          <span class="subcat-card-hint">Tap to continue</span>
+        </span>
+        <span class="subcat-card-chev" aria-hidden="true">
+          <i class="bi bi-chevron-right"></i>
+        </span>
       </li>
     </ul>
+
     <div *ngIf="!drawerLoadingSubCat && drawerSubCategories.length === 0 && !drawerLoadingServices"
-      class="text-center text-muted mt-3">
-      No sub-categories available.
+      class="subcat-empty">
+      <p>No sub-categories available.</p>
     </div>
   </div>
   <div *ngIf="!loadepage && drawerStep === 'category'" class="offcanvas-footer">
@@ -476,7 +490,55 @@
       <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
     </div>
     <div *ngIf="!drawerLoadingServices && !cartspinner">
-      <div *ngFor="let service of drawerServiceList" class="mb-3">
+      <!-- Mobile (<768px) card — clean single-column list matching the mobile
+           mockups. Tapping opens the ServiceDetailSheetComponent bottom sheet;
+           its Confirm button then calls onDrawerServiceClick() to continue the
+           same booking flow the desktop card triggers directly. -->
+      <div *ngFor="let service of drawerServiceList" class="mb-3 d-md-none">
+        <ng-container *ngIf="service.IS_PARENT == 0; else drawerParentBlockMobile">
+          <div class="mobile-service-row" (click)="openServiceSheet(service, 'booking')">
+            <div class="mobile-service-row-icon">
+              <img
+                [src]="service.SERVICE_IMAGE ? IMAGEuRL + 'Item/' + service.SERVICE_IMAGE : 'assets/img/services/no-image.png'"
+                alt="Service Icon" />
+            </div>
+            <div class="mobile-service-row-body">
+              <div class="mobile-service-row-top">
+                <h6 class="mobile-service-row-title" [attr.title]="service?.NAME">{{ service?.NAME }}</h6>
+                <i class="bi bi-chevron-right mobile-service-row-chevron"></i>
+              </div>
+              <p class="mobile-service-row-sub" *ngIf="service?.SUB_NAME || service?.SUBNAME || service?.SUB_SERVICE_NAME || service?.SUB_CATEGORY_NAME">{{ service?.SUB_NAME || service?.SUBNAME || service?.SUB_SERVICE_NAME || service?.SUB_CATEGORY_NAME }}</p>
+              <p class="mobile-service-row-desc" *ngIf="service?.DESCRIPTION">{{ stripHtml(service.DESCRIPTION) }}</p>
+              <div class="mobile-service-row-meta">
+                <span class="mobile-service-row-price" *ngIf="customertype !== 'B'">&#8377;{{ service?.B2C_PRICE ? (service.B2C_PRICE | number) : '0' }}</span>
+                <span class="mobile-service-row-duration">
+                  <i class="bi bi-clock"></i>
+                  <span>{{ (service?.DURARTION_HOUR || 0) * 60 + (service?.DURARTION_MIN || 0) }} min</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #drawerParentBlockMobile>
+          <div class="mobile-service-row" (click)="onDrawerSubCategoryClick(service)">
+            <div class="mobile-service-row-icon">
+              <img
+                [src]="service.SERVICE_IMAGE ? IMAGEuRL + 'Item/' + service.SERVICE_IMAGE : 'assets/img/services/no-image.png'"
+                alt="Service Icon" />
+            </div>
+            <div class="mobile-service-row-body">
+              <div class="mobile-service-row-top">
+                <h6 class="mobile-service-row-title">{{ service?.NAME }}</h6>
+                <i class="bi bi-chevron-right mobile-service-row-chevron"></i>
+              </div>
+              <p class="mobile-service-row-sub" *ngIf="service?.SUB_NAME || service?.SUBNAME || service?.SUB_SERVICE_NAME || service?.SUB_CATEGORY_NAME">{{ service?.SUB_NAME || service?.SUBNAME || service?.SUB_SERVICE_NAME || service?.SUB_CATEGORY_NAME }}</p>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Desktop (≥768px) — original card layout with Description/Next buttons, unchanged -->
+      <div *ngFor="let service of drawerServiceList" class="mb-3 d-none d-md-block">
         <ng-container *ngIf="service.IS_PARENT == 0; else drawerParentBlock">
           <div class="service-card1 p-3 shadow-sm border rounded pt-0-relative" (click)="onDrawerServiceClick(service)">
             <div class="service-details d-flex align-items-center">
@@ -560,205 +622,239 @@
       {{ "home.service_drawer.back" | translate }}
     </button>
   </div>
-  <div *ngIf="!loadepage && drawerStep === 'serviceDetail'" class="demodash offcanvas-body d-flex flex-column">
-<p class="device-type fs-13-mb-2 d-flex align-items-center flex-wrap gap-1">
-  <span class="text-nowrap">{{ "servicejson.selected_service" | translate }} :</span>
+  <div *ngIf="!loadepage && drawerStep === 'serviceDetail'" class="offcanvas-body svc-drawer">
+    <div class="svc-drawer-hero">
+      <span class="svc-drawer-hero-label">{{ "servicejson.selected_service" | translate }}</span>
+      <h3 class="svc-drawer-hero-title" [attr.title]="selectedService.NAME || 'N/A'">
+        {{ selectedService.NAME || "N/A" }}
+      </h3>
+      <p class="svc-drawer-hero-sub" *ngIf="selectedService.SUB_NAME">{{ selectedService.SUB_NAME }}</p>
+      <p class="svc-drawer-hero-hint">{{ "servicejson.enter_details" | translate }}</p>
+    </div>
 
-  <span 
-    class="text-danger fw-bold text-truncate" 
-    style="max-width: 180px;" 
-    [attr.title]="selectedService.NAME || 'N/A'">
-    {{ selectedService.NAME || "N/A" }}
-  </span>
+    <button *ngIf="defaultAddress" type="button" (click)="openAddressModal()" class="svc-drawer-address">
+      <span class="svc-drawer-address-icon"><i class="bi bi-geo-alt-fill"></i></span>
+      <span class="svc-drawer-address-body">
+        <span class="svc-drawer-address-title">{{ defaultAddress.ADDRESS_LINE_1 }}, {{ defaultAddress.DISTRICT_NAME }}</span>
+        <span class="svc-drawer-address-sub">{{ defaultAddress.ADDRESS_LINE_2 }}, {{ defaultAddress.PINCODE }}</span>
+      </span>
+      <i class="bi bi-chevron-right svc-drawer-address-chev"></i>
+    </button>
 
-  <span *ngIf="selectedService.SUB_NAME" class="text-muted fs-12 text-nowrap flex-shrink-0">
-    -({{ selectedService.SUB_NAME }})
-  </span>
-</p>
-    <p class="text-muted fs-12">{{ "servicejson.enter_details" | translate }}</p>
-    <div *ngIf="defaultAddress" (click)="openAddressModal()" class="border rounded p-3 mb-2 card-shadow-pointer">
-      <div class="d-flex justify-content-between align-items-center">
-        <span class="fw-bold fs-14">🏠 {{ defaultAddress.ADDRESS_LINE_1 }}, {{ defaultAddress.DISTRICT_NAME }}</span>
-        <i class="bi bi-chevron-right"></i>
+    <div class="svc-drawer-card svc-drawer-price-card">
+      <div class="svc-drawer-price-top">
+        <div class="svc-drawer-price-info">
+          <h4 class="svc-drawer-price-name" [attr.title]="selectedService.NAME || 'N/A'">
+            {{ selectedService.NAME?.length > 40 ? (selectedService.NAME | slice:0:40) + '...' : selectedService.NAME || "N/A" }}
+          </h4>
+          <div class="svc-drawer-price-meta">
+            <span class="svc-drawer-chip">
+              <i class="bi bi-clock"></i>
+              <span>{{ (selectedService?.DURARTION_HOUR || 0) * 60 + (selectedService?.DURARTION_MIN || 0) }} min</span>
+            </span>
+            <span *ngIf="customertype === 'B'" class="svc-drawer-chip svc-drawer-chip--muted">
+              {{ "servicejson.sla" | translate }}
+            </span>
+          </div>
+        </div>
+        <div *ngIf="customertype !== 'B'" class="svc-drawer-price-amount">
+          <span class="svc-drawer-price-label">{{ "servicejson.base_price" | translate }}</span>
+          <span class="svc-drawer-price-value">
+            <span class="svc-drawer-price-cur">&#8377;</span>{{ selectedService?.B2C_PRICE ? (selectedService.B2C_PRICE | number) : "0" }}
+          </span>
+        </div>
       </div>
-      <p class="text-muted mb-0 fs-12">{{ defaultAddress.ADDRESS_LINE_2 }}, {{ defaultAddress.PINCODE }}</p>
-    </div>
-    <div class="border rounded p-3 bg-light shadow-sm border-bg-white mb-2">
-      <p class="fw-bold mb-1 ellipsis-text" [attr.title]="selectedService.NAME || 'N/A'">
-        {{ selectedService.NAME?.length > 40 ? (selectedService.NAME | slice:0:40) + '...' : selectedService.NAME ||
-        "N/A" }}
-      </p>
-      <p *ngIf="selectedService.SUB_NAME" class="d-flex justify-content-between text-muted"
-        [attr.title]="selectedService.SUB_NAME">
-        {{ selectedService.SUB_NAME.length > 40 ? (selectedService.SUB_NAME | slice:0:40) + '...' :
-        selectedService.SUB_NAME }}
-      </p>
-      <div *ngIf="customertype !== 'B'" class="d-flex justify-content-between text-muted">
-        <span class="fs-12">{{ "servicejson.base_price" | translate }}</span>
-        <span class="fw-bold fs-13">₹ {{ selectedService?.B2C_PRICE ? (selectedService.B2C_PRICE | number) : "0"
-          }}</span>
-      </div>
-      <div class="d-flex justify-content-between text-muted">
-        <span class="fs-12">{{ customertype === "B" ? ("servicejson.sla" | translate) : ("servicejson.estimate_time" |
-          translate) }}</span>
-        <span class="fw-bold fs-13">{{ (selectedService?.DURARTION_HOUR || 0) * 60 + (selectedService?.DURARTION_MIN ||
-          0) }} min</span>
-      </div>
-      <div class="d-flex justify-content-between align-items-center mt-2">
-        <span class="fs-12">{{ "servicejson.quantity" | translate }}</span>
-        <div class="input-group qty-box">
-          <button class="btn btn-outline-secondary btn-sm fs-12" (click)="decreaseQty()">-</button>
-          <input type="text" class="form-control text-center fs-12" [(ngModel)]="quantity" readonly />
-          <button class="btn btn-outline-secondary btn-sm fs-12" (click)="increaseQty()">+</button>
+      <div class="svc-drawer-qty-row">
+        <span class="svc-drawer-qty-label">{{ "servicejson.quantity" | translate }}</span>
+        <div class="svc-drawer-qty-stepper">
+          <button type="button" class="svc-drawer-qty-btn" (click)="decreaseQty()" aria-label="Decrease quantity">&minus;</button>
+          <input type="text" class="svc-drawer-qty-input" [(ngModel)]="quantity" readonly />
+          <button type="button" class="svc-drawer-qty-btn" (click)="increaseQty()" aria-label="Increase quantity">+</button>
         </div>
       </div>
     </div>
-    <div class="border rounded p-3 bg-light shadow-sm border-bg-white">
-      <p class="fw-bold mb-1">{{ "servicejson.about_service" | translate }}</p>
-      <div class="d-flex justify-content-between text-muted">
-        <span class=" fs-13">{{ (selectedService?.ABOUT_SERVICE || "N/A") }} </span>
-      </div>
+
+    <div *ngIf="selectedService?.ABOUT_SERVICE && selectedService.ABOUT_SERVICE !== 'N/A'" class="svc-drawer-card">
+      <h5 class="svc-drawer-section-title">{{ "servicejson.about_service" | translate }}</h5>
+      <p class="svc-drawer-section-body">{{ selectedService.ABOUT_SERVICE }}</p>
     </div>
-    <div class="mt-3 border rounded p-3 shadow-sm pb-120">
-      <div class="d-flex justify-content-between align-items-center">
-        <label class="form-label text-muted mb-0 fs-12">{{ "servicejson.brand_name" | translate }}</label>
-        <span class="text-muted fs-12">(Optional)</span>
+
+    <div class="svc-drawer-card svc-drawer-details">
+      <div class="svc-drawer-details-head">
+        <h5 class="svc-drawer-section-title">Device details</h5>
+        <span class="svc-drawer-optional-badge">Optional</span>
       </div>
-      <input type="text" class="form-control custom-input fs-12" [(ngModel)]="selectedService.BRAND_NAME"
-        placeholder=" {{ 'servicejson.enter_brand_name' | translate }}" maxlength="128"
-        (focus)="isFocused = 'brandname'" (blur)="isFocused = ''" />
-      <h6 class="text-red-fs-10-mt-4" *ngIf="isFocused === 'brandname'">{{ selectedService?.BRAND_NAME?.length || 0
-        }}/128</h6>
-      <div class="d-flex justify-content-between align-items-center mt-3">
-        <label class="form-label text-muted mb-0 fs-12">{{ "servicejson.model_number" | translate }}</label>
-        <div class="d-flex align-items-center">
-          <span class="text-muted me-1 fs-12">(Optional)</span>
-          <i class="bi bi-info-circle text-primary cursor-pointer-fs-12" data-bs-toggle="modal"
-            data-bs-target="#modelNumberModal22"></i>
-        </div>
-      </div>
-      <input type="text" class="form-control custom-input fs-12" [(ngModel)]="selectedService.MODEL_NUMBER"
-        placeholder=" {{ 'servicejson.enter_model_number' | translate }}" maxlength="60" (focus)="isFocused = 'model'"
-        (blur)="isFocused = ''" />
-      <h6 class="text-red-fs-10-mt-4" *ngIf="isFocused === 'model'">{{ selectedService?.MODEL_NUMBER?.length || 0 }}/60
-      </h6>
-      <div class="d-flex justify-content-between align-items-center mt-3">
-        <label class="form-label text-muted mb-0 fs-12">{{ "servicejson.upload_photo" | translate }}</label>
-        <div class="d-flex align-items-center">
-          <span class="text-muted me-1 fs-12">(Optional)</span>
-          <i class="bi bi-info-circle text-primary cursor-pointer-fs-12" data-bs-toggle="modal"
-            data-bs-target="#uploadPhotoModal"></i>
-        </div>
-      </div>
-      <div class="upload-container d-flex align-items-center px-3">
-        <span *ngIf="!selectedService.SERVICE_PHOTO_FILE" class="placeholder-text">{{ "servicejson.browse_photo" |
-          translate }}</span>
-        <span *ngIf="selectedService.SERVICE_PHOTO_FILE" class="text-truncate file-name"
-          [title]="selectedService.SERVICE_PHOTO_FILE">
-          {{ selectedService.SERVICE_PHOTO_FILE.length > 36 ? (selectedService.SERVICE_PHOTO_FILE | slice:0:36) + '...'
-          : selectedService.SERVICE_PHOTO_FILE }}
+
+      <div class="svc-drawer-field">
+        <label class="svc-drawer-field-label">{{ "servicejson.brand_name" | translate }}</label>
+        <input type="text" class="svc-drawer-field-input" [(ngModel)]="selectedService.BRAND_NAME"
+          placeholder="{{ 'servicejson.enter_brand_name' | translate }}" maxlength="128"
+          (focus)="isFocused = 'brandname'" (blur)="isFocused = ''" />
+        <span class="svc-drawer-field-count" *ngIf="isFocused === 'brandname'">
+          {{ selectedService?.BRAND_NAME?.length || 0 }}/128
         </span>
-        <input #icon type="file" accept=".png, .jpg, .jpeg" (change)="fileChangeEvent($event)" class="file-input" />
-        <i *ngIf="!selectedService.SERVICE_PHOTO_FILE" class="bi bi-upload upload-icon" (click)="icon.click()"></i>
-        <div *ngIf="selectedService.SERVICE_PHOTO_FILE" class="d-flex align-items-center ms-2">
-          <a href="javascript:void(0)" class="text-primary me-2" (click)="openModal()"><i class="bi bi-eye"></i></a>
-          <a href="javascript:void(0)" class="text-danger" (click)="removeImage()"><i class="bi bi-trash"></i></a>
-        </div>
       </div>
-      <div *ngIf="isUploading" class="progress mt-2">
-        <div class="progress-bar" role="progressbar" [style.width.%]="progressPercent"></div>
-      </div>
-      <div *ngIf="showModal" class="custom-modal">
-        <div class="modal-content">
-          <span class="custom-close-btn cursor-pointer" (click)="closeModal()">&times;</span>
-          <img [src]="imagePreview" class="modal-img position-relative" alt="Uploaded Image" />
-        </div>
-      </div>
-      <div class="d-flex justify-content-between align-items-center mt-3">
-        <label class="form-label text-muted mb-0 fs-12">{{ "servicejson.add_description" | translate }}</label>
-        <span class="text-muted fs-12">(Optional)</span>
-      </div>
-      <textarea name="desc" class="form-control custom-input fs-12" rows="3" [(ngModel)]="selectedService.DESCRIPTION"
-        placeholder="{{ 'servicejson.enter_description' | translate }}" maxlength="256"
-        (focus)="isFocused = 'DESCRIPTION'" (blur)="isFocused = ''"></textarea>
-      <h6 *ngIf="isFocused === 'DESCRIPTION'" class="text-red-fs-10-mt-4">{{ selectedService.DESCRIPTION?.length || 0
-        }}/256</h6>
-    </div>
-    <div class="offcanvas-footer border-top p-3 d-flex align-items-center justify-content-between footer-absolute">
-      <button class="btn btn-outline-secondary flex-grow-0 me-2 fs-13" (click)="drawerGoBack()">
-        {{ "servicejson.back" | translate }}
-      </button>
-      <button (click)="onDrawerProceedToSlot()" class="btn btn-dark flex-grow-1 text-white fs-14"
-        [disabled]="!selectedService?.CATEGORY_NAME">
-        {{ "servicejson.next" | translate }}
-        <span class="fs-12">({{ "servicejson.select_address_slot" | translate }})</span>
-      </button>
-    </div>
-  </div>
-  <div *ngIf="!loadepage && drawerStep === 'dateSlot'" class="offcanvas-body">
-    <div *ngIf="selectedService?.IS_EXPRESS === 1" class="border rounded p-3 bg-light card-shadow-fs-13">
-      <div class="d-flex align-items-center">
-        <input type="radio" id="expressService" name="serviceOption" checked class="me-2" />
-        <label for="expressService" class="fw-bold fs-14"><i>{{ "home.express_service" | translate }}</i></label>
-      </div>
-      <p class="text-muted fs-12">{{ "home.express_service_desc" | translate }}
-        <b>{{ selectedService?.EXPRESS_COST ? selectedService.EXPRESS_COST + " INR" : "N/A" }}</b>.
-      </p>
-      <div class="d-flex justify-content-center mt-2">
-        <button class="btn w-50-fs-13"
-          [ngClass]="{'btn-outline-primary': IS_EXPRESS === 0, 'btn-outline-danger': IS_EXPRESS === 1}"
-          (click)="toggleExpressService()">
-          {{ IS_EXPRESS === 1 ? ("home.remove_express_service" | translate) : ("home.use_express_service" | translate)
-          }}
-        </button>
-      </div>
-    </div>
-    <p class="text-center mt-3 fs-13">{{ "home.select_date_time" | translate }}</p>
-    <div class="border date-time-container card-shadow-fs-13">
-      <div class="date-picker-container">
-        <label class="form-label fs-13">{{ "home.select_date" | translate }}</label>
-        <p class="selected-date fs-12">{{ selectedDate }}</p>
-        <div class="date-scroll">
-          <button *ngFor="let date of dates" class="date-button fs-12"
-            [ngClass]="{'selected': selectedDate.trim() === date.fullDate.trim()}"
-            [disabled]="holidaysdates.includes(date.fullDate)" (click)="selectDate(date.fullDate)">
-            <span class="day">{{ date.display.split(" ")[0] }}</span>
-            <span class="date">{{ date.display.split(" ")[1] }}</span>
+
+      <div class="svc-drawer-field">
+        <div class="svc-drawer-field-label-row">
+          <label class="svc-drawer-field-label">{{ "servicejson.model_number" | translate }}</label>
+          <button type="button" class="svc-drawer-field-hint" data-bs-toggle="modal" data-bs-target="#modelNumberModal22"
+            aria-label="How to find model number">
+            <i class="bi bi-info-circle"></i>
           </button>
         </div>
+        <input type="text" class="svc-drawer-field-input" [(ngModel)]="selectedService.MODEL_NUMBER"
+          placeholder="{{ 'servicejson.enter_model_number' | translate }}" maxlength="60"
+          (focus)="isFocused = 'model'" (blur)="isFocused = ''" />
+        <span class="svc-drawer-field-count" *ngIf="isFocused === 'model'">
+          {{ selectedService?.MODEL_NUMBER?.length || 0 }}/60
+        </span>
       </div>
-      <div class="time-slot-container">
-        <label class="form-label fw-bold fs-13">{{ "home.select_time_slot" | translate }}</label>
-        <div class="time-slot-wrapper">
-          <div *ngFor="let period of timeSlots" class="time-slot">
-            <p class="slot-title text-left-fs-13">{{ period.period }}</p>
-            <button class="slot-button"
-              [ngClass]="{'selected-slot': selectedSlot === formatTime(period.times.start) + ' - ' + formatTime(period.times.end)}"
-              (click)="selectSlot(period.times)" [disabled]="period.times.disabled">
-              <span class="time-range">{{ formatTime(period.times.start) }}<br />-<br />{{ formatTime(period.times.end)
-                }}</span>
+
+      <div class="svc-drawer-field">
+        <div class="svc-drawer-field-label-row">
+          <label class="svc-drawer-field-label">{{ "servicejson.upload_photo" | translate }}</label>
+          <button type="button" class="svc-drawer-field-hint" data-bs-toggle="modal" data-bs-target="#uploadPhotoModal"
+            aria-label="How to upload a photo">
+            <i class="bi bi-info-circle"></i>
+          </button>
+        </div>
+        <label class="svc-drawer-upload" [class.has-file]="selectedService.SERVICE_PHOTO_FILE">
+          <input #icon type="file" accept=".png, .jpg, .jpeg" (change)="fileChangeEvent($event)" class="svc-drawer-upload-input" />
+          <i class="bi bi-cloud-arrow-up-fill svc-drawer-upload-icon"></i>
+          <span *ngIf="!selectedService.SERVICE_PHOTO_FILE" class="svc-drawer-upload-text">
+            <span class="svc-drawer-upload-primary">{{ "servicejson.browse_photo" | translate }}</span>
+            <span class="svc-drawer-upload-secondary">PNG or JPG, up to 5MB</span>
+          </span>
+          <span *ngIf="selectedService.SERVICE_PHOTO_FILE" class="svc-drawer-upload-filename"
+            [title]="selectedService.SERVICE_PHOTO_FILE">
+            {{ selectedService.SERVICE_PHOTO_FILE.length > 30 ? (selectedService.SERVICE_PHOTO_FILE | slice:0:30) + '...' : selectedService.SERVICE_PHOTO_FILE }}
+          </span>
+          <span *ngIf="selectedService.SERVICE_PHOTO_FILE" class="svc-drawer-upload-actions">
+            <button type="button" class="svc-drawer-upload-action" (click)="openModal(); $event.preventDefault()"
+              aria-label="Preview photo">
+              <i class="bi bi-eye"></i>
             </button>
+            <button type="button" class="svc-drawer-upload-action is-danger" (click)="removeImage(); $event.preventDefault()"
+              aria-label="Remove photo">
+              <i class="bi bi-trash"></i>
+            </button>
+          </span>
+        </label>
+        <div *ngIf="isUploading" class="svc-drawer-progress">
+          <div class="svc-drawer-progress-bar" [style.width.%]="progressPercent"></div>
+        </div>
+        <div *ngIf="showModal" class="custom-modal">
+          <div class="modal-content">
+            <span class="custom-close-btn cursor-pointer" (click)="closeModal()">&times;</span>
+            <img [src]="imagePreview" class="modal-img position-relative" alt="Uploaded Image" />
           </div>
         </div>
       </div>
-      <p *ngIf="isAllSlotsDisabled()" class="no-slots-message text-red-fs-14-mt-11">{{ "home.no_slots_available" |
-        translate }}</p>
+
+      <div class="svc-drawer-field">
+        <label class="svc-drawer-field-label">{{ "servicejson.add_description" | translate }}</label>
+        <textarea name="desc" class="svc-drawer-field-input svc-drawer-field-textarea" rows="3"
+          [(ngModel)]="selectedService.DESCRIPTION"
+          placeholder="{{ 'servicejson.enter_description' | translate }}" maxlength="256"
+          (focus)="isFocused = 'DESCRIPTION'" (blur)="isFocused = ''"></textarea>
+        <span class="svc-drawer-field-count" *ngIf="isFocused === 'DESCRIPTION'">
+          {{ selectedService.DESCRIPTION?.length || 0 }}/256
+        </span>
+      </div>
     </div>
-    <div class="border p-3 mt-3 card-rounded-shadow-fs-13">
-      <label class="form-label fw-bold fs-13">{{ "home.remarks" | translate }}</label>
-      <input type="text" class="form-control fs-12" [(ngModel)]="remark"
-        [placeholder]="'home.remarks_placeholder' | translate" maxlength="256" (focus)="isFocused = 'REMARK'"
-        (blur)="isFocused = ''" />
-      <h6 *ngIf="isFocused === 'REMARK'" class="text-red-fs-10-mt-4">{{ remark?.length || 0 }}/256</h6>
+
+    <div class="offcanvas-footer footer-absolute svc-drawer-footer">
+      <button class="svc-drawer-btn svc-drawer-btn--ghost" (click)="drawerGoBack()">
+        {{ "servicejson.back" | translate }}
+      </button>
+      <button class="svc-drawer-btn svc-drawer-btn--primary" (click)="onDrawerProceedToSlot()"
+        [disabled]="!selectedService?.CATEGORY_NAME">
+        <span class="svc-drawer-btn-title">{{ "servicejson.next" | translate }}</span>
+        <span class="svc-drawer-btn-sub">({{ "servicejson.select_address_slot" | translate }})</span>
+      </button>
     </div>
   </div>
-  <div *ngIf="!loadepage && drawerStep === 'dateSlot'"
-    class="offcanvas-footer border-top p-3 d-flex align-items-center">
-    <button class="btn btn-outline-secondary flex-grow-0 me-2 fs-13" (click)="drawerGoBack()">
+  <div *ngIf="!loadepage && drawerStep === 'dateSlot'" class="offcanvas-body svc-drawer">
+    <div *ngIf="selectedService?.IS_EXPRESS === 1 && selectedService?.EXPRESS_COST > 0" class="svc-drawer-express">
+      <div class="svc-drawer-express-top">
+        <span class="svc-drawer-express-icon"><i class="bi bi-lightning-charge-fill"></i></span>
+        <div class="svc-drawer-express-text">
+          <strong class="svc-drawer-express-title">{{ "home.express_service" | translate }}</strong>
+          <span class="svc-drawer-express-sub">
+            {{ "home.express_service_desc" | translate }}
+            <b>+&#8377;{{ selectedService.EXPRESS_COST | number }}</b>
+          </span>
+        </div>
+      </div>
+      <button type="button" class="svc-drawer-express-btn" [class.is-active]="IS_EXPRESS === 1"
+        (click)="toggleExpressService()">
+        <i class="bi" [ngClass]="IS_EXPRESS === 1 ? 'bi-check2-circle' : 'bi-lightning-charge'"></i>
+        <span>{{ IS_EXPRESS === 1 ? ("home.remove_express_service" | translate) : ("home.use_express_service" | translate) }}</span>
+      </button>
+    </div>
+
+    <p class="svc-drawer-section-hint">{{ "home.select_date_time" | translate }}</p>
+
+    <div class="svc-drawer-card svc-drawer-picker">
+      <div class="svc-drawer-picker-head">
+        <label class="svc-drawer-picker-label">{{ "home.select_date" | translate }}</label>
+        <span class="svc-drawer-picker-value">{{ selectedDate }}</span>
+      </div>
+      <div class="svc-drawer-date-scroll">
+        <button *ngFor="let date of dates" type="button" class="svc-drawer-date-pill"
+          [class.is-selected]="selectedDate.trim() === date.fullDate.trim()"
+          [disabled]="holidaysdates.includes(date.fullDate)"
+          (click)="selectDate(date.fullDate)">
+          <span class="svc-drawer-date-day">{{ date.display.split(" ")[0] }}</span>
+          <span class="svc-drawer-date-num">{{ date.display.split(" ")[1] }}</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="svc-drawer-card svc-drawer-slots">
+      <label class="svc-drawer-picker-label">{{ "home.select_time_slot" | translate }}</label>
+      <div class="svc-drawer-slot-grid">
+        <button *ngFor="let period of timeSlots" type="button" class="svc-drawer-slot"
+          [class.is-selected]="selectedSlot === formatTime(period.times.start) + ' - ' + formatTime(period.times.end)"
+          [class.is-disabled]="period.times.disabled"
+          [disabled]="period.times.disabled"
+          (click)="selectSlot(period.times)">
+          <span class="svc-drawer-slot-period">
+            <i class="bi" [ngClass]="{
+              'bi-sunrise-fill': period.period === 'Morning',
+              'bi-sun-fill': period.period === 'Afternoon',
+              'bi-sunset-fill': period.period === 'Evening'
+            }"></i>
+            <span>{{ period.period }}</span>
+          </span>
+          <span class="svc-drawer-slot-time">
+            {{ formatTime(period.times.start) }} &ndash; {{ formatTime(period.times.end) }}
+          </span>
+          <span *ngIf="period.times.disabled" class="svc-drawer-slot-chip">Unavailable</span>
+        </button>
+      </div>
+      <p *ngIf="isAllSlotsDisabled()" class="svc-drawer-empty">
+        <i class="bi bi-calendar-x"></i>
+        {{ "home.no_slots_available" | translate }}
+      </p>
+    </div>
+
+    <div class="svc-drawer-card">
+      <label class="svc-drawer-picker-label">{{ "home.remarks" | translate }}</label>
+      <input type="text" class="svc-drawer-field-input" [(ngModel)]="remark"
+        [placeholder]="'home.remarks_placeholder' | translate" maxlength="256"
+        (focus)="isFocused = 'REMARK'" (blur)="isFocused = ''" />
+      <span class="svc-drawer-field-count" *ngIf="isFocused === 'REMARK'">
+        {{ remark?.length || 0 }}/256
+      </span>
+    </div>
+  </div>
+  <div *ngIf="!loadepage && drawerStep === 'dateSlot'" class="offcanvas-footer footer-absolute svc-drawer-footer">
+    <button class="svc-drawer-btn svc-drawer-btn--ghost" (click)="drawerGoBack()">
       {{ "home.back" | translate }}
     </button>
-    <!-- <button class="btn btn-light flex-grow-0 me-2"></button> -->
-    <button class="btn btn-dark flex-grow-1 text-white fs-15" (click)="bookNow()">
+    <button class="svc-drawer-btn svc-drawer-btn--primary" (click)="bookNow()">
       {{ "home.confirm" | translate }}
     </button>
   </div>
@@ -829,7 +925,53 @@
       <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
     </div>
     <div *ngIf="!cartspinner">
-      <div *ngFor="let service of viewOnlyServicesList" class="mb-3">
+      <!-- Mobile (<768px) card — clean list layout matching the mobile mockups.
+           Tapping opens the ServiceDetailSheetComponent bottom sheet. -->
+      <div *ngFor="let service of viewOnlyServicesList" class="mb-3 d-md-none">
+        <ng-container *ngIf="service.IS_PARENT == 0; else parentBlockMobile">
+          <div class="mobile-service-row" (click)="openServiceSheet(service)">
+            <div class="mobile-service-row-icon">
+              <img
+                [src]="service.SERVICE_IMAGE ? IMAGEuRL + 'Item/' + service.SERVICE_IMAGE : 'assets/img/services/no-image.png'"
+                alt="Service Icon" />
+            </div>
+            <div class="mobile-service-row-body">
+              <div class="mobile-service-row-top">
+                <h6 class="mobile-service-row-title" [attr.title]="service?.NAME">{{ service?.NAME }}</h6>
+                <i class="bi bi-chevron-right mobile-service-row-chevron"></i>
+              </div>
+              <p class="mobile-service-row-sub" *ngIf="service?.SUB_NAME || service?.SUBNAME || service?.SUB_SERVICE_NAME || service?.SUB_CATEGORY_NAME">{{ service?.SUB_NAME || service?.SUBNAME || service?.SUB_SERVICE_NAME || service?.SUB_CATEGORY_NAME }}</p>
+              <p class="mobile-service-row-desc" *ngIf="service?.DESCRIPTION">{{ stripHtml(service.DESCRIPTION) }}</p>
+              <div class="mobile-service-row-meta">
+                <span class="mobile-service-row-price" *ngIf="customertype !== 'B'">&#8377;{{ service?.B2C_PRICE ? (service.B2C_PRICE | number) : '0' }}</span>
+                <span class="mobile-service-row-duration">
+                  <i class="bi bi-clock"></i>
+                  <span>{{ (service?.DURARTION_HOUR || 0) * 60 + (service?.DURARTION_MIN || 0) }} min</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #parentBlockMobile>
+          <div class="mobile-service-row" (click)="openActionDrawerViewOnly(service, 'parrent1')">
+            <div class="mobile-service-row-icon">
+              <img
+                [src]="service.SERVICE_IMAGE ? IMAGEuRL + 'Item/' + service.SERVICE_IMAGE : 'assets/img/services/no-image.png'"
+                alt="Service Icon" />
+            </div>
+            <div class="mobile-service-row-body">
+              <div class="mobile-service-row-top">
+                <h6 class="mobile-service-row-title">{{ service?.NAME }}</h6>
+                <i class="bi bi-chevron-right mobile-service-row-chevron"></i>
+              </div>
+              <p class="mobile-service-row-sub" *ngIf="service?.SUB_NAME || service?.SUBNAME || service?.SUB_SERVICE_NAME || service?.SUB_CATEGORY_NAME">{{ service?.SUB_NAME || service?.SUBNAME || service?.SUB_SERVICE_NAME || service?.SUB_CATEGORY_NAME }}</p>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Desktop (≥768px) — original card layout, unchanged behavior -->
+      <div *ngFor="let service of viewOnlyServicesList" class="mb-3 d-none d-md-block">
         <ng-container *ngIf="service.IS_PARENT == 0; else parentBlock">
           <div class="service-card1 p-3 shadow-sm border rounded pt-0-relative" (click)="openSuggestionModal()">
             <div class="service-details d-flex align-items-center">
@@ -995,7 +1137,7 @@
 </div>
 <div class="modal fade" id="reviewsModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
   aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content p-1">
       <div class="modal-header border-bottom py-2">
         <h5 class="modal-title fw-bold">{{ "home.reviews.title" | translate }}</h5>
@@ -1297,3 +1439,15 @@
     </div>
   </div>
 </div>
+
+<app-service-detail-sheet
+  [visible]="serviceSheetVisible"
+  [service]="serviceSheetData"
+  [imageUrl]="IMAGEuRL"
+  [customerType]="customertype"
+  [categoryName]="viewOnlySelectedCategoryTitle"
+  [subCategoryName]="selectedDevicename"
+  (close)="closeServiceSheet()"
+  (confirm)="onServiceSheetConfirm($event)"
+  (viewReviews)="onServiceSheetReviews($event)"
+></app-service-detail-sheet>

@@ -23,6 +23,9 @@ import { ModalService } from 'src/app/Service/modal.service';
 import { ApiServiceService } from 'src/app/Service/api-service.service';
 import { CommonFunctionService } from 'src/app/Service/CommonFunctionService';
 import { LoaderService } from 'src/app/Service/loader.service';
+import { Store } from '@ngrx/store';
+import { loginSuccess } from 'src/app/store/user/user.actions';
+import { User as StoreUser } from 'src/app/store/user/user.state';
 export class registerdata {
   CUSTOMER_NAME: string = '';
   TYPE: any;
@@ -72,7 +75,8 @@ export class LoginComponent implements OnInit {
     private toastr: ToastrService,
     private router: Router,
     private fb: FormBuilder,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private store: Store
   ) {
     const customerType = localStorage.getItem('customerType');
     if (customerType === 'I') {
@@ -108,6 +112,27 @@ export class LoginComponent implements OnInit {
     });
   }
   public commonFunction = new CommonFunctionService();
+
+  // Hands the freshly-authenticated user off to the NgRx store so every other
+  // component can read it via selectors instead of decrypting sessionStorage.
+  // The existing localStorage/sessionStorage writes stay in place — that is
+  // what the `hydrateUserFromStorage` effect reads after the post-login
+  // `window.location.href = '/service'` full reload.
+  private dispatchLoginSuccess(apiUser: any, token: string, customerType: string): void {
+    const id = parseInt(apiUser?.USER_ID, 10);
+    if (!Number.isFinite(id)) return;
+    const storeUser: StoreUser = {
+      id,
+      name: apiUser?.USER_NAME || apiUser?.NAME || '',
+      mobileNumber: apiUser?.MOBILE_NUMBER || apiUser?.MOBILE_NO || '',
+      email: apiUser?.EMAIL_ID || apiUser?.EMAIL || '',
+      customerType,
+      token,
+      subscribedChannels: Array.isArray(apiUser?.SUBSCRIBED_CHANNELS) ? apiUser.SUBSCRIBED_CHANNELS : [],
+    };
+    this.store.dispatch(loginSuccess({ user: storeUser }));
+  }
+
   showCallAndChatButtons(data: any): void {
     if (data.WHO_WILL_SHOW) {
       this.isUserLoggedIn = true;
@@ -586,6 +611,7 @@ export class LoginComponent implements OnInit {
               sessionStorage.setItem('customerType', type);
               sessionStorage.setItem('userAddress', this.commonFunction.encryptdata(user.ADDRESS_LINE_2 || ''));
               localStorage.setItem('isLogged', 'true');
+              this.dispatchLoginSuccess(user, token, type);
               this.otp = ['', '', '', ''];
               const channelNames = (user.SUBSCRIBED_CHANNELS || []).map((channel: any) => channel.CHANNEL_NAME);
               const subscribeCall = (channelNames.length > 0) ? this.api.subscribeToMultipleTopics(channelNames, successCode.body.token) : of(null);
@@ -689,6 +715,7 @@ export class LoginComponent implements OnInit {
             }
             sessionStorage.setItem('userAddress', this.commonFunction.encryptdata(this.addressForm.ADDRESS_LINE_2 || ''));
             localStorage.setItem('userAddress', this.commonFunction.encryptdata(this.addressForm.ADDRESS_LINE_2 || ''));
+            this.dispatchLoginSuccess(user, token, type);
 
             const channelNames = (user.SUBSCRIBED_CHANNELS || []).map((channel: any) => channel.CHANNEL_NAME);
             const subscribeCall = (channelNames.length > 0) ? this.api.subscribeToMultipleTopics(channelNames, successCode.body.token) : of(null);

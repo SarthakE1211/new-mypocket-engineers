@@ -2,8 +2,11 @@
   <div class="card p-2 p-md-4 shadow no-border-no-shadow">
     <div class="row">
       <div class="col-md-6 mb-2 mb-md-0">
-        <h2 class="mb-3 font-20-bold">
-          {{ "order_details.title" | translate }}
+        <h2 class="mb-3 font-20-bold order-details-title-row">
+          <a href="javascript:void(0)" class="back-button" (click)="goBack()" aria-label="Back">
+            <i class="bi bi-arrow-left"></i>
+          </a>
+          <span>{{ "order_details.title" | translate }}</span>
         </h2>
         <div *ngIf="
             isShowMenu() &&
