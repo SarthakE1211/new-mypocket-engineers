@@ -236,6 +236,11 @@ export class HeaderComponent {
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
     this.openOrdersModal();
+    // Notify the OrdersOverlayService so the bottom-nav footer highlights
+    // the Order tab. This wasn't going through ordersOverlay.open() (which
+    // is the normal trigger) because the cart→orders path uses the session
+    // flag + ngOnInit rather than the open$ subject.
+    this.ordersOverlay.setOpen(true);
   }
 
   onOrdersBack(): void {
@@ -279,12 +284,18 @@ export class HeaderComponent {
       .subscribe(() => this.closeMobileMenu());
 
     // If the footer couldn't reach us because this component wasn't mounted
-    // on the previous route (e.g. /my-orders hides <app-header>), it hard-
+    // on the previous route (e.g. /my-orders hides <app-header>), it SPA-
     // navigates home and leaves a session flag for us to honour on mount.
+    // The field initializers above have already set isMobileMenuOpen +
+    // showContent='myorder' so the drawer renders open at first paint —
+    // we just need to fetch the data, mark the "from bottom-nav" state,
+    // and dismiss the loader veil the footer raised before navigating.
     if (sessionStorage.getItem('pockit.openOrdersOverlay') === '1') {
       sessionStorage.removeItem('pockit.openOrdersOverlay');
-      // Small delay so the rest of ngOnInit's storage/API setup runs first.
-      setTimeout(() => this.openOrdersOverlayFromNav(), 250);
+      this.openOrdersOverlayFromNav();
+      // Hide after the next microtask so the drawer's first frame paints
+      // before we reveal the page underneath.
+      Promise.resolve().then(() => this.loaderService.hideLoader());
     }
 
     this.apiservice.getAddressObservable().subscribe((city: any) => {
@@ -644,7 +655,14 @@ export class HeaderComponent {
       }
     }
   }
-  isMobileMenuOpen: boolean = false;
+  // If we're mounting because the footer hard-redirected from /my-cart or
+  // /my-orders with the orders-overlay flag set, open the drawer eagerly at
+  // construction time so the home page is never visible underneath. ngOnInit
+  // still runs openOrdersOverlayFromNav() below to fetch data and set the
+  // "opened from bottom-nav" state.
+  isMobileMenuOpen: boolean =
+    typeof sessionStorage !== 'undefined' &&
+    sessionStorage.getItem('pockit.openOrdersOverlay') === '1';
   toggleMobileMenu() {
     this.walletOpenedFromHeader = false;
     this.showContent = 'normal';
@@ -810,7 +828,11 @@ export class HeaderComponent {
       },
     });
   }
-  showContent: any = 'normal';
+  showContent: any =
+    typeof sessionStorage !== 'undefined' &&
+    sessionStorage.getItem('pockit.openOrdersOverlay') === '1'
+      ? 'myorder'
+      : 'normal';
   editContactInfo() {
     this.showContent = 'updateProfile';
     this.userData.NAME = this.userNAME;
@@ -3429,10 +3451,16 @@ export class HeaderComponent {
     this.isMobileMenuOpen = false;
     this.ordersOverlay.setOpen(false);
     this.gotoProfile();
-    setTimeout(() => {
-      document.body.classList.remove('modal-open');
-      this.router.navigate(['/order-details', orderId]);
-    }, 200);
+    document.body.classList.remove('modal-open');
+    // Mark this navigation as "from the orders drawer" so the order-details
+    // back button can reopen the drawer instead of dropping us on home.
+    sessionStorage.setItem('pockit.reopenOrdersDrawerOnBack', '1');
+    // Loader veils the drawer-close transition + target page's initial
+    // data fetch so the user doesn't see home flash between them.
+    this.loaderService.showLoader();
+    this.router.navigate(['/order-details', orderId]).then(() => {
+      Promise.resolve().then(() => this.loaderService.hideLoader());
+    });
   }
   openIndex: number | null = null;
   toggleFAQ(index: number): void {
@@ -3459,10 +3487,12 @@ export class HeaderComponent {
     this.isMobileMenuOpen = false;
     this.ordersOverlay.setOpen(false);
     this.gotoProfile();
-    setTimeout(() => {
-      document.body.classList.remove('modal-open');
-      this.router.navigate(['/shop/order_details', orderId]);
-    }, 200);
+    document.body.classList.remove('modal-open');
+    sessionStorage.setItem('pockit.reopenOrdersDrawerOnBack', '1');
+    this.loaderService.showLoader();
+    this.router.navigate(['/shop/order_details', orderId]).then(() => {
+      Promise.resolve().then(() => this.loaderService.hideLoader());
+    });
   }
   switchTab(tab: 'current' | 'past') {
     this.selectedTab = tab;
@@ -3802,13 +3832,17 @@ export class HeaderComponent {
   }
   openprofileModal() {
     const modal = document.getElementById('photoModal')!;
-    modal.style.display = 'block';
-    this.renderer.addClass(document.body, 'modal-open');
+    // flex (not block) so the CSS centering on #photoModal.modal kicks in
+    // without needing !important — which was blocking closeModal() from
+    // hiding the dialog.
+    modal.style.display = 'flex';
+    // Intentionally NOT adding 'modal-open' to body — the footer's bottom
+    // nav hides itself whenever body.modal-open is present, and we want
+    // the nav to stay visible while the small photo picker is on screen.
   }
   closeModal() {
     const modal = document.getElementById('photoModal')!;
     modal.style.display = 'none';
-    this.renderer.removeClass(document.body, 'modal-open');
   }
   @ViewChild('videoElement', { static: false }) videoElement!: ElementRef;
   @ViewChild('canvasElement', { static: false }) canvasElement!: ElementRef;
@@ -3825,8 +3859,10 @@ export class HeaderComponent {
     this.closeModal();
     this.isCapturePhotoModalOpen = true;
     const modal = document.getElementById('CapturePhotoModal')!;
-    modal.style.display = 'block';
-    this.renderer.addClass(document.body, 'modal-open');
+    // flex + inline style. CSS forces opacity/transform so Bootstrap's
+    // default invisible-until-.show state doesn't freeze the screen.
+    // Intentionally NOT toggling body.modal-open (keeps the bottom nav).
+    modal.style.display = 'flex';
     navigator.mediaDevices
       .getUserMedia({ video: { facingMode: 'user' } })
       .then((stream) => {
@@ -3921,6 +3957,10 @@ export class HeaderComponent {
     }
     this.isCapturePhotoModalOpen = false;
     this.capturedImage = null;
+    const modal = document.getElementById('CapturePhotoModal');
+    if (modal) {
+      modal.style.display = 'none';
+    }
   }
   viewattachmenttt(eventt: any) {
     window.open(

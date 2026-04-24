@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { ApiServiceService } from 'src/app/Service/api-service.service';
+import { LoaderService } from 'src/app/Service/loader.service';
 import { selectUserId } from 'src/app/store/user/user.selectors';
 
 @Component({
@@ -23,10 +24,16 @@ export class MyOrdersComponent implements OnInit, OnDestroy {
     private api: ApiServiceService,
     private store: Store,
     private router: Router,
+    private loaderService: LoaderService,
   ) {}
 
   ngOnInit(): void {
     this.applyBodyClass(this.router.url);
+    // AppComponent raises the loader on every boot as "initial loading bit"
+    // but nothing on /my-orders would ever hide it — leaving the Pockit
+    // pulse overlay stuck after the splash failsafe on refresh. Lower it
+    // now that the orders view is on screen.
+    this.loaderService.hideLoader();
     this.imageUrl = this.api.retriveimgUrl2();
     this.store
       .select(selectUserId)

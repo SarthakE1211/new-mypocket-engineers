@@ -1577,15 +1577,11 @@ div[style*="overflow-y: auto"]::-webkit-scrollbar-thumb {
   display: inline-block;
 }
 .scroll-container {
+  // Previously capped at 550px with internal overflow, which hid trailing
+  // service cards behind an inner scroll. Let the grid flow naturally down
+  // the page so the "Load More" button appears at the real end of the list.
   padding-right: 0px;
   margin: 0px auto;
-  max-height: 550px;
-  overflow-y: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
 }
 .mt-18-mb-10 {
   margin-bottom: 10px;
@@ -1764,14 +1760,10 @@ div[style*="overflow-y: auto"]::-webkit-scrollbar-thumb {
   margin: 0px auto;
 }
 .max-h-350-overflow-auto-pr-0 {
-  max-height: 550px;
-  overflow-y: auto;
+  // Max-height + internal scroll was hiding trailing cards behind a nested
+  // scrollbar. Removed so the whole grid lays out on the page and users
+  // scroll the page itself to reach Load More.
   padding-right: 0px;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
 }
 .flex-center-column-padded {
   padding: 5px 5px 10px 5px;

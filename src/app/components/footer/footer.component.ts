@@ -2,6 +2,7 @@ import { Component, NgZone, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import { LoaderService } from 'src/app/Service/loader.service';
 import { OrdersOverlayService } from 'src/app/Service/orders-overlay.service';
 
 @Component({
@@ -28,6 +29,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     private renderer: Renderer2,
     private zone: NgZone,
     private ordersOverlay: OrdersOverlayService,
+    private loaderService: LoaderService,
   ) {}
 
   // Bottom-nav "Order" tap. Instead of navigating to the /my-orders route
@@ -48,8 +50,15 @@ export class FooterComponent implements OnInit, OnDestroy {
     if (headerMounted) {
       this.ordersOverlay.open();
     } else {
+      // Header isn't mounted on /my-orders or /my-cart, so we can't call
+      // ordersOverlay.open() here — nothing would listen. Drop a session
+      // flag the header reads in its ngOnInit and SPA-navigate to /service
+      // via the Angular router (no page reload). The loader veils the
+      // unavoidable intermediate paint of home before the drawer opens —
+      // HeaderComponent hides the loader once the drawer is mounted.
       sessionStorage.setItem('pockit.openOrdersOverlay', '1');
-      window.location.href = '/service';
+      this.loaderService.showLoader();
+      this.router.navigateByUrl('/service');
     }
   }
 

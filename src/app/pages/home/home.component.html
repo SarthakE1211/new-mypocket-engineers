@@ -72,7 +72,7 @@
           </div>
         </div>
         <div *ngIf="!loadCategories1" class="row g-2 w-100 scroll-container d-md-none mobile-cat-grid">
-          <div *ngFor="let category of mobileOrderedCategories; let i = index; trackBy: trackById"
+          <div *ngFor="let category of displayedCategories1; let i = index; trackBy: trackById"
             class="col-4">
             <div class="popular-card" (click)="openServiceDrawerViewOnly(category)">
               <div class="bg-light-blue-p-10">
@@ -89,7 +89,7 @@
             </div>
           </div>
         </div>
-        <div class="text-center w-100 mt-3 d-none d-md-block" *ngIf="displayedCategories1.length < ServiceCateogriesView.length">
+        <div class="text-center w-100 mt-3" *ngIf="displayedCategories1.length < ServiceCateogriesView.length">
           <button class="btn btn-primary" (click)="loadMore2()" [disabled]="loadMoreLoading1">
             <span *ngIf="!loadMoreLoading1">Load More</span>
             <span *ngIf="loadMoreLoading1" class="spinner-border spinner-border-sm"></span>
@@ -344,7 +344,7 @@
             </div>
           </div>
           <div *ngIf="!loadCategories" class="row g-2 w-100 mobile-cat-grid d-md-none">
-            <div *ngFor="let category of mobileOrderedCategories; let i = index; trackBy: trackById"
+            <div *ngFor="let category of displayedCategories; let i = index; trackBy: trackById"
               class="col-4">
               <div class="popular-card" (click)="openServiceDrawer(category)">
                 <div class="bg-light-blue-p-10">
@@ -361,7 +361,7 @@
               </div>
             </div>
           </div>
-          <div class="text-center w-100 mt-3 d-none d-md-block" *ngIf="displayedCategories.length < ServiceCateogries.length">
+          <div class="text-center w-100 mt-3" *ngIf="displayedCategories.length < ServiceCateogries.length">
             <button class="btn btn-primary" (click)="loadMore()" [disabled]="loadMoreLoading">
               <span *ngIf="!loadMoreLoading">Load More</span>
               <span *ngIf="loadMoreLoading" class="spinner-border spinner-border-sm"></span>

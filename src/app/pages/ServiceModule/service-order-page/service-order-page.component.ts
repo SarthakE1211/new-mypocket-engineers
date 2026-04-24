@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from 'src/app/Service/api-service.service';
 import { CommonFunctionService } from 'src/app/Service/CommonFunctionService';
 import { LocationService } from 'src/app/Service/location.service';
+import { OrdersOverlayService } from 'src/app/Service/orders-overlay.service';
 
 declare var google: any;
 declare var Razorpay: any;
@@ -90,7 +91,8 @@ export class ServiceOrderPageComponent {
     private datePipe: DatePipe,
     private sanitizer: DomSanitizer,
     private ngZone: NgZone,
-    private router: Router
+    private router: Router,
+    private ordersOverlay: OrdersOverlayService
   ) { }
   userID: any = this.apiservice.getUserId();
   userName: any = this.apiservice.getUserName();
@@ -148,11 +150,29 @@ export class ServiceOrderPageComponent {
     window.removeEventListener('resize', this.setMaxCharLengthBasedOnScreen);
   }
 
-  // Back button handler. Prefer browser history (natural "back" UX — the
-  // user returns to /my-orders, the profile menu overlay, or wherever they
-  // came from). Falls back to /my-orders if there's no history (e.g. if
-  // the user deep-linked directly to /order-details/:id).
+  // Set at construction time by reading-and-clearing the session flag the
+  // header drops when it navigates here from the in-header orders drawer.
+  // Keeping it on a component field means the flag's lifecycle is scoped to
+  // a single visit to /order-details — it can't leak into a later one where
+  // the user arrived via /my-orders or a deep link.
+  private reopenOrdersDrawerOnBack: boolean = (() => {
+    const set = sessionStorage.getItem('pockit.reopenOrdersDrawerOnBack') === '1';
+    if (set) sessionStorage.removeItem('pockit.reopenOrdersDrawerOnBack');
+    return set;
+  })();
+
+  // Back button handler. If we arrived here from the bottom-nav orders
+  // drawer, reopen the drawer before popping history so the user lands
+  // back on the orders list (over home), not on bare home. Otherwise,
+  // fall back to browser history (natural "back" UX for /my-orders, the
+  // profile menu overlay, deep links, etc.).
   goBack(): void {
+    if (this.reopenOrdersDrawerOnBack) {
+      // HeaderComponent listens to this and pops the My Orders drawer open.
+      // It's mounted on both /order-details and /service, so the drawer
+      // stays up as the route changes out from under it.
+      this.ordersOverlay.open();
+    }
     if (window.history.length > 1) {
       window.history.back();
       return;

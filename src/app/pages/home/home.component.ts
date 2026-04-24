@@ -764,44 +764,6 @@ export class HomeComponent {
   loadMoreLoading1 = false;
   itemsPerPage = 10;
   currentPage = 1;
-  mobileServiceOrder: string[] = [
-    'Instant Help',
-    'Laptop',
-    'Mouse',
-    'Desktop',
-    'WFH Setup',
-    'CCTV',
-    'Printer',
-    'Smart TV',
-    'Smart Phone',
-    'Kids Safe',
-  ];
-  get mobileOrderedCategories(): any[] {
-    const primary = this.ServiceCateogries || [];
-    const secondary = this.ServiceCateogriesView || [];
-    const seen = new Set<string>();
-    const source: any[] = [];
-    for (const cat of [...primary, ...secondary]) {
-      const key = (cat?.NAME || cat?.title || '').toString().trim().toLowerCase();
-      if (!key || seen.has(key)) continue;
-      seen.add(key);
-      source.push(cat);
-    }
-    if (!source.length) return [];
-    const normalized = source.map((cat: any) => ({
-      cat,
-      key: (cat?.NAME || cat?.title || '').toString().trim().toLowerCase(),
-    }));
-    const ordered: any[] = [];
-    for (const preferred of this.mobileServiceOrder) {
-      const pk = preferred.toLowerCase();
-      const direct = normalized.find((n: any) => n.key === pk);
-      if (direct && !ordered.includes(direct.cat)) { ordered.push(direct.cat); continue; }
-      const partial = normalized.find((n: any) => n.key && (n.key.includes(pk) || pk.includes(n.key)));
-      if (partial && !ordered.includes(partial.cat)) ordered.push(partial.cat);
-    }
-    return ordered;
-  }
   geServiceCategoriesViewOnly() {
     if (!HomeComponent.firstLoadDone) {
       this.loadCategories1 = true;
@@ -1087,8 +1049,9 @@ export class HomeComponent {
     this.displayedCategories1 = this.ServiceCateogriesView.slice(0, end);
   }
   loadMore2() {
-    this.loadMoreLoading1 = true;
-    setTimeout(() => { this.currentPage++; this.updateDisplayedCategories(); this.loadMoreLoading1 = false; }, 500);
+    // Data is already in memory; paginate instantly.
+    this.currentPage++;
+    this.updateDisplayedCategories();
   }
   getBannerData() {
     var filter: any = '';
@@ -1172,12 +1135,11 @@ export class HomeComponent {
     );
   }
   loadMore() {
-    this.loadMoreLoading = true;
-    setTimeout(() => {
-      let newLength = this.displayedCategories.length + 6;
-      this.displayedCategories = this.ServiceCateogries.slice(0, newLength);
-      this.loadMoreLoading = false;
-    }, 500);
+    // Data is already in memory; paginate instantly. Step size matches the
+    // initial page (10) so each Load More adds another full grid row on
+    // both the 3-col mobile layout and the wider desktop layout.
+    const newLength = this.displayedCategories.length + this.itemsToShow;
+    this.displayedCategories = this.ServiceCateogries.slice(0, newLength);
   }
   isDrawerOpen1 = false;
   isMapModalOpen = false;

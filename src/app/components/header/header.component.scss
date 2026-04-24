@@ -3942,6 +3942,177 @@ textarea {
     }
   }
 
+  // ========== "SELECT PHOTO" ACTION SHEET ==========
+  // The modal is shown by manually setting display:block (bypassing
+  // Bootstrap's JS), so no backdrop element is ever inserted — we paint it
+  // on #photoModal itself. The modal-content is restyled as a clean action
+  // sheet with Camera / Upload File tiles.
+  // display is driven by openprofileModal()/closeModal() via inline style
+  // (flex on open, none on close). Don't set display here — !important
+  // would prevent closeModal() from hiding it.
+  //
+  // Bootstrap's .modal CSS sets opacity:0 and .modal.fade .modal-dialog has
+  // transform: translate(0, -50px) until .show is applied. We intentionally
+  // don't use .show here (it would trip the footer's overlay detection and
+  // hide the bottom nav), so we force opacity/transform ourselves.
+  #photoModal.modal {
+    background: rgba(15, 26, 92, 0.55) !important;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    padding: 20px !important;
+    align-items: center;
+    justify-content: center;
+    opacity: 1 !important;
+    pointer-events: auto;
+  }
+  #photoModal.modal.fade .modal-dialog,
+  #photoModal .modal-dialog {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  // Same Bootstrap .modal defaults break the camera capture dialog — without
+  // .show it stays opacity:0 with the dialog translated off-screen. Force
+  // visibility + centering so the live camera feed actually appears.
+  #CapturePhotoModal.modal {
+    background: rgba(15, 26, 92, 0.72) !important;
+    padding: 20px !important;
+    align-items: center;
+    justify-content: center;
+    opacity: 1 !important;
+    pointer-events: auto;
+  }
+  #CapturePhotoModal.modal.fade .modal-dialog,
+  #CapturePhotoModal .modal-dialog {
+    transform: none !important;
+    transition: none !important;
+    margin: 0 auto;
+  }
+
+  #photoModal .modal-dialog,
+  #photoModal .modal-dialog.max-w-300-unique {
+    max-width: 380px !important;
+    width: 100%;
+    margin: 0 !important;
+  }
+
+  #photoModal .modal-content {
+    border: none !important;
+    border-radius: 22px !important;
+    background: #ffffff !important;
+    box-shadow: 0 24px 50px rgba(15, 26, 92, 0.28) !important;
+    overflow: hidden;
+    padding: 6px;
+  }
+
+  #photoModal .modal-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    border-bottom: 1px solid rgba(42, 59, 143, 0.06) !important;
+    padding: 18px 20px 16px !important;
+    background: #ffffff !important;
+    .modal-title {
+      font-size: 17px !important;
+      font-weight: 700 !important;
+      color: #0f1a5c !important;
+      margin: 0 !important;
+      letter-spacing: -0.01em;
+      line-height: 1.2 !important;
+    }
+    .btn-close {
+      box-sizing: content-box !important;
+      width: 16px !important;
+      height: 16px !important;
+      padding: 8px !important;
+      margin: 0 !important;
+      border-radius: 50% !important;
+      background-color: #f3f5fb !important;
+      opacity: 1 !important;
+      background-size: 12px 12px !important;
+      background-position: center !important;
+      transition: background-color 0.15s ease, transform 0.15s ease;
+      &:hover {
+        background-color: #e5e9f5 !important;
+      }
+      &:active {
+        transform: scale(0.95);
+      }
+      &:focus {
+        box-shadow: 0 0 0 3px rgba(42, 59, 143, 0.15) !important;
+      }
+    }
+  }
+
+  #photoModal .modal-body {
+    padding: 10px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  // Each picker row — big tap-friendly tiles with a tinted icon well.
+  // Force full-width block rows so Camera and Upload File render at the
+  // same size regardless of their inner text length.
+  #photoModal .modal-body .border-top-pad-10-unique,
+  #photoModal .modal-body .border-y-pad-10-unique {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+
+    & > .nav-link-pointer {
+      display: flex !important;
+      align-items: center;
+      gap: 14px;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      padding: 14px 16px !important;
+      border-radius: 14px !important;
+      cursor: pointer;
+      color: #0f1a5c;
+      font-size: 15px;
+      font-weight: 600;
+      background: #f7f9ff !important;
+      transition: background 0.15s ease, transform 0.1s ease;
+
+      // Push label left, chevron right (pinned via margin-left:auto on ::after).
+      i.bi {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(180deg, #eef2ff 0%, #e0e7ff 100%);
+        color: #2a3b8f !important;
+        border-radius: 12px;
+        font-size: 18px;
+        flex-shrink: 0;
+        flex-grow: 0;
+        box-shadow: inset 0 1px 2px rgba(42, 59, 143, 0.08);
+      }
+
+      &::after {
+        content: '\f285'; // bi-chevron-right
+        font-family: 'bootstrap-icons';
+        margin-left: auto;
+        color: #9aa3c4;
+        font-size: 14px;
+      }
+
+      &:hover {
+        background: #eef2ff !important;
+      }
+      &:active {
+        background: #e0e7ff !important;
+        transform: scale(0.99);
+      }
+    }
+  }
+
   // Wrap the form fields in a single white card like the reference's
   // "Device details" section card. Direct-child combinator avoids matching
   // the user-card's inner .profile-details on the normal profile menu.
