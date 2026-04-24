@@ -6,12 +6,23 @@
 }
 
 .mobile-subpage-header {
-  position: sticky;
-  top: 0;
+  // Sticky anchor for the Cart title. The ancestor `.mobile-subpage` is
+  // `position: fixed; overflow-y: auto` on mobile (see styles.scss), so
+  // position:sticky here pins the header to the top of that scroll box.
+  // !important + the translateZ "layer promotion" guard against real-
+  // device iOS Safari quirks where plain sticky occasionally stops
+  // pinning inside a fixed scroll parent.
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0 !important;
+  left: 0;
+  right: 0;
   z-index: 10;
   background: #fff;
   padding: calc(env(safe-area-inset-top, 0px) + 14px) 22px 18px;
   border-bottom: 1px solid rgba(15, 26, 92, 0.06);
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .mobile-subpage-title {

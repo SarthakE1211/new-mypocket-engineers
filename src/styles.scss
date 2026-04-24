@@ -222,7 +222,12 @@ body:has(.custom-drawer15.show) .mobile-bottom-nav {
     z-index: 1;
   }
   .mobile-subpage-header {
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 10;
+    // Promote to its own layer — stabilises sticky on real iOS Safari
+    // inside the position:fixed + overflow-y:auto container above.
+    transform: translateZ(0);
+    will-change: transform;
   }
