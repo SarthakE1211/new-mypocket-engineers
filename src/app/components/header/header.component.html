@@ -59,8 +59,8 @@
         <div class="responsive-search-wrapper">
           <div class="search-header-wrapper large-screen">
             <div class="search-wrapper">
-              <input type="text" [(ngModel)]="searchKeyword" (click)="filterOptions()" (input)="filterOptions()"
-                (blur)="onblurclick()" class="search-header-input" autocomplete="off" />
+              <input type="text" [(ngModel)]="searchKeyword" (focus)="onSearchFocus()" (click)="filterOptions()"
+                (input)="filterOptions()" (blur)="onblurclick()" class="search-header-input" autocomplete="off" />
               <div class="placeholder-container" *ngIf="!searchKeyword">
                 <span class="placeholder-static">Search for&nbsp;</span>
                 <span class="placeholder-animated" [@slideAnimation]="desktopAnimState">

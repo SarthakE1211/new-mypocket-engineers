@@ -2541,8 +2541,89 @@ section.promo-hero,
   }
   .promo-hero .promo-img {
     width: 100% !important;
+    /* Desktop hero strip. Image slot is a 3:1 strip; object-fit:contain
+       shows the FULL banner centered over a blurred ambient backdrop
+       (.promo-backdrop) for an iOS / Apple TV-style edge extension. */
+    aspect-ratio: 3 / 1 !important;
     height: auto !important;
+    max-height: 440px !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+    background: transparent !important;
+    display: block !important;
+    position: relative !important;
+    z-index: 2 !important;
+    /* Soft navy glow around the main image so it "floats" over the
+       blurred backdrop instead of abutting it with a visible seam. */
+    filter: drop-shadow(0 18px 44px rgba(6, 14, 58, 0.35))
+            drop-shadow(0 2px 6px rgba(6, 14, 58, 0.18)) !important;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  }
+
+  /* Slide frame that contains backdrop + main image + glow layers */
+  .promo-hero .promo-slide {
+    position: relative !important;
+    overflow: hidden !important;
+    border-radius: 22px !important;
+    isolation: isolate;
+  }
+  .promo-hero .promo-slide:hover .promo-img { transform: scale(1.01) !important; }
+  .promo-hero .promo-slide:hover .promo-backdrop { transform: scale(1.26) !important; }
+
+  /* Blurred ambient backdrop with a very slow Ken Burns drift so the
+     edges subtly breathe instead of reading as a static fill. */
+  .promo-hero .promo-backdrop {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
     object-fit: cover !important;
+    object-position: center center !important;
+    filter: blur(56px) saturate(1.35) brightness(0.78) contrast(1.05) !important;
+    transform: scale(1.22) !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
+    user-select: none !important;
+    opacity: 0.95 !important;
+    animation: promoBackdropDrift 24s ease-in-out infinite alternate !important;
+    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  }
+
+  /* Vignette + colour-wash overlay. Darker toward the corners so the
+     centred main image stands clearly above the blurred extension;
+     subtle warm tint from the banner's orange accent reads as rim light. */
+  .promo-hero .promo-slide::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    background:
+      radial-gradient(ellipse at center,
+        rgba(255, 255, 255, 0) 40%,
+        rgba(6, 14, 58, 0.22) 85%,
+        rgba(6, 14, 58, 0.38) 100%),
+      linear-gradient(90deg,
+        rgba(42, 59, 143, 0.22) 0%,
+        rgba(42, 59, 143, 0) 28%,
+        rgba(42, 59, 143, 0) 72%,
+        rgba(243, 102, 49, 0.16) 100%) !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
+    mix-blend-mode: multiply;
+  }
+
+  /* Soft white rim highlight on top edge — gives the slide a premium
+     "glass pane" feel over the ambient blur. */
+  .promo-hero .promo-slide::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    background: linear-gradient(180deg,
+                 rgba(255, 255, 255, 0.12) 0%,
+                 rgba(255, 255, 255, 0) 18%,
+                 rgba(255, 255, 255, 0) 82%,
+                 rgba(6, 14, 58, 0.14) 100%) !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
   }
   .promo-hero ::ng-deep .owl-nav {
     padding: 0 44px;
@@ -2550,7 +2631,7 @@ section.promo-hero,
 }
 @media (min-width: 1400px) {
   .promo-hero .hero-carousel-container {
-    max-width: 1400px !important;
+    max-width: 1320px !important;
   }
 }
 
@@ -2564,6 +2645,11 @@ section.promo-hero,
   .promo-hero .promo-slide {
     border-radius: 16px;
   }
+  /* Mobile uses a hand-tuned mobile PNG that already fills the frame —
+     the blurred ambient backdrop is only for desktop where the image's
+     narrower aspect leaves side-panels to fill. Hide it on mobile. */
+  .promo-hero .promo-backdrop,
+  .promo-hero .promo-slide::after { display: none !important; }
 }
 @media (max-width: 576px) {
   .promo-hero {
@@ -2658,28 +2744,39 @@ section.promo-hero,
 .promo-hero ::ng-deep .owl-dots {
   display: flex !important;
   justify-content: center;
-  margin-top: 12px;
-  gap: 4px;
+  align-items: center;
+  margin-top: 16px;
+  gap: 6px;
 }
 .promo-hero ::ng-deep .owl-dot {
   outline: none !important;
   span {
     display: block !important;
-    width: 28px !important;
-    height: 5px !important;
+    width: 10px !important;
+    height: 10px !important;
     margin: 0 !important;
-    background: rgba(255, 255, 255, 0.5) !important;
+    background: rgba(42, 59, 143, 0.25) !important;
     border-radius: 999px !important;
     border: none !important;
-    transition: all 0.35s ease !important;
+    transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
   }
   &.active span {
-    background: #f36631 !important;
-    width: 36px !important;
+    background: linear-gradient(90deg, #f36631 0%, #ff8a5a 100%) !important;
+    width: 28px !important;
+    box-shadow: 0 4px 10px rgba(243, 102, 49, 0.35) !important;
   }
-  &:hover span {
-    background: rgba(243, 102, 49, 0.7) !important;
+  &:hover:not(.active) span {
+    background: rgba(42, 59, 143, 0.55) !important;
+    transform: scale(1.1);
   }
+}
+
+/* Slow, subtle drift on the blurred backdrop layer — 24s there-and-back
+   makes the ambient edges feel alive without being distracting. */
+@keyframes promoBackdropDrift {
+  0%   { transform: scale(1.22) translate3d(0, 0, 0); }
+  50%  { transform: scale(1.28) translate3d(-1.5%, -0.8%, 0); }
+  100% { transform: scale(1.22) translate3d(1.5%, 0.8%, 0); }
 }
 @media (max-width: 767.98px) {
   .promo-hero ::ng-deep .owl-dots {

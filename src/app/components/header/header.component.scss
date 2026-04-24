@@ -4274,4 +4274,197 @@ textarea {
       color: #0f1a5c !important;
     }
   }
+
+/* ==========================================================================
+   HEADER POLISH (desktop) — layered on top of the legacy rules above.
+   Target applied only at >=992px so the handcrafted mobile layout above
+   stays untouched. Gives the top bar a glass-tinted background, pill icon
+   buttons with hover lifts, a refined search field, a tasteful profile
+   chip, and a subtle gradient bottom accent instead of the flat grey line.
+   ========================================================================== */
+@media (min-width: 992px) {
+  #header.header {
+    background: linear-gradient(180deg,
+                 rgba(248, 250, 255, 0.96) 0%,
+                 rgba(239, 244, 253, 0.92) 100%) !important;
+    -webkit-backdrop-filter: saturate(1.2) blur(12px);
+    backdrop-filter: saturate(1.2) blur(12px);
+    border-bottom: none !important;
+    box-shadow: 0 1px 0 rgba(42, 59, 143, 0.06),
+                0 6px 18px rgba(15, 26, 92, 0.05) !important;
+    padding: 6px 32px !important;
+    position: relative;
+  }
+  /* Gradient accent line at the very bottom of the header — replaces the
+     plain 1px grey border with a subtle navy→accent→navy wash. */
+  #header.header::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+                 rgba(42, 59, 143, 0) 0%,
+                 rgba(42, 59, 143, 0.55) 30%,
+                 rgba(243, 102, 49, 0.75) 50%,
+                 rgba(42, 59, 143, 0.55) 70%,
+                 rgba(42, 59, 143, 0) 100%);
+    opacity: 0.85;
+    pointer-events: none;
+  }
+
+  /* Logo — small lift on hover */
+  #header.header .logo img {
+    transition: transform 0.2s ease;
+  }
+  #header.header .logo:hover img { transform: scale(1.03); }
+
+  /* Icon buttons (wallet, notifications, cart) — soft circular pills */
+  #header.header .icon-btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 42px !important;
+    height: 42px !important;
+    padding: 0 !important;
+    border-radius: 999px !important;
+    background: rgba(42, 59, 143, 0.06) !important;
+    color: #2a3b8f !important;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease !important;
+    position: relative !important;
+  }
+  #header.header .icon-btn svg { width: 22px; height: 22px; }
+  #header.header .icon-btn svg path {
+    stroke: #2a3b8f !important;
+    fill: currentColor;
+    transition: stroke 0.2s ease;
+  }
+  #header.header .icon-btn:hover {
+    background: rgba(42, 59, 143, 0.12) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 14px rgba(15, 26, 92, 0.12) !important;
+  }
+  #header.header .icon-btn:active { transform: translateY(0) !important; }
+
+  /* Notification/cart badges — tighten positioning and polish the pill */
+  #header.header .icon-btn .notification-dot-unique {
+    top: 6px !important;
+    right: 6px !important;
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: #f36631;
+    box-shadow: 0 0 0 2px #f5f8fd, 0 2px 6px rgba(243, 102, 49, 0.4);
+    transform: none !important;
+  }
+  #header.header .icon-btn .badge.bg-danger {
+    background: linear-gradient(135deg, #f36631 0%, #ff8a5a 100%) !important;
+    top: 2px !important;
+    right: -4px !important;
+    left: auto !important;
+    transform: none !important;
+    font-size: 10px !important;
+    font-weight: 700;
+    padding: 3px 6px !important;
+    min-width: 18px;
+    box-shadow: 0 4px 10px rgba(243, 102, 49, 0.35);
+  }
+
+  /* Search bar — rounded pill with hover / focus emphasis. Styling only —
+     leaves input padding and placeholder positioning intact so click /
+     typing / the animated placeholder keep working exactly as before. */
+  #header.header .search-header-wrapper.large-screen {
+    position: relative !important;
+    border-radius: 999px !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(42, 59, 143, 0.12) !important;
+    box-shadow: 0 4px 14px rgba(15, 26, 92, 0.05) !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+    /* Important: do NOT clip children. The search-header-dropdown is
+       absolute-positioned with top:100% and needs to escape the border-
+       radius of this pill so results render below the bar. */
+    overflow: visible !important;
+  }
+  #header.header .search-header-wrapper.large-screen:hover {
+    border-color: rgba(42, 59, 143, 0.3) !important;
+    box-shadow: 0 8px 20px rgba(15, 26, 92, 0.08) !important;
+  }
+  #header.header .search-header-wrapper.large-screen:focus-within {
+    border-color: #2a3b8f !important;
+    box-shadow: 0 0 0 4px rgba(42, 59, 143, 0.12),
+                0 8px 22px rgba(15, 26, 92, 0.12) !important;
+  }
+  /* Results dropdown — pull it below the pill with a small gap and give
+     it a polished rounded card look so it reads as a natural extension
+     of the search bar rather than a floating rectangle. */
+  #header.header .search-header-wrapper.large-screen .search-header-dropdown {
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-height: 380px !important;
+    overflow-y: auto !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(42, 59, 143, 0.12) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 16px 40px rgba(15, 26, 92, 0.16),
+                0 4px 12px rgba(15, 26, 92, 0.08) !important;
+    padding: 8px !important;
+    z-index: 1100 !important;
+  }
+
+  /* User profile chip — wrap into a subtle rounded card */
+  #header.header .nav-links-flex .user-profile {
+    gap: 8px;
+    padding: 4px 12px 4px 4px;
+    border-radius: 999px;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+    margin-left: 4px;
+  }
+  #header.header .nav-links-flex .user-profile:hover {
+    background: rgba(42, 59, 143, 0.06);
+    box-shadow: 0 4px 12px rgba(15, 26, 92, 0.06);
+  }
+  #header.header .nav-links-flex .user-profile .profile-photo-container {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 999px;
+    padding: 2px;
+    background: linear-gradient(135deg, #f36631 0%, #ff8a5a 100%);
+    box-shadow: 0 4px 12px rgba(243, 102, 49, 0.28);
+  }
+  #header.header .nav-links-flex .user-profile .profile-photo {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 999px;
+    object-fit: cover;
+    background: #fff;
+    border: 2px solid #fff;
+  }
+  #header.header .nav-links-flex .user-profile .user-name {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #0f1a5c !important;
+    line-height: 1.2;
+  }
+  #header.header .nav-links-flex .user-profile .user-location {
+    font-size: 12px !important;
+    color: #6b7289 !important;
+    line-height: 1.2;
+    margin-top: 1px;
+  }
+  #header.header .nav-links-flex .user-profile .bi-chevron-down {
+    color: #6b7289;
+    transition: transform 0.2s ease;
+  }
+  #header.header .nav-links-flex .user-profile:hover .bi-chevron-down {
+    transform: translateY(1px);
+    color: #2a3b8f;
+  }
+}
+
+/* Extra breathing room on ultrawide */
+@media (min-width: 1400px) {
+  #header.header { padding: 8px 48px !important; }
+}
 }

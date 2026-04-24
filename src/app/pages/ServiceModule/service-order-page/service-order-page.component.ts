@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { Component, ElementRef, NgZone, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -92,7 +92,8 @@ export class ServiceOrderPageComponent {
     private sanitizer: DomSanitizer,
     private ngZone: NgZone,
     private router: Router,
-    private ordersOverlay: OrdersOverlayService
+    private ordersOverlay: OrdersOverlayService,
+    private ngLocation: Location
   ) { }
   userID: any = this.apiservice.getUserId();
   userName: any = this.apiservice.getUserName();
@@ -173,8 +174,18 @@ export class ServiceOrderPageComponent {
       // stays up as the route changes out from under it.
       this.ordersOverlay.open();
     }
+    // On mobile, window.history.back() can land on an unrelated preceding
+    // SPA route like /shop/cart (if the user bounced around before opening
+    // an order), which feels broken. Always route to /my-orders — the
+    // natural parent for an order-details page — so the back button is
+    // predictable. Desktop keeps the smoother history.back() experience.
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    if (isMobile) {
+      this.router.navigate(['/my-orders']);
+      return;
+    }
     if (window.history.length > 1) {
-      window.history.back();
+      this.ngLocation.back();
       return;
     }
     this.router.navigate(['/my-orders']);

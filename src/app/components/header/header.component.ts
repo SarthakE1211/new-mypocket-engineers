@@ -1909,6 +1909,33 @@ export class HeaderComponent {
       });
   }
   searchloading: boolean = false;
+
+  // Resolve the best-available territory ID list for the global search API.
+  // `TERRITORY_IDssss` starts as [] and only populates after the addresses
+  // API returns — if the user types into the header search before that,
+  // the API is invoked with [] and returns no matches (root cause of
+  // "search gives no results"). Fall back through sessionStorage keys
+  // the rest of the app already sets so the search works immediately.
+  private resolveSearchTerritories(): any[] {
+    if (Array.isArray(this.TERRITORY_IDssss) &&
+        this.TERRITORY_IDssss.some((id: any) => id != null && id !== 0 && id !== '')) {
+      return this.TERRITORY_IDssss;
+    }
+    const fromSession = sessionStorage.getItem('CurrentTerritory');
+    const parsed = fromSession != null ? Number(fromSession) : NaN;
+    if (!isNaN(parsed) && parsed !== 0) return [parsed];
+    return [];
+  }
+
+  // Prime the search data the moment the user focuses the input so the
+  // dropdown populates on the very first keystroke instead of flashing
+  // a "No data" state while the global services API is still in-flight.
+  onSearchFocus(): void {
+    if (!this.optionsList || this.optionsList.length === 0) {
+      this.getServiceData();
+    }
+  }
+
   getServiceData() {
     if (this.searchloading == false) {
       this.searchloading = true;
@@ -1962,7 +1989,7 @@ export class HeaderComponent {
               '',
               'I',
               this.userID,
-              this.TERRITORY_IDssss
+              this.resolveSearchTerritories()
             )
             .subscribe({
               next: (dataaaaa: any) => {
@@ -1994,7 +2021,7 @@ export class HeaderComponent {
               '',
               'I',
               this.userID,
-              this.TERRITORY_IDssss
+              this.resolveSearchTerritories()
             )
             .subscribe({
               next: (dataaaaa: any) => {
@@ -3104,16 +3131,23 @@ export class HeaderComponent {
     if (!this.optionsList) {
       this.optionsList = [];
     }
-    if (
+    // Always keep the dropdown open while the user is interacting with
+    // the search field — the subscribe callback in getServiceData() will
+    // re-run this method once data lands, so results fill in as they
+    // arrive rather than flashing a stale "No data" state.
+    this.showOptionsList = true;
+
+    // Fire the data fetch if we don't have anything to filter yet.
+    if (this.optionsList.length === 0) {
+      this.getServiceData();
+    }
+
+    const hasKeyword =
       this.searchKeyword != null &&
-      this.searchKeyword != '' &&
-      this.searchKeyword != undefined
-    ) {
-      if (this.optionsList.length === 0) {
-        this.getServiceData();
-        this.showOptionsList = true;
-        return;
-      }
+      this.searchKeyword !== '' &&
+      this.searchKeyword !== undefined;
+
+    if (hasKeyword) {
       const keyword = this.searchKeyword.trim().toLowerCase();
       this.filteredOptions = this.optionsList
         .map((category) => ({
@@ -3128,13 +3162,8 @@ export class HeaderComponent {
         }))
         .filter((category) => category.MATCHED_RECORDS.length > 0);
     } else {
-      if (this.optionsList.length == 0) {
-        this.getServiceData();
-      } else {
-        this.filteredOptions = this.optionsList;
-      }
+      this.filteredOptions = this.optionsList;
     }
-    this.showOptionsList = true;
   }
   selectOption(option: any, event: boolean = false) {
     this.searchKeyword = option.TITLE;

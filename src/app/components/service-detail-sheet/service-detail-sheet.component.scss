@@ -328,11 +328,31 @@
   width: 56px;
   height: 56px;
   border-radius: 14px;
-  background: #2a3b8f;
+  // The PNG icons supplied include their own navy rounded-square background
+  // so the outer tile is transparent — avoids a navy-on-navy double frame.
+  // If a step is ever configured without an image (fallback <i class="bi">
+  // path), the navy pill still renders via the rule below.
+  background: transparent;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
+  overflow: hidden;
+
+  .svc-sheet-how-icon-img {
+    // Shrink the inner icon artwork inside the 56×56 tile so it reads
+    // as a proper iconography glyph with breathing room, not an edge-to-
+    // edge sticker. 36px keeps it visually balanced with the label below.
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    display: block;
+  }
+
+  // Fallback styling when an `<i class="bi">` is still used
+  &:has(> i) {
+    background: #2a3b8f;
+  }
 
   i {
     font-size: 22px;
@@ -529,10 +549,14 @@
   }
 }
 
+// Was a "PE" text glyph inside the navy accordion pill; now an image
+// (Logo111.png). Constrain it to fill the 32×32 pill while keeping a
+// tiny inner padding so the logo artwork doesn't bleed to the edges.
 .svc-sheet-warranty-logo {
-  font-weight: 800;
-  font-size: 11px;
-  letter-spacing: 0.3px;
+  display: block;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
 }
 
 .svc-sheet-accordion-body {

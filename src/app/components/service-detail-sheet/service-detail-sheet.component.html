@@ -39,7 +39,9 @@
         <h3 class="svc-sheet-how-title">How Pockit Works</h3>
         <ol class="svc-sheet-how-steps">
           <li *ngFor="let step of howPockitWorks">
-            <span class="svc-sheet-how-icon"><i class="bi" [ngClass]="step.icon"></i></span>
+            <span class="svc-sheet-how-icon">
+              <img [src]="step.image" [alt]="step.label" class="svc-sheet-how-icon-img" />
+            </span>
             <span class="svc-sheet-how-label">{{ step.label }}</span>
           </li>
         </ol>
@@ -91,7 +93,7 @@
       <section class="svc-sheet-accordion" [class.is-open]="descriptionOpen">
         <button type="button" class="svc-sheet-accordion-trigger" (click)="toggleDescription()">
           <span class="svc-sheet-accordion-icon svc-sheet-accordion-icon--info">
-            <span class="svc-sheet-warranty-logo">PE</span>
+            <img src="assets/img/Logo111.png" alt="Pockit Engineers" class="svc-sheet-warranty-logo" />
           </span>
           <span class="svc-sheet-accordion-label">Service Description</span>
           <i class="bi" [ngClass]="descriptionOpen ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
@@ -133,7 +135,7 @@
       <section class="svc-sheet-accordion" [class.is-open]="warrantyOpen">
         <button type="button" class="svc-sheet-accordion-trigger" (click)="toggleWarranty()">
           <span class="svc-sheet-accordion-icon svc-sheet-accordion-icon--warranty">
-            <span class="svc-sheet-warranty-logo">PE</span>
+            <img src="assets/img/Logo111.png" alt="Pockit Engineers" class="svc-sheet-warranty-logo" />
           </span>
           <span class="svc-sheet-accordion-label">Pockit Warranty</span>
           <i class="bi" [ngClass]="warrantyOpen ? 'bi-chevron-up' : 'bi-chevron-down'"></i>

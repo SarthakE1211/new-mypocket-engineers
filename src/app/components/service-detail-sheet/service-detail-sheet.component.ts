@@ -40,10 +40,10 @@ export class ServiceDetailSheetComponent implements OnChanges, OnDestroy {
   // Hardcoded defaults for content not yet on the service API. Replace these
   // by wiring to real API fields when the backend ships them.
   readonly howPockitWorks = [
-    { icon: 'bi-calendar-event', label: 'Book & Confirm' },
-    { icon: 'bi-person-workspace', label: 'Technician Connects' },
-    { icon: 'bi-search', label: 'Diagnose & Resolve' },
-    { icon: 'bi-credit-card-2-back', label: 'Secure Payment' },
+    { image: 'assets/img/how-pockit-works/book-confirm.png', label: 'Book & Confirm' },
+    { image: 'assets/img/how-pockit-works/technician-connects.png', label: 'Technician Connects' },
+    { image: 'assets/img/how-pockit-works/diagnose-resolve.png', label: 'Diagnose & Resolve' },
+    { image: 'assets/img/how-pockit-works/secure-payment.png', label: 'Secure Payment' },
   ];
 
   // Expanded detail shown when the user taps "Learn more ›" under the

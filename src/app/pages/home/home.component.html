@@ -11,6 +11,7 @@
         <ng-container *ngFor="let promo of promoBanners">
           <ng-template carouselSlide>
             <a class="carousel-item promo-slide" [routerLink]="promo.link">
+              <img class="promo-backdrop" [src]="promo.desktop" alt="" aria-hidden="true" />
               <picture class="promo-picture">
                 <source media="(max-width: 768px)" [srcset]="promo.mobile">
                 <img [src]="promo.desktop" [alt]="promo.alt" class="promo-img" />
