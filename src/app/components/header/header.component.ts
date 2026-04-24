@@ -223,12 +223,27 @@ export class HeaderComponent {
   //   - this.ngOnInit() when the `pockit.openOrdersOverlay` session flag
   //     is set, which FooterComponent sets when it needs to hard-navigate
   //     home first (e.g. from /my-orders where the header isn't mounted)
+  // True when the My Orders drawer was triggered by the bottom-nav Order
+  // tap (vs. the profile menu). Drives the drawer's back button: bottom-nav
+  // opens are expected to unwind straight to home, profile opens unwind to
+  // the profile menu.
+  ordersOpenedFromBottomNav: boolean = false;
+
   openOrdersOverlayFromNav(): void {
     this.walletOpenedFromHeader = false;
     this.isMobileMenuOpen = true;
+    this.ordersOpenedFromBottomNav = true;
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
     this.openOrdersModal();
+  }
+
+  onOrdersBack(): void {
+    if (this.ordersOpenedFromBottomNav) {
+      this.closeMobileMenu();
+    } else {
+      this.gotoProfile();
+    }
   }
   changeLanguage(language: string) {
     this.currentLang = language;
@@ -255,6 +270,13 @@ export class HeaderComponent {
     this.ordersOverlay.open$
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.openOrdersOverlayFromNav());
+
+    // Footer requests the drawer be dismissed when Home/Cart is tapped
+    // while the My Orders overlay is up — otherwise routerLink=/service
+    // is a no-op on the home route and the user appears stuck.
+    this.ordersOverlay.close$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.closeMobileMenu());
 
     // If the footer couldn't reach us because this component wasn't mounted
     // on the previous route (e.g. /my-orders hides <app-header>), it hard-
@@ -630,64 +652,150 @@ export class HeaderComponent {
     const overflow = this.isMobileMenuOpen ? 'hidden' : '';
     document.body.style.overflow = overflow;
     document.documentElement.style.overflow = overflow;
+    this.ordersOverlay.setOpen(false);
   }
   closeMobileMenu() {
     this.isMobileMenuOpen = false;
+    this.ordersOpenedFromBottomNav = false;
     document.body.style.overflow = '';
     document.documentElement.style.overflow = '';
+    this.ordersOverlay.setOpen(false);
   }
   editProfilePhoto() { }
   fileChangeEvent(event: any) {
-    const file = event.target.files[0];
-    const maxFileSize = 1 * 1024 * 1024;
+    const input = event.target as HTMLInputElement;
+    const file = input.files && input.files[0];
     if (!file) return;
+
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
     if (!allowedTypes.includes(file.type)) {
       this.message.error(
         'Please select a valid image file (JPG, JPEG, PNG).',
         ''
       );
+      input.value = '';
       return;
     }
-    if (file.size > maxFileSize) {
-      this.message.error('File size should not exceed 1MB.', '');
-      return;
-    }
-    const fileExt = file.name.split('.').pop();
+
+    // Clear the input so the same file can be re-picked after a cancel.
+    input.value = '';
+
+    // Close the picker right away so the user's eye is on the avatar, not
+    // the modal, while the upload happens in the background.
+    this.closeModal();
+
+    const fileExt = (file.name.split('.').pop() || 'jpg').toLowerCase();
     const randomNum = Math.floor(100000 + Math.random() * 900000);
     const dateStr = this.datePipe.transform(new Date(), 'yyyyMMdd');
     const filename = `${dateStr}${randomNum}.${fileExt}`;
-    this.userData.PROFILE_PHOTO = filename;
-    this.uploadImage(file, filename);
+
+    // Remember the current avatar so we can roll back if the upload fails.
+    const previousPreview = this.imagePreview;
+
+    this.prepareUpload(file)
+      .then(({ blob, dataUrl }) => {
+        // Optimistic preview – the avatar updates instantly, the POST
+        // happens in the background.
+        this.imagePreview = dataUrl;
+        this.userData.PROFILE_PHOTO = filename;
+        this.uploadImage(blob, filename, previousPreview);
+      })
+      .catch(() => {
+        this.message.error(
+          "Couldn't process that image. Please try another.",
+          ''
+        );
+      });
   }
+
+  // Downscale phone photos client-side so we don't bounce off the 1MB
+  // server limit. Returns { blob, dataUrl } — the blob goes to the server,
+  // the dataUrl is shown immediately as the avatar preview.
+  private prepareUpload(
+    file: File
+  ): Promise<{ blob: Blob; dataUrl: string }> {
+    const MAX_DIMENSION = 1024;
+    const MAX_BYTES = 900 * 1024;
+
+    return this.fileToDataUrl(file).then((originalDataUrl) => {
+      if (file.size <= MAX_BYTES) {
+        return { blob: file, dataUrl: originalDataUrl };
+      }
+
+      return new Promise<{ blob: Blob; dataUrl: string }>((resolve, reject) => {
+        const img = new Image();
+        img.onerror = () => reject(new Error('image-decode-failed'));
+        img.onload = () => {
+          const scale = Math.min(
+            1,
+            MAX_DIMENSION / Math.max(img.width, img.height)
+          );
+          const w = Math.round(img.width * scale);
+          const h = Math.round(img.height * scale);
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) return reject(new Error('canvas-unsupported'));
+          ctx.drawImage(img, 0, 0, w, h);
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) return reject(new Error('encode-failed'));
+              resolve({
+                blob,
+                dataUrl: canvas.toDataURL('image/jpeg', 0.85),
+              });
+            },
+            'image/jpeg',
+            0.85
+          );
+        };
+        img.src = originalDataUrl;
+      });
+    });
+  }
+
+  private fileToDataUrl(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = () => reject(reader.error);
+      reader.onload = () => resolve(reader.result as string);
+      reader.readAsDataURL(file);
+    });
+  }
+
   isUploading: boolean = false;
   progressPercent: number = 0;
   imagePreview: any = null;
   showModal: boolean = false;
   IMAGEuRL: any;
-  uploadImage(file: File, filename: string) {
+  uploadImage(file: Blob, filename: string, previousPreview?: any) {
     this.isUploading = true;
     this.progressPercent = 0;
     this.apiservice.onUpload('CustomerProfile', file, filename).subscribe({
       next: (event) => {
-        if (event.type === HttpEventType.UploadProgress) {
-          this.progressPercent = Math.round((100 * event.loaded) / event.total);
+        if (event.type === HttpEventType.UploadProgress && event.total) {
+          this.progressPercent = Math.round(
+            (100 * event.loaded) / event.total
+          );
         } else if (event.type === HttpEventType.Response) {
           this.isUploading = false;
+          this.progressPercent = 100;
           if (event.body?.code === 200) {
-            this.message.success('Profile photo uploaded successfully.', '');
-            this.imagePreview = this.userData.PROFILE_PHOTO
-              ? this.IMAGEuRL + 'CustomerProfile/' + this.userData.PROFILE_PHOTO
-              : 'assets/img/blueEmpImage.png';
+            // Swap from the local data-URL preview to the server-hosted URL
+            // so future sessions (and other components) see the same photo.
+            if (this.userData.PROFILE_PHOTO) {
+              this.imagePreview =
+                this.IMAGEuRL + 'CustomerProfile/' + this.userData.PROFILE_PHOTO;
+            }
             this.showModal = true;
             if (this.showContent == 'normal') {
               this.updateUserProfile();
             }
-            this.closeModal();
             this.clearCanvasAndVideo();
           } else {
             this.message.error('Failed to upload image.', '');
-            this.imagePreview = null;
+            this.imagePreview = previousPreview ?? null;
             this.userData.PROFILE_PHOTO = null;
             this.showModal = false;
           }
@@ -696,7 +804,7 @@ export class HeaderComponent {
       error: () => {
         this.isUploading = false;
         this.message.error('Failed to upload image.', '');
-        this.imagePreview = null;
+        this.imagePreview = previousPreview ?? null;
         this.userData.PROFILE_PHOTO = null;
         this.showModal = false;
       },
@@ -3301,6 +3409,12 @@ export class HeaderComponent {
     this.showContent = 'myorder';
     this.switchTab('current');
   }
+  // Profile-menu path: clear the bottom-nav flag so the back button
+  // returns to the profile rather than unwinding to home.
+  openOrdersModalFromProfile() {
+    this.ordersOpenedFromBottomNav = false;
+    this.openOrdersModal();
+  }
   formatDate(dateString: string): string {
     const date = new Date(dateString);
     return date.toLocaleString('en-US', {
@@ -3313,6 +3427,7 @@ export class HeaderComponent {
   }
   goToOrderDetails(orderId: string) {
     this.isMobileMenuOpen = false;
+    this.ordersOverlay.setOpen(false);
     this.gotoProfile();
     setTimeout(() => {
       document.body.classList.remove('modal-open');
@@ -3342,6 +3457,7 @@ export class HeaderComponent {
   }
   goToOrderShopDetails(orderId: string) {
     this.isMobileMenuOpen = false;
+    this.ordersOverlay.setOpen(false);
     this.gotoProfile();
     setTimeout(() => {
       document.body.classList.remove('modal-open');
@@ -3619,6 +3735,7 @@ export class HeaderComponent {
     this.isMobileMenuOpen = false;
     document.body.style.overflow = '';
     document.documentElement.style.overflow = '';
+    this.ordersOverlay.setOpen(false);
   }
   notificationdata: any = [];
   notificationloader: boolean = false;
@@ -3703,6 +3820,9 @@ export class HeaderComponent {
   isCapturePhotoModalOpen: boolean = false;
   private stream!: MediaStream;
   openCamera() {
+    // Close the outer "Select Photo" picker so the camera modal doesn't
+    // stack on top of it.
+    this.closeModal();
     this.isCapturePhotoModalOpen = true;
     const modal = document.getElementById('CapturePhotoModal')!;
     modal.style.display = 'block';
@@ -3724,19 +3844,54 @@ export class HeaderComponent {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
-    const base64Data = canvas.toDataURL('image/png');
-    this.capturedImage = base64Data;
-    canvas.toBlob((blob: any) => {
-      if (blob) {
-        const blobUrl = URL.createObjectURL(blob);
-        const uuid = blobUrl.split('/').pop();
-        const filename = `${uuid}.png`;
+
+    // Close both modals and stop the camera stream right away so the user
+    // immediately sees the avatar updating in the background.
+    if (this.stream) {
+      this.stream.getTracks().forEach((track) => track.stop());
+    }
+    this.closeCapturePhotoModal();
+    this.closeModal();
+
+    // Remember the current preview so we can roll back on upload failure.
+    const previousPreview = this.imagePreview;
+
+    // Downscale the captured frame to JPEG (smaller + no alpha) so we stay
+    // within the server's size limit and the preview swap is fast.
+    const MAX_DIMENSION = 1024;
+    const scale = Math.min(
+      1,
+      MAX_DIMENSION / Math.max(canvas.width, canvas.height)
+    );
+    let uploadCanvas: HTMLCanvasElement = canvas;
+    if (scale < 1) {
+      uploadCanvas = document.createElement('canvas');
+      uploadCanvas.width = Math.round(canvas.width * scale);
+      uploadCanvas.height = Math.round(canvas.height * scale);
+      const uctx = uploadCanvas.getContext('2d');
+      if (uctx) uctx.drawImage(canvas, 0, 0, uploadCanvas.width, uploadCanvas.height);
+    }
+
+    // Optimistic preview from the local data URL — avatar fills instantly.
+    this.capturedImage = uploadCanvas.toDataURL('image/jpeg', 0.85);
+    this.imagePreview = this.capturedImage;
+
+    uploadCanvas.toBlob(
+      (blob: any) => {
+        if (!blob) {
+          this.message.error("Couldn't process the captured image.", '');
+          this.imagePreview = previousPreview ?? null;
+          return;
+        }
+        const randomNum = Math.floor(100000 + Math.random() * 900000);
+        const dateStr = this.datePipe.transform(new Date(), 'yyyyMMdd');
+        const filename = `${dateStr}${randomNum}.jpg`;
         this.userData.PROFILE_PHOTO = filename;
-        this.uploadImage(blob, filename);
-      }
-    }, 'image/png');
-    this.stream.getTracks().forEach((track) => track.stop());
-    this.isCapturePhotoModalOpen = false;
+        this.uploadImage(blob, filename, previousPreview);
+      },
+      'image/jpeg',
+      0.85
+    );
   }
   base64ToBlob(base64: string, contentType: string): Blob {
     const byteCharacters = atob(base64.split(',')[1]);

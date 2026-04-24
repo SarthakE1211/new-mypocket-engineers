@@ -300,7 +300,6 @@ export class LoginComponent implements OnInit {
             this.statusCode = '';
             this.modalVisible = false;
             this.whichOTP = 'login';
-            this.loadData();
             customerType = successCode.data[0].CUSTOMER_TYPE;
             this.api
               .sendOTP(
@@ -460,7 +459,6 @@ export class LoginComponent implements OnInit {
       this.data.CONTACT_PERSON_NAME = null;
     }
     const registerData = this.data;
-    this.loadData();
     this.api.userRegistrationOTP(this.data).subscribe(
       (successCode: any) => {
         if (successCode.body.code === 200) {

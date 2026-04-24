@@ -11,7 +11,10 @@
       "Bash(grep -n \"^@media\\\\|^}$\")",
       "Bash(awk 'BEGIN{d=0} { for\\(i=1;i<=length\\($0\\);i++\\){c=substr\\($0,i,1\\); if\\(c==\"{\"\\) d++; if\\(c==\"}\"\\){d--; if\\(d==0\\){print NR+2760\": \"$0; exit}} } }')",
       "Bash(awk 'NR>=2761 && NR<=3435 {print NR\": \"$0}' \"d:\\\\mypockitengineers.com\\\\new\\\\pockit-website-repo-preprod\\\\src\\\\app\\\\pages\\\\home\\\\home.component.scss\")",
-      "Bash(awk 'NR>=3280 && NR<=3435' \"d:\\\\mypockitengineers.com\\\\new\\\\pockit-website-repo-preprod\\\\src\\\\app\\\\pages\\\\home\\\\home.component.scss\")"
+      "Bash(awk 'NR>=3280 && NR<=3435' \"d:\\\\mypockitengineers.com\\\\new\\\\pockit-website-repo-preprod\\\\src\\\\app\\\\pages\\\\home\\\\home.component.scss\")",
+      "Bash(awk 'BEGIN{open=0;close=0} {for\\(i=1;i<=length\\($0\\);i++\\){c=substr\\($0,i,1\\); if\\(c==\"{\"\\) open++; if\\(c==\"}\"\\) close++}} END{print \"open:\",open,\" close:\",close}' \"d:/mypockitengineers.com/new/pockit-website-repo-preprod/src/app/components/header/header.component.scss\")",
+      "Bash(python -c \"import sys; s=open\\('d:/mypockitengineers.com/new/pockit-website-repo-preprod/src/app/components/header/header.component.scss'\\).read\\(\\); print\\('open:', s.count\\('{'\\), 'close:', s.count\\('}'\\)\\)\")",
+      "Bash(python -c \"s=open\\('d:/mypockitengineers.com/new/pockit-website-repo-preprod/src/app/components/header/header.component.scss','rb'\\).read\\(\\).decode\\('utf-8','ignore'\\); print\\('open:', s.count\\('{'\\), 'close:', s.count\\('}'\\)\\)\")"
     ],
     "additionalDirectories": [
       "d:\\mypockitengineers.com\\new\\pockit-website-repo-preprod\\src\\app\\components"

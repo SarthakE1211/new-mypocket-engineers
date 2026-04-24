@@ -643,7 +643,7 @@
           </div>
           <div *ngIf="userID != 0 && userID != null && userID != undefined" class="bg-light-border-mt10-unique">
             <a href="service" class="mobile-nav-item flex-between-center-cursor-unique" routerLink="service"
-              (click)="openOrdersModal()">
+              (click)="openOrdersModalFromProfile()">
               <div class="flex-center-gap15-unique">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <rect x="4" y="3" width="14" height="18" stroke="#2A3B8F" stroke-width="2" stroke-linecap="round"
@@ -758,11 +758,17 @@
           <div class="profile-header d-flex flex-column">
             <div class="d-flex justify-content-center align-items-center full-size-unique">
               <div
-                class="profile-photo-container position-relative d-flex justify-content-center align-items-center profile-image">
+                class="profile-photo-container position-relative d-flex justify-content-center align-items-center profile-image"
+                [class.is-uploading]="isUploading">
                 <img [src]="imagePreview || 'assets/img/blueEmpImage.png'" alt="Profile Photo"
                   class="profile-photo profile-img-100px-border-unique" (error)="setDefaultImage($event)"
                   (click)="openImage(imagePreview)" />
-                <button class="edit-photo-btn btn-circle-30px-shadow-unique" (click)="openprofileModal()">
+                <div class="profile-upload-indicator" *ngIf="isUploading" aria-live="polite">
+                  <div class="profile-upload-spinner"></div>
+                  <span class="profile-upload-percent">{{ progressPercent }}%</span>
+                </div>
+                <button class="edit-photo-btn btn-circle-30px-shadow-unique" (click)="openprofileModal()"
+                  [disabled]="isUploading">
                   <svg width="13" height="13" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M13.2543 2.52944L13.2541 2.52967L12.5371 3.25402L14.6921 5.40906L15.4183 4.6828L13.2543 2.52944ZM13.2543 2.52944C13.3951 2.38636 13.5629 2.27275 13.748 2.19523C13.9331 2.11772 14.1318 2.07785 14.3324 2.07797V2.07814M13.2543 2.52944L14.3324 2.07814M14.3324 2.07814L14.3383 2.0778M14.3324 2.07814L14.3383 2.0778M14.3383 2.0778C14.5397 2.06613 14.7411 2.10019 14.9275 2.17745C15.1138 2.2547 15.2803 2.37314 15.4144 2.52388L15.4143 2.52398M14.3383 2.0778L15.4143 2.52398M15.4143 2.52398L15.4183 2.52802M15.4143 2.52398L15.4183 2.52802M15.4183 2.52802C15.7035 2.81405 15.8636 3.20149 15.8636 3.60541M15.4183 2.52802L15.8636 3.60541M15.8636 3.60541C15.8636 4.00929 15.7036 4.39669 15.4184 4.6827L15.8636 3.60541ZM15.3711 1.10425L15.3328 1.19664L1.30183 16.9629C1.36117 16.9874 1.42478 17 1.489 17V17.1H1.48906H4.42302C4.50036 17.1 4.57697 17.0848 4.64843 17.0552L4.61015 16.9628L4.64843 17.0552C4.71988 17.0256 4.7848 16.9822 4.83948 16.9275C4.83949 16.9274 4.83949 16.9274 4.8395 16.9274L16.2513 5.51563L16.2514 5.51551C16.7577 5.00758 17.0416 4.31944 17.0408 3.60229C17.0399 2.8852 16.7544 2.19778 16.2471 1.69104C15.9967 1.43947 15.699 1.24003 15.3711 1.10425ZM13.8592 6.24194L4.17915 15.922H2.07801V13.8192L11.7083 4.09109L13.8592 6.24194Z"
@@ -816,11 +822,11 @@
                     </div>
                   </div>
                   <div class="form-field flex-align-center-unique" *ngIf="userData?.CUSTOMER_TYPE=='I'">
-                    <label>Is Have GST?&nbsp;&nbsp;</label>
+                    <label>GST Invoice&nbsp;&nbsp;</label>
                     <div class="form-check form-switch">
                       <input class="form-check-input pill-padding-width-unique" [(ngModel)]="userData.IS_HAVE_GST"
                         (ngModelChange)="chagegst($event)" name="ishavegst" type="checkbox" role="switch"
-                        id="flexSwitchCheckChecked" checked>
+                        id="flexSwitchCheckChecked">
                     </div>
                   </div>
                   <div class="form-field" *ngIf="userData?.CUSTOMER_TYPE=='I' && userData?.IS_HAVE_GST">
@@ -1435,7 +1441,7 @@
     </div>
     <div *ngIf="showContent == 'myorder'">
       <div class="mobile-menu-header d-flex align-items-center justify-start-unique justify-start-unique">
-        <button class="close-menu-btn" (click)="gotoProfile()" aria-label="Back">
+        <button class="close-menu-btn" (click)="onOrdersBack()" aria-label="Back">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="15 18 9 12 15 6"></polyline>

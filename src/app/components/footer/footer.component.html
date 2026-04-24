@@ -89,7 +89,7 @@
 </footer>
 
 <nav class="mobile-bottom-nav" aria-label="Primary" *ngIf="showBottomNav && !overlayOpen">
-  <a class="mb-nav-item mb-nav-item--home" routerLink="/service" [class.is-active]="activeTab === 'home'">
+  <a class="mb-nav-item mb-nav-item--home" routerLink="/service" (click)="onSiblingTabTap()" [class.is-active]="activeTab === 'home'">
     <span class="mb-nav-glyph mb-nav-glyph--home">
       <span class="mb-nav-pe">PE</span>
     </span>
@@ -102,7 +102,7 @@
     </span>
     <span class="mb-nav-label">Order</span>
   </a>
-  <a class="mb-nav-item" routerLink="/my-cart" [class.is-active]="activeTab === 'cart'">
+  <a class="mb-nav-item" routerLink="/my-cart" (click)="onSiblingTabTap()" [class.is-active]="activeTab === 'cart'">
     <span class="mb-nav-glyph">
       <i class="bi bi-cart3"></i>
     </span>

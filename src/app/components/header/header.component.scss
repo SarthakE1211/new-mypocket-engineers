@@ -204,6 +204,14 @@ div[disabled-click] {
     display: none !important;
   }
 }
+// Reserve space at the bottom of the scrollable drawer on mobile so trailing
+// content (Logout, Delete Account, form submit buttons, etc.) isn't hidden
+// behind the fixed bottom nav (~78px + safe-area).
+@media (max-width: 767.98px) {
+  .mobile-menu {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  }
+}
 @media (max-width: 400px) {
   .mobile-menu {
     width: 100%;
@@ -3746,5 +3754,353 @@ textarea {
     background: #f36631;
     border-radius: 50%;
     border: 2px solid #2d6ff0;
+  }
+}
+
+// Mobile polish for the profile drawer and "Your Profile" edit form.
+// Desktop styling is preserved — this block only kicks in at phone widths.
+@media (max-width: 767.98px) {
+  // Soft tinted backdrop for the drawer body so white cards pop
+  .mobile-menu {
+    background: linear-gradient(180deg, #eef2ff 0%, #f5f8ff 220px, #ffffff 100%) !important;
+  }
+
+  // ========== PROFILE MENU (showContent == 'normal') ==========
+
+  // Top "user card" – nicer shadow, tighter layout
+  .profile-card {
+    border: 1px solid rgba(42, 59, 143, 0.08) !important;
+    border-radius: 16px !important;
+    padding: 14px !important;
+    box-shadow: 0 8px 24px rgba(15, 26, 92, 0.08) !important;
+    background: #ffffff !important;
+
+    .profile-image {
+      width: 64px !important;
+      height: 64px !important;
+      border-width: 2.5px !important;
+    }
+    .profile-details .user-name .profile-name {
+      font-size: 15px !important;
+      color: #0f1a5c !important;
+      font-weight: 700 !important;
+    }
+    .profile-details .user-info,
+    .profile-details .user-info span {
+      font-size: 12px !important;
+      color: #6b7280 !important;
+      font-weight: 500 !important;
+    }
+    .profile-arrow .bi-chevron-right {
+      color: #2a3b8f !important;
+      font-size: 14px;
+    }
+  }
+
+  .text-muted-center-12-unique {
+    color: #9ca3af !important;
+    letter-spacing: 0.04em;
+    font-size: 11px !important;
+    margin: 14px 0 !important;
+    text-transform: uppercase;
+  }
+
+  // Menu-item rows – white cards with tinted icon wells
+  .bg-light-border-unique,
+  .bg-light-border-mt10-unique {
+    background: #ffffff !important;
+    border: 1px solid rgba(42, 59, 143, 0.08) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 4px 12px rgba(15, 26, 92, 0.05) !important;
+    margin-top: 10px !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    &:first-of-type {
+      margin-top: 0 !important;
+    }
+    &:active {
+      transform: scale(0.985);
+      box-shadow: 0 2px 8px rgba(15, 26, 92, 0.08) !important;
+    }
+  }
+
+  .mobile-action-buttons .mobile-nav-item {
+    padding: 12px 14px !important;
+    border-radius: 14px !important;
+    span {
+      color: #0f1a5c !important;
+      font-weight: 600 !important;
+      font-size: 14px !important;
+    }
+    // Tinted circular well behind each icon
+    .flex-center-gap15-unique {
+      gap: 12px !important;
+      > svg,
+      > img {
+        width: 38px !important;
+        height: 38px !important;
+        padding: 8px !important;
+        background: #eef2ff !important;
+        border-radius: 10px !important;
+        flex-shrink: 0;
+      }
+    }
+    .bi-chevron-right {
+      color: #9aa3c4 !important;
+      font-size: 14px;
+    }
+  }
+
+  // Logout row — solid navy button with white label. Overrides the
+  // inherited navy span color from .mobile-action-buttons above.
+  .mobile-action-buttons .bg-blue-flex-center-unique {
+    background: #2a3b8f !important;
+    border: none !important;
+    border-radius: 14px !important;
+    margin-top: 18px !important;
+    height: auto !important;
+    box-shadow: 0 8px 20px rgba(42, 59, 143, 0.24) !important;
+    .mobile-nav-item {
+      width: 100%;
+      padding: 14px 16px !important;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mobile-nav-item,
+    .mobile-nav-item span {
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      font-size: 15px !important;
+      letter-spacing: 0.01em;
+    }
+    .spinner-border {
+      color: #ffffff !important;
+    }
+  }
+
+  // ========== YOUR PROFILE FORM (showContent == 'editProfile') ==========
+
+  .profile-wrapper .profile-header {
+    padding: 14px 0 10px !important;
+    margin-bottom: 14px;
+
+    .profile-photo-container {
+      background: linear-gradient(180deg, #eef2ff 0%, #ffffff 100%);
+      border-radius: 50%;
+      padding: 4px;
+      box-shadow: 0 6px 20px rgba(15, 26, 92, 0.08);
+
+      &.is-uploading .profile-photo {
+        opacity: 0.55;
+        filter: blur(0.5px);
+      }
+    }
+
+    .profile-upload-indicator {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      pointer-events: none;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 12px;
+      text-shadow: 0 1px 4px rgba(15, 26, 92, 0.4);
+    }
+    .profile-upload-spinner {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 3px solid rgba(255, 255, 255, 0.35);
+      border-top-color: #ffffff;
+      animation: profile-upload-spin 0.9s linear infinite;
+    }
+    .profile-upload-percent {
+      letter-spacing: 0.02em;
+    }
+
+    .edit-photo-btn {
+      background: #2a3b8f !important;
+      border-radius: 50% !important;
+      width: 30px !important;
+      height: 30px !important;
+      box-shadow: 0 4px 10px rgba(42, 59, 143, 0.3) !important;
+      svg path {
+        fill: #ffffff !important;
+        stroke: #ffffff !important;
+      }
+    }
+  }
+
+  @keyframes profile-upload-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  // Wrap the form fields in a single white card like the reference's
+  // "Device details" section card. Direct-child combinator avoids matching
+  // the user-card's inner .profile-details on the normal profile menu.
+  .profile-wrapper > .profile-details {
+    background: #ffffff;
+    border: 1px solid rgba(42, 59, 143, 0.08);
+    border-radius: 18px;
+    padding: 18px 16px;
+    box-shadow: 0 8px 22px rgba(15, 26, 92, 0.06);
+    margin-bottom: 14px;
+  }
+
+  .register-form {
+    .form-field {
+      margin-bottom: 16px !important;
+
+      // Labels mirror the service-booking form: bold, navy, slightly larger
+      label {
+        display: block;
+        color: #0f1a5c !important;
+        font-size: 14px !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.005em;
+        margin-bottom: 8px !important;
+      }
+      .text-red-unique {
+        color: #ef4444 !important;
+        font-weight: 700;
+        margin-left: 2px;
+      }
+      input,
+      textarea {
+        width: 100% !important;
+        padding: 13px 14px !important;
+        background: #ffffff !important;
+        // Soft gray border like the reference (navy-tinted but restrained)
+        border: 1px solid #d6dbeb !important;
+        border-radius: 12px !important;
+        font-size: 14px !important;
+        color: #0f1a5c !important;
+        box-shadow: none !important;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+        &::placeholder {
+          color: #a8afc9 !important;
+          font-weight: 400;
+        }
+        &:focus {
+          border-color: #2a3b8f !important;
+          box-shadow: 0 0 0 3px rgba(42, 59, 143, 0.14) !important;
+          outline: none !important;
+        }
+        &:disabled {
+          background: #f4f6fc !important;
+          color: #5a6075 !important;
+          cursor: not-allowed;
+          border-color: #e5e8f1 !important;
+        }
+      }
+      textarea {
+        resize: none;
+        min-height: 84px;
+        line-height: 1.45;
+      }
+      .error-message {
+        color: #ef4444 !important;
+        font-size: 12px !important;
+        font-weight: 500;
+        margin-top: 6px !important;
+      }
+    }
+
+    // "Is Have GST?" toggle row
+    .form-field.flex-align-center-unique {
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px;
+      background: #ffffff;
+      border: 1px solid #d6dbeb;
+      border-radius: 12px;
+      padding: 13px 14px !important;
+      label {
+        margin-bottom: 0 !important;
+      }
+      .form-check.form-switch {
+        margin: 0 !important;
+        padding: 0 !important;
+        min-height: auto !important;
+      }
+      // Reset the pill-padding-width-unique overrides and provide our own
+      // knob SVG so we don't depend on Bootstrap's form-switch image (which
+      // was being suppressed in this component's context).
+      .form-check-input.pill-padding-width-unique,
+      .form-check-input {
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        appearance: none !important;
+        width: 44px !important;
+        height: 24px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border-radius: 999px !important;
+        cursor: pointer;
+        background-color: #d6dbeb !important;
+        border: none !important;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23ffffff'/%3E%3C/svg%3E") !important;
+        background-repeat: no-repeat !important;
+        background-size: contain !important;
+        background-position: left center !important;
+        box-shadow: inset 0 1px 2px rgba(15, 26, 92, 0.08) !important;
+        transition: background-position 0.2s ease, background-color 0.2s ease !important;
+        &:checked {
+          background-color: #2a3b8f !important;
+          background-position: right center !important;
+        }
+        &:focus {
+          box-shadow: inset 0 1px 2px rgba(15, 26, 92, 0.08),
+            0 0 0 3px rgba(42, 59, 143, 0.18) !important;
+          outline: none !important;
+        }
+      }
+    }
+
+    // Primary submit button mirrors the service-booking "Next" button
+    .register-button {
+      padding: 14px 16px !important;
+      background: #2a3b8f !important;
+      color: #ffffff !important;
+      border: none !important;
+      border-radius: 12px !important;
+      font-size: 15px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.005em;
+      box-shadow: 0 10px 22px rgba(42, 59, 143, 0.28) !important;
+      margin-top: 24px !important;
+      &:hover {
+        background: #223072 !important;
+      }
+      &:active {
+        transform: scale(0.99);
+      }
+      &:disabled {
+        background: #c5cae6 !important;
+        box-shadow: none !important;
+        color: #ffffff !important;
+      }
+    }
+  }
+
+  // ========== BOTH VIEWS ==========
+
+  // Drawer header – cleaner title bar
+  .mobile-menu-header {
+    background: #ffffff !important;
+    border-bottom: 1px solid rgba(42, 59, 143, 0.08) !important;
+    padding: 14px 12px !important;
+    font-weight: 700;
+    color: #0f1a5c;
+    .close-menu-btn {
+      color: #0f1a5c !important;
+    }
   }
 }

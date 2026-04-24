@@ -15,6 +15,9 @@ export class FooterComponent implements OnInit, OnDestroy {
   activeTab: 'home' | 'order' | 'cart' = 'home';
   showBottomNav: boolean = true;
   overlayOpen: boolean = false;
+  // True while the header's My Orders drawer is visible. Keeps the Order
+  // tab highlighted even though the URL hasn't changed to /my-orders.
+  private ordersOverlayActive: boolean = false;
 
   private destroy$ = new Subject<void>();
   private bodyClassObserver: MutationObserver | null = null;
@@ -50,6 +53,15 @@ export class FooterComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Home/Cart taps share this: if the My Orders drawer is up, dismiss it
+  // so the user isn't stuck behind it — routerLink alone is a no-op when
+  // the target matches the current route (e.g. Home while on /service).
+  onSiblingTabTap(): void {
+    if (this.ordersOverlayActive) {
+      this.ordersOverlay.close();
+    }
+  }
+
   ngOnInit(): void {
     this.updateActiveTab(this.router.url);
     this.router.events
@@ -58,6 +70,20 @@ export class FooterComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe((e) => this.updateActiveTab(e.urlAfterRedirects));
+
+    // Header flips this when its My Orders drawer opens/closes. The drawer
+    // doesn't change the URL, so we need the explicit signal to keep the
+    // Order tab highlighted.
+    this.ordersOverlay.isOpen$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((open) => {
+        this.ordersOverlayActive = open;
+        if (open) {
+          this.activeTab = 'order';
+        } else {
+          this.updateActiveTab(this.router.url);
+        }
+      });
 
     // Hide the bottom nav whenever a drawer, offcanvas, or modal is on screen
     // so booking flows are not obstructed. We watch three signals, since
@@ -93,7 +119,7 @@ export class FooterComponent implements OnInit, OnDestroy {
 
   private updateActiveTab(url: string): void {
     const path = (url || '/').split('?')[0].split('#')[0];
-    if (path.startsWith('/my-orders')) {
+    if (this.ordersOverlayActive || path.startsWith('/my-orders')) {
       this.activeTab = 'order';
     } else if (path.startsWith('/my-cart')) {
       this.activeTab = 'cart';
