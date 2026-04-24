@@ -30,16 +30,19 @@
 }
 
 .svc-sheet-close {
+  // Centered horizontally, sitting on the sheet's top edge (sheet starts at
+  // 10vh since it's 90vh tall). The button straddles the seam so it reads
+  // as a close/drag handle for the sheet itself, not a floating control.
   position: absolute;
-  top: calc(10vh - 22px);
+  top: calc(10vh - 18px);
   left: 50%;
   transform: translateX(-50%);
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: #ffffff;
   border: 1px solid rgba(15, 20, 40, 0.1);
-  box-shadow: 0 6px 18px rgba(15, 20, 40, 0.18);
+  box-shadow: 0 4px 14px rgba(15, 20, 40, 0.14);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -47,8 +50,9 @@
   z-index: 2;
 
   i {
-    font-size: 22px;
+    font-size: 20px;
     color: #2a3b8f;
+    line-height: 1;
   }
 }
 

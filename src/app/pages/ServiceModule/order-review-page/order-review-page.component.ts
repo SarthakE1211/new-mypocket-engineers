@@ -201,12 +201,27 @@ export class OrderReviewPageComponent {
     this.loadFullPage = true;
     this.apiservice.getCartGetDetails(serviceId).subscribe(
       (data) => {
-        if (data['code'] == 200) {
-          this.loadFullPage = false;
+        this.loadFullPage = false;
+        if (data && data['code'] == 200 && data['data']) {
           this.OrderReviewDetails = data['data'];
+        } else {
+          // Cart empty, expired, or unauthorized — send the user back to the
+          // service page instead of leaving them staring at a loader.
+          this.message.info(
+            data?.['message'] ||
+              'This order review is no longer available. Returning to services.',
+            ''
+          );
+          this.router.navigate(['/service']);
         }
       },
       (error) => {
+        this.loadFullPage = false;
+        this.message.error(
+          error?.error?.message || 'Failed to load order review.',
+          ''
+        );
+        this.router.navigate(['/service']);
       }
     );
   }

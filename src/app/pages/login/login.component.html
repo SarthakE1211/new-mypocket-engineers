@@ -392,9 +392,10 @@
         </div>
         <form (ngSubmit)="VerifyOTP()" class="otp-form">
           <div class="otp-input-group">
-            <input *ngFor="let i of [0, 1, 2, 3]" class="otp-input" type="text" [(ngModel)]="otp[i]" [name]="'otp-' + i"
-              maxlength="1" (keydown)="moveToNext($event, i)" (keypress)="allowOnlyNumbers($event)"
-              (ngModelChange)="onChange($event, i)" (paste)="handlePaste($event)" required autocomplete="off" />
+            <input *ngFor="let i of [0, 1, 2, 3]" class="otp-input" type="tel" inputmode="numeric" pattern="[0-9]*"
+              [(ngModel)]="otp[i]" [name]="'otp-' + i" maxlength="1" (keydown)="moveToNext($event, i)"
+              (keypress)="allowOnlyNumbers($event)" (ngModelChange)="onChange($event, i)" (paste)="handlePaste($event)"
+              required autocomplete="one-time-code" />
           </div>
           <div class="timer-section">
             <span *ngIf="remainingTime > 0">{{ remainingTime }}</span>
