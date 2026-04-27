@@ -529,13 +529,14 @@
 }
 
 .svc-sheet-accordion-icon {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 8px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  overflow: hidden;
 
   &--info {
     background: #2a3b8f;
@@ -549,14 +550,19 @@
   }
 }
 
-// Was a "PE" text glyph inside the navy accordion pill; now an image
-// (Logo111.png). Constrain it to fill the 32×32 pill while keeping a
-// tiny inner padding so the logo artwork doesn't bleed to the edges.
 .svc-sheet-warranty-logo {
   display: block;
-  width: 22px;
-  height: 22px;
+  width: 64px;
+  height: 64px;
   object-fit: contain;
+  flex-shrink: 0;
+}
+
+.svc-sheet-service-icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .svc-sheet-accordion-body {

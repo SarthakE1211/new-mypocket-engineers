@@ -231,3 +231,66 @@ body:has(.custom-drawer15.show) .mobile-bottom-nav {
     transform: translateZ(0);
     will-change: transform;
   }
+}
+
+.ant-message {
+  z-index: 12000;
+  top: 20px;
+
+  .ant-message-notice {
+    padding: 0;
+    text-align: center;
+  }
+
+  .ant-message-notice-content {
+    display: inline-block;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 999px;
+    animation: pockitToastIn 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  }
+
+  .ant-message-custom-content {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    color: #ffffff;
+    box-shadow: 0 12px 28px rgba(15, 23, 64, 0.22);
+
+    .anticon {
+      font-size: 18px;
+      color: #ffffff;
+    }
+  }
+
+  .ant-message-success .ant-message-custom-content {
+    background: linear-gradient(135deg, #06d6a0 0%, #048a64 100%);
+    box-shadow: 0 12px 28px rgba(6, 214, 160, 0.4);
+  }
+
+  .ant-message-error .ant-message-custom-content {
+    background: linear-gradient(135deg, #ef476f 0%, #b81d40 100%);
+    box-shadow: 0 12px 28px rgba(239, 71, 111, 0.4);
+  }
+
+  .ant-message-warning .ant-message-custom-content {
+    background: linear-gradient(135deg, #ffb627 0%, #e07b00 100%);
+    box-shadow: 0 12px 28px rgba(255, 182, 39, 0.4);
+  }
+
+  .ant-message-info .ant-message-custom-content {
+    background: linear-gradient(135deg, #4cc9f0 0%, #244099 100%);
+    box-shadow: 0 12px 28px rgba(36, 64, 153, 0.4);
+  }
+}
+
+@keyframes pockitToastIn {
+  0%   { transform: translateY(-12px) scale(0.92); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}

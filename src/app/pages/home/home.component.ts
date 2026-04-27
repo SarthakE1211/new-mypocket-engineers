@@ -427,7 +427,6 @@ export class HomeComponent {
         this.loadepage = false;
         if (res.code == 200) {
           this.cartService.fetchAndUpdateCartDetails(this.userID);
-          this.message.success('Item added to cart successfully.');
           this.cartId = res.data.CART_ID;
           this.updatedselectedService = [this.selectedService];
         } else {
