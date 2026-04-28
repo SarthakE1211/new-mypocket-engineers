@@ -1,0 +1,36 @@
+:host {
+  display: inline-flex;
+}
+
+.mobile-back-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: #2a3b8f;
+  color: #ffffff;
+  border: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(42, 59, 143, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.mobile-back-btn:active {
+  transform: translateX(-2px);
+  box-shadow: 0 6px 16px rgba(42, 59, 143, 0.32);
+}
+
+.mobile-back-btn i {
+  font-size: 16px;
+  color: #ffffff;
+  line-height: 1;
+}
+
+@media (min-width: 768px) {
+  :host {
+    display: none;
+  }
+}

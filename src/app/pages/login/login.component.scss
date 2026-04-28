@@ -1658,3 +1658,12 @@ font-size: 20px
 .size-12px{
   font-size: 12px
 }
+.auth-mobile-back {
+  display: none;
+}
+@media (max-width: 767.98px) {
+  .auth-mobile-back {
+    display: flex;
+    margin-bottom: 8px;
+  }
+}
