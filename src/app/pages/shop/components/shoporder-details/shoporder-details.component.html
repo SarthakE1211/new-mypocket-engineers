@@ -1,4 +1,7 @@
 <div class="container">
+  <div class="mobile-back-bar">
+    <app-mobile-back-btn fallback="/my-orders" ariaLabel="Back"></app-mobile-back-btn>
+  </div>
   <div *ngIf="loaddata" class="spinner-overlay">
     <div class="spinner-border text-primary spinner-size" role="status">
       <span class="sr-only"></span>

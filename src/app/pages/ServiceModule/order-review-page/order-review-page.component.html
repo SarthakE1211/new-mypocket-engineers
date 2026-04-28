@@ -9,9 +9,10 @@
   <div class="card p-3 shadow no-border-no-shadow">
     <div class="d-flex align-items-center mt-3 justify-content-between p-2 p-lg-3 no-margin-top-no-padding-left">
       <div class="d-flex align-items-center">
-        <a [routerLink]="'/service'" class="back-button d-flex align-items-center justify-content-center">
+        <a [routerLink]="'/service'" class="back-button d-none d-md-flex align-items-center justify-content-center">
           <i class="bi bi-arrow-left text-white font-size-14"></i>
         </a>
+        <app-mobile-back-btn fallback="/" ariaLabel="Back"></app-mobile-back-btn>
         <h2 class="fs-4 fs-lg-3 fw-bold order-title mb-0-font-18">
           &nbsp;&nbsp; {{ "order_review.title" | translate }}
         </h2>
