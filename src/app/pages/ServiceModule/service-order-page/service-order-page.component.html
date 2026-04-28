@@ -3,10 +3,9 @@
     <div class="row">
       <div class="col-md-6 mb-2 mb-md-0">
         <h2 class="mb-3 font-20-bold order-details-title-row">
-          <a href="javascript:void(0)" class="back-button d-none d-md-inline-flex" (click)="goBack()" aria-label="Back">
+          <a href="javascript:void(0)" class="back-button" (click)="goBack()" aria-label="Back">
             <i class="bi bi-arrow-left"></i>
           </a>
-          <app-mobile-back-btn fallback="/my-orders" ariaLabel="Back"></app-mobile-back-btn>
           <span>{{ "order_details.title" | translate }}</span>
         </h2>
         <div *ngIf="
