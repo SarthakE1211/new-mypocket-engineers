@@ -65,7 +65,6 @@ import { CommonmapComponent } from './commonmap/commonmap.component';
 import { MyOrdersComponent } from './pages/my-orders/my-orders.component';
 import { MyCartComponent } from './pages/my-cart/my-cart.component';
 import { ServiceDetailSheetComponent } from './components/service-detail-sheet/service-detail-sheet.component';
-import { MobileBackBtnComponent } from './components/mobile-back-btn/mobile-back-btn.component';
 registerLocaleData(en);
 initializeApp(environment.firebase);
 export function HttpLoaderFactory(http: HttpClient) {
@@ -113,8 +112,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     CommonmapComponent,
     MyOrdersComponent,
     MyCartComponent,
-    ServiceDetailSheetComponent,
-    MobileBackBtnComponent
+    ServiceDetailSheetComponent
   ],
   imports: [
     BrowserModule,
